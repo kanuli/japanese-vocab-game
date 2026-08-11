@@ -1,0 +1,28 @@
+name: Improve grammar distractor quality
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-distractors-v24.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch grammar distractor generator
+        run: python3 .github/scripts/patch_distractors_v24.py
+      - name: Commit grammar update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add grammar.html
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git commit -m "Make grammar distractors structurally compatible"
+          git push
