@@ -28,7 +28,13 @@ new_formation = r'''function zhFormation(s){
 function containsLatin(s){return /[A-Za-z]/.test(String(s||""));}
 '''
 
-s = re.sub(r'function zhFormation\(s\)\{.*?\n\}\nfunction zhFallback\(q\)\{', new_formation + '\nfunction zhFallback(q){', s, count=1, flags=re.S)
+s = re.sub(
+    r'function zhFormation\(s\)\{.*?\n\}\nfunction zhFallback\(q\)\{',
+    lambda m: new_formation + '\nfunction zhFallback(q){',
+    s,
+    count=1,
+    flags=re.S,
+)
 
 new_translate = r'''async function translateZh(text){
  text=String(text||"").trim();
@@ -56,7 +62,14 @@ new_translate = r'''async function translateZh(text){
  }
 }
 '''
-s = re.sub(r'async function translateZh\(text\)\{.*?\n\}\nasync function fillWebChinese', new_translate + '\nasync function fillWebChinese', s, count=1, flags=re.S)
+
+s = re.sub(
+    r'async function translateZh\(text\)\{.*?\n\}\nasync function fillWebChinese',
+    lambda m: new_translate + '\nasync function fillWebChinese',
+    s,
+    count=1,
+    flags=re.S,
+)
 
 s = s.replace('const formation=q.formation?`接續：${zhFormation(q.formation)}`:"";', 'const f=zhFormation(q.formation||""); const formation=f?`接續：${f}`:"";')
 s = s.replace("Hanabira + MyMemory 繁中翻譯", "Web 文法庫（繁中轉換）")
