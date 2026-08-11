@@ -5,7 +5,7 @@ s=p.read_text(encoding='utf-8')
 
 # Use lexical/detail substitutions that translate more reliably; avoid blind tense/polarity suffix changes.
 start=s.index('const GROUPS=[')
-end=s.index('];\nfunction mutations',start)+2
+end=s.index('\nfunction mutations',start)
 new_groups=r'''const GROUPS=[
 ["今日","昨日","明日","今朝"],["今週","先週","来週","再来週"],["今月","先月","来月","再来月"],["今年","去年","来年","再来年"],["さっき","今","あとで","昨日"],
 ["朝","昼","夕方","夜"],["午前","午後"],["右","左","前","後"],["上","下"],
