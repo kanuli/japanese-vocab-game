@@ -1,0 +1,119 @@
+name: Upgrade listening v1.2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/upgrade-listening-v12.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  upgrade-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply listening v1.2 patch
+        run: python scripts/upgrade-listening-v12.py
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fetch pinned official Supertonic browser helper and license
+        run: |
+          mkdir -p src vendor/ort vendor/licenses
+          curl -fL --retry 3 'https://raw.githubusercontent.com/supertone-inc/supertonic/912c54b435276d68d41c7347c9aac5cf4f8aa4b7/web/helper.js' -o src/supertonic-helper.js
+          curl -fL --retry 3 'https://raw.githubusercontent.com/supertone-inc/supertonic/912c54b435276d68d41c7347c9aac5cf4f8aa4b7/LICENSE' -o vendor/licenses/SUPERTONIC-MIT.txt
+
+      - name: Build browser AI module
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund onnxruntime-web@1.24.3 esbuild@0.25.9
+          npx esbuild src/listening-supertonic-entry.js --bundle --format=esm --platform=browser --target=es2022 --outfile=vendor/supertonic-browser.js
+          find node_modules/onnxruntime-web/dist -maxdepth 1 -type f -name 'ort-wasm*.wasm' -exec cp {} vendor/ort/ \;
+          test -s vendor/supertonic-browser.js
+          test "$(find vendor/ort -type f -name '*.wasm' | wc -l)" -gt 0
+
+      - name: JavaScript syntax and UI assertions
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('listening.html').read_text(encoding='utf-8')
+          assert '日本語聽解挑戰 v1.2' in s
+          assert '聲線風格（模擬）' not in s
+          assert '✨ AI 日語語音' in s
+          assert 'Supertonic 3 AI 聲線' in s
+          assert '👩 F1' in s and '👨 M5' in s
+          assert 'prepareChineseChoices' in s
+          assert 'data-v="${encodeURIComponent(x.jp)}"' in s
+          assert '${esc(x.zh)}' in s
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+          node --check vendor/supertonic-browser.js
+
+      - name: Install Chromium test dependency
+        run: |
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium
+
+      - name: Browser integration test
+        run: |
+          python3 -m http.server 8765 >/tmp/listening-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID || true' EXIT
+          cat > /tmp/test-listening.cjs <<'JS'
+          const { chromium } = require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            page.on('console',m=>{ if(m.type()==='error') errors.push('console: '+m.text()); });
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>window.SupertonicAI && typeof window.SupertonicAI.preflight==='function',{timeout:30000});
+            await page.waitForFunction(()=>document.querySelector('#webStatus')?.textContent!=='載入中…',{timeout:60000});
+            await page.waitForFunction(()=>!document.querySelector('#start')?.disabled,{timeout:60000});
+
+            const preflight=await page.evaluate(()=>window.SupertonicAI.preflight());
+            if(!preflight || !preflight.voices || preflight.voices.length!==10) throw new Error('Supertonic preflight failed');
+
+            await page.click('#start');
+            await page.waitForFunction(()=>document.querySelectorAll('.choice').length===4,{timeout:90000});
+            const choices=await page.$$eval('.choice',els=>els.map(e=>e.textContent.replace(/^[A-D]\.\s*/, '').trim()));
+            if(choices.length!==4) throw new Error('Expected four choices');
+            if(new Set(choices).size!==4) throw new Error('Chinese choices are duplicated: '+JSON.stringify(choices));
+            for(const t of choices){
+              if(/[ぁ-ゖァ-ヺ]/.test(t)) throw new Error('Japanese kana leaked into choice: '+t);
+              if(/[A-Za-z]/.test(t)) throw new Error('English leaked into choice: '+t);
+            }
+            console.log('Chinese choices OK:',choices);
+
+            // Full model initialization + a short genuine Japanese AI synthesis.
+            const ai=await page.evaluate(async()=>{
+              await window.SupertonicAI.init(()=>{});
+              const r=await window.SupertonicAI.synthesize('こんにちは。',{voice:'F1',speed:1,totalSteps:3});
+              return {ready:window.SupertonicAI.isReady(),voice:r.voice,duration:r.duration,urlPrefix:r.url.slice(0,5)};
+            },{timeout:360000});
+            if(!ai.ready || ai.voice!=='F1' || ai.duration<=0 || ai.urlPrefix!=='blob:') throw new Error('Real AI synthesis failed: '+JSON.stringify(ai));
+            console.log('Real Supertonic synthesis OK:',ai);
+
+            if(errors.length) throw new Error('Browser errors: '+errors.join(' | '));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 420s node /tmp/test-listening.cjs
+
+      - name: Commit only verified update
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html src/listening-supertonic-entry.js src/supertonic-helper.js vendor/supertonic-browser.js vendor/ort vendor/licenses/SUPERTONIC-MIT.txt
+          git commit -m 'Listening v1.2: Chinese choices and real Supertonic AI voices'
+          git push
