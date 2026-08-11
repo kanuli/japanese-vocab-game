@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>日本語文法挑戰 v2｜JLPT N1–N5</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#182033;--muted:#687082;--line:#dde3ec;--blue:#3568dd;--blue2:#edf3ff;--ok:#11784a;--okbg:#edf9f2;--bad:#b42318;--badbg:#fff0ee}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei","Yu Gothic UI",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.wrap{max-width:960px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+h1{font-size:clamp(25px,4vw,38px);margin:0}.sub,.muted{color:var(--muted);font-size:13px}.pill{display:inline-flex;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 38px rgba(20,35,70,.08)}
+h2{font-size:17px;margin:0 0 10px}.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.level input,.radio input,.type input,.sourceCheck input{position:absolute;opacity:0}
+.level label,.radio label,.type label,.sourceCheck label{display:block;border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px 7px;text-align:center;font-weight:700}
+.level input:checked+label,.radio input:checked+label,.type input:checked+label,.sourceCheck input:checked+label{background:var(--blue2);border-color:var(--blue);color:var(--blue)}
+.row{display:flex;gap:7px;flex-wrap:wrap}.presets{margin:9px 0 18px}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;font-weight:700}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.danger{color:var(--bad)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.radios{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:18px}.types,.sources{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:18px}
+.notice{margin-top:10px;background:#fff8e7;border:1px solid #efd58b;border-radius:11px;padding:10px;font-size:13px;line-height:1.45}.start{width:100%;padding:13px;margin-top:12px}
+.source{border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:11px}.counts{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.count{background:#f2f4f8;border-radius:999px;padding:4px 7px;font-size:12px}
+.form{display:none;border-top:1px solid var(--line);margin-top:10px;padding-top:10px}.field{margin-bottom:8px}.field label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px;background:#fff}
+.quiz{display:none}.quiz-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.stats{display:flex;gap:5px;flex-wrap:wrap}.question{font-size:clamp(24px,5vw,39px);font-weight:800;line-height:1.9;text-align:center;margin:28px 0 14px;font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif}
+.prompt{text-align:center;color:var(--muted);margin-bottom:18px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice{min-height:68px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:13px;padding:14px;font-weight:700;line-height:1.55}
+.choice.correct{border-color:var(--ok);background:var(--okbg);color:var(--ok)}.choice.wrong{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-spacing:0}.sheet-backdrop{position:fixed;inset:0;background:rgba(20,30,50,.18);display:none;z-index:50}
+.sheet{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(680px,calc(100% - 24px));background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 18px 60px rgba(20,30,55,.24);display:none;z-index:51;max-height:80vh;overflow:auto}
+.result{font-size:20px;font-weight:900;margin-bottom:10px}.result.ok{color:var(--ok)}.result.bad{color:var(--bad)}.answer-grid{display:grid;grid-template-columns:102px 1fr;gap:7px 10px;line-height:1.65}.label{color:var(--muted);font-size:13px;font-weight:700}.grammar{font-size:21px;font-weight:850}.meaning{font-weight:800}
+.sheet-actions{display:flex;gap:8px;margin-top:13px;position:sticky;bottom:0;background:#fff;padding-top:8px}.sheet-actions .next{flex:1;min-height:49px}.end{display:none;text-align:center;padding:28px}.end .big{font-size:42px;font-weight:900}
+.footer{font-size:11px;color:var(--muted);line-height:1.65;margin:16px 2px}.manual-list{max-height:160px;overflow:auto;font-size:12px}.manual-item{border-top:1px solid #edf0f4;padding:7px 0;display:flex;justify-content:space-between;gap:8px}
+.webBadge{display:inline-block;background:#eef3ff;color:#3568dd;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:800}.fallbackBadge{display:inline-block;background:#f3f4f6;color:#666;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:800}
+@media(max-width:720px){.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.choice{min-height:60px}.radios,.types,.sources{grid-template-columns:1fr 1fr}.answer-grid{grid-template-columns:86px 1fr}.sheet{bottom:max(8px,env(safe-area-inset-bottom))}.question{font-size:clamp(23px,7vw,34px)}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/kuroshiro@1.2.0/dist/kuroshiro.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/kuroshiro-analyzer-kuromoji@1.1.0/dist/kuroshiro-analyzer-kuromoji.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div><h1>📝 日本語文法挑戰 v2</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
+
+<div id="setup" class="grid">
+<section class="card">
+<h2>1. 選擇 JLPT 等級</h2>
+<div class="levels">
+<div class="level"><input id="n1" type="checkbox" value="N1"><label for="n1">N1</label></div>
+<div class="level"><input id="n2" type="checkbox" value="N2"><label for="n2">N2</label></div>
+<div class="level"><input id="n3" type="checkbox" value="N3" checked><label for="n3">N3</label></div>
+<div class="level"><input id="n4" type="checkbox" value="N4" checked><label for="n4">N4</label></div>
+<div class="level"><input id="n5" type="checkbox" value="N5" checked><label for="n5">N5</label></div>
+</div>
+<div class="row presets"><button class="btn preset" data-l="N1,N2,N3,N4,N5">全部</button><button class="btn preset" data-l="N2,N3,N4,N5">N2–N5</button><button class="btn preset" data-l="N3,N4,N5">N3–N5</button><button class="btn preset" data-l="N4,N5">N4–N5</button><button class="btn preset" data-l="N4">只 N4</button></div>
+
+<h2>2. 題目種類</h2>
+<div class="types">
+<div class="type"><input id="t1" type="checkbox" value="助詞" checked><label for="t1">助詞</label></div>
+<div class="type"><input id="t2" type="checkbox" value="副詞" checked><label for="t2">副詞</label></div>
+<div class="type"><input id="t3" type="checkbox" value="接続詞" checked><label for="t3">接続詞</label></div>
+<div class="type"><input id="t4" type="checkbox" value="文法" checked><label for="t4">文法表現</label></div>
+</div>
+
+<h2>3. 題庫來源</h2>
+<div class="sources">
+<div class="sourceCheck"><input id="srcWeb" type="checkbox" value="web" checked><label for="srcWeb">🌐 Web</label></div>
+<div class="sourceCheck"><input id="srcBuilt" type="checkbox" value="built" checked><label for="srcBuilt">📦 內置</label></div>
+<div class="sourceCheck"><input id="srcManual" type="checkbox" value="manual" checked><label for="srcManual">✍️ 手動</label></div>
+</div>
+
+<h2>4. 題數</h2>
+<div class="radios"><div class="radio"><input id="q10" name="qcount" type="radio" value="10"><label for="q10">10</label></div><div class="radio"><input id="q20" name="qcount" type="radio" value="20" checked><label for="q20">20</label></div><div class="radio"><input id="q50" name="qcount" type="radio" value="50"><label for="q50">50</label></div><div class="radio"><input id="q0" name="qcount" type="radio" value="0"><label for="q0">無限</label></div></div>
+
+<h2>5. 練習模式</h2>
+<div class="radios" style="grid-template-columns:1fr 1fr"><div class="radio"><input id="modeAll" name="mode" type="radio" value="all" checked><label for="modeAll">全部題目</label></div><div class="radio"><input id="modeWrong" name="mode" type="radio" value="wrong"><label for="modeWrong">只練錯題</label></div></div>
+<div id="availability" class="notice">正在載入 Web 題庫與ふりがな引擎…</div>
+<button id="start" class="btn primary start" disabled>開始 START</button>
+</section>
+
+<aside class="card">
+<h2>題庫狀態</h2>
+<div class="source"><strong>🌐 Web 文法庫</strong><div id="webStatus" class="muted">載入 Hanabira N1–N5 JSON…</div><div id="webCounts" class="counts"></div><div class="row" style="margin-top:8px"><button id="reloadWeb" class="btn">重新載入 Web</button></div></div>
+<div class="source"><strong>🔤 ふりがな</strong><div id="furiganaStatus" class="muted">正在準備 Kuroshiro / Kuromoji…</div></div>
+<div class="source"><strong>📦 內置題庫</strong><div class="muted">60 題原創繁體中文解說，Web 無法載入時仍可使用。</div><div id="builtCounts" class="counts"></div></div>
+<div class="source"><strong>✍️ 手動新增題目</strong><div class="muted">資料只儲存在此瀏覽器。</div><div class="row" style="margin-top:8px"><button id="toggleManual" class="btn">新增題目</button><button id="export" class="btn">備份 JSON</button><label class="btn">匯入 JSON<input id="import" type="file" accept=".json" hidden></label></div>
+<div id="manualForm" class="form">
+<div class="field"><label>JLPT</label><select id="mLevel"><option>N5</option><option>N4</option><option selected>N3</option><option>N2</option><option>N1</option></select></div>
+<div class="field"><label>種類</label><select id="mType"><option>助詞</option><option>副詞</option><option>接続詞</option><option selected>文法</option></select></div>
+<div class="field"><label>題目（使用 ＿＿ 表示空格）*</label><textarea id="mQ" rows="2"></textarea></div>
+<div class="field"><label>正確答案 *</label><input id="mA"></div>
+<div class="field"><label>錯誤答案 1 *</label><input id="mW1"></div><div class="field"><label>錯誤答案 2 *</label><input id="mW2"></div><div class="field"><label>錯誤答案 3 *</label><input id="mW3"></div>
+<div class="field"><label>文法名稱</label><input id="mGrammar"></div><div class="field"><label>繁體中文解釋</label><textarea id="mExp" rows="2"></textarea></div><div class="field"><label>繁體中文翻譯</label><textarea id="mZh" rows="2"></textarea></div>
+<button id="saveManual" class="btn primary">儲存題目</button></div><div id="manualList" class="manual-list"></div>
+</div>
+</aside>
+</div>
+
+<section id="quiz" class="card quiz">
+<div class="quiz-head"><button id="quit" class="btn">← 返回</button><div class="stats"><span id="progress" class="pill"></span><span id="score" class="pill">✅ 0</span><span id="streak" class="pill">🔥 0</span></div></div>
+<div id="question" class="question"></div><div id="questionType" class="prompt"></div><div id="choices" class="choices"></div>
+<div id="end" class="end"><div id="final" class="big"></div><p id="finalText"></p><button id="again" class="btn primary">再玩一次</button></div>
+</section>
+
+<div id="backdrop" class="sheet-backdrop"></div>
+<div id="sheet" class="sheet">
+<div id="result" class="result"></div>
+<div class="answer-grid">
+<div class="label">完整句子</div><div id="fullSentence" class="grammar"></div>
+<div class="label">文法</div><div id="aGrammar"></div>
+<div class="label">繁中分類</div><div id="aMeaning" class="meaning"></div>
+<div class="label">說明</div><div id="aExp"></div>
+<div class="label">例句意思</div><div id="aZh"></div>
+<div class="label">JLPT</div><div id="aLevel"></div>
+<div class="label">種類</div><div id="aType"></div>
+<div class="label">來源</div><div id="aSource"></div>
+</div>
+<div class="sheet-actions"><button id="next" class="btn primary next">下一題 →</button></div>
+</div>
+
+<div class="footer">
+Web grammar content: Hanabira / tristcoil hanabira.org-japanese-content, Creative Commons with attribution. Web 題由程式從來源例句自動產生，因此少數題目可能存在其他自然答案；60 題內置題庫則為人工設定。ふりがな由 Kuroshiro + Kuromoji 在瀏覽器內產生。JLPT 等級為學習用分類，並非官方固定文法清單。
+</div>
+</div>
+
+<script>
+(()=>{"use strict";
+const BUILTIN=[{"level":"N5","type":"助詞","q":"私は毎朝7時＿＿起きます。","choices":["に","で","を","が"],"a":"に","grammar":"時間 + に","meaning":"在明確的時間點使用「に」。","exp":"「7時」是明確時間，所以用「に」。","zh":"我每天早上7點起床。"},{"level":"N5","type":"助詞","q":"図書館＿＿本を読みます。","choices":["で","に","を","へ"],"a":"で","grammar":"場所 + で + 動作","meaning":"動作發生的場所用「で」。","exp":"「読む」是在圖書館進行的動作，所以用「で」。","zh":"我在圖書館看書。"},{"level":"N5","type":"助詞","q":"私は日本語＿＿勉強します。","choices":["を","が","に","で"],"a":"を","grammar":"名詞 + を + 他動詞","meaning":"動作的直接對象用「を」。","exp":"「日本語」是「勉強します」的對象，因此用「を」。","zh":"我學習日語。"},{"level":"N5","type":"助詞","q":"日曜日に友達＿＿映画を見ました。","choices":["と","へ","まで","より"],"a":"と","grammar":"人 + と + 一緒に行う動作","meaning":"表示和某人一起做某事時用「と」。","exp":"和朋友一起看電影，所以用「と」。","zh":"星期日我和朋友一起看了電影。"},{"level":"N5","type":"助詞","q":"仕事は9時＿＿5時までです。","choices":["から","より","へ","で"],"a":"から","grammar":"〜から〜まで","meaning":"表示起點到終點。","exp":"9時是開始時間，所以用「から」。","zh":"工作時間是9點到5點。"},{"level":"N5","type":"副詞","q":"宿題は＿＿終わりました。","choices":["もう","まだ","いつも","あまり"],"a":"もう","grammar":"もう + 完了","meaning":"表示某事已經完成。","exp":"後面是「終わりました」，因此「もう」最自然。","zh":"功課已經做完了。"},{"level":"N5","type":"副詞","q":"田中さんは＿＿来ていません。","choices":["まだ","もう","いつも","とても"],"a":"まだ","grammar":"まだ + 否定","meaning":"表示「還沒有」。","exp":"「まだ〜ていません」表示動作截至目前仍未發生。","zh":"田中先生還沒來。"},{"level":"N5","type":"副詞","q":"私は週末、＿＿映画を見ます。","choices":["よく","ぜんぜん","もう","まだ"],"a":"よく","grammar":"よく + 動詞","meaning":"表示頻率高，常常做某事。","exp":"週末常看電影，用「よく」最自然。","zh":"我週末常常看電影。"},{"level":"N5","type":"副詞","q":"この店のラーメンは＿＿おいしいです。","choices":["とても","まだ","たぶん","ぜんぜん"],"a":"とても","grammar":"とても + 形容詞","meaning":"表示程度很高。","exp":"修飾「おいしい」時，「とても」表示非常好吃。","zh":"這家店的拉麵非常好吃。"},{"level":"N5","type":"接続詞","q":"今日は雨です。＿＿、出かけません。","choices":["だから","でも","そして","それから"],"a":"だから","grammar":"原因。だから、結果。","meaning":"表示前因後果。","exp":"因為下雨，所以不出門；「だから」連接原因與結果。","zh":"今天下雨，所以不出門。"},{"level":"N5","type":"文法","q":"ご飯を食べ＿＿、学校へ行きます。","choices":["てから","ながら","ても","たり"],"a":"てから","grammar":"Vて + から","meaning":"表示完成前一個動作後再做下一個動作。","exp":"先吃飯，再去學校，所以用「てから」。","zh":"吃完飯後去學校。"},{"level":"N5","type":"文法","q":"休みの日は本を読ん＿＿、音楽を聞いたりします。","choices":["だり","でも","ながら","たら"],"a":"だり","grammar":"Vたり、Vたりする","meaning":"列舉幾個代表性的動作。","exp":"「読んだり、聞いたりします」是典型的列舉表現。","zh":"放假時會看看書、聽聽音樂之類的。"},{"level":"N4","type":"助詞","q":"雨が降って＿＿、試合は行われます。","choices":["も","から","ので","なら"],"a":"も","grammar":"Vて + も","meaning":"即使～也～。","exp":"前件成立也不改變後件，因此用「〜ても」。","zh":"即使下雨，比賽也會舉行。"},{"level":"N4","type":"文法","q":"日本語が話せる＿＿、毎日練習しています。","choices":["ように","ために","ので","のに"],"a":"ように","grammar":"可能形／無意志動詞 + ように","meaning":"為了達成能力或狀態。","exp":"「話せる」是可能形，目標是變成能說，所以用「ように」。","zh":"為了能說日語，我每天練習。"},{"level":"N4","type":"文法","q":"日本へ留学する＿＿、お金を貯めています。","choices":["ために","ように","のに","そうに"],"a":"ために","grammar":"意志動詞辞書形 + ために","meaning":"為了做某個有意志的目的。","exp":"「留学する」是有意志的目的，所以用「ために」。","zh":"為了去日本留學，我正在存錢。"},{"level":"N4","type":"文法","q":"時間があっ＿＿、一緒に映画を見ませんか。","choices":["たら","ても","ながら","そうで"],"a":"たら","grammar":"〜たら","meaning":"如果～的話。","exp":"提出條件「如果有時間」，所以用「たら」。","zh":"如果有時間，要不要一起看電影？"},{"level":"N4","type":"文法","q":"日本へ行く＿＿、京都にも行きたいです。","choices":["なら","ても","ので","のに"],"a":"なら","grammar":"〜なら","meaning":"承接對方提出的情況，表示「如果是～的話」。","exp":"以「去日本」作為前提提出建議／願望，使用「なら」。","zh":"如果要去日本，我也想去京都。"},{"level":"N4","type":"文法","q":"忘れない＿＿、メモしておいてください。","choices":["ように","ために","そうに","のに"],"a":"ように","grammar":"Vない + ように","meaning":"為了不要～。","exp":"避免忘記是一種狀態目標，所以用「ように」。","zh":"為了不要忘記，請先記下來。"},{"level":"N4","type":"副詞","q":"彼は＿＿遅刻しますが、今日は時間どおり来ました。","choices":["たまに","必ず","ぜんぜん","すぐに"],"a":"たまに","grammar":"たまに + 動詞","meaning":"偶爾。","exp":"「但今天準時」暗示他不是每次都遲到，用「たまに」最自然。","zh":"他偶爾會遲到，但今天準時到了。"},{"level":"N4","type":"副詞","q":"電車は＿＿来ると思います。","choices":["もうすぐ","やっと","ずっと","たいてい"],"a":"もうすぐ","grammar":"もうすぐ + 動詞","meaning":"很快、即將。","exp":"表示短時間後會來，所以用「もうすぐ」。","zh":"我想電車很快就會來。"},{"level":"N4","type":"副詞","q":"＿＿帰りましょう。もう遅いです。","choices":["そろそろ","なかなか","たいてい","しばらく"],"a":"そろそろ","grammar":"そろそろ + 意志／行動","meaning":"差不多該～了。","exp":"時間已晚，表示差不多該回去，所以用「そろそろ」。","zh":"差不多該回去了，已經很晚了。"},{"level":"N4","type":"接続詞","q":"電車が止まりました。＿＿、会社に遅れました。","choices":["それで","ところが","それでも","それとも"],"a":"それで","grammar":"原因。それで、結果。","meaning":"因此、所以。","exp":"電車停駛導致上班遲到，前因後果用「それで」。","zh":"電車停駛了，所以我上班遲到了。"},{"level":"N4","type":"文法","q":"音楽を聞き＿＿、料理をしています。","choices":["ながら","ても","たり","そうで"],"a":"ながら","grammar":"Vます語幹 + ながら","meaning":"一邊～一邊～。","exp":"同時進行兩個動作，使用「ながら」。","zh":"我一邊聽音樂一邊做飯。"},{"level":"N4","type":"文法","q":"この漢字は何度練習しても、なかなか＿＿。","choices":["覚えられません","覚えませんでした","覚えそうです","覚えるでしょう"],"a":"覚えられません","grammar":"なかなか + 否定","meaning":"怎麼也不容易～。","exp":"「なかなか」與否定搭配表示不容易做到。","zh":"這個漢字練習很多次也怎麼都記不住。"},{"level":"N3","type":"文法","q":"健康のために、毎朝30分歩く＿＿。","choices":["ことにしました","ことになりました","ようになりました","ところでした"],"a":"ことにしました","grammar":"V辞書形 + ことにする","meaning":"自己決定做某事。","exp":"說話者自己決定每天步行，所以用「ことにしました」。","zh":"為了健康，我決定每天早上走30分鐘。"},{"level":"N3","type":"文法","q":"来月から大阪支社で働く＿＿。","choices":["ことになりました","ことにしました","ようにしました","ばかりです"],"a":"ことになりました","grammar":"V辞書形 + ことになる","meaning":"由外部決定或安排而成為某種情況。","exp":"調職通常是公司安排，所以用「ことになりました」。","zh":"已經決定下個月開始在大阪分公司工作。"},{"level":"N3","type":"文法","q":"毎日練習したので、日本語が少し話せる＿＿。","choices":["ようになりました","ことになりました","ばかりでした","ところでした"],"a":"ようになりました","grammar":"可能形 + ようになる","meaning":"能力或狀態逐漸發生變化。","exp":"從不能說到能說，是能力變化，因此用「ようになりました」。","zh":"因為每天練習，現在漸漸能說一點日語了。"},{"level":"N3","type":"文法","q":"日本へ行く＿＿、新しい発見があります。","choices":["たびに","うちに","ところに","ばかりに"],"a":"たびに","grammar":"V辞書形 + たびに","meaning":"每當～就～。","exp":"每次去日本都會有新發現，用「たびに」。","zh":"每次去日本都會有新的發現。"},{"level":"N3","type":"文法","q":"若い＿＿、いろいろなことに挑戦したほうがいいです。","choices":["うちに","たびに","ところで","ばかりで"],"a":"うちに","grammar":"〜うちに","meaning":"趁著某個狀態還持續時。","exp":"趁年輕時挑戰各種事情，所以用「うちに」。","zh":"趁年輕時最好多挑戰各種事情。"},{"level":"N3","type":"文法","q":"友達が手伝ってくれた＿＿、早く終わりました。","choices":["おかげで","せいで","ために","かわりに"],"a":"おかげで","grammar":"〜おかげで","meaning":"多虧～，帶來好結果。","exp":"朋友幫忙帶來正面結果，因此用「おかげで」。","zh":"多虧朋友幫忙，很快就完成了。"},{"level":"N3","type":"文法","q":"寝坊した＿＿、電車に乗り遅れました。","choices":["せいで","おかげで","かわりに","ついでに"],"a":"せいで","grammar":"〜せいで","meaning":"因為～而導致不好的結果。","exp":"睡過頭造成錯過電車，是負面結果，用「せいで」。","zh":"因為睡過頭，所以沒趕上電車。"},{"level":"N3","type":"副詞","q":"三時間待って、＿＿電車が来ました。","choices":["やっと","うっかり","まったく","かなり"],"a":"やっと","grammar":"やっと + 達成","meaning":"經過努力或長時間後終於達成。","exp":"等了三小時後終於來了，用「やっと」。","zh":"等了三小時，電車終於來了。"},{"level":"N3","type":"副詞","q":"鍵を＿＿家の中に忘れてきました。","choices":["うっかり","しっかり","すっかり","かなり"],"a":"うっかり","grammar":"うっかり + 失誤","meaning":"不小心、無意中。","exp":"忘記帶鑰匙是疏忽，所以用「うっかり」。","zh":"我不小心把鑰匙忘在家裡了。"},{"level":"N3","type":"接続詞","q":"彼は医者です。＿＿、医学の専門家です。","choices":["つまり","ところが","それでも","一方で"],"a":"つまり","grammar":"A。つまり、B。","meaning":"換句話說、也就是。","exp":"後句是對前句的重新說明，因此用「つまり」。","zh":"他是醫生。也就是說，是醫學專家。"},{"level":"N3","type":"接続詞","q":"簡単だと思っていました。＿＿、実際はとても難しかったです。","choices":["ところが","そのため","つまり","それで"],"a":"ところが","grammar":"預想。ところが、相反結果。","meaning":"可是、然而，表示結果和預期不同。","exp":"以為簡單，實際卻很難，使用「ところが」。","zh":"我原本以為很簡單，可是實際上非常難。"},{"level":"N3","type":"文法","q":"天気予報＿＿、明日は雪だそうです。","choices":["によると","について","に対して","によって"],"a":"によると","grammar":"情報源 + によると","meaning":"根據～。","exp":"引用天氣預報作為資訊來源，用「によると」。","zh":"根據天氣預報，聽說明天會下雪。"},{"level":"N2","type":"文法","q":"嫌いな＿＿、今日は食べたくないだけです。","choices":["わけではありません","わけがありません","ことはありません","ものではありません"],"a":"わけではありません","grammar":"〜わけではない","meaning":"並不是～；並非意味著～。","exp":"否定一個可能的推論，而不是完全否定事實本身。","zh":"並不是討厭，只是今天不想吃而已。"},{"level":"N2","type":"文法","q":"彼が約束を忘れる＿＿。昨日も確認したばかりです。","choices":["わけがありません","わけではありません","ことはありません","ものではありません"],"a":"わけがありません","grammar":"〜わけがない","meaning":"不可能～。","exp":"根據前後文強烈判斷不可能忘記，用「わけがない」。","zh":"他不可能忘記約定，昨天才剛確認過。"},{"level":"N2","type":"文法","q":"電気がついている。誰か家にいる＿＿。","choices":["に違いありません","わけではありません","ことはありません","ものの"],"a":"に違いありません","grammar":"〜に違いない","meaning":"一定是～、肯定～。","exp":"由燈亮著推斷家裡一定有人，用「に違いない」。","zh":"燈亮著，家裡一定有人。"},{"level":"N2","type":"文法","q":"少し熱があるだけなら、そんなに心配する＿＿。","choices":["ことはありません","わけがありません","ものではありません","に違いありません"],"a":"ことはありません","grammar":"V辞書形 + ことはない","meaning":"沒有必要～。","exp":"表示不需要太擔心，用「ことはない」。","zh":"只是有一點發燒的話，沒必要那麼擔心。"},{"level":"N2","type":"文法","q":"この仕事は大変な＿＿、やりがいがあります。","choices":["ものの","にもかかわらず","にしたがって","に対して"],"a":"ものの","grammar":"〜ものの","meaning":"雖然～但是～。","exp":"承認前件後轉折到後件，書面語常用「ものの」。","zh":"這份工作雖然辛苦，但很有成就感。"},{"level":"N2","type":"文法","q":"大雨＿＿、イベントは予定どおり行われました。","choices":["にもかかわらず","につれて","にしたがって","に対して"],"a":"にもかかわらず","grammar":"〜にもかかわらず","meaning":"儘管～卻～。","exp":"大雨與活動照常舉行形成強烈逆接。","zh":"儘管下大雨，活動仍按計畫舉行。"},{"level":"N2","type":"文法","q":"年を取る＿＿、体力が落ちてきました。","choices":["につれて","に対して","において","に関して"],"a":"につれて","grammar":"〜につれて","meaning":"隨著一方變化，另一方也變化。","exp":"隨著年齡增加，體力下降，使用「につれて」。","zh":"隨著年紀增長，體力逐漸下降。"},{"level":"N2","type":"副詞","q":"会議の資料は＿＿準備しておいてください。","choices":["あらかじめ","いずれ","せいぜい","たちまち"],"a":"あらかじめ","grammar":"あらかじめ + 準備","meaning":"預先、事先。","exp":"要求在會議前先準備資料，用「あらかじめ」。","zh":"請事先準備好會議資料。"},{"level":"N2","type":"副詞","q":"今日は時間がないので、＿＿説明だけします。","choices":["ひとまず","たちまち","ろくに","さほど"],"a":"ひとまず","grammar":"ひとまず + 暫定行動","meaning":"暫且、姑且先～。","exp":"時間不足先做最低限度說明，用「ひとまず」。","zh":"今天沒有時間，所以先暫時只做說明。"},{"level":"N2","type":"副詞","q":"忙しくて、昼ご飯も＿＿食べられませんでした。","choices":["ろくに","一応","いずれ","たちまち"],"a":"ろくに","grammar":"ろくに + 否定","meaning":"沒有好好地、充分地～。","exp":"「ろくに〜ない」表示沒有充分做到。","zh":"忙得連午飯都沒能好好吃。"},{"level":"N2","type":"文法","q":"このまま放置すると、大きな事故につながり＿＿。","choices":["かねません","かねます","ざるを得ません","得ません"],"a":"かねません","grammar":"Vます語幹 + かねない","meaning":"有可能導致不好的結果。","exp":"事故是不希望發生的可能結果，用「かねない」。","zh":"如果就這樣放著不管，可能會導致重大事故。"},{"level":"N2","type":"文法","q":"そのご依頼は、申し訳ありませんが、お引き受け＿＿。","choices":["かねます","かねません","ざるを得ません","得ます"],"a":"かねます","grammar":"Vます語幹 + かねる","meaning":"很難做到～；婉轉表示不能。","exp":"商務上婉轉拒絕請求常用「〜かねます」。","zh":"很抱歉，那項委託我們難以接受。"},{"level":"N1","type":"文法","q":"この問題は子ども＿＿、大人でも理解するのが難しい。","choices":["はおろか","のみならず","どころか","に至って"],"a":"はおろか","grammar":"AはおろかBも","meaning":"別說A，連B也～。","exp":"從較低程度的「孩子」推到「大人也困難」，用「はおろか」。","zh":"這個問題別說小孩，連大人也很難理解。"},{"level":"N1","type":"文法","q":"その俳優の人気は国内＿＿、海外にまで広がっている。","choices":["にとどまらず","を皮切りに","をもって","に即して"],"a":"にとどまらず","grammar":"〜にとどまらず","meaning":"不僅限於～。","exp":"人氣不只局限國內，還擴展到海外，用「にとどまらず」。","zh":"那位演員的人氣不僅限於國內，甚至擴展到海外。"},{"level":"N1","type":"文法","q":"東京公演＿＿、全国ツアーが始まります。","choices":["を皮切りに","をもって","に即して","に至って"],"a":"を皮切りに","grammar":"〜を皮切りに","meaning":"以～為開端，接著展開一連串同類活動。","exp":"以東京公演作為全國巡演的開始，使用「を皮切りに」。","zh":"以東京公演為開端，全國巡演將正式開始。"},{"level":"N1","type":"文法","q":"彼の努力には尊敬の念を＿＿。","choices":["禁じ得ません","余儀なくされます","ものともしません","極まりません"],"a":"禁じ得ません","grammar":"〜を禁じ得ない","meaning":"無法抑制某種感情。","exp":"「尊敬の念を禁じ得ない」表示不由得產生敬意。","zh":"對他的努力，我不禁心生敬意。"},{"level":"N1","type":"文法","q":"この映画は見る者を感動させ＿＿。","choices":["ずにはおきません","までもありません","に堪えません","たりともしません"],"a":"ずにはおきません","grammar":"〜ずにはおかない","meaning":"必然會使某種結果發生。","exp":"表示電影必然會使觀眾感動，用「ずにはおかない」。","zh":"這部電影必定會令觀眾感動。"},{"level":"N1","type":"文法","q":"そんな基本的なことは、わざわざ説明する＿＿。","choices":["までもありません","に堪えません","極まりありません","ずにはおきません"],"a":"までもありません","grammar":"V辞書形 + までもない","meaning":"沒有必要特別～。","exp":"基本事項不需要特別說明，用「までもない」。","zh":"那麼基本的事情，沒有必要特別說明。"},{"level":"N1","type":"文法","q":"患者の気持ちを無視した対応は、不親切＿＿。","choices":["極まりありません","に堪えません","に違いありません","ずにはおきません"],"a":"極まりありません","grammar":"〜極まりない","meaning":"極其～、非常～，多用於負面評價。","exp":"「不親切極まりない」表示極其不親切。","zh":"無視患者感受的應對方式，實在極其不親切。"},{"level":"N1","type":"文法","q":"会社の方針＿＿、新しい評価制度を導入します。","choices":["に即して","をもって","を皮切りに","に至って"],"a":"に即して","grammar":"〜に即して","meaning":"依照、按照某個基準或實際情況。","exp":"依照公司方針導入制度，用「に即して」。","zh":"依照公司方針，將導入新的評價制度。"},{"level":"N1","type":"副詞","q":"彼は周囲の反対にもかかわらず、＿＿研究を続けました。","choices":["ひたすら","かろうじて","あえて","とりわけ"],"a":"ひたすら","grammar":"ひたすら + 持續行動","meaning":"一心一意地、專心地。","exp":"持續專注研究，不理會周圍反對，用「ひたすら」。","zh":"儘管周圍反對，他仍一心一意地繼續研究。"},{"level":"N1","type":"副詞","q":"締め切り直前になって、＿＿提出することができました。","choices":["かろうじて","ひたすら","とりわけ","もっぱら"],"a":"かろうじて","grammar":"かろうじて + 達成","meaning":"好不容易、勉強才。","exp":"在截止前勉強趕上，使用「かろうじて」。","zh":"到了截止前一刻，才勉強成功提交。"},{"level":"N1","type":"副詞","q":"誰もやりたがらない仕事を、彼は＿＿引き受けました。","choices":["あえて","ひたすら","かろうじて","まして"],"a":"あえて","grammar":"あえて + 困難／反常選擇","meaning":"刻意、敢於，明知困難仍選擇去做。","exp":"明知沒人想做仍主動承擔，用「あえて」。","zh":"沒有人願意做的工作，他卻刻意主動接了下來。"},{"level":"N1","type":"接続詞","q":"この制度は社員の負担を減らし、＿＿会社全体の生産性向上にもつながる。","choices":["ひいては","まして","ところが","それどころか"],"a":"ひいては","grammar":"A、ひいてはB","meaning":"進而、最終甚至影響到更大的範圍。","exp":"從減輕員工負擔進一步推到公司整體生產力，使用「ひいては」。","zh":"這個制度可減輕員工負擔，進而提升整間公司的生產力。"}];
+BUILTIN.forEach((x,i)=>{x.id="built-"+i;x.source="built"});
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const WEB_FILES={
+ N5:"grammar_ja_N5_full_alphabetical_0001.json",
+ N4:"grammar_ja_N4_full_alphabetical_0001.json",
+ N3:"grammar_ja_N3_full_alphabetical_0001.json",
+ N2:"grammar_ja_N2_full_alphabetical_0001.json",
+ N1:"grammar_ja_N1_full_alphabetical_0001.json"
+};
+const RAW_BASE="https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/";
+const CDN_BASE="https://cdn.jsdelivr.net/gh/tristcoil/hanabira.org-japanese-content@main/grammar_json/";
+let webQuestions=[], webPointsCount={}, manual=load("jpgrammar_manual",[]), wrong=new Set(load("jpgrammar_wrong",[])), game=null;
+let kuro=null, kuroReady=false, furiganaCache=new Map(), renderToken=0;
+
+function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function countOcc(s,p){if(!p)return 0;let n=0,i=0;while((i=s.indexOf(p,i))>=0){n++;i+=p.length}return n}
+function selectedLevels(){return $$(".level input:checked").map(x=>x.value)}
+function selectedTypes(){return $$(".type input:checked").map(x=>x.value)}
+function selectedSources(){return $$(".sourceCheck input:checked").map(x=>x.value)}
+function semanticCategory(text){
+ const s=String(text||"").toLowerCase();
+ const groups=[
+ ["逆接／轉折",/contrast|contradict|although|though|despite|however|but|even if|unexpected/],
+ ["原因／理由",/reason|cause|because|due to|result|therefore|so that/],
+ ["條件／假設",/condition|conditional|if |provided|assuming|in case|whenever/],
+ ["目的／目標",/purpose|in order to|so as to|aim|goal/],
+ ["比較／程度",/compar|more than|less than|most|least|degree|superlative/],
+ ["時間／時機",/time|when|while|during|before|after|until|since|moment|occasion/],
+ ["推測／判斷",/guess|suppos|probably|seem|appear|must be|certain|conjecture|inference/],
+ ["傳聞／引用",/hearsay|heard|according|quote|report|said that/],
+ ["義務／必要",/must|obligation|necessary|required|have to/],
+ ["許可／禁止",/permission|allowed|may |prohibit|must not|not allowed/],
+ ["能力／可能",/ability|possible|can |able to|possibility/],
+ ["變化／結果",/change|become|come to|resulting|end up/],
+ ["列舉／追加",/list|addition|also|not only|as well|example|enumerat/],
+ ["限定／強調",/limit|only|emphasis|especially|nothing but|even/],
+ ["意圖／決定",/intend|decision|decide|plan|volition|try to/],
+ ["請求／建議",/request|suggest|advice|recommend|please|should/]
+ ];
+ for(const [z,r] of groups)if(r.test(s))return z;
+ return "一般文法用法";
+}
+function classifyType(title,exp){
+ const raw=(title+" "+exp).toLowerCase();
+ if(/conjunction|connect two|links two|statement a/.test(raw)) return "接続詞";
+ if(/adverb|adverbial/.test(raw)) return "副詞";
+ const t=cleanTitle(title).replace(/[〜～~\s]/g,"");
+ if(["は","が","を","に","で","へ","と","も","の","から","まで","より","だけ","しか","ので","のに"].includes(t)) return "助詞";
+ return "文法";
+}
+function cleanTitle(t){return String(t||"").replace(/\s*\([^()]*\)\s*$/,"").trim()}
+function jpRuns(s){return String(s||"").match(/[ぁ-ゖァ-ヺー一-龯々]+/g)||[]}
+function patternCandidates(point){
+ const title=cleanTitle(point.title);
+ let runs=jpRuns(title).filter(x=>!["文法","動詞","名詞","形容詞","副詞"].includes(x));
+ const c=[];
+ for(let i=0;i<runs.length;i++){
+   for(let j=Math.min(runs.length,i+4);j>i;j--){c.push(runs.slice(i,j).join(""))}
+ }
+ const variants={"いちばん":"一番","ほう":"方","とき":"時","あと":"後","まえ":"前","なか":"中","くらい":"位","ぐらい":"位"};
+ [...c].forEach(x=>{if(variants[x])c.push(variants[x])});
+ return [...new Set(c)].filter(x=>x.length>=2 || ["は","が","を","に","で","へ","と","も","の"].includes(x)).sort((a,b)=>b.length-a.length);
+}
+function findPattern(sentence,point){
+ const cs=patternCandidates(point);
+ for(const p of cs){if(countOcc(sentence,p)===1)return p}
+ return "";
+}
+function generateFromPoints(points,level){
+ const raw=[];
+ points.forEach((pt,pi)=>{
+   const cat=semanticCategory((pt.short_explanation||"")+" "+(pt.long_explanation||""));
+   const type=classifyType(pt.title,pt.short_explanation);
+   (pt.examples||[]).slice(0,4).forEach((ex,ei)=>{
+     const jp=String(ex.jp||"").trim(); if(!jp)return;
+     const a=findPattern(jp,pt); if(!a)return;
+     // Avoid masking a one-character particle when it appears inside a longer lexical item.
+     if(a.length===1 && countOcc(jp,a)!==1)return;
+     raw.push({
+       id:`web-${level}-${pi}-${ei}`, level, type, source:"web",
+       q:jp.replace(a,"＿＿"), a, grammar:cleanTitle(pt.title),
+       meaning:cat, exp:pt.short_explanation||"", zh:ex.en||"",
+       formation:pt.formation||"", category:cat, answerLen:[...a].length
+     });
+   });
+ });
+ const banks={};
+ raw.forEach(q=>{const k=`${q.level}|${q.type}|${q.category}`;(banks[k]??=[]).push(q)});
+ const broad={};
+ raw.forEach(q=>{const k=`${q.level}|${q.type}`;(broad[k]??=[]).push(q)});
+ return raw.map(q=>{
+   let candidates=(banks[`${q.level}|${q.type}|${q.category}`]||[]).filter(x=>x.a!==q.a);
+   if(candidates.length<3)candidates=[...candidates,...(broad[`${q.level}|${q.type}`]||[]).filter(x=>x.a!==q.a)];
+   if(candidates.length<3)candidates=[...candidates,...raw.filter(x=>x.level===q.level&&x.a!==q.a)];
+   const uniq=new Map();
+   candidates.forEach(x=>{if(!uniq.has(x.a))uniq.set(x.a,x)});
+   const ranked=[...uniq.values()].sort((x,y)=>{
+     const dx=Math.abs(x.answerLen-q.answerLen),dy=Math.abs(y.answerLen-q.answerLen);
+     return dx-dy || (x.category===q.category?-1:1);
+   });
+   const pick=[]; let work=ranked.slice(0,18);
+   while(pick.length<3&&work.length){const i=Math.floor(Math.random()*Math.min(7,work.length));pick.push(work.splice(i,1)[0].a)}
+   if(pick.length<3)return null;
+   q.choices=shuffle([q.a,...pick]);
+   return q;
+ }).filter(Boolean);
+}
+async function fetchJSON(level){
+ const file=WEB_FILES[level];
+ for(const url of [RAW_BASE+file,CDN_BASE+file]){
+   try{const r=await fetch(url,{cache:"no-cache"});if(!r.ok)throw Error(`HTTP ${r.status}`);const d=await r.json();if(!Array.isArray(d)||d.length<20)throw Error("資料格式不符");return d}catch(e){console.warn("grammar fetch failed",url,e)}
+ }
+ throw Error(level+" 無法載入");
+}
+async function loadWeb(){
+ $("#reloadWeb").disabled=true;$("#webStatus").textContent="正在載入 Hanabira N1–N5…";
+ const results=await Promise.allSettled(["N5","N4","N3","N2","N1"].map(async l=>[l,await fetchJSON(l)]));
+ webQuestions=[];webPointsCount={};
+ let failures=[];
+ for(const r of results){
+   if(r.status==="fulfilled"){
+     const [l,pts]=r.value;webPointsCount[l]=pts.length;webQuestions.push(...generateFromPoints(pts,l));
+   }else failures.push(String(r.reason?.message||r.reason));
+ }
+ const totalPts=Object.values(webPointsCount).reduce((a,b)=>a+b,0);
+ $("#webStatus").textContent=totalPts?`✅ Web 已載入 ${totalPts} 個文法點，產生 ${webQuestions.length.toLocaleString()} 題填空練習。`:`⚠️ Web 題庫載入失敗；仍可使用 60 題內置題庫。`;
+ if(failures.length&&totalPts)$("#webStatus").textContent+=`（部分等級載入失敗）`;
+ $("#reloadWeb").disabled=false;render();
+}
+async function initFurigana(){
+ try{
+   if(typeof Kuroshiro==="undefined"||typeof KuromojiAnalyzer==="undefined")throw Error("CDN library unavailable");
+   kuro=new Kuroshiro();
+   await kuro.init(new KuromojiAnalyzer({dictPath:"https://cdn.jsdelivr.net/npm/kuromoji@0.1.2/dict/"}));
+   kuroReady=true;$("#furiganaStatus").textContent="✅ ふりがな已準備：漢字上方會顯示平假名。";
+ }catch(e){console.warn(e);kuroReady=false;$("#furiganaStatus").textContent="⚠️ ふりがな引擎暫時無法載入；遊戲仍可使用，但只顯示原本日文。"}
+}
+async function rubyHTML(text){
+ text=String(text??"");
+ if(!kuroReady)return esc(text);
+ if(furiganaCache.has(text))return furiganaCache.get(text);
+ try{
+   const html=await kuro.convert(text,{to:"hiragana",mode:"furigana"});
+   const safe=String(html).replace(/<(?!\/?(?:ruby|rt|rp)\b)[^>]*>/gi,"");
+   furiganaCache.set(text,safe);return safe;
+ }catch{return esc(text)}
+}
+async function setRuby(el,text,token){
+ const h=await rubyHTML(text);if(token!==renderToken)return;el.innerHTML=h;
+}
+function allQ(){
+ let a=[];
+ const s=selectedSources();
+ if(s.includes("web"))a.push(...webQuestions);
+ if(s.includes("built"))a.push(...BUILTIN);
+ if(s.includes("manual"))a.push(...manual.map(x=>({...x,source:"manual"})));
+ return a;
+}
+function pool(){
+ let p=allQ().filter(x=>selectedLevels().includes(x.level)&&selectedTypes().includes(x.type));
+ if($("input[name=mode]:checked").value==="wrong")p=p.filter(x=>wrong.has(x.id));
+ return p;
+}
+function countByLevel(arr){const c={N1:0,N2:0,N3:0,N4:0,N5:0};arr.forEach(x=>c[x.level]=(c[x.level]||0)+1);return c}
+function badges(c){return Object.entries(c).map(([k,v])=>`<span class=count>${k}: ${Number(v).toLocaleString()}</span>`).join("")}
+function render(){
+ $("#total").textContent=`${allQ().length.toLocaleString()} 題可用`;
+ $("#webCounts").innerHTML=badges(countByLevel(webQuestions));
+ $("#builtCounts").innerHTML=badges(countByLevel(BUILTIN));
+ availability();renderManual();
+}
+function availability(){
+ const p=pool();
+ let msg=`目前選擇：${p.length.toLocaleString()} 題。`;
+ if(!selectedLevels().length)msg="請至少選一個 JLPT 等級。";
+ else if(!selectedTypes().length)msg="請至少選一種題型。";
+ else if(!selectedSources().length)msg="請至少選一個題庫來源。";
+ else if($("input[name=mode]:checked").value==="wrong"&&!p.length)msg="目前沒有符合條件的錯題。";
+ $("#availability").textContent=msg;$("#start").disabled=p.length===0;
+}
+function start(){
+ const p=pool(),n=+$("input[name=qcount]:checked").value;
+ game={pool:p,order:shuffle(p),limit:n,infinite:n===0,index:0,score:0,streak:0,current:null,answered:false};
+ $("#setup").style.display="none";$("#quiz").style.display="block";$("#end").style.display="none";$("#question").style.display="";$("#questionType").style.display="";$("#choices").style.display="grid";next();
+}
+async function next(){
+ hideSheet();if(!game)return;if(!game.infinite&&game.index>=game.limit){finish();return}
+ if(game.index>=game.order.length)game.order=shuffle(game.pool);
+ const q=game.order[game.index%game.order.length];game.current=q;game.answered=false;
+ const token=++renderToken;$("#question").textContent=q.q;setRuby($("#question"),q.q,token);
+ $("#questionType").innerHTML=`${q.level} · ${q.type} · ${q.source==="web"?'<span class=webBadge>WEB</span>':'<span class=fallbackBadge>'+q.source.toUpperCase()+'</span>'}`;
+ const cs=shuffle(q.choices);
+ $("#choices").innerHTML=cs.map((x,i)=>`<button class=choice data-v="${encodeURIComponent(x)}"><strong>${String.fromCharCode(65+i)}.</strong> <span class=choiceText>${esc(x)}</span></button>`).join("");
+ const btns=$$(".choice");btns.forEach((b,i)=>{b.onclick=()=>answer(decodeURIComponent(b.dataset.v));setRuby(b.querySelector(".choiceText"),cs[i],token)});
+ stats();
+}
+async function answer(v){
+ if(game.answered)return;game.answered=true;const q=game.current,ok=v===q.a;
+ if(ok){game.score++;game.streak++;wrong.delete(q.id)}else{game.streak=0;wrong.add(q.id)}
+ save("jpgrammar_wrong",[...wrong]);
+ $$(".choice").forEach(b=>{b.disabled=true;const x=decodeURIComponent(b.dataset.v);if(x===q.a)b.classList.add("correct");else if(x===v)b.classList.add("wrong")});
+ $("#result").textContent=ok?"✅ 正確！":"❌ 不正確";$("#result").className="result "+(ok?"ok":"bad");
+ const token=++renderToken,full=q.q.replace("＿＿",q.a);$("#fullSentence").textContent=full;setRuby($("#fullSentence"),full,token);
+ $("#aGrammar").textContent=q.grammar||q.a;$("#aMeaning").textContent=q.meaning||"";
+ if(q.source==="web"){
+   $("#aExp").textContent=(q.exp?`來源說明（英）：${q.exp}`:"")+(q.formation?` ｜ Formation: ${q.formation}`:"");
+   $("#aZh").textContent=q.zh?`來源例句意思（英）：${q.zh}`:"—";
+   $("#aSource").innerHTML='<span class=webBadge>WEB</span> Hanabira';
+ }else{
+   $("#aExp").textContent=q.exp||"";$("#aZh").textContent=q.zh||"";$("#aSource").textContent=q.source==="manual"?"手動題目":"內置繁中題庫";
+ }
+ $("#aLevel").textContent=q.level;$("#aType").textContent=q.type;game.index++;stats();showSheet();
+}
+function stats(){$("#progress").textContent=game.infinite?`第 ${game.index+1} 題`:`${Math.min(game.index+1,game.limit)} / ${game.limit}`;$("#score").textContent=`✅ ${game.score}`;$("#streak").textContent=`🔥 ${game.streak}`}
+function showSheet(){$("#backdrop").style.display="block";$("#sheet").style.display="block"}function hideSheet(){$("#backdrop").style.display="none";$("#sheet").style.display="none"}
+function finish(){hideSheet();$("#question").style.display="none";$("#questionType").style.display="none";$("#choices").style.display="none";$("#end").style.display="block";$("#final").textContent=`${game.score} / ${game.limit}`;$("#finalText").textContent=`正確率 ${Math.round(game.score/game.limit*100)}% · 錯題已保存。`}
+function quit(){hideSheet();game=null;$("#quiz").style.display="none";$("#setup").style.display="grid";availability()}
+function saveManual(){
+ const q=$("#mQ").value.trim(),a=$("#mA").value.trim(),w1=$("#mW1").value.trim(),w2=$("#mW2").value.trim(),w3=$("#mW3").value.trim();
+ if(!q||!a||!w1||!w2||!w3){alert("請填寫題目、正確答案及三個錯誤答案。");return}
+ const choices=[a,w1,w2,w3];if(new Set(choices).size<4){alert("四個答案必須不同。");return}
+ manual.push({id:"m-"+Date.now(),source:"manual",level:$("#mLevel").value,type:$("#mType").value,q,choices,a,grammar:$("#mGrammar").value.trim()||a,meaning:"手動題目",exp:$("#mExp").value.trim(),zh:$("#mZh").value.trim()});
+ save("jpgrammar_manual",manual);["mQ","mA","mW1","mW2","mW3","mGrammar","mExp","mZh"].forEach(id=>$("#"+id).value="");render();
+}
+function renderManual(){
+ const b=$("#manualList");if(!manual.length){b.innerHTML='<div class=muted style="padding-top:8px">尚未手動新增題目。</div>';return}
+ b.innerHTML=manual.slice().reverse().map(x=>`<div class=manual-item><div><b>${x.level} ${x.type}</b> · ${esc(x.q)}</div><button class="btn danger del" data-id="${x.id}">刪除</button></div>`).join("");
+ $$(".del").forEach(b=>b.onclick=()=>{manual=manual.filter(x=>x.id!==b.dataset.id);wrong.delete(b.dataset.id);save("jpgrammar_manual",manual);save("jpgrammar_wrong",[...wrong]);render()});
+}
+function exportManual(){const blob=new Blob([JSON.stringify(manual,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="japanese_grammar_manual.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+async function importManual(file){try{const arr=JSON.parse(await file.text());if(!Array.isArray(arr))throw Error("JSON 必須是陣列");let n=0;for(const x of arr){if(!x.q||!x.a||!Array.isArray(x.choices)||x.choices.length!==4||!/^N[1-5]$/.test(x.level))continue;x.id=x.id||("m-"+Date.now()+"-"+n);x.source="manual";manual.push(x);n++}save("jpgrammar_manual",manual);render();alert(`已匯入 ${n} 題。`)}catch(e){alert("匯入失敗："+e.message)}}
+
+$$(".preset").forEach(b=>b.onclick=()=>{const s=new Set(b.dataset.l.split(","));$$(".level input").forEach(x=>x.checked=s.has(x.value));availability()});
+$$(".level input,.type input,.sourceCheck input").forEach(x=>x.onchange=availability);$$("input[name=mode]").forEach(x=>x.onchange=availability);
+$("#start").onclick=start;$("#quit").onclick=quit;$("#again").onclick=quit;$("#next").onclick=next;$("#reloadWeb").onclick=loadWeb;
+$("#toggleManual").onclick=()=>$("#manualForm").style.display=$("#manualForm").style.display==="block"?"none":"block";$("#saveManual").onclick=saveManual;$("#export").onclick=exportManual;$("#import").onchange=e=>{if(e.target.files[0])importManual(e.target.files[0]);e.target.value=""};
+document.addEventListener("keydown",e=>{if($("#quiz").style.display!=="block")return;if(!game?.answered&&["1","2","3","4"].includes(e.key))$$(".choice")[+e.key-1]?.click();else if(game?.answered&&(e.key==="Enter"||e.key===" ")){e.preventDefault();next()}});
+
+render();Promise.allSettled([loadWeb(),initFurigana()]).then(()=>render());
+})();
+</script>
+</body></html>
