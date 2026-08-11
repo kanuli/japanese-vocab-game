@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>日本語文法挑戰 v2.2｜JLPT N1–N5</title>
+<title>日本語文法挑戰 v2.3｜JLPT N1–N5</title>
 <style>
 :root{--bg:#f5f7fb;--card:#fff;--text:#182033;--muted:#687082;--line:#dde3ec;--blue:#3568dd;--blue2:#edf3ff;--ok:#11784a;--okbg:#edf9f2;--bad:#b42318;--badbg:#fff0ee}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei","Yu Gothic UI",sans-serif}
@@ -33,7 +33,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-s
 </head>
 <body>
 <div class="wrap">
-<div class="top"><div><h1>📝 日本語文法挑戰 v2.2</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
+<div class="top"><div><h1>📝 日本語文法挑戰 v2.3</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
 
 <div id="setup" class="grid">
 <section class="card">
@@ -303,17 +303,23 @@ async function setRuby(el,text,token){
 function zhFormation(s){
  s=String(s||"");
  const reps=[
+  [/Statement A/gi,"前句"],[/Sentence A/gi,"前句"],[/Clause A/gi,"前句"],
+  [/Statement B/gi,"後句"],[/Sentence B/gi,"後句"],[/Clause B/gi,"後句"],
   [/Verb dictionary form/gi,"動詞辞書形"],[/Verb plain form/gi,"動詞普通形"],[/Verb-ます form/gi,"動詞ます形"],
   [/Verb ます form/gi,"動詞ます形"],[/Verb negative form/gi,"動詞否定形"],[/Verb past form/gi,"動詞過去形"],
   [/Verb/gi,"動詞"],[/Noun/gi,"名詞"],[/い-adjective/gi,"い形容詞"],[/i-adjective/gi,"い形容詞"],
   [/な-adjective/gi,"な形容詞"],[/na-adjective/gi,"な形容詞"],[/Adjective/gi,"形容詞"],
   [/Plain form/gi,"普通形"],[/Dictionary form/gi,"辞書形"],[/negative/gi,"否定形"],[/past/gi,"過去形"],
-  [/present/gi,"現在形"],[/stem/gi,"語幹"],[/Statement/gi,"句子"],[/Sentence/gi,"句子"],
+  [/present/gi,"現在形"],[/stem/gi,"語幹"],[/Statement/gi,"句子"],[/Sentence/gi,"句子"],[/Clause/gi,"句子"],
   [/polite form/gi,"禮貌形"],[/casual form/gi,"普通形"]
  ];
  for(const [r,v] of reps)s=s.replace(r,v);
- return s;
+ s=s.replace(/\bA\b/g,"前項").replace(/\bB\b/g,"後項");
+ s=s.replace(/\s+/g," ").trim();
+ return /[A-Za-z]/.test(s)?"":s;
 }
+function containsLatin(s){return /[A-Za-z]/.test(String(s||""));}
+
 function zhFallback(q){
  const cat=q.meaning||"一般文法用法";
  const form=q.formation?` 接續：${zhFormation(q.formation)}。`:"";
@@ -322,31 +328,37 @@ function zhFallback(q){
 async function translateZh(text){
  text=String(text||"").trim();
  if(!text)return "";
- if(zhCache.has(text))return zhCache.get(text);
+ if(zhCache.has(text)){
+  const cached=String(zhCache.get(text)||"").trim();
+  if(cached && !containsLatin(cached))return cached;
+  zhCache.delete(text);
+  save("jpgrammar_zh_cache",Object.fromEntries(zhCache.entries()));
+ }
  try{
   const u="https://api.mymemory.translated.net/get?q="+encodeURIComponent(text.slice(0,480))+"&langpair=en%7Czh-TW";
   const r=await fetch(u,{cache:"force-cache"});
   if(!r.ok)throw Error("HTTP "+r.status);
   const d=await r.json();
   let z=String(d?.responseData?.translatedText||"").trim();
-  if(!z || z.toLowerCase()===text.toLowerCase())throw Error("no translation");
+  if(!z || z.toLowerCase()===text.toLowerCase() || containsLatin(z))throw Error("translation contains English");
   zhCache.set(text,z);
   const obj=Object.fromEntries([...zhCache.entries()].slice(-500));
   save("jpgrammar_zh_cache",obj);
   return z;
  }catch(e){
-  console.warn("Traditional Chinese translation unavailable",e);
+  console.warn("Traditional Chinese translation unavailable or mixed-language",e);
   return "";
  }
 }
+
 async function fillWebChinese(q,token){
- const formation=q.formation?`接續：${zhFormation(q.formation)}`:"";
+ const f=zhFormation(q.formation||""); const formation=f?`接續：${f}`:"";
  $("#aExp").textContent="正在載入繁體中文說明…";
  $("#aZh").textContent="正在載入繁體中文翻譯…";
  const [ex,zh]=await Promise.all([translateZh(q.exp||""),translateZh(q.zh||"")]);
  if(token!==renderToken)return;
- $("#aExp").textContent=(ex||zhFallback(q))+(formation?` ｜ ${formation}`:"");
- $("#aZh").textContent=zh||"此 Web 例句暫時未取得可靠的繁體中文翻譯。";
+ const safeEx=ex&&!containsLatin(ex)?ex:zhFallback(q); $("#aExp").textContent=safeEx+(formation?` ｜ ${formation}`:"");
+ $("#aZh").textContent=(zh&&!containsLatin(zh))?zh:"此 Web 例句暫時未取得可靠的繁體中文翻譯。";
 }
 
 function allQ(){
@@ -406,7 +418,7 @@ async function answer(v){
  if(q.source==="web"){
    $("#aExp").textContent=zhFallback(q);
    $("#aZh").textContent="繁體中文翻譯載入中…";
-   $("#aSource").innerHTML='<span class=webBadge>WEB</span> Hanabira + MyMemory 繁中翻譯';
+   $("#aSource").innerHTML='<span class=webBadge>WEB</span> Web 文法庫（繁中轉換）';
    fillWebChinese(q,token);
  }else{
    $("#aExp").textContent=q.exp||"";$("#aZh").textContent=q.zh||"";$("#aSource").textContent=q.source==="manual"?"手動題目":"內置繁中題庫";
