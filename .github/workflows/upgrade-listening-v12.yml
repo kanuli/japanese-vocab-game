@@ -68,7 +68,7 @@ jobs:
           python3 -m http.server 8765 >/tmp/listening-server.log 2>&1 &
           SERVER_PID=$!
           trap 'kill $SERVER_PID || true' EXIT
-          cat > /tmp/test-listening.cjs <<'JS'
+          cat > test-listening.cjs <<'JS'
           const { chromium } = require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true});
@@ -100,7 +100,7 @@ jobs:
               await window.SupertonicAI.init(()=>{});
               const r=await window.SupertonicAI.synthesize('こんにちは。',{voice:'F1',speed:1,totalSteps:3});
               return {ready:window.SupertonicAI.isReady(),voice:r.voice,duration:r.duration,urlPrefix:r.url.slice(0,5)};
-            },{timeout:360000});
+            });
             if(!ai.ready || ai.voice!=='F1' || ai.duration<=0 || ai.urlPrefix!=='blob:') throw new Error('Real AI synthesis failed: '+JSON.stringify(ai));
             console.log('Real Supertonic synthesis OK:',ai);
 
@@ -108,7 +108,7 @@ jobs:
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
-          timeout 420s node /tmp/test-listening.cjs
+          timeout 420s node test-listening.cjs
 
       - name: Commit only verified update
         run: |
