@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>日本語文法挑戰 v2.1｜JLPT N1–N5</title>
+<title>日本語文法挑戰 v2.2｜JLPT N1–N5</title>
 <style>
 :root{--bg:#f5f7fb;--card:#fff;--text:#182033;--muted:#687082;--line:#dde3ec;--blue:#3568dd;--blue2:#edf3ff;--ok:#11784a;--okbg:#edf9f2;--bad:#b42318;--badbg:#fff0ee}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei","Yu Gothic UI",sans-serif}
@@ -29,12 +29,11 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-s
 .webBadge{display:inline-block;background:#eef3ff;color:#3568dd;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:800}.fallbackBadge{display:inline-block;background:#f3f4f6;color:#666;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:800}
 @media(max-width:720px){.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.choice{min-height:60px}.radios,.types,.sources{grid-template-columns:1fr 1fr}.answer-grid{grid-template-columns:86px 1fr}.sheet{bottom:max(8px,env(safe-area-inset-bottom))}.question{font-size:clamp(23px,7vw,34px)}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/kuroshiro@1.2.0/dist/kuroshiro.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/kuroshiro-analyzer-kuromoji@1.1.0/dist/kuroshiro-analyzer-kuromoji.min.js"></script>
+<script src="./vendor/kuromoji.js"></script>
 </head>
 <body>
 <div class="wrap">
-<div class="top"><div><h1>📝 日本語文法挑戰 v2.1</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
+<div class="top"><div><h1>📝 日本語文法挑戰 v2.2</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
 
 <div id="setup" class="grid">
 <section class="card">
@@ -75,7 +74,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-s
 <aside class="card">
 <h2>題庫狀態</h2>
 <div class="source"><strong>🌐 Web 文法庫</strong><div id="webStatus" class="muted">載入 Hanabira N1–N5 JSON…</div><div id="webCounts" class="counts"></div><div class="row" style="margin-top:8px"><button id="reloadWeb" class="btn">重新載入 Web</button></div></div>
-<div class="source"><strong>🔤 ふりがな</strong><div id="furiganaStatus" class="muted">正在準備 Kuroshiro / Kuromoji…</div></div>
+<div class="source"><strong>🔤 ふりがな</strong><div id="furiganaStatus" class="muted">正在準備本地 Kuromoji…</div></div>
 <div class="source"><strong>📦 內置題庫</strong><div class="muted">60 題原創繁體中文解說，Web 無法載入時仍可使用。</div><div id="builtCounts" class="counts"></div></div>
 <div class="source"><strong>✍️ 手動新增題目</strong><div class="muted">資料只儲存在此瀏覽器。</div><div class="row" style="margin-top:8px"><button id="toggleManual" class="btn">新增題目</button><button id="export" class="btn">備份 JSON</button><label class="btn">匯入 JSON<input id="import" type="file" accept=".json" hidden></label></div>
 <div id="manualForm" class="form">
@@ -113,7 +112,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-s
 </div>
 
 <div class="footer">
-Web grammar content: Hanabira / tristcoil hanabira.org-japanese-content, Creative Commons with attribution. Web 題由程式從來源例句自動產生，因此少數題目可能存在其他自然答案；60 題內置題庫則為人工設定。Web 題的英文來源說明不直接顯示，會轉為繁體中文並在瀏覽器快取。ふりがな由 Kuroshiro + Kuromoji 在瀏覽器內產生。JLPT 等級為學習用分類，並非官方固定文法清單。
+Web grammar content: Hanabira / tristcoil hanabira.org-japanese-content, Creative Commons with attribution. Web 題由程式從來源例句自動產生，因此少數題目可能存在其他自然答案；60 題內置題庫則為人工設定。Web 題的英文來源說明不直接顯示，會轉為繁體中文並在瀏覽器快取。ふりがな由本地 Kuromoji 在瀏覽器內產生。JLPT 等級為學習用分類，並非官方固定文法清單。
 </div>
 </div>
 
@@ -132,7 +131,7 @@ const WEB_FILES={
 const RAW_BASE="https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/";
 const CDN_BASE="https://cdn.jsdelivr.net/gh/tristcoil/hanabira.org-japanese-content@main/grammar_json/";
 let webQuestions=[], webPointsCount={}, manual=load("jpgrammar_manual",[]), wrong=new Set(load("jpgrammar_wrong",[])), game=null;
-let kuro=null, kuroReady=false, furiganaCache=new Map(), renderToken=0;
+let tokenizer=null, kuroReady=false, furiganaCache=new Map(), renderToken=0;
 let zhCache=new Map(Object.entries(load("jpgrammar_zh_cache",{})));
 
 function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
@@ -255,21 +254,47 @@ async function loadWeb(){
 }
 async function initFurigana(){
  try{
-   if(typeof Kuroshiro==="undefined"||typeof KuromojiAnalyzer==="undefined")throw Error("CDN library unavailable");
-   kuro=new Kuroshiro();
-   await kuro.init(new KuromojiAnalyzer({dictPath:"./dict/"}));
-   kuroReady=true;$("#furiganaStatus").textContent="✅ ふりがな已準備：漢字上方會顯示平假名。";
- }catch(e){console.warn(e);kuroReady=false;$("#furiganaStatus").textContent="⚠️ ふりがな引擎暫時無法載入；遊戲仍可使用，但只顯示原本日文。"}
+   if(typeof kuromoji==="undefined")throw Error("Kuromoji browser library unavailable");
+   tokenizer=await new Promise((resolve,reject)=>{
+     kuromoji.builder({dicPath:"./dict/"}).build((err,t)=>err?reject(err):resolve(t));
+   });
+   kuroReady=true;
+   $("#furiganaStatus").textContent="✅ ふりがな已準備：漢字上方會顯示平假名。";
+ }catch(e){
+   console.warn("Furigana init failed",e);
+   kuroReady=false;
+   $("#furiganaStatus").textContent="⚠️ ふりがな引擎暫時無法載入："+(e?.message||e)+"。遊戲仍可使用。";
+ }
+}
+function kataToHira(text){
+ return String(text||"").replace(/[ァ-ヶ]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-0x60));
+}
+function isKana(ch){return /[ぁ-ゖァ-ヶー]/.test(ch||"")}
+function tokenRuby(tok){
+ const surface=String(tok?.surface_form||"");
+ const reading=kataToHira(tok?.reading||"");
+ if(!surface)return "";
+ if(!reading || !/[一-龯々]/.test(surface))return esc(surface);
+ let si=0,ri=0,se=surface.length,re=reading.length;
+ while(si<se && ri<re && isKana(surface[si]) && kataToHira(surface[si])===reading[ri]){si++;ri++;}
+ while(se>si && re>ri && isKana(surface[se-1]) && kataToHira(surface[se-1])===reading[re-1]){se--;re--;}
+ const prefix=surface.slice(0,si), base=surface.slice(si,se), suffix=surface.slice(se), ruby=reading.slice(ri,re);
+ if(!base || !ruby || !/[一-龯々]/.test(base))return esc(surface);
+ return esc(prefix)+`<ruby>${esc(base)}<rt>${esc(ruby)}</rt></ruby>`+esc(suffix);
 }
 async function rubyHTML(text){
  text=String(text??"");
- if(!kuroReady)return esc(text);
+ if(!kuroReady||!tokenizer)return esc(text);
  if(furiganaCache.has(text))return furiganaCache.get(text);
  try{
-   const html=await kuro.convert(text,{to:"hiragana",mode:"furigana"});
-   const safe=String(html).replace(/<(?!\/?(?:ruby|rt|rp)\b)[^>]*>/gi,"");
-   furiganaCache.set(text,safe);return safe;
- }catch{return esc(text)}
+   const tokens=tokenizer.tokenize(text);
+   const html=tokens.map(tokenRuby).join("");
+   furiganaCache.set(text,html);
+   return html;
+ }catch(e){
+   console.warn("Furigana render failed",e);
+   return esc(text);
+ }
 }
 async function setRuby(el,text,token){
  const h=await rubyHTML(text);if(token!==renderToken)return;el.innerHTML=h;
