@@ -252,6 +252,67 @@ function slotCompatible(a,b){
  if((x.position==="start"||x.position==="clause-start") && x.polarity!==y.polarity)return false;
  return true;
 }
+function answerShape(a){
+ const s=String(a||"").trim().replace(/[〜～~]/g,"");
+ if(!s)return "unknown";
+ if(/^(て|で|た|だ|ない|なく|なけれ|ず|ば|なら|ても|でも)/.test(s))return "conjugation-bound";
+ if(/^(の|に|を|が|は|へ|と|も|で|から|まで|より)(?:$|[^ぁ-んァ-ン一-龯])/.test(s))return "particle-bound";
+ if(/^(の|に)(?:ため|ほう|方|わけ|訳|よう|様|つもり|ところ|こと|もの)/.test(s))return "particle-bound";
+ return "free";
+}
+function edgeClass(text,side){
+ const s=String(text||"");
+ if(!s.trim())return "none";
+ const t=side==="left"?s.trimEnd():s.trimStart();
+ if(side==="left"){
+  if(/[てで]$/.test(t))return "te-form";
+  if(/[ただ]$/.test(t))return "past-form";
+  if(/(?:ない|なく|なかった|ません|ず)$/.test(t))return "negative-form";
+  if(/[るうくぐすつぬぶむ]$/.test(t))return "dictionary-like";
+  if(/い$/.test(t))return "i-ending";
+  if(/な$/.test(t))return "na-ending";
+  if(/の$/.test(t))return "no-ending";
+  if(/[一-龯々ぁ-んァ-ンー]$/.test(t))return "nominal-or-lexical";
+  return "other";
+ }
+ if(/^[、,]/.test(t))return "comma";
+ if(/^[。！？!?]/.test(t))return "sentence-end";
+ if(/^(です|でした|だ|だった|である|では)/.test(t))return "copula";
+ if(/^(を|が|は|に|で|へ|と|も|から|まで|より)/.test(t))return "particle";
+ if(/^(ない|なく|なかった|ません|ず)/.test(t))return "negative";
+ return "lexical";
+}
+function polarityOfRight(right){
+ const r=String(right||"").trimStart().slice(0,18);
+ return /(?:ない|なく|なかった|ません|ず|ぬ)/.test(r)?"negative":"other";
+}
+function slotProfile(q){
+ const parts=String(q.q||"").split("＿＿");
+ const left=parts[0]||"", right=parts.slice(1).join("＿＿");
+ const l=left.trimEnd(), r=right.trimStart();
+ let position="middle";
+ if(!l.trim())position="start";
+ else if(!r.trim())position="end";
+ else if(/[。！？!?]$/.test(l))position="clause-start";
+ return {
+  position,
+  leftClass:edgeClass(l,"left"),
+  rightClass:edgeClass(r,"right"),
+  polarity:polarityOfRight(r),
+  answerShape:answerShape(q.a)
+ };
+}
+function slotCompatible(a,b){
+ if(!a||!b)return false;
+ if(a.type!==b.type)return false;
+ const x=a.slot||slotProfile(a), y=b.slot||slotProfile(b);
+ if(x.position!==y.position)return false;
+ if(x.answerShape!==y.answerShape)return false;
+ if(x.rightClass!==y.rightClass)return false;
+ if((x.position==="middle"||x.position==="end") && x.leftClass!==y.leftClass)return false;
+ if((x.position==="start"||x.position==="clause-start") && x.polarity!==y.polarity)return false;
+ return true;
+}
 function generateFromPoints(points,level){
  const raw=[];
  points.forEach((pt,pi)=>{
