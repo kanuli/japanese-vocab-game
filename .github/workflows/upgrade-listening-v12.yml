@@ -16,7 +16,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Apply listening v1.2 patch
-        run: python scripts/upgrade-listening-v12.py
+        run: |
+          python scripts/upgrade-listening-v12.py
+          python scripts/strict-listening-distractors.py
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -34,9 +36,10 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-audit --no-fund onnxruntime-web@1.24.3 esbuild@0.25.9
           npx esbuild src/listening-supertonic-entry.js --bundle --format=esm --platform=browser --target=es2022 --outfile=vendor/supertonic-browser.js
-          find node_modules/onnxruntime-web/dist -maxdepth 1 -type f -name 'ort-wasm*.wasm' -exec cp {} vendor/ort/ \;
+          find node_modules/onnxruntime-web/dist -maxdepth 1 -type f \( -name 'ort-wasm*.wasm' -o -name 'ort-wasm*.mjs' -o -name 'ort-wasm*.js' \) -exec cp {} vendor/ort/ \;
           test -s vendor/supertonic-browser.js
           test "$(find vendor/ort -type f -name '*.wasm' | wc -l)" -gt 0
+          test "$(find vendor/ort -type f -name '*.mjs' | wc -l)" -gt 0
 
       - name: JavaScript syntax and UI assertions
         run: |
@@ -52,6 +55,8 @@ jobs:
           assert 'prepareChineseChoices' in s
           assert 'data-v="${encodeURIComponent(x.jp)}"' in s
           assert '${esc(x.zh)}' in s
+          assert '同一句只改一個關鍵細節' in s
+          assert '相似 Web 例句＋細節變化' not in s
           scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
           Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
@@ -86,14 +91,22 @@ jobs:
 
             await page.click('#start');
             await page.waitForFunction(()=>document.querySelectorAll('.choice').length===4,{timeout:90000});
-            const choices=await page.$$eval('.choice',els=>els.map(e=>e.textContent.replace(/^[A-D]\.\s*/, '').trim()));
-            if(choices.length!==4) throw new Error('Expected four choices');
-            if(new Set(choices).size!==4) throw new Error('Chinese choices are duplicated: '+JSON.stringify(choices));
-            for(const t of choices){
+            const rows=await page.$$eval('.choice',els=>els.map(e=>({zh:e.textContent.replace(/^[A-D]\.\s*/, '').trim(),jp:decodeURIComponent(e.dataset.v)})));
+            if(rows.length!==4) throw new Error('Expected four choices');
+            const zh=rows.map(x=>x.zh);
+            if(new Set(zh).size!==4) throw new Error('Chinese choices are duplicated: '+JSON.stringify(zh));
+            for(const t of zh){
               if(/[ぁ-ゖァ-ヺ]/.test(t)) throw new Error('Japanese kana leaked into choice: '+t);
               if(/[A-Za-z]/.test(t)) throw new Error('English leaked into choice: '+t);
             }
-            console.log('Chinese choices OK:',choices);
+            // Strict distractors must stay structurally close to one another.
+            function bg(s){const a=[];for(let i=0;i<s.length-1;i++)a.push(s.slice(i,i+2));return new Set(a)}
+            function sim(a,b){const A=bg(a),B=bg(b);let n=0;for(const x of A)if(B.has(x))n++;return n/Math.max(1,A.size+B.size-n)}
+            for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+              const v=sim(rows[i].jp,rows[j].jp);
+              if(v<0.35)throw new Error(`Distractors too dissimilar (${v.toFixed(2)}): ${rows[i].jp} || ${rows[j].jp}`);
+            }
+            console.log('Traditional-Chinese close choices OK:',rows);
 
             // Full model initialization + a short genuine Japanese AI synthesis.
             const ai=await page.evaluate(async()=>{
