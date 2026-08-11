@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/patch-no-english.yml'
+      - '.github/scripts/patch_no_english.py'
 
 permissions:
   contents: write
