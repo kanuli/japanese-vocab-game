@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - '.github/workflows/refine-listening-zh-distractors.yml'
+      - 'scripts/refine-listening-zh-distractors.py'
 
 permissions:
   contents: write
