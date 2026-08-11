@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>日本語聽解挑戰｜JLPT N1–N5</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#182033;--muted:#687082;--line:#dde3ec;--blue:#3568dd;--blue2:#edf3ff;--ok:#11784a;--okbg:#edf9f2;--bad:#b42318;--badbg:#fff0ee}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei","Yu Gothic UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:960px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
+h1{font-size:clamp(25px,4vw,38px);margin:0}.sub,.muted{color:var(--muted);font-size:13px}.pill{display:inline-flex;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:13px;color:var(--muted)}
+.nav{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 15px}.nav a{text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;color:var(--text);font-weight:700;font-size:13px}.nav a.active{background:var(--blue2);border-color:var(--blue);color:var(--blue)}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 38px rgba(20,35,70,.08)}
+h2{font-size:17px;margin:0 0 10px}.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.level input,.radio input{position:absolute;opacity:0}.level label,.radio label{display:block;border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px 7px;text-align:center;font-weight:700}
+.level input:checked+label,.radio input:checked+label{background:var(--blue2);border-color:var(--blue);color:var(--blue)}
+.row{display:flex;gap:7px;flex-wrap:wrap}.presets{margin:9px 0 18px}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;font-weight:700}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn:disabled{opacity:.45;cursor:not-allowed}.radios{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:18px}.radios.two{grid-template-columns:1fr 1fr}
+.notice{margin-top:10px;background:#fff8e7;border:1px solid #efd58b;border-radius:11px;padding:10px;font-size:13px;line-height:1.5}.start{width:100%;padding:13px;margin-top:12px}.source{border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:11px}.counts{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}.count{background:#f2f4f8;border-radius:999px;padding:4px 7px;font-size:12px}
+.quiz{display:none}.quiz-head{display:flex;justify-content:space-between;align-items:center;gap:8px}.stats{display:flex;gap:5px;flex-wrap:wrap}.listenbox{text-align:center;padding:24px 8px 14px}.ear{font-size:70px;line-height:1}.listenTitle{font-size:16px;font-weight:800;margin:8px 0;color:var(--muted)}
+.audioBtns{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:13px 0}.play{min-width:150px;padding:14px 18px;font-size:17px}.play.main{background:var(--blue);color:#fff;border-color:var(--blue)}
+.listenHint{text-align:center;color:var(--muted);font-size:13px;margin:8px 0 16px}.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}.choice{min-height:76px;text-align:left;border:1px solid var(--line);background:#fff;border-radius:13px;padding:14px;font-weight:700;line-height:1.55}.choice.locked{filter:blur(5px);user-select:none}.choice.correct{border-color:var(--ok);background:var(--okbg);color:var(--ok)}.choice.wrong{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500}.sheet-backdrop{position:fixed;inset:0;background:rgba(20,30,50,.18);display:none;z-index:50}.sheet{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(680px,calc(100% - 24px));background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 18px 60px rgba(20,30,55,.24);display:none;z-index:51;max-height:80vh;overflow:auto}
+.result{font-size:20px;font-weight:900;margin-bottom:10px}.result.ok{color:var(--ok)}.result.bad{color:var(--bad)}.answer-grid{display:grid;grid-template-columns:96px 1fr;gap:7px 10px;line-height:1.7}.label{color:var(--muted);font-size:13px;font-weight:700}.jpAnswer{font-size:21px;font-weight:850;font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif}.meaning{font-weight:800}.sheet-actions{display:flex;gap:8px;margin-top:13px;position:sticky;bottom:0;background:#fff;padding-top:8px}.sheet-actions .next{flex:1;min-height:49px}
+.end{display:none;text-align:center;padding:28px}.end .big{font-size:42px;font-weight:900}.quality{font-size:12px;background:#eef7ff;border-radius:999px;padding:4px 8px}.footer{font-size:11px;color:var(--muted);line-height:1.6;margin:16px 2px}
+@media(max-width:720px){.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.choice{min-height:68px}.radios{grid-template-columns:1fr 1fr}.answer-grid{grid-template-columns:82px 1fr}.sheet{bottom:max(8px,env(safe-area-inset-bottom))}.ear{font-size:60px}}
+</style>
+<script src="./vendor/kuromoji.js"></script>
+</head>
+<body>
+<div class="wrap">
+<div class="top"><div><h1>🎧 日本語聽解挑戰</h1><div class="sub">Web 例句 → 日語發音 → 4 個相似答案</div></div><div id="total" class="pill">準備中…</div></div>
+<div class="nav"><a href="./index.html">📚 單字</a><a href="./grammar.html">📝 文法</a><a class="active" href="./listening.html">🎧 聽解</a></div>
+
+<div id="setup" class="grid">
+<section class="card">
+<h2>1. 選擇 JLPT 等級</h2>
+<div class="levels">
+<div class="level"><input id="n1" type="checkbox" value="N1"><label for="n1">N1</label></div>
+<div class="level"><input id="n2" type="checkbox" value="N2"><label for="n2">N2</label></div>
+<div class="level"><input id="n3" type="checkbox" value="N3" checked><label for="n3">N3</label></div>
+<div class="level"><input id="n4" type="checkbox" value="N4" checked><label for="n4">N4</label></div>
+<div class="level"><input id="n5" type="checkbox" value="N5" checked><label for="n5">N5</label></div>
+</div>
+<div class="row presets"><button class="btn preset" data-l="N1,N2,N3,N4,N5">全部</button><button class="btn preset" data-l="N2,N3,N4,N5">N2–N5</button><button class="btn preset" data-l="N3,N4,N5">N3–N5</button><button class="btn preset" data-l="N4,N5">N4–N5</button><button class="btn preset" data-l="N4">只 N4</button></div>
+
+<h2>2. 題數</h2>
+<div class="radios"><div class="radio"><input id="q10" name="qcount" type="radio" value="10"><label for="q10">10</label></div><div class="radio"><input id="q20" name="qcount" type="radio" value="20" checked><label for="q20">20</label></div><div class="radio"><input id="q50" name="qcount" type="radio" value="50"><label for="q50">50</label></div><div class="radio"><input id="q0" name="qcount" type="radio" value="0"><label for="q0">無限</label></div></div>
+
+<h2>3. 練習模式</h2>
+<div class="radios two"><div class="radio"><input id="modeAll" name="mode" type="radio" value="all" checked><label for="modeAll">全部題目</label></div><div class="radio"><input id="modeWrong" name="mode" type="radio" value="wrong"><label for="modeWrong">只練錯題</label></div></div>
+
+<h2>4. 播放設定</h2>
+<div class="radios two"><div class="radio"><input id="hideFirst" name="reveal" type="radio" value="hide" checked><label for="hideFirst">先聽後顯示答案</label></div><div class="radio"><input id="showFirst" name="reveal" type="radio" value="show"><label for="showFirst">立即顯示答案</label></div></div>
+<div id="availability" class="notice">正在載入 Web 聽解題庫…</div>
+<button id="start" class="btn primary start" disabled>開始 START</button>
+</section>
+
+<aside class="card">
+<h2>Web 題庫</h2>
+<div class="source"><strong>🌐 Hanabira N1–N5 例句</strong><div id="webStatus" class="muted">載入中…</div><div id="counts" class="counts"></div><div class="row" style="margin-top:8px"><button id="reload" class="btn">重新載入 Web</button></div></div>
+<div class="source"><strong>🔊 日語語音</strong><div id="voiceStatus" class="muted">正在檢查瀏覽器日語語音…</div><div class="field" style="margin-top:8px"><select id="voice" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:9px"><option value="">自動選擇日語語音</option></select></div></div>
+<div class="source"><strong>🎯 相似答案規則</strong><div class="muted">優先只改一個關鍵細節：時間、方向、肯定／否定、數字、程度或常見動詞；不足時才從同 JLPT／同文法功能的 Web 例句尋找最相似句子。</div></div>
+<div class="source"><strong>🔤 ふりがな</strong><div id="furiganaStatus" class="muted">準備中…</div></div>
+</aside>
+</div>
+
+<section id="quiz" class="card quiz">
+<div class="quiz-head"><button id="quit" class="btn">← 返回</button><div class="stats"><span id="progress" class="pill"></span><span id="score" class="pill">✅ 0</span><span id="streak" class="pill">🔥 0</span></div></div>
+<div class="listenbox"><div class="ear">🎧</div><div class="listenTitle">先聽清楚，再找出你聽到的句子</div><div class="audioBtns"><button id="playNormal" class="btn play main">🔊 正常 1.0×</button><button id="playSlow" class="btn play">🐢 慢速 0.75×</button></div><div id="playCount" class="listenHint">尚未播放</div></div>
+<div id="choices" class="choices"></div>
+<div id="end" class="end"><div id="final" class="big"></div><p id="finalText"></p><button id="again" class="btn primary">再玩一次</button></div>
+</section>
+
+<div id="backdrop" class="sheet-backdrop"></div>
+<div id="sheet" class="sheet">
+<div id="result" class="result"></div>
+<div class="answer-grid">
+<div class="label">正確句子</div><div id="aSentence" class="jpAnswer"></div>
+<div class="label">繁體中文</div><div id="aZh" class="meaning"></div>
+<div class="label">文法</div><div id="aGrammar"></div>
+<div class="label">JLPT</div><div id="aLevel"></div>
+<div class="label">答案設計</div><div id="aQuality"></div>
+<div class="label">來源</div><div>Hanabira Web 例句</div>
+</div>
+<div class="sheet-actions"><button id="replay" class="btn">🔊 再聽</button><button id="next" class="btn primary next">下一題 →</button></div>
+</div>
+<div class="footer">Web 句子來源：Hanabira / tristcoil hanabira.org-japanese-content。聽解音訊由裝置／瀏覽器的 Japanese Speech Synthesis 即時產生，不需要付費語音 API。JLPT 等級屬學習用分類。</div>
+</div>
+
+<script>
+(()=>{"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const FILES={N5:"grammar_ja_N5_full_alphabetical_0001.json",N4:"grammar_ja_N4_full_alphabetical_0001.json",N3:"grammar_ja_N3_full_alphabetical_0001.json",N2:"grammar_ja_N2_full_alphabetical_0001.json",N1:"grammar_ja_N1_full_alphabetical_0001.json"};
+const BASES=["https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/","https://cdn.jsdelivr.net/gh/tristcoil/hanabira.org-japanese-content@main/grammar_json/"];
+let items=[],wrong=new Set(load("jplistening_wrong",[])),game=null,voices=[],tokenizer=null,renderToken=0;
+const zhCache=new Map(Object.entries(load("jplistening_zh",{})));
+function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+function cleanTitle(t){return String(t||"").replace(/\s*\([^()]*\)\s*$/,"").trim()}
+function cat(s){s=String(s||"").toLowerCase();const g=[["逆接／轉折",/contrast|although|though|despite|however|but|contradict/],["原因／理由",/reason|cause|because|therefore|result|due to/],["條件／假設",/condition|if |whenever|provided|assuming/],["目的／目標",/purpose|in order|so as to|goal/],["時間／時機",/time|when|while|before|after|until|since/],["推測／判斷",/guess|suppos|probably|seem|appear|inference|certain/],["程度／比較",/compar|degree|most|least|more than|less than/],["義務／必要",/must|obligation|necessary|required|have to/],["能力／可能",/ability|possible|able to|possibility/],["列舉／追加",/addition|also|not only|as well|example|list/]];for(const [n,r] of g)if(r.test(s))return n;return"一般文法"]}
+function selectedLevels(){return $$(".level input:checked").map(x=>x.value)}
+function pool(){let p=items.filter(x=>selectedLevels().includes(x.level));if($("input[name=mode]:checked").value==="wrong")p=p.filter(x=>wrong.has(x.id));return p}
+async function fetchLevel(level){let last;for(const b of BASES){try{const r=await fetch(b+FILES[level],{cache:"no-cache"});if(!r.ok)throw Error("HTTP "+r.status);const d=await r.json();if(!Array.isArray(d))throw Error("格式錯誤");return d}catch(e){last=e}}throw last}
+async function loadWeb(){$("#reload").disabled=true;$("#webStatus").textContent="正在載入 N1–N5…";const rs=await Promise.allSettled(["N5","N4","N3","N2","N1"].map(async l=>[l,await fetchLevel(l)]));items=[];const c={N1:0,N2:0,N3:0,N4:0,N5:0};for(const r of rs){if(r.status!=="fulfilled")continue;const [level,pts]=r.value;pts.forEach((p,pi)=>(p.examples||[]).forEach((e,ei)=>{const jp=String(e.jp||"").trim();if(jp.length<5||jp.length>95)return;items.push({id:`${level}-${pi}-${ei}`,level,jp,en:e.en||"",grammar:cleanTitle(p.title),category:cat((p.short_explanation||"")+" "+(p.long_explanation||""))});c[level]++}))}$("#webStatus").textContent=items.length?`✅ 已載入 ${items.length.toLocaleString()} 個 Web 聽解句子。`:"⚠️ Web 題庫暫時無法載入。";$("#counts").innerHTML=Object.entries(c).map(([k,v])=>`<span class=count>${k}: ${v.toLocaleString()}</span>`).join("");$("#reload").disabled=false;render()}
+const GROUPS=[
+["今日","昨日","明日"],["今週","先週","来週"],["今月","先月","来月"],["今年","去年","来年"],["朝","昼","夜"],["午前","午後"],["右","左"],["上","下"],["前","後"],
+["まだ","もう"],["いつも","よく","時々","たまに"],["必ず","たぶん"],["好き","嫌い"],["高い","安い"],["大きい","小さい"],["多い","少ない"],["早い","遅い"],
+["行きます","来ます","帰ります"],["行く","来る","帰る"],["買います","売ります"],["買う","売る"],["始まります","終わります"],["始まる","終わる"],["増えます","減ります"],["増える","減る"],
+["あります","ありません"],["います","いません"],["できます","できません"],["しました","しませんでした"],["ます","ません"]
+];
+function mutations(s){const out=[];for(const g of GROUPS){for(const x of g){if(!s.includes(x))continue;for(const y of g){if(y!==x){const z=s.replace(x,y);if(z!==s&&!out.includes(z))out.push(z)}}}}const m=s.match(/\d+/);if(m){const n=+m[0];for(const d of [-1,1,2]){const v=Math.max(1,n+d);const z=s.replace(m[0],String(v));if(z!==s&&!out.includes(z))out.push(z)}}return out}
+function bigrams(s){const a=[];for(let i=0;i<s.length-1;i++)a.push(s.slice(i,i+2));return new Set(a)}
+function sim(a,b){const A=bigrams(a),B=bigrams(b);let inter=0;A.forEach(x=>{if(B.has(x))inter++});const jac=inter/Math.max(1,A.size+B.size-inter);const len=1-Math.min(1,Math.abs(a.length-b.length)/Math.max(a.length,b.length));return jac*.72+len*.28}
+function makeChoices(q){let d=shuffle(mutations(q.jp)).slice(0,3),quality=d.length>=3?"只改一個關鍵細節":"相似 Web 例句＋細節變化";if(d.length<3){const cand=items.filter(x=>x.id!==q.id&&x.level===q.level&&x.category===q.category).map(x=>({s:x.jp,v:sim(q.jp,x.jp)})).filter(x=>x.v>.18).sort((a,b)=>b.v-a.v);for(const x of cand){if(d.length>=3)break;if(!d.includes(x.s)&&x.s!==q.jp)d.push(x.s)}}if(d.length<3){const cand=items.filter(x=>x.id!==q.id&&x.level===q.level).map(x=>({s:x.jp,v:sim(q.jp,x.jp)})).sort((a,b)=>b.v-a.v);for(const x of cand){if(d.length>=3)break;if(!d.includes(x.s)&&x.s!==q.jp)d.push(x.s)}}if(d.length<3)return null;return{choices:shuffle([q.jp,...d.slice(0,3)]),quality}}
+function render(){$("#total").textContent=`🎧 ${items.length.toLocaleString()} 句`;availability()}
+function availability(){const p=pool();let t=`目前選擇：${p.length.toLocaleString()} 句。`;if(!selectedLevels().length)t="請至少選一個 JLPT 等級。";else if($("input[name=mode]:checked").value==="wrong"&&!p.length)t="目前沒有符合條件的錯題。";$("#availability").textContent=t;$("#start").disabled=!p.length}
+function loadVoices(){voices=speechSynthesis.getVoices();const jp=voices.filter(v=>/^ja([-_]|$)/i.test(v.lang));const sel=$("#voice"),old=sel.value;sel.innerHTML='<option value="">自動選擇日語語音</option>'+jp.map((v,i)=>`<option value="${esc(v.name)}">${esc(v.name)} (${esc(v.lang)})</option>`).join("");if(old&&jp.some(v=>v.name===old))sel.value=old;$("#voiceStatus").textContent=jp.length?`✅ 找到 ${jp.length} 個日語語音。`:"⚠️ 未列出日語語音；仍會以 ja-JP 要求裝置自動選擇。"}
+function chosenVoice(){const n=$("#voice").value;return voices.find(v=>v.name===n)||voices.find(v=>/^ja-JP$/i.test(v.lang))||voices.find(v=>/^ja/i.test(v.lang))||null}
+function speak(rate=1){if(!game?.current)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(game.current.jp);u.lang="ja-JP";u.rate=rate;const v=chosenVoice();if(v)u.voice=v;speechSynthesis.speak(u);game.plays++;$("#playCount").textContent=`已播放 ${game.plays} 次`;if(game.locked){game.locked=false;$$(".choice").forEach(b=>{b.disabled=false;b.classList.remove("locked")})}}
+function start(){const p=pool(),n=+$("input[name=qcount]:checked").value;game={pool:p,order:shuffle(p),limit:n,infinite:n===0,index:0,score:0,streak:0,current:null,plays:0,locked:false,quality:""};$("#setup").style.display="none";$("#quiz").style.display="block";$("#end").style.display="none";$("#choices").style.display="grid";next()}
+function next(){hideSheet();if(!game)return;if(!game.infinite&&game.index>=game.limit){finish();return}let tries=0,q,m;do{if(game.index>=game.order.length)game.order=shuffle(game.pool);q=game.order[(game.index+tries)%game.order.length];m=makeChoices(q);tries++}while(!m&&tries<Math.min(40,game.order.length));if(!m){alert("目前題庫無法產生足夠相似答案，請選擇更多 JLPT 等級。");quit();return}game.current=q;game.quality=m.quality;game.plays=0;game.locked=$("input[name=reveal]:checked").value==="hide";$("#playCount").textContent=game.locked?"請先播放音訊":"可直接選擇，亦可播放音訊";$("#choices").innerHTML=m.choices.map((x,i)=>`<button class="choice${game.locked?" locked":""}" ${game.locked?"disabled":""} data-v="${encodeURIComponent(x)}"><strong>${String.fromCharCode(65+i)}.</strong> ${esc(x)}</button>`).join("");$$(".choice").forEach(b=>b.onclick=()=>answer(decodeURIComponent(b.dataset.v)));stats()}
+function answer(v){const q=game.current,ok=v===q.jp;if(ok){game.score++;game.streak++;wrong.delete(q.id)}else{game.streak=0;wrong.add(q.id)}save("jplistening_wrong",[...wrong]);$$(".choice").forEach(b=>{b.disabled=true;const x=decodeURIComponent(b.dataset.v);if(x===q.jp)b.classList.add("correct");else if(x===v)b.classList.add("wrong")});$("#result").textContent=ok?"✅ 正確！":"❌ 不正確";$("#result").className="result "+(ok?"ok":"bad");const rt=++renderToken;$("#aSentence").textContent=q.jp;setRuby($("#aSentence"),q.jp,rt);$("#aGrammar").textContent=q.grammar;$("#aLevel").textContent=q.level;$("#aQuality").innerHTML=`<span class=quality>${esc(game.quality)}</span>`;$("#aZh").textContent="正在載入繁體中文意思…";fillZh(q,rt);game.index++;stats();showSheet()}
+function stats(){$("#progress").textContent=game.infinite?`第 ${game.index+1} 題`:`${Math.min(game.index+1,game.limit)} / ${game.limit}`;$("#score").textContent=`✅ ${game.score}`;$("#streak").textContent=`🔥 ${game.streak}`}
+function finish(){speechSynthesis.cancel();hideSheet();$("#choices").style.display="none";$("#end").style.display="block";$("#final").textContent=`${game.score} / ${game.limit}`;$("#finalText").textContent=`正確率 ${Math.round(game.score/game.limit*100)}% · 錯題已保存。`}
+function quit(){speechSynthesis.cancel();hideSheet();game=null;$("#quiz").style.display="none";$("#setup").style.display="grid";availability()}
+function showSheet(){$("#backdrop").style.display="block";$("#sheet").style.display="block"}function hideSheet(){$("#backdrop").style.display="none";$("#sheet").style.display="none"}
+function containsLatin(s){return/[A-Za-z]/.test(String(s||""))}
+async function translateZh(en){en=String(en||"").trim();if(!en)return"";if(zhCache.has(en)){const z=zhCache.get(en);if(!containsLatin(z))return z;zhCache.delete(en)}try{const u="https://api.mymemory.translated.net/get?q="+encodeURIComponent(en.slice(0,450))+"&langpair=en%7Czh-TW";const r=await fetch(u);if(!r.ok)throw Error();const d=await r.json();const z=String(d?.responseData?.translatedText||"").trim();if(!z||containsLatin(z))throw Error();zhCache.set(en,z);save("jplistening_zh",Object.fromEntries([...zhCache.entries()].slice(-500)));return z}catch{return""}}
+async function fillZh(q,rt){const z=await translateZh(q.en);if(rt!==renderToken)return;$("#aZh").textContent=z||"此 Web 例句暫時未取得可靠的繁體中文翻譯。"}
+function kataToHira(s){return String(s||"").replace(/[\u30a1-\u30f6]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-0x60))}
+function tokenRuby(t){const surf=t.surface_form||"",rd=t.reading&&t.reading!=="*"?kataToHira(t.reading):"";if(!rd||!/[一-龯々]/.test(surf))return esc(surf);let k=surf.length;while(k>0&&/[ぁ-ゖァ-ヺー]/.test(surf[k-1]))k--;const stem=surf.slice(0,k),suffix=surf.slice(k),hs=kataToHira(suffix);if(stem&&hs&&rd.endsWith(hs)){const rr=rd.slice(0,-hs.length);return `<ruby>${esc(stem)}<rt>${esc(rr)}</rt></ruby>${esc(suffix)}`}return `<ruby>${esc(surf)}<rt>${esc(rd)}</rt></ruby>`}
+async function initFurigana(){try{if(typeof kuromoji==="undefined")throw Error("kuromoji.js 未載入");tokenizer=await new Promise((res,rej)=>kuromoji.builder({dicPath:"./dict/"}).build((e,t)=>e?rej(e):res(t)));$("#furiganaStatus").textContent="✅ 回答後會在漢字上方顯示平假名。"}catch(e){$("#furiganaStatus").textContent="⚠️ ふりがな暫時無法載入；聽解仍可使用。"}}
+async function rubyHTML(s){if(!tokenizer)return esc(s);try{return tokenizer.tokenize(s).map(tokenRuby).join("")}catch{return esc(s)}}
+async function setRuby(el,s,rt){const h=await rubyHTML(s);if(rt===renderToken)el.innerHTML=h}
+
+$$(".preset").forEach(b=>b.onclick=()=>{const s=new Set(b.dataset.l.split(","));$$(".level input").forEach(x=>x.checked=s.has(x.value));availability()});$$(".level input").forEach(x=>x.onchange=availability);$$("input[name=mode]").forEach(x=>x.onchange=availability);
+$("#reload").onclick=loadWeb;$("#start").onclick=start;$("#quit").onclick=quit;$("#again").onclick=quit;$("#playNormal").onclick=()=>speak(1);$("#playSlow").onclick=()=>speak(.75);$("#replay").onclick=()=>speak(1);$("#next").onclick=next;
+loadVoices();if("speechSynthesis"in window&&speechSynthesis.onvoiceschanged!==undefined)speechSynthesis.onvoiceschanged=loadVoices;Promise.allSettled([loadWeb(),initFurigana()]).then(render);
+})();
+</script>
+</body></html>
