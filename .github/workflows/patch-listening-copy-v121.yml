@@ -1,0 +1,37 @@
+name: Correct listening v1.2 UI copy
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-listening-copy-v121.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Correct displayed distractor rule
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('listening.html')
+          s=p.read_text(encoding='utf-8')
+          old='優先只改一個關鍵細節：時間、方向、肯定／否定、數字、程度或常見動詞；不足時才從同 JLPT／同文法功能的 Web 例句尋找最相似句子。'
+          new='四個答案只使用同一句子並改一個關鍵細節，例如時間、方向、肯定／否定、數字、程度或常見動詞。無法產生 3 個足夠相似選項的句子會直接跳過，不使用不相關句子湊答案。'
+          if old not in s:
+              raise SystemExit('old UI copy not found')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+          grep -q '不使用不相關句子湊答案' listening.html
+          grep -q '同一句只改一個關鍵細節' listening.html
+      - name: Commit correction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html
+          git commit -m 'Clarify strict listening distractor rule'
+          git push
