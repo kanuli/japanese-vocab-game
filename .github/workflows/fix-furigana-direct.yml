@@ -1,0 +1,43 @@
+name: Fix furigana direct Kuromoji
+
+on:
+  push:
+    paths:
+      - 'tools/patch_furigana_direct.py'
+      - '.github/workflows/fix-furigana-direct.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install local browser Kuromoji
+        shell: bash
+        run: |
+          npm pack kuromoji@0.1.2 >/tmp/pkg.txt
+          PKG=$(tail -n 1 /tmp/pkg.txt)
+          rm -rf /tmp/kuromoji-package
+          mkdir -p /tmp/kuromoji-package vendor
+          tar -xzf "$PKG" -C /tmp/kuromoji-package
+          cp -f /tmp/kuromoji-package/package/build/kuromoji.js vendor/kuromoji.js
+          rm -f "$PKG"
+
+      - name: Patch grammar furigana
+        run: python3 tools/patch_furigana_direct.py
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add grammar.html vendor/kuromoji.js
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git commit -m "Fix furigana with direct Kuromoji"
+          git push
