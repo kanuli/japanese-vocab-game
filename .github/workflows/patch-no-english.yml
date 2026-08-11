@@ -1,0 +1,28 @@
+name: Enforce Traditional Chinese grammar output
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-no-english.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch grammar game
+        run: python3 .github/scripts/patch_no_english.py
+      - name: Commit grammar update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add grammar.html
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git commit -m "Remove English leakage from grammar explanations"
+          git push
