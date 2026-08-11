@@ -115,7 +115,7 @@ function pool(){let p=items.filter(x=>selectedLevels().includes(x.level)&&mutati
 async function fetchLevel(level){let last;for(const b of BASES){try{const r=await fetch(b+FILES[level],{cache:"no-cache"});if(!r.ok)throw Error("HTTP "+r.status);const d=await r.json();if(!Array.isArray(d))throw Error("格式錯誤");return d}catch(e){last=e}}throw last}
 async function loadWeb(){$("#reload").disabled=true;$("#webStatus").textContent="正在載入 N1–N5…";const rs=await Promise.allSettled(["N5","N4","N3","N2","N1"].map(async l=>[l,await fetchLevel(l)]));items=[];const c={N1:0,N2:0,N3:0,N4:0,N5:0};for(const r of rs){if(r.status!=="fulfilled")continue;const [level,pts]=r.value;pts.forEach((p,pi)=>(p.examples||[]).forEach((e,ei)=>{const jp=String(e.jp||"").trim();if(jp.length<5||jp.length>95)return;items.push({id:`${level}-${pi}-${ei}`,level,jp,en:e.en||"",grammar:cleanTitle(p.title),category:cat((p.short_explanation||"")+" "+(p.long_explanation||""))});c[level]++}))}$("#webStatus").textContent=items.length?`✅ 已載入 ${items.length.toLocaleString()} 個 Web 聽解句子。`:"⚠️ Web 題庫暫時無法載入。";$("#counts").innerHTML=Object.entries(c).map(([k,v])=>`<span class=count>${k}: ${v.toLocaleString()}</span>`).join("");$("#reload").disabled=false;render()}
 const GROUPS=[
-["今日","昨日","明日","今朝"],["今週","先週","来週","再来週"],["今月","先月","来月","再来月"],["今年","去年","来年","再来年"],["さっき","今","あとで","昨日"],
+["今日","昨日","明日","今朝"],["今週","先週","来週","再来週"],["今月","先月","来月","再来月"],["今年","去年","来年","再来年"],["さっき","先ほど","あとで","昨日"],
 ["朝","昼","夕方","夜"],["午前","午後"],["右","左","前","後"],["上","下"],
 ["ここ","そこ","あそこ","どこ"],["これ","それ","あれ","どれ"],["この","その","あの","どの"],
 ["まだ","もう"],["いつも","よく","時々","たまに"],["必ず","たぶん","きっと","おそらく"],
@@ -123,7 +123,8 @@ const GROUPS=[
 ["行きます","来ます","帰ります","戻ります"],["行く","来る","帰る","戻る"],["買います","売ります"],["買う","売る"],
 ["始まります","終わります"],["始まる","終わる"],["増えます","減ります"],["増える","減る"]
 ]
-function mutations(s){const out=[];for(const g of GROUPS){for(const x of g){if(!s.includes(x))continue;for(const y of g){if(y!==x){const z=s.replace(x,y);if(z!==s&&!out.includes(z))out.push(z)}}}}const m=s.match(/\d+/);if(m){const n=+m[0];for(const d of [-1,1,2]){const v=Math.max(1,n+d);const z=s.replace(m[0],String(v));if(z!==s&&!out.includes(z))out.push(z)}}return out}
+function tokenShadowed(s,x){for(const g of GROUPS)for(const longer of g){if(longer!==x&&longer.length>x.length&&longer.includes(x)&&s.includes(longer))return true}return false}
+function mutations(s){const out=[];for(const g of GROUPS){for(const x of g){if(!s.includes(x)||tokenShadowed(s,x))continue;for(const y of g){if(y!==x){const z=s.replace(x,y);if(z!==s&&!out.includes(z))out.push(z)}}}}const m=s.match(/\d+/);if(m){const n=+m[0];for(const d of [-1,1,2]){const v=Math.max(1,n+d);const z=s.replace(m[0],String(v));if(z!==s&&!out.includes(z))out.push(z)}}return out}
 function bigrams(s){const a=[];for(let i=0;i<s.length-1;i++)a.push(s.slice(i,i+2));return new Set(a)}
 function sim(a,b){const A=bigrams(a),B=bigrams(b);let inter=0;A.forEach(x=>{if(B.has(x))inter++});const jac=inter/Math.max(1,A.size+B.size-inter);const len=1-Math.min(1,Math.abs(a.length-b.length)/Math.max(a.length,b.length));return jac*.72+len*.28}
 function makeChoices(q){const d=shuffle(mutations(q.jp));if(d.length<3)return null;return{choices:shuffle([q.jp,...d.slice(0,3)]),quality:"同一句只改一個關鍵細節"}}
