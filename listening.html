@@ -68,7 +68,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500}.sheet-b
 </div>
 <div id="devicePanel" style="display:none;margin-top:8px"><div id="voiceStatus" class="muted">正在檢查瀏覽器日語語音…</div><div class="field" style="margin-top:8px"><label style="display:block;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:4px">裝置日語語音（備援）</label><select id="voice" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:9px"><option value="">自動選擇日語語音</option></select></div></div>
 </div>
-<div class="source"><strong>🎯 相似答案規則</strong><div class="muted">四個答案只使用同一句子並改一個關鍵細節，例如時間、方向、肯定／否定、數字、程度或常見動詞。無法產生 3 個足夠相似選項的句子會直接跳過，不使用不相關句子湊答案。</div></div>
+<div class="source"><strong>🎯 相似答案規則</strong><div class="muted">四個答案只使用同一句子並改一個關鍵細節，例如時間、方向、數字、程度或常見動詞；繁體中文翻譯也必須保持相似。任何一層不夠接近就會跳過該句，不使用不相關答案湊數。</div></div>
 <div class="source"><strong>🔤 ふりがな</strong><div id="furiganaStatus" class="muted">準備中…</div></div>
 </aside>
 </div>
@@ -111,14 +111,17 @@ function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function cleanTitle(t){return String(t||"").replace(/\s*\([^()]*\)\s*$/,"").trim()}
 function cat(s){s=String(s||"").toLowerCase();const g=[["逆接／轉折",/contrast|although|though|despite|however|but|contradict/],["原因／理由",/reason|cause|because|therefore|result|due to/],["條件／假設",/condition|if |whenever|provided|assuming/],["目的／目標",/purpose|in order|so as to|goal/],["時間／時機",/time|when|while|before|after|until|since/],["推測／判斷",/guess|suppos|probably|seem|appear|inference|certain/],["程度／比較",/compar|degree|most|least|more than|less than/],["義務／必要",/must|obligation|necessary|required|have to/],["能力／可能",/ability|possible|able to|possibility/],["列舉／追加",/addition|also|not only|as well|example|list/]];for(const [n,r] of g)if(r.test(s))return n;return"一般文法"}
 function selectedLevels(){return $$(".level input:checked").map(x=>x.value)}
-function pool(){let p=items.filter(x=>selectedLevels().includes(x.level));if($("input[name=mode]:checked").value==="wrong")p=p.filter(x=>wrong.has(x.id));return p}
+function pool(){let p=items.filter(x=>selectedLevels().includes(x.level)&&mutations(x.jp).length>=3);if($("input[name=mode]:checked").value==="wrong")p=p.filter(x=>wrong.has(x.id));return p}
 async function fetchLevel(level){let last;for(const b of BASES){try{const r=await fetch(b+FILES[level],{cache:"no-cache"});if(!r.ok)throw Error("HTTP "+r.status);const d=await r.json();if(!Array.isArray(d))throw Error("格式錯誤");return d}catch(e){last=e}}throw last}
 async function loadWeb(){$("#reload").disabled=true;$("#webStatus").textContent="正在載入 N1–N5…";const rs=await Promise.allSettled(["N5","N4","N3","N2","N1"].map(async l=>[l,await fetchLevel(l)]));items=[];const c={N1:0,N2:0,N3:0,N4:0,N5:0};for(const r of rs){if(r.status!=="fulfilled")continue;const [level,pts]=r.value;pts.forEach((p,pi)=>(p.examples||[]).forEach((e,ei)=>{const jp=String(e.jp||"").trim();if(jp.length<5||jp.length>95)return;items.push({id:`${level}-${pi}-${ei}`,level,jp,en:e.en||"",grammar:cleanTitle(p.title),category:cat((p.short_explanation||"")+" "+(p.long_explanation||""))});c[level]++}))}$("#webStatus").textContent=items.length?`✅ 已載入 ${items.length.toLocaleString()} 個 Web 聽解句子。`:"⚠️ Web 題庫暫時無法載入。";$("#counts").innerHTML=Object.entries(c).map(([k,v])=>`<span class=count>${k}: ${v.toLocaleString()}</span>`).join("");$("#reload").disabled=false;render()}
 const GROUPS=[
-["今日","昨日","明日"],["今週","先週","来週"],["今月","先月","来月"],["今年","去年","来年"],["さっき","今","あとで","昨日"],["朝","昼","夜"],["午前","午後"],["右","左"],["上","下"],["前","後"],
-["ここ","そこ","あそこ"],["これ","それ","あれ"],["この","その","あの"],["まだ","もう"],["いつも","よく","時々","たまに"],["必ず","たぶん"],["好き","嫌い"],["高い","安い"],["大きい","小さい"],["多い","少ない"],["早い","遅い"],
-["行きます","来ます","帰ります"],["行く","来る","帰る"],["買います","売ります"],["買う","売る"],["始まります","終わります"],["始まる","終わる"],["増えます","減ります"],["増える","減る"],
-["ます","ません","ました","ませんでした"],["です","ではありません","でした","ではありませんでした"]
+["今日","昨日","明日","今朝"],["今週","先週","来週","再来週"],["今月","先月","来月","再来月"],["今年","去年","来年","再来年"],["さっき","今","あとで","昨日"],
+["朝","昼","夕方","夜"],["午前","午後"],["右","左","前","後"],["上","下"],
+["ここ","そこ","あそこ","どこ"],["これ","それ","あれ","どれ"],["この","その","あの","どの"],
+["まだ","もう"],["いつも","よく","時々","たまに"],["必ず","たぶん","きっと","おそらく"],
+["好き","嫌い"],["高い","安い"],["大きい","小さい"],["多い","少ない"],["早い","遅い"],
+["行きます","来ます","帰ります","戻ります"],["行く","来る","帰る","戻る"],["買います","売ります"],["買う","売る"],
+["始まります","終わります"],["始まる","終わる"],["増えます","減ります"],["増える","減る"]
 ]
 function mutations(s){const out=[];for(const g of GROUPS){for(const x of g){if(!s.includes(x))continue;for(const y of g){if(y!==x){const z=s.replace(x,y);if(z!==s&&!out.includes(z))out.push(z)}}}}const m=s.match(/\d+/);if(m){const n=+m[0];for(const d of [-1,1,2]){const v=Math.max(1,n+d);const z=s.replace(m[0],String(v));if(z!==s&&!out.includes(z))out.push(z)}}return out}
 function bigrams(s){const a=[];for(let i=0;i<s.length-1;i++)a.push(s.slice(i,i+2));return new Set(a)}
@@ -148,7 +151,8 @@ async function translateZh(en){en=String(en||"").trim();if(!en)return"";if(zhCac
 function validTraditionalChoice(src,z){z=String(z||"").trim();return !!z&&z!==String(src||"").trim()&&!/[A-Za-zぁ-ゖァ-ヺ]/.test(z)}
 function normChoice(z){return String(z||"").replace(/[\s，。！？、,.!?「」『』（）()]/g,"").trim()}
 async function translateJaZh(jp){jp=String(jp||"").trim();if(!jp)return"";if(jaZhCache.has(jp)){const z=jaZhCache.get(jp);if(validTraditionalChoice(jp,z))return z;jaZhCache.delete(jp)}try{const u="https://api.mymemory.translated.net/get?q="+encodeURIComponent(jp.slice(0,450))+"&langpair=ja%7Czh-TW";const r=await fetch(u);if(!r.ok)throw Error();const d=await r.json();const z=String(d?.responseData?.translatedText||"").trim();if(!validTraditionalChoice(jp,z))throw Error();jaZhCache.set(jp,z);save("jplistening_jazh",Object.fromEntries([...jaZhCache.entries()].slice(-800)));return z}catch{return""}}
-async function prepareChineseChoices(q,m){const rows=await Promise.all(m.choices.map(async jp=>{let zh="";if(jp===q.jp&&q.en)zh=await translateZh(q.en);if(!validTraditionalChoice(jp,zh))zh=await translateJaZh(jp);return{jp,zh}}));if(rows.some(x=>!validTraditionalChoice(x.jp,x.zh)))return null;const keys=rows.map(x=>normChoice(x.zh));if(new Set(keys).size!==rows.length)return null;return rows}
+function zhChoiceSim(a,b){a=normChoice(a);b=normChoice(b);if(!a||!b)return 0;const A=bigrams(a),B=bigrams(b);let inter=0;A.forEach(x=>{if(B.has(x))inter++});return inter/Math.max(1,A.size+B.size-inter)}
+async function prepareChineseChoices(q,m){const rows=await Promise.all(m.choices.map(async jp=>{let zh="";if(jp===q.jp&&q.en)zh=await translateZh(q.en);if(!validTraditionalChoice(jp,zh))zh=await translateJaZh(jp);return{jp,zh}}));if(rows.some(x=>!validTraditionalChoice(x.jp,x.zh)))return null;const keys=rows.map(x=>normChoice(x.zh));if(new Set(keys).size!==rows.length)return null;const correct=rows.find(x=>x.jp===q.jp);if(!correct)return null;for(const x of rows){if(x===correct)continue;const len=Math.min(normChoice(x.zh).length,normChoice(correct.zh).length)/Math.max(1,Math.max(normChoice(x.zh).length,normChoice(correct.zh).length));if(len<.6||zhChoiceSim(x.zh,correct.zh)<.18)return null}return rows}
 async function fillZh(q,rt){const z=await translateZh(q.en);if(rt!==renderToken)return;$("#aZh").textContent=z||"此 Web 例句暫時未取得可靠的繁體中文翻譯。"}
 function kataToHira(s){return String(s||"").replace(/[\u30a1-\u30f6]/g,ch=>String.fromCharCode(ch.charCodeAt(0)-0x60))}
 function tokenRuby(t){const surf=t.surface_form||"",rd=t.reading&&t.reading!=="*"?kataToHira(t.reading):"";if(!rd||!/[一-龯々]/.test(surf))return esc(surf);let k=surf.length;while(k>0&&/[ぁ-ゖァ-ヺー]/.test(surf[k-1]))k--;const stem=surf.slice(0,k),suffix=surf.slice(k),hs=kataToHira(suffix);if(stem&&hs&&rd.endsWith(hs)){const rr=rd.slice(0,-hs.length);return `<ruby>${esc(stem)}<rt>${esc(rr)}</rt></ruby>${esc(suffix)}`}return `<ruby>${esc(surf)}<rt>${esc(rd)}</rt></ruby>`}
