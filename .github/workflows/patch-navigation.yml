@@ -1,0 +1,26 @@
+name: Patch navigation consistency
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-navigation.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch navigation
+        run: python .github/patch-navigation.py
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html grammar.html listening.html
+          if git diff --cached --quiet; then
+            echo "No navigation changes needed"
+          else
+            git commit -m "Make navigation consistent across learning games"
+            git push
+          fi
