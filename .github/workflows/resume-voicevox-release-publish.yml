@@ -1,0 +1,117 @@
+name: Resume VOICEVOX GitHub Release publish
+
+on:
+  push:
+    branches: [main]
+    paths: [.voicevox-release-recovery]
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Generate VOICEVOX workflow run ID containing the saved pack artifact
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  resume:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Resolve saved generation run
+        id: source
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            RUN_ID="$(tr -d '[:space:]' < .voicevox-release-recovery)"
+          else
+            RUN_ID="${{ inputs.source_run_id }}"
+          fi
+          test -n "$RUN_ID"
+          echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
+          echo "Resuming from saved VOICEVOX pack in workflow run $RUN_ID"
+
+      - name: Download saved VOICEVOX pack
+        uses: actions/download-artifact@v4
+        with:
+          name: voicevox-pack-${{ steps.source.outputs.run_id }}
+          path: voicevox-pack
+          github-token: ${{ github.token }}
+          repository: kanuli/japanese-vocab-game
+          run-id: ${{ steps.source.outputs.run_id }}
+
+      - name: Confirm saved pack
+        run: |
+          test -f voicevox-pack/voicevox-index.json
+          COUNT=$(find voicevox-pack/voicevox -type f -name '*.mp3' | wc -l)
+          echo "Recovered $COUNT MP3 files; no VOICEVOX regeneration required"
+          test "$COUNT" -eq 3310
+          python -m py_compile scripts/publish_voicevox_releases.py
+
+      - name: Check GitHub API quota before Release uploads
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -e
+          JSON=$(gh api rate_limit)
+          REMAINING=$(printf '%s' "$JSON" | python -c "import json,sys; print(json.load(sys.stdin)['resources']['core']['remaining'])")
+          RESET=$(printf '%s' "$JSON" | python -c "import json,sys; print(json.load(sys.stdin)['resources']['core']['reset'])")
+          NOW=$(date +%s)
+          echo "GitHub core API remaining: $REMAINING"
+          echo "GitHub core API reset epoch: $RESET"
+          if [ "$REMAINING" -lt 1200 ]; then
+            WAIT=$((RESET - NOW + 20))
+            if [ "$WAIT" -lt 20 ]; then WAIT=20; fi
+            if [ "$WAIT" -gt 3700 ]; then WAIT=3700; fi
+            echo "Quota is too low for the remaining Release assets. Waiting $WAIT seconds until the known reset window instead of failing after partial upload."
+            sleep "$WAIT"
+            gh api rate_limit --jq '.resources.core | "After wait: remaining=\(.remaining), reset=\(.reset)"'
+          else
+            echo "Quota preflight passed; continuing immediately."
+          fi
+
+      - name: Resume public GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACK_DIR: voicevox-pack
+          INDEX_OUT: voicevox-release-index.json
+          RELEASE_NAMESPACE: voicevox-v1
+          RELEASE_MAX_ASSETS: '800'
+          RELEASE_UPLOAD_BATCH: '10'
+          RELEASE_UPLOAD_RETRIES: '4'
+          RELEASE_RETRY_BASE_SECONDS: '3'
+          REPLACE_LEVELS: '1'
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+        run: python scripts/publish_voicevox_releases.py
+
+      - name: Validate complete public index
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('voicevox-release-index.json',encoding='utf-8'))
+          assert d.get('indexed') == 3310, d.get('indexed')
+          assert len(d.get('items') or {}) == 3310
+          assert (d.get('publisher') or {}).get('avoidClobberForNewAssets') is True
+          assert (d.get('publisher') or {}).get('failFastOnRateLimit') is True
+          print('Validated complete 3310-question public VOICEVOX index')
+          PY
+
+      - name: Commit completed public index
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add voicevox-release-index.json
+          if git diff --cached --quiet; then
+            echo 'Public VOICEVOX index unchanged'
+          else
+            git commit -m 'Complete VOICEVOX GitHub Release index'
+            git pull --rebase origin main
+            git push origin main
+          fi
