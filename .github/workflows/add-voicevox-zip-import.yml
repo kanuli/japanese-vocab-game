@@ -80,7 +80,6 @@ jobs:
             }
             const href=await page.getAttribute('#voicevoxGenerate','href');
             if(!href.includes('generate-voicevox-pack.yml')) throw new Error('Generator link wrong: '+href);
-            // Mock only the network upload call; verify the real page's ZIP chooser/import handler and status update.
             await page.evaluate(()=>{
               window.OneDriveVoicevox.importVoicevoxZip=async(file,cb)=>{
                 if(!file||file.name!=='voicevox-test.zip') throw new Error('ZIP file not passed');
@@ -106,6 +105,6 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add listening.html src/listening-onedrive-entry.js vendor/onedrive-voicevox.js .github/workflows/generate-voicevox-pack.yml
+          git add listening.html src/listening-onedrive-entry.js vendor/onedrive-voicevox.js
           git commit -m 'Add one-step VOICEVOX ZIP import to OneDrive'
           git push
