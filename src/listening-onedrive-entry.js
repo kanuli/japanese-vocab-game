@@ -3,6 +3,7 @@ import {
   BrowserCacheLocation,
   InteractionRequiredAuthError
 } from '@azure/msal-browser';
+import { unzipSync, strFromU8 } from 'fflate';
 
 const CLIENT_ID_KEY='jplistening_onedrive_client_id';
 const GRAPH='https://graph.microsoft.com/v1.0';
@@ -190,6 +191,117 @@ async function putText(path,text,type='application/json'){
   return r.json();
 }
 
+async function putBytes(path,bytes,type='application/octet-stream'){
+  const accessToken=await token();
+  const p=encodePath(path);
+  const r=await fetch(`${GRAPH}/me/drive/special/approot:/${p}:/content`,{
+    method:'PUT',
+    headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':type},
+    body:bytes
+  });
+  if(!r.ok){
+    let detail='';
+    try{const d=await r.json();detail=d?.error?.message||''}catch{}
+    throw new GraphError(r.status,detail||`Microsoft Graph HTTP ${r.status}`);
+  }
+  return r.json();
+}
+
+async function ensureFolderPath(path){
+  const parts=String(path||'').split('/').filter(Boolean);
+  let current='';
+  for(const name of parts){
+    const parent=current;
+    current=current?`${current}/${name}`:name;
+    try{await metadata(current);continue}catch(e){if(e?.status!==404)throw e}
+    const endpoint=parent
+      ? `/me/drive/special/approot:/${encodePath(parent)}:/children`
+      : '/me/drive/special/approot/children';
+    try{
+      await graph(endpoint,{method:'POST',body:{name,folder:{},'@microsoft.graph.conflictBehavior':'fail'}});
+    }catch(e){
+      if(e?.status!==409)throw e;
+    }
+  }
+}
+
+function zipMime(path){
+  if(/\.mp3$/i.test(path))return 'audio/mpeg';
+  if(/\.m4a$/i.test(path))return 'audio/mp4';
+  if(/\.wav$/i.test(path))return 'audio/wav';
+  return 'application/octet-stream';
+}
+
+function unpackVoicevoxArchive(bytes){
+  let files=unzipSync(bytes);
+  let names=Object.keys(files);
+  let indexName=names.find(n=>n==='voicevox-index.json'||n.endsWith('/voicevox-index.json'));
+  if(!indexName){
+    // Backward compatibility with the old artifact that contained an inner ZIP.
+    const nested=names.find(n=>/\.zip$/i.test(n)&&files[n]?.length);
+    if(nested){
+      files=unzipSync(files[nested]);
+      names=Object.keys(files);
+      indexName=names.find(n=>n==='voicevox-index.json'||n.endsWith('/voicevox-index.json'));
+    }
+  }
+  if(!indexName)throw new Error('ZIP 內找不到 voicevox-index.json；請使用本專案 GitHub Actions 產生的 VOICEVOX 音訊包。');
+  const prefix=indexName.slice(0,indexName.length-'voicevox-index.json'.length);
+  const pack=JSON.parse(strFromU8(files[indexName]));
+  if(pack?.version!==1||!pack?.items||typeof pack.items!=='object')throw new Error('voicevox-index.json 格式不正確');
+  const audio=[];
+  for(const name of names){
+    if(!name.startsWith(prefix))continue;
+    const rel=name.slice(prefix.length).replace(/^\/+/, '');
+    if(!/^voicevox\//.test(rel)||!/(\.mp3|\.m4a|\.wav)$/i.test(rel))continue;
+    if(files[name]?.length)audio.push({path:rel,bytes:files[name]});
+  }
+  if(!audio.length)throw new Error('ZIP 內沒有找到 VOICEVOX MP3/M4A/WAV 音訊');
+  return {pack,audio};
+}
+
+async function importVoicevoxZip(file,onProgress=()=>{}){
+  const state=await init();
+  if(!state.signedIn)throw new Error('請先連接 OneDrive');
+  if(!file||typeof file.arrayBuffer!=='function')throw new Error('請選擇 VOICEVOX ZIP 音訊包');
+  onProgress({phase:'read',message:'正在讀取 ZIP…',done:0,total:0});
+  const parsed=unpackVoicevoxArchive(new Uint8Array(await file.arrayBuffer()));
+  await ensureStructure();
+
+  // Create every required directory before parallel uploads.
+  const dirs=[...new Set(parsed.audio.map(x=>x.path.split('/').slice(0,-1).join('/')).filter(Boolean))]
+    .sort((a,b)=>a.split('/').length-b.split('/').length||a.localeCompare(b));
+  for(const d of dirs)await ensureFolderPath(d);
+
+  let done=0;
+  const total=parsed.audio.length;
+  let cursor=0;
+  async function worker(){
+    while(true){
+      const i=cursor++;
+      if(i>=total)return;
+      const item=parsed.audio[i];
+      await putBytes(item.path,item.bytes,zipMime(item.path));
+      done++;
+      onProgress({phase:'upload',message:`正在上傳 ${done}/${total}…`,done,total,path:item.path});
+    }
+  }
+  const workers=Array.from({length:Math.min(3,total)},()=>worker());
+  await Promise.all(workers);
+
+  let existing={version:1,items:{}};
+  try{existing=await loadIndex(true)}catch{}
+  const merged={
+    version:1,
+    items:{...(existing?.items||{}),...(parsed.pack.items||{})}
+  };
+  await putText(baseConfig().indexFile,JSON.stringify(merged,null,2));
+  indexCache=merged;
+  urlCache.clear();
+  onProgress({phase:'done',message:`✅ 已上傳 ${total} 個 VOICEVOX 音訊；索引共有 ${Object.keys(merged.items).length} 題。`,done:total,total});
+  return {uploaded:total,indexed:Object.keys(merged.items).length};
+}
+
 async function ensureStructure(){
   const c=baseConfig();
   await ensureAppRoot();
@@ -259,6 +371,6 @@ async function connectionInfo(){
 
 window.OneDriveVoicevox={
   init,signIn,signOut,isConfigured,savedClientId,setClientId,
-  ensureStructure,connectionInfo,getAudio,loadIndex
+  ensureStructure,connectionInfo,getAudio,loadIndex,importVoicevoxZip
 };
 window.dispatchEvent(new Event('onedrive-voicevox-module-ready'));
