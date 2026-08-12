@@ -1,0 +1,111 @@
+name: Add VOICEVOX ZIP import
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-voicevox-zip-import.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply ZIP import patch
+        run: python scripts/add-voicevox-zip-import.py
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Rebuild OneDrive browser client
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund --save-dev @azure/msal-browser@5.17.3 fflate@0.8.2 esbuild@0.25.9
+          npx esbuild src/listening-onedrive-entry.js \
+            --bundle \
+            --format=esm \
+            --platform=browser \
+            --target=es2020 \
+            --minify \
+            --outfile=vendor/onedrive-voicevox.js
+
+      - name: Static checks
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          h=Path('listening.html').read_text(encoding='utf-8')
+          src=Path('src/listening-onedrive-entry.js').read_text(encoding='utf-8')
+          wf=Path('.github/workflows/generate-voicevox-pack.yml').read_text(encoding='utf-8')
+          for x in ['voicevoxGenerate','voicevoxImport','voicevoxZip','voicevoxImportStatus','importVoicevoxPack']:
+              assert x in h, x
+          for x in ["from 'fflate'",'importVoicevoxZip','unpackVoicevoxArchive','putBytes','ensureFolderPath']:
+              assert x in src, x
+          assert 'path: voicevox-pack/' in wf
+          assert 'name: Create ZIP' not in wf
+          scripts=re.findall(r'<script>(.*?)</script>',h,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+          node --check vendor/onedrive-voicevox.js
+
+      - name: Install browser tester
+        run: |
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser smoke test
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > test-voicevox-import.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>window.OneDriveVoicevox&&document.querySelector('#onedriveStatus')?.textContent!=='正在檢查 OneDrive 設定…',{timeout:30000});
+            await page.check('#engineVoicevox');
+            if((await page.$eval('#voicevoxPanel',e=>getComputedStyle(e).display))==='none') throw new Error('VOICEVOX panel hidden');
+            for(const sel of ['#voicevoxGenerate','#voicevoxImport','#voicevoxZip','#voicevoxImportStatus']){
+              if(!(await page.$(sel))) throw new Error('Missing '+sel);
+            }
+            const href=await page.getAttribute('#voicevoxGenerate','href');
+            if(!href.includes('generate-voicevox-pack.yml')) throw new Error('Generator link wrong: '+href);
+            // Mock only the network upload call; verify the real page's ZIP chooser/import handler and status update.
+            await page.evaluate(()=>{
+              window.OneDriveVoicevox.importVoicevoxZip=async(file,cb)=>{
+                if(!file||file.name!=='voicevox-test.zip') throw new Error('ZIP file not passed');
+                cb({message:'正在上傳 1/1…'});
+                return {uploaded:1,indexed:1};
+              };
+              window.OneDriveVoicevox.connectionInfo=async()=>({signedIn:true,indexed:1});
+              document.querySelector('#voicevoxImport').disabled=false;
+            });
+            await page.setInputFiles('#voicevoxZip',{name:'voicevox-test.zip',mimeType:'application/zip',buffer:Buffer.from('PK-test')});
+            await page.waitForFunction(()=>document.querySelector('#voicevoxImportStatus')?.textContent.includes('匯入完成'),{timeout:10000});
+            const status=await page.textContent('#voicevoxImportStatus');
+            if(!status.includes('1 個音訊')) throw new Error('Unexpected import result: '+status);
+            if(errors.length) throw new Error(errors.join(' | '));
+            console.log('VOICEVOX ZIP import UI: OK');
+            console.log(status);
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 120s node test-voicevox-import.cjs
+
+      - name: Commit verified ZIP import flow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html src/listening-onedrive-entry.js vendor/onedrive-voicevox.js .github/workflows/generate-voicevox-pack.yml
+          git commit -m 'Add one-step VOICEVOX ZIP import to OneDrive'
+          git push
