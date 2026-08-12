@@ -6,6 +6,7 @@ import {
 import { unzipSync, strFromU8 } from 'fflate';
 
 const CLIENT_ID_KEY='jplistening_onedrive_client_id';
+const ACCOUNT_HINT_KEY='jplistening_onedrive_login_hint';
 const GRAPH='https://graph.microsoft.com/v1.0';
 let app=null;
 let appClientId='';
@@ -29,9 +30,49 @@ function baseConfig(){
 
 function isConfigured(){return !!baseConfig().clientId}
 function savedClientId(){return baseConfig().clientId}
+function savedLoginHint(){
+  try{return (localStorage.getItem(ACCOUNT_HINT_KEY)||'').trim()}catch{return ''}
+}
+function rememberAccount(acct){
+  account=acct||null;
+  if(account){
+    try{
+      const hint=String(account.username||'').trim();
+      if(hint)localStorage.setItem(ACCOUNT_HINT_KEY,hint);
+    }catch{}
+    try{app?.setActiveAccount(account)}catch{}
+  }
+  return account;
+}
+function authErrorCode(e){
+  return String(e?.errorCode||e?.code||e?.name||'').toLowerCase();
+}
+function isLostRequestCacheError(e){
+  const c=authErrorCode(e);
+  return c==='no_token_request_cache_error'||c==='unable_to_parse_token_request_cache_error';
+}
+function clearStaleAuthResponse(){
+  try{
+    const u=new URL(location.href);
+    const keys=['code','state','session_state','client_info','error','error_description','error_subcode'];
+    let changed=false;
+    for(const k of keys)if(u.searchParams.has(k)){u.searchParams.delete(k);changed=true}
+    if(u.hash&&/[#&](code|state|session_state|client_info|error|error_description)=/i.test(u.hash)){
+      u.hash='';changed=true;
+    }
+    if(changed)history.replaceState(history.state,'',u.pathname+u.search+u.hash);
+  }catch{}
+}
+function reconnectError(){
+  const e=new Error('Microsoft 登入已失效。請在「⚙️ VOICEVOX 設定／維護」內按「重新連接 OneDrive」一次。');
+  e.code='onedrive_reconnect_required';
+  return e;
+}
 function setClientId(id){
   id=String(id||'').trim();
+  const previous=baseConfig().clientId;
   if(id)localStorage.setItem(CLIENT_ID_KEY,id);else localStorage.removeItem(CLIENT_ID_KEY);
+  if(previous&&previous!==id){try{localStorage.removeItem(ACCOUNT_HINT_KEY)}catch{}}
   app=null;appClientId='';account=null;initPromise=null;indexCache=null;urlCache.clear();
   return id;
 }
@@ -52,10 +93,31 @@ async function getApp(){
   });
   appClientId=c.clientId;
   await app.initialize();
-  const redirect=await app.handleRedirectPromise();
-  account=redirect?.account||app.getActiveAccount()||app.getAllAccounts()[0]||null;
-  if(account)app.setActiveAccount(account);
+  let redirect=null;
+  try{
+    redirect=await app.handleRedirectPromise();
+  }catch(e){
+    if(!isLostRequestCacheError(e))throw e;
+    // MSAL v4+ can lose the encrypted redirect request when the browser-session
+    // encryption cookie disappears. The authorization response cannot be reused;
+    // remove it so the site does not fail on every subsequent load.
+    clearStaleAuthResponse();
+  }
+  rememberAccount(redirect?.account||app.getActiveAccount()||app.getAllAccounts()[0]||null);
   return app;
+}
+
+async function recoverSilentSession(a){
+  const c=baseConfig();
+  const hint=savedLoginHint();
+  if(!hint)return null;
+  try{
+    const r=await a.ssoSilent({scopes:c.scopes,loginHint:hint});
+    rememberAccount(r?.account||a.getActiveAccount()||a.getAllAccounts()[0]||null);
+    return r||null;
+  }catch{
+    return null;
+  }
 }
 
 async function init(){
@@ -63,8 +125,8 @@ async function init(){
   if(initPromise)return initPromise;
   initPromise=(async()=>{
     const a=await getApp();
-    account=a.getActiveAccount()||a.getAllAccounts()[0]||account||null;
-    if(account)a.setActiveAccount(account);
+    rememberAccount(a.getActiveAccount()||a.getAllAccounts()[0]||account||null);
+    if(!account)await recoverSilentSession(a);
     return {configured:true,signedIn:!!account,account:account?.username||account?.name||''};
   })().catch(e=>{initPromise=null;throw e});
   return initPromise;
@@ -75,8 +137,8 @@ async function signIn(){
   const c=baseConfig();
   try{
     const r=await a.loginPopup({scopes:c.scopes,prompt:'select_account'});
-    account=r.account;
-    if(account)a.setActiveAccount(account);
+    rememberAccount(r.account);
+    initPromise=null;
     return {signedIn:true,account:account?.username||account?.name||''};
   }catch(e){
     // Popup restrictions are common on mobile Safari. Redirect is the reliable fallback.
@@ -94,21 +156,30 @@ async function signOut(){
   const a=await getApp();
   const acct=a.getActiveAccount()||a.getAllAccounts()[0]||null;
   if(acct)await a.logoutPopup({account:acct,postLogoutRedirectUri:baseConfig().redirectUri});
-  account=null;indexCache=null;urlCache.clear();
+  account=null;initPromise=null;indexCache=null;urlCache.clear();
+  try{localStorage.removeItem(ACCOUNT_HINT_KEY)}catch{}
 }
 
 async function token(){
   const a=await getApp();
   const c=baseConfig();
-  const acct=a.getActiveAccount()||a.getAllAccounts()[0]||account;
-  if(!acct)throw new Error('請先連接 OneDrive');
+  let acct=a.getActiveAccount()||a.getAllAccounts()[0]||account;
+  if(!acct){
+    const recovered=await recoverSilentSession(a);
+    if(recovered?.accessToken)return recovered.accessToken;
+    acct=a.getActiveAccount()||a.getAllAccounts()[0]||account;
+  }
+  if(!acct)throw reconnectError();
   try{
     const r=await a.acquireTokenSilent({account:acct,scopes:c.scopes});
+    rememberAccount(r?.account||acct);
     return r.accessToken;
   }catch(e){
-    if(e instanceof InteractionRequiredAuthError||String(e?.errorCode||'').includes('interaction')){
-      const r=await a.acquireTokenPopup({account:acct,scopes:c.scopes});
-      return r.accessToken;
+    const code=authErrorCode(e);
+    if(e instanceof InteractionRequiredAuthError||code.includes('interaction')||code==='no_account_error'||isLostRequestCacheError(e)){
+      const recovered=await recoverSilentSession(a);
+      if(recovered?.accessToken)return recovered.accessToken;
+      throw reconnectError();
     }
     throw e;
   }
@@ -363,10 +434,15 @@ async function connectionInfo(){
   const s=await init();
   if(!s.configured)return s;
   if(!s.signedIn)return s;
-  const root=await ensureAppRoot();
-  let count=0;
-  try{const i=await loadIndex();count=Object.keys(i?.items||{}).length}catch{}
-  return {...s,appFolder:root?.name||'',indexed:count};
+  try{
+    const root=await ensureAppRoot();
+    let count=0;
+    try{const i=await loadIndex();count=Object.keys(i?.items||{}).length}catch{}
+    return {...s,appFolder:root?.name||'',indexed:count};
+  }catch(e){
+    if(e?.code==='onedrive_reconnect_required')return {...s,signedIn:false,reconnectRequired:true};
+    throw e;
+  }
 }
 
 window.OneDriveVoicevox={
