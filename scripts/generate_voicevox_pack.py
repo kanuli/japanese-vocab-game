@@ -3,13 +3,13 @@
 
 Expected environment:
 - VOICEVOX_ENGINE_URL (default http://127.0.0.1:50021)
-- JLPT (N1..N5, default N5)
-- COUNT (positive integer or ALL, default 20)
+- JLPT (ALL or N1..N5, default ALL)
+- COUNT (positive integer per selected level or ALL, default ALL)
 - SPEAKER_NAME (default 四国めたん)
 - STYLE_NAME (default ノーマル; empty selects the first style)
 - OUTPUT_DIR (default voicevox-pack)
 
-The output layout is directly uploadable into the OneDrive App Folder:
+The output layout is directly importable into the OneDrive App Folder:
   voicevox/{JLPT}/{question-id}.mp3
   voicevox-index.json
 """
@@ -28,12 +28,13 @@ import urllib.request
 from pathlib import Path
 
 ENGINE = os.environ.get("VOICEVOX_ENGINE_URL", "http://127.0.0.1:50021").rstrip("/")
-JLPT = os.environ.get("JLPT", "N5").upper().strip()
-COUNT_RAW = os.environ.get("COUNT", "20").strip().upper()
+JLPT = os.environ.get("JLPT", "ALL").upper().strip()
+COUNT_RAW = os.environ.get("COUNT", "ALL").strip().upper()
 SPEAKER_NAME = os.environ.get("SPEAKER_NAME", "四国めたん").strip()
 STYLE_NAME = os.environ.get("STYLE_NAME", "ノーマル").strip()
 OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", "voicevox-pack"))
 
+LEVELS = ["N5", "N4", "N3", "N2", "N1"]
 FILES = {
     "N5": "grammar_ja_N5_full_alphabetical_0001.json",
     "N4": "grammar_ja_N4_full_alphabetical_0001.json",
@@ -85,10 +86,28 @@ def resolve_style() -> tuple[int, str, str]:
     return int(style["id"]), str(speaker.get("name", SPEAKER_NAME)), str(style.get("name", ""))
 
 
-def fetch_questions() -> list[dict]:
-    if JLPT not in FILES:
-        raise RuntimeError(f"Invalid JLPT level: {JLPT}")
-    data = http_json(HANABIRA_BASE + FILES[JLPT])
+def selected_levels() -> list[str]:
+    if JLPT == "ALL":
+        return LEVELS.copy()
+    if JLPT in FILES:
+        return [JLPT]
+    raise RuntimeError(f"Invalid JLPT level: {JLPT}")
+
+
+def level_limit() -> int | None:
+    if COUNT_RAW == "ALL":
+        return None
+    try:
+        count = int(COUNT_RAW)
+    except ValueError as exc:
+        raise RuntimeError("COUNT must be a positive integer or ALL") from exc
+    if count <= 0:
+        raise RuntimeError("COUNT must be > 0")
+    return count
+
+
+def fetch_level_questions(level: str, limit: int | None) -> list[dict]:
+    data = http_json(HANABIRA_BASE + FILES[level])
     rows: list[dict] = []
     for pi, point in enumerate(data):
         grammar = str(point.get("title", "")).strip()
@@ -96,22 +115,19 @@ def fetch_questions() -> list[dict]:
             jp = str(example.get("jp", "")).strip()
             if len(jp) < 5 or len(jp) > 95:
                 continue
-            rows.append(
-                {
-                    "id": f"{JLPT}-{pi}-{ei}",
-                    "level": JLPT,
-                    "jp": jp,
-                    "grammar": grammar,
-                }
-            )
-    if COUNT_RAW != "ALL":
-        try:
-            count = int(COUNT_RAW)
-        except ValueError as exc:
-            raise RuntimeError("COUNT must be a positive integer or ALL") from exc
-        if count <= 0:
-            raise RuntimeError("COUNT must be > 0")
-        rows = rows[:count]
+            rows.append({"id": f"{level}-{pi}-{ei}", "level": level, "jp": jp, "grammar": grammar})
+    if limit is not None:
+        rows = rows[:limit]
+    return rows
+
+
+def fetch_questions() -> list[dict]:
+    limit = level_limit()
+    rows: list[dict] = []
+    for level in selected_levels():
+        level_rows = fetch_level_questions(level, limit)
+        print(f"Loaded {len(level_rows)} {level} sentences")
+        rows.extend(level_rows)
     return rows
 
 
@@ -133,25 +149,10 @@ def wav_to_mp3(wav: bytes, out: Path) -> None:
         f.write(wav)
         tmp = Path(f.name)
     try:
-        subprocess.run(
-            [
-                "ffmpeg",
-                "-hide_banner",
-                "-loglevel",
-                "error",
-                "-y",
-                "-i",
-                str(tmp),
-                "-ac",
-                "1",
-                "-ar",
-                "24000",
-                "-b:a",
-                "48k",
-                str(out),
-            ],
-            check=True,
-        )
+        subprocess.run([
+            "ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-i", str(tmp),
+            "-ac", "1", "-ar", "24000", "-b:a", "48k", str(out)
+        ], check=True)
     finally:
         tmp.unlink(missing_ok=True)
 
@@ -161,18 +162,18 @@ def main() -> int:
     style_id, speaker, style = resolve_style()
     questions = fetch_questions()
     if not questions:
-        raise RuntimeError("No Hanabira examples found for the selected level")
+        raise RuntimeError("No Hanabira examples found for the selected level(s)")
 
-    audio_root = OUTPUT_DIR / "voicevox" / JLPT
-    audio_root.mkdir(parents=True, exist_ok=True)
     index = {"version": 1, "items": {}}
-
+    levels = selected_levels()
     print(f"VOICEVOX: {speaker} / {style} (style id {style_id})")
-    print(f"Generating {len(questions)} {JLPT} sentences")
+    print(f"Generating {len(questions)} sentences across {', '.join(levels)}")
 
     for i, q in enumerate(questions, 1):
+        level = q["level"]
+        audio_root = OUTPUT_DIR / "voicevox" / level
         filename = f"{q['id']}.mp3"
-        relative = f"voicevox/{JLPT}/{filename}"
+        relative = f"voicevox/{level}/{filename}"
         out = audio_root / filename
         print(f"[{i}/{len(questions)}] {q['id']}  {q['jp']}")
         wav = synthesize(q["jp"], style_id)
@@ -184,7 +185,7 @@ def main() -> int:
             "credit": f"VOICEVOX:{speaker}",
             "text": q["jp"],
             "grammar": q["grammar"],
-            "level": q["level"],
+            "level": level,
         }
 
     (OUTPUT_DIR / "voicevox-index.json").write_text(
@@ -192,11 +193,13 @@ def main() -> int:
     )
     (OUTPUT_DIR / "README.txt").write_text(
         "Japanese Listening Game VOICEVOX pack\n"
-        f"JLPT: {JLPT}\n"
+        f"JLPT: {', '.join(levels)}\n"
         f"Speaker: {speaker}\n"
         f"Style: {style}\n"
-        f"Credit: VOICEVOX:{speaker}\n\n"
-        "Upload the voicevox folder and voicevox-index.json into the game's OneDrive App Folder.\n",
+        f"Credit: VOICEVOX:{speaker}\n"
+        f"Audio files: {len(index['items'])}\n\n"
+        "Import this single GitHub Actions artifact ZIP from the Listening page; "
+        "the page will upload the audio and index into OneDrive automatically.\n",
         encoding="utf-8",
     )
     print(f"Done: {OUTPUT_DIR.resolve()}")
