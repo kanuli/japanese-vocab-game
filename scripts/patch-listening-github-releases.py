@@ -13,7 +13,7 @@ if start<0 or ai<0:
     raise SystemExit('audio panel anchors not found')
 
 new='''<div class="source"><strong>🔊 日語語音</strong>
-<div class="muted" style="margin:5px 0 8px">VOICEVOX 音訊直接由公開 GitHub Releases 播放；不需 Microsoft、OneDrive、Cloudflare、信用卡或額外登入。Supertonic 與裝置語音只作備援。</div>
+<div class="muted" style="margin:5px 0 8px">VOICEVOX 音訊直接由公開 GitHub Releases 播放；不需外部雲端帳戶、信用卡或額外登入。Supertonic 與裝置語音只作備援。</div>
 <div class="radios three" style="margin-bottom:9px"><div class="radio"><input id="engineVoicevox" name="audioEngine" type="radio" value="voicevox" checked><label for="engineVoicevox">🎭 VOICEVOX<br>GitHub</label></div><div class="radio"><input id="engineAI" name="audioEngine" type="radio" value="ai"><label for="engineAI">✨ Supertonic<br>AI</label></div><div class="radio"><input id="engineDevice" name="audioEngine" type="radio" value="device"><label for="engineDevice">🖥️ 裝置<br>語音</label></div></div>
 <div id="voicevoxPanel">
 <div id="voicevoxStatus" class="notice" style="margin:0 0 8px">正在載入 VOICEVOX 公開音訊索引…</div>
@@ -38,7 +38,6 @@ s=s[:block_start]+replacement+s[block_end:]
 s=s.replace('if(mode==="voicevox"){if(await speakOneDrive(rate))return;', 'if(mode==="voicevox"){if(await speakVoicevox(rate))return;',1)
 s=s.replace('game.voicevoxPromise=$("input[name=audioEngine]:checked")?.value==="voicevox"?prepareOneDriveAudio(q):null;', 'game.voicevoxPromise=$("input[name=audioEngine]:checked")?.value==="voicevox"?prepareVoicevoxAudio(q):null;',1)
 
-# Remove OneDrive-only event bindings.
 for old in [
 '$("#onedriveSaveConfig").onclick=saveOneDriveClientId;$("#onedriveConnect").onclick=connectOneDrive;$("#onedriveSetup").onclick=setupOneDrive;\n',
 '$("#voicevoxImport").addEventListener("click",()=>$("#voicevoxZip").click());\n',
@@ -51,7 +50,7 @@ s=s.replace('Web 句子來源：Hanabira。VOICEVOX 音訊可存於你的 OneDri
 
 for bad in ['OneDrive','Microsoft Application (client) ID','Files.ReadWrite.AppFolder','voicevoxImport','onedriveStatus','waitForOneDriveModule','prepareOneDriveAudio','speakOneDrive']:
     if bad in s:
-        raise SystemExit(f'old OneDrive content still present: {bad}')
+        raise SystemExit(f'old storage content still present: {bad}')
 
 p.write_text(s,encoding='utf-8')
 print('Patched listening.html to GitHub Releases VOICEVOX storage')
