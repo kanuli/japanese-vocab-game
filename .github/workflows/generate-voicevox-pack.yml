@@ -6,13 +6,13 @@ on:
       jlpt:
         description: JLPT level
         required: true
-        default: N5
+        default: ALL
         type: choice
-        options: [N5, N4, N3, N2, N1]
+        options: [ALL, N5, N4, N3, N2, N1]
       count:
-        description: Number of Hanabira sentences (use ALL for full level)
+        description: Number of Hanabira sentences PER level (use ALL for every sentence)
         required: true
-        default: '20'
+        default: 'ALL'
         type: string
       speaker_name:
         description: Exact VOICEVOX speaker name
@@ -28,7 +28,7 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
 
@@ -70,7 +70,7 @@ jobs:
       - name: Validate pack
         run: |
           test -f voicevox-pack/voicevox-index.json
-          test -d voicevox-pack/voicevox/${{ inputs.jlpt }}
+          test -d voicevox-pack/voicevox
           python - <<'PY'
           import json
           from pathlib import Path
@@ -79,13 +79,20 @@ jobs:
           assert d.get('version') == 1
           assert d.get('items')
           missing=[]
+          levels=set()
           for qid, rec in d['items'].items():
               f=Path('voicevox-pack') / rec['path']
               if not f.is_file() or f.stat().st_size < 500:
                   missing.append(str(f))
               assert rec.get('credit','').startswith('VOICEVOX:')
+              levels.add(rec.get('level'))
           assert not missing, missing
-          print('Validated', len(d['items']), 'VOICEVOX audio files')
+          requested='${{ inputs.jlpt }}'
+          if requested == 'ALL':
+              assert levels == {'N1','N2','N3','N4','N5'}, levels
+          else:
+              assert levels == {requested}, levels
+          print('Validated', len(d['items']), 'VOICEVOX audio files across', sorted(levels))
           PY
 
       - name: Upload sound pack
