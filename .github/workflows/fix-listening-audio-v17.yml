@@ -54,7 +54,7 @@ jobs:
           python3 -m http.server 8765 >/tmp/server.log 2>&1 &
           PID=$!
           trap 'kill $PID || true' EXIT
-          cat > /tmp/test-listening-v17.cjs <<'JS'
+          cat > test-listening-v17.cjs <<'JS'
           const {chromium}=require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true});
@@ -87,7 +87,7 @@ jobs:
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
-          timeout 150s node /tmp/test-listening-v17.cjs
+          timeout 150s node test-listening-v17.cjs
 
       - name: Commit verified Listening v1.7
         run: |
