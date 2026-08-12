@@ -29,7 +29,7 @@ if new_read not in s or new_word not in s:
 
 # 3) Make START visibly responsive and catch runtime generation errors.
 start_pat = re.compile(r'function start\(\)\{if\(!loadDone\)return;state=buildTest\(\);if\(!state\.sections\.every\(s=>s\.questions\.length\)\)\{alert\("題庫暫時不足，請重新載入頁面後再試。"\);return\}\$\("#setup"\)\.style\.display="none";\$\("#resultPage"\)\.style\.display="none";\$\("#sectionGate"\)\.style\.display="none";\$\("#exam"\)\.style\.display="block";startSection\(\)\}')
-new_start = '''let starting=false;\nfunction start(){if(!loadDone||starting)return;starting=true;const btn=$("#start");btn.disabled=true;btn.textContent="正在組卷…";$("#availability").textContent=`正在建立 ${currentLevel()} 模擬試卷，請稍候…`;setTimeout(()=>{try{state=buildTest();if(!state.sections.every(s=>s.questions.length))throw Error("題庫暫時不足");$("#setup").style.display="none";$("#resultPage").style.display="none";$("#sectionGate").style.display="none";$("#exam").style.display="block";startSection()}catch(e){console.error("Mock test start failed",e);state=null;alert("模擬試驗暫時無法建立。已保留頁面，請再按一次；若 Web 題庫失敗會自動使用備援。\n\n"+(e?.message||e));renderAvailability()}finally{starting=false;btn.textContent="開始模擬試驗 START";if($("#setup").style.display!=="none")btn.disabled=false}},40)}'''
+new_start = '''let starting=false;\nfunction start(){if(!loadDone||starting)return;starting=true;const btn=$("#start");btn.disabled=true;btn.textContent="正在組卷…";$("#availability").textContent=`正在建立 ${currentLevel()} 模擬試卷，請稍候…`;setTimeout(()=>{try{state=buildTest();if(!state.sections.every(s=>s.questions.length))throw Error("題庫暫時不足");$("#setup").style.display="none";$("#resultPage").style.display="none";$("#sectionGate").style.display="none";$("#exam").style.display="block";startSection()}catch(e){console.error("Mock test start failed",e);state=null;alert("模擬試驗暫時無法建立。已保留頁面，請再按一次；若 Web 題庫失敗會自動使用備援。錯誤："+(e?.message||e));renderAvailability()}finally{starting=false;btn.textContent="開始模擬試驗 START";if($("#setup").style.display!=="none")btn.disabled=false}},40)}'''
 s, n = start_pat.subn(lambda m:new_start, s, count=1)
 if n != 1 and 'let starting=false;' not in s:
     raise SystemExit('start function patch target not found')
@@ -42,7 +42,6 @@ old_load = 'async function loadAll(){$("#sourceStatus").textContent="正在載�
 new_load = 'async function loadAll(){$("#sourceStatus").textContent="正在載入約 10,000 個詞彙及 N1–N5 文法例句…";const slow=setTimeout(()=>{$("#availability").textContent="Web 題庫載入較慢，正在自動切換／嘗試備援來源…"},4500);'
 if old_load in s:
     s=s.replace(old_load,new_load,1)
-# clear watchdog once all sources resolve
 s = s.replace('loadDone=true;const gtotal=', 'clearTimeout(slow);loadDone=true;const gtotal=', 1)
 
 p.write_text(s,encoding='utf-8')
