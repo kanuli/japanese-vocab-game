@@ -1,0 +1,31 @@
+name: Fix JLPT mock exam fixed voice
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-mocktest-fixed-voice.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply fixed mock exam voice
+        run: python .github/scripts/fix_mocktest_voice.py
+      - name: Validate JavaScript
+        run: node --check mocktest.js
+      - name: Verify fixed voice behavior
+        run: |
+          grep -q 'function speakMockExam' mocktest.js
+          grep -q 'function chooseMockExamVoice' mocktest.js
+          grep -q 'u.rate=.91' mocktest.js
+          grep -q 'mocktest.js?v=20260813-fixedvoice1' mocktest.html
+          ! grep -q 'const rec=voicevoxIndex?.items?.\[q.audioId\]' mocktest.js
+      - name: Commit fixed voice
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mocktest.js mocktest.html
+          git commit -m 'Use one fixed formal voice for JLPT mock exam'
+          git push
