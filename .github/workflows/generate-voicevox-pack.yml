@@ -20,9 +20,9 @@ on:
         default: MIXED
         type: string
       style_name:
-        description: Preferred style for each speaker (falls back to that speaker's first style)
-        required: false
-        default: ノーマル
+        description: ALL = rotate every available speech style; or enter one preferred style name
+        required: true
+        default: ALL
         type: string
 
 jobs:
@@ -71,7 +71,7 @@ jobs:
         run: |
           test -f voicevox-pack/voicevox-index.json
           python - <<'PY'
-          import json
+          import json, urllib.request
           from pathlib import Path
           p=Path('voicevox-pack/voicevox-index.json')
           d=json.loads(p.read_text(encoding='utf-8'))
@@ -79,23 +79,38 @@ jobs:
           assert d.get('items')
           assert d.get('voices')
           missing=[]
-          speakers=set()
+          used_speakers=set()
+          used_variants=set()
           for qid, rec in d['items'].items():
               f=Path('voicevox-pack') / rec['path']
               if not f.is_file() or f.stat().st_size < 500:
                   missing.append(str(f))
               assert rec.get('credit','').startswith('VOICEVOX:')
-              speakers.add(rec.get('speaker',''))
+              used_speakers.add(rec.get('speaker',''))
+              used_variants.add((rec.get('speaker',''), rec.get('style','')))
           assert not missing, missing
-          if '${{ inputs.speaker_name }}'.upper() in ('MIXED','ALL','RANDOM'):
-              assert len(speakers) > 1, f'MIXED mode produced only {speakers}'
-          print('Validated', len(d['items']), 'VOICEVOX audio files across', len(speakers), 'speakers')
+
+          speaker_mode='${{ inputs.speaker_name }}'.upper()
+          style_mode='${{ inputs.style_name }}'.upper()
+          if speaker_mode in ('MIXED','ALL','RANDOM'):
+              assert len(used_speakers) > 1, f'MIXED mode produced only {used_speakers}'
+          if style_mode in ('ALL','MIXED','*','ANY'):
+              assert d.get('styleMode') == 'all'
+              speakers=json.load(urllib.request.urlopen('http://127.0.0.1:50021/speakers'))
+              if speaker_mode in ('MIXED','ALL','RANDOM'):
+                  expected={(str(sp.get('name','')).strip(), str(st.get('name','')).strip())
+                            for sp in speakers for st in (sp.get('styles') or []) if str(sp.get('name','')).strip()}
+                  indexed={(v.get('speaker',''), v.get('style','')) for v in d['voices']}
+                  assert indexed == expected, f'Indexed {len(indexed)} variants; engine exposes {len(expected)}'
+                  assert d.get('speakerCount') == len({x[0] for x in expected})
+                  assert d.get('voiceVariantCount') == len(expected)
+          print('Validated', len(d['items']), 'audio files;', d.get('speakerCount'), 'speakers;', d.get('voiceVariantCount'), 'speaker-style variants')
           PY
 
       - name: Upload sound pack
         uses: actions/upload-artifact@v4
         with:
-          name: voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}
+          name: voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}-${{ inputs.style_name }}
           path: voicevox-pack/
           if-no-files-found: error
           retention-days: 30
