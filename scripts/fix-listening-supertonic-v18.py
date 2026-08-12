@@ -41,14 +41,12 @@ new_speak = '''else{const info=await supertonicCacheInfo();if(info.ready){const 
 assert old_speak in s
 s = s.replace(old_speak, new_speak, 1)
 
-old_bind = '$("#next").onclick=next;$("#enableAI").onclick=enableAI;$("#aiVoice").onchange=updateAiVoiceDescription;'
-new_bind = '$("#next").onclick=next;$("#enableAI").onclick=()=>enableAI(true);$("#aiVoice").onchange=updateAiVoiceDescription;'
+old_bind = '$("#next").onclick=next;$("#enableAI").onclick=enableAI;$("#sampleVoice").onclick=playSetupSample;'
+new_bind = '$("#next").onclick=next;$("#enableAI").onclick=()=>enableAI(true);$("#sampleVoice").onclick=playSetupSample;'
 assert old_bind in s
 s = s.replace(old_bind, new_bind, 1)
 
-old_init = 'Promise.allSettled([loadWeb(),initFurigana(),loadVoicevoxIndex(),ensureSupertonicCache().then(updateAiCacheStatus)]).then(render);'
-if old_init not in s:
-    old_init = 'Promise.allSettled([loadWeb(),initFurigana(),loadVoicevoxIndex()]).then(render);'
+old_init = 'ensureSupertonicCache().then(updateAiCacheStatus);Promise.allSettled([loadWeb(),initFurigana(),loadVoicevoxIndex()]).then(render);'
 assert old_init in s
 s = s.replace(old_init, 'Promise.allSettled([loadWeb(),initFurigana(),loadVoicevoxIndex(),initializeSupertonicPersistence()]).then(render);', 1)
 
