@@ -1,0 +1,125 @@
+name: Switch VOICEVOX to GitHub Releases
+
+on:
+  push:
+    paths:
+      - '.github/workflows/switch-voicevox-github-releases.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch Listening page
+        run: python scripts/patch-listening-github-releases.py
+
+      - name: Static JavaScript checks
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          h=Path('listening.html').read_text(encoding='utf-8')
+          assert 'VOICEVOX / GitHub Releases' in h
+          assert './voicevox-release-index.json' in h
+          assert 'loadVoicevoxIndex()' in h
+          assert 'OneDrive' not in h
+          assert 'onedrive-voicevox.js' not in h
+          scripts=re.findall(r'<script>(.*?)</script>',h,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+          python -m py_compile scripts/publish_voicevox_releases.py
+
+      - name: Unit-test Release sharding and URLs
+        run: |
+          mkdir -p /tmp/pack/voicevox/N5 /tmp/fakebin
+          printf 'audio-one' >/tmp/pack/voicevox/N5/N5-0-0.mp3
+          printf 'audio-two' >/tmp/pack/voicevox/N5/N5-0-1.mp3
+          printf 'audio-three' >/tmp/pack/voicevox/N5/N5-0-2.mp3
+          cat >/tmp/pack/voicevox-index.json <<'JSON'
+          {
+            "version":1,
+            "speakerCount":2,
+            "voiceVariantCount":3,
+            "items":{
+              "N5-0-0":{"path":"voicevox/N5/N5-0-0.mp3","level":"N5","speaker":"四国めたん","style":"ノーマル","styleId":2,"credit":"VOICEVOX:四国めたん","text":"テスト一","grammar":"テスト"},
+              "N5-0-1":{"path":"voicevox/N5/N5-0-1.mp3","level":"N5","speaker":"ずんだもん","style":"ノーマル","styleId":3,"credit":"VOICEVOX:ずんだもん","text":"テスト二","grammar":"テスト"},
+              "N5-0-2":{"path":"voicevox/N5/N5-0-2.mp3","level":"N5","speaker":"四国めたん","style":"あまあま","styleId":0,"credit":"VOICEVOX:四国めたん","text":"テスト三","grammar":"テスト"}
+            }
+          }
+          JSON
+          cat >/tmp/fakebin/gh <<'SH'
+          #!/usr/bin/env bash
+          echo "$*" >>/tmp/gh-calls
+          if [ "$1" = release ] && [ "$2" = view ]; then exit 1; fi
+          exit 0
+          SH
+          chmod +x /tmp/fakebin/gh
+          PATH="/tmp/fakebin:$PATH" PACK_DIR=/tmp/pack INDEX_OUT=/tmp/release-index.json RELEASE_NAMESPACE=voicevox-test RELEASE_MAX_ASSETS=2 REPLACE_LEVELS=1 GITHUB_REPOSITORY=kanuli/japanese-vocab-game python scripts/publish_voicevox_releases.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('/tmp/release-index.json').read_text(encoding='utf-8'))
+          assert d['storage']=='github-releases'
+          assert len(d['items'])==3
+          assert d['items']['N5-0-0']['release']=='voicevox-test-n5-001'
+          assert d['items']['N5-0-1']['release']=='voicevox-test-n5-001'
+          assert d['items']['N5-0-2']['release']=='voicevox-test-n5-002'
+          assert d['items']['N5-0-2']['url'].endswith('/voicevox-test-n5-002/N5-0-2.mp3')
+          calls=Path('/tmp/gh-calls').read_text()
+          assert 'release create voicevox-test-n5-001' in calls
+          assert 'release create voicevox-test-n5-002' in calls
+          assert 'release upload voicevox-test-n5-001' in calls
+          print('GitHub Release sharding/index unit test: OK')
+          PY
+
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser smoke test
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > test-github-release-voicevox.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.route('**/voicevox-release-index.json',route=>route.fulfill({
+              status:200,contentType:'application/json',
+              body:JSON.stringify({version:2,storage:'github-releases',items:{
+                'N5-0-0':{url:'https://github.com/kanuli/japanese-vocab-game/releases/download/voicevox-v1-n5-001/N5-0-0.mp3',speaker:'四国めたん',style:'ノーマル',credit:'VOICEVOX:四国めたん',level:'N5'}
+              }})
+            }));
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>document.querySelector('#voicevoxStatus')?.textContent.includes('1 題音訊'),{timeout:30000});
+            if(!(await page.isChecked('#engineVoicevox'))) throw new Error('VOICEVOX GitHub engine is not selected by default');
+            const body=await page.textContent('body');
+            if(body.includes('OneDrive')||body.includes('Microsoft Application')||body.includes('Cloudflare')) throw new Error('Old storage/login UI leaked into page');
+            if(!body.includes('不需 Microsoft、OneDrive、Cloudflare、信用卡或額外登入')) throw new Error('No-login storage explanation missing');
+            if(errors.length) throw new Error(errors.join(' | '));
+            console.log('GitHub Releases VOICEVOX browser smoke: OK');
+            console.log(await page.textContent('#voicevoxStatus'));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 150s node test-github-release-voicevox.cjs
+
+      - name: Commit verified Listening page
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html
+          git commit -m 'Use public GitHub Releases for VOICEVOX audio'
+          git push
