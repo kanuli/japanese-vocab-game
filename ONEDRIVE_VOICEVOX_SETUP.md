@@ -113,8 +113,29 @@ Microsoft 會建立類似：
 2. 找不到錄音但 Supertonic 已啟用 → 使用 Supertonic AI。
 3. 兩者均不可用 → 使用裝置日語語音。
 
-## 8. 還缺的部分：VOICEVOX 音訊檔
+## 8. 用 GitHub Actions 產生 VOICEVOX 聲音包
 
-OneDrive 連接完成不代表音訊已經存在。還需要把 Hanabira 題目用 VOICEVOX 批次生成為 MP3，並建立 `voicevox-index.json`。
+Repo 已加入 **Generate VOICEVOX audio pack** workflow。它會啟動官方 VOICEVOX Engine、讀取 Hanabira 題目、產生 MP3、建立 `voicevox-index.json`，最後輸出 ZIP artifact。
 
-Repo 已使用固定題目 ID／檔名規則，所以下一步可以由 GitHub Actions 批次產生聲音包，再把聲音包放入上述 OneDrive App Folder，而不需要再次修改每一道題目的程式碼。
+1. 在 GitHub repo 打開 **Actions**。
+2. 左邊選 **Generate VOICEVOX audio pack**。
+3. 按 **Run workflow**。
+4. 選 JLPT，例如 `N5`。
+5. Count 先用 `20` 測試；確認成功後可改為更大的數字或 `ALL`。
+6. Speaker name 例如 `四国めたん`。
+7. Style name 例如 `ノーマル`；如果不填，generator 會使用該角色的第一個 style。
+8. Run workflow。
+9. 成功後，在該 workflow run 的 **Artifacts** 下載 ZIP。
+10. 解壓 ZIP，把裡面的 `voicevox/` 資料夾及 `voicevox-index.json` 上傳到本遊戲的 OneDrive App Folder。
+
+Generator 會把角色 credit 寫進 index，例如 `VOICEVOX:四国めたん`。使用其他角色／聲音庫前，仍需遵守該角色及 voice library 的個別使用條款。
+
+## 9. 最終檢查
+
+1. 回到 Listening Game。
+2. 選 `🎭 VOICEVOX / OneDrive`。
+3. 開始一局包含已生成題目的 JLPT 等級。
+4. 按播放。如果 OneDrive 有該題 MP3，播放狀態會顯示 `VOICEVOX · 角色／風格`。
+5. 回答後，結果面板的「語音」也會顯示本題實際使用的聲音來源。
+
+如果該題尚未生成 VOICEVOX MP3，遊戲會依序使用 Supertonic（如已啟用）或裝置日語語音備援。
