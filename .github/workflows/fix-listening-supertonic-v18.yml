@@ -1,5 +1,6 @@
 name: Fix Listening Supertonic v1.8
 
+# Validation rerun after patch-anchor correction.
 on:
   push:
     paths:
