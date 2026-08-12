@@ -1,0 +1,85 @@
+name: Auto VOICEVOX startup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/auto-voicevox-startup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch Listening UI
+        run: python scripts/patch-listening-auto-voicevox.py
+
+      - name: Static validation
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('listening.html').read_text(encoding='utf-8')
+          assert 'id="voicevoxSettings"' in s
+          assert 'VOICEVOX 已準備：OneDrive 已自動連接' in s
+          assert 'radio.checked=true;syncAudioPanels()' in s
+          assert '① 產生／下載音訊包' not in s
+          assert '② 匯入 ZIP 到 OneDrive' not in s
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser smoke test automatic ready state
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > /tmp/test-auto-voicevox.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.route('**/vendor/onedrive-voicevox.js', route=>route.fulfill({
+              status:200,
+              contentType:'application/javascript',
+              body:`window.OneDriveVoicevox={savedClientId:()=>"mock-client",isConfigured:()=>true,connectionInfo:async()=>({configured:true,signedIn:true,account:"test@example.com",indexed:127}),init:async()=>({configured:true,signedIn:true,account:"test@example.com"}),getAudio:async()=>{throw new Error("not used in startup test")},setClientId:()=>{},signIn:async()=>({signedIn:true}),ensureStructure:async()=>({audioDir:"voicevox",indexFile:"voicevox-index.json"}),importVoicevoxZip:async()=>({uploaded:1,indexed:127})};window.dispatchEvent(new Event('onedrive-voicevox-module-ready'));`
+            }));
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>document.querySelector('#onedriveStatus')?.textContent.includes('127'),{timeout:30000});
+            if(!(await page.isChecked('#engineVoicevox'))) throw new Error('VOICEVOX was not auto-selected');
+            const panel=await page.$eval('#voicevoxPanel',e=>getComputedStyle(e).display);
+            if(panel==='none') throw new Error('VOICEVOX status panel is hidden');
+            const open=await page.$eval('#voicevoxSettings',e=>e.open);
+            if(open) throw new Error('Maintenance settings should stay collapsed when ready');
+            const status=await page.textContent('#onedriveStatus');
+            if(!status.includes('現在可直接開始')) throw new Error('Ready status missing: '+status);
+            const body=await page.textContent('body');
+            if(body.includes('① 產生／下載音訊包')||body.includes('② 匯入 ZIP 到 OneDrive')) throw new Error('Old manual workflow text still visible');
+            if(errors.length) throw new Error(errors.join(' | '));
+            console.log('Automatic VOICEVOX startup browser smoke: OK');
+            console.log(status);
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 150s node /tmp/test-auto-voicevox.cjs
+
+      - name: Commit verified page
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html
+          git commit -m 'Make VOICEVOX automatic after OneDrive setup'
+          git push
