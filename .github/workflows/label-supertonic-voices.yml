@@ -1,0 +1,69 @@
+name: Label Supertonic voices
+
+on:
+  push:
+    paths:
+      - '.github/workflows/label-supertonic-voices.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  label-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply voice labels
+        run: python scripts/label-supertonic-voices.py
+      - name: Static checks
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('listening.html').read_text(encoding='utf-8')
+          expected=['沉穩低柔女聲','明亮活潑女聲','專業播音女聲','清晰自信女聲','溫柔療癒女聲','活力自信男聲','低沉穩重男聲','權威專業男聲','柔和親切男聲','溫暖舒緩男聲']
+          for x in expected: assert x in s, x
+          assert 'AI_VOICE_DESCRIPTIONS' in s
+          assert 'updateAiVoiceDescription' in s
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+      - name: Browser UI check
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > test-voice-labels.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            const options=await page.$$eval('#aiVoice option',els=>els.map(x=>x.textContent.trim()));
+            if(options.length!==11) throw new Error('Expected 10 voices plus random');
+            if(!options.some(x=>x.includes('明亮活潑女聲（F2）'))) throw new Error('F2 label missing');
+            if(!options.some(x=>x.includes('低沉穩重男聲（M2）'))) throw new Error('M2 label missing');
+            await page.selectOption('#aiVoice','F5');
+            const desc=await page.textContent('#aiVoiceDesc');
+            if(!desc.includes('F5')||!desc.includes('溫柔')) throw new Error('Voice description did not update');
+            if(errors.length) throw new Error(errors.join(' | '));
+            console.log('Voice labels OK:',options);
+            console.log('F5 description:',desc);
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 120s node test-voice-labels.cjs
+      - name: Commit verified labels
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html
+          git commit -m 'Label Supertonic voices by documented style'
+          git push
