@@ -1,0 +1,97 @@
+name: Fix Listening Supertonic v1.8
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-listening-supertonic-v18.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Apply Supertonic v1.8 fix
+        run: python scripts/fix-listening-supertonic-v18.py
+
+      - name: Static and JavaScript checks
+        run: |
+          python -m py_compile scripts/fix-listening-supertonic-v18.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('listening.html').read_text(encoding='utf-8')
+          assert '日本語聽解挑戰 v1.8｜JLPT N1–N5' in s
+          assert '首次安裝 Supertonic（約 400 MB）' in s
+          assert '載入已安裝的 Supertonic AI' in s
+          assert 'enableAI(false)' in s
+          assert 'initializeSupertonicPersistence()' in s
+          assert '下載／啟用 AI 語音' not in s
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+          node --check supertonic-sw.js
+
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser cache-state smoke test
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > test-supertonic-v18.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const ctx=await browser.newContext();
+            const page=await ctx.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>document.querySelector('#enableAI')?.textContent.includes('首次安裝'),{timeout:15000});
+            const first=await page.textContent('#enableAI');
+            if(!first.includes('首次安裝')) throw new Error('Fresh browser did not show one-time install state: '+first);
+            await page.evaluate(async()=>{
+              const c=await caches.open('supertonic-model-v1');
+              for(let i=1;i<=4;i++) await c.put(new Request(location.origin+`/fake-model-${i}.onnx`),new Response('x'));
+            });
+            await page.reload({waitUntil:'domcontentloaded'});
+            await page.waitForFunction(()=>document.querySelector('#enableAI')?.textContent.includes('載入已安裝'),{timeout:15000});
+            const cached=await page.textContent('#aiStatus');
+            if(!cached.includes('不會重新下載 400 MB')) throw new Error('Cached browser status is wrong: '+cached);
+            const sw=await page.evaluate(async()=>!!(await navigator.serviceWorker.getRegistration('./')));
+            if(!sw) throw new Error('Supertonic service worker not registered');
+            if(errors.length) throw new Error(errors.join(' | '));
+            console.log('Fresh install UI: OK');
+            console.log('Persistent cache detected after reload: OK');
+            console.log('No repeat-download wording for installed cache: OK');
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 150s node test-supertonic-v18.cjs
+
+      - name: Commit verified Listening v1.8
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html
+          if git diff --cached --quiet; then
+            echo 'No Listening changes to commit'
+          else
+            git commit -m 'Make Supertonic one-time install behavior explicit'
+            git pull --rebase origin main
+            git push origin main
+          fi
