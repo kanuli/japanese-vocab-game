@@ -1,0 +1,59 @@
+name: Test VOICEVOX generator
+
+on:
+  push:
+    paths:
+      - '.github/workflows/test-voicevox-generator.yml'
+
+jobs:
+  synthesize-one:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check generator syntax
+        run: python -m py_compile scripts/generate_voicevox_pack.py
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+      - name: Generate one real MP3
+        env:
+          JLPT: N5
+          COUNT: '1'
+          SPEAKER_NAME: 四国めたん
+          STYLE_NAME: ノーマル
+          OUTPUT_DIR: voicevox-pack
+        run: python scripts/generate_voicevox_pack.py
+      - name: Validate generated audio
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('voicevox-pack/voicevox-index.json').read_text(encoding='utf-8'))
+          assert len(d['items']) == 1, d
+          rec=next(iter(d['items'].values()))
+          f=Path('voicevox-pack')/rec['path']
+          assert f.is_file() and f.stat().st_size > 1000, (f, f.stat().st_size if f.exists() else 0)
+          assert rec['speaker'] == '四国めたん', rec
+          assert rec['credit'] == 'VOICEVOX:四国めたん', rec
+          print('REAL VOICEVOX MP3 OK', f, f.stat().st_size, rec['speaker'], rec['style'])
+          PY
+      - name: Upload validation sample
+        uses: actions/upload-artifact@v4
+        with:
+          name: voicevox-generator-validation-sample
+          path: voicevox-pack/
+          retention-days: 7
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
