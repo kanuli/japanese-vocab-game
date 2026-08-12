@@ -59598,5 +59598,12 @@
       "release": "voicevox-v1-n5-001",
       "asset": "N5-135-3.mp3"
     }
+  },
+  "publisher": {
+    "uploadBatch": 10,
+    "uploadRetries": 4,
+    "resumable": true,
+    "avoidClobberForNewAssets": true,
+    "failFastOnRateLimit": true
   }
 }
