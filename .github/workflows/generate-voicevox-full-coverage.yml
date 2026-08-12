@@ -40,8 +40,8 @@ jobs:
         id: matrix
         run: |
           curl -fsS http://127.0.0.1:50021/speakers -o /tmp/speakers.json
-          python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json
+          python - <<'PY'
+          import json, os
           speakers=json.load(open('/tmp/speakers.json',encoding='utf-8'))
           rows=[]
           preferred=('ノーマル','Normal','NORMAL','通常')
@@ -51,16 +51,13 @@ jobs:
               if not name or not styles:
                   continue
               style=next((x for x in styles if str(x.get('name','')).strip() in preferred),styles[0])
-              rows.append({
-                  'key':f's{i:02d}',
-                  'name':name,
-                  'style_id':int(style['id']),
-                  'style':str(style.get('name','')).strip(),
-              })
+              rows.append({'key':f's{i:02d}','name':name,'style_id':int(style['id']),'style':str(style.get('name','')).strip()})
           if len(rows)!=43:
               raise SystemExit(f'Expected 43 VOICEVOX speakers, engine exposes {len(rows)}')
-          print('speakers='+json.dumps(rows,ensure_ascii=False,separators=(',',':')))
-          print('speaker_count='+str(len(rows)))
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as out:
+              out.write('speakers='+json.dumps(rows,ensure_ascii=False,separators=(',',':'))+'\n')
+              out.write('speaker_count='+str(len(rows))+'\n')
+          print('Confirmed 43 VOICEVOX speakers:')
           for r in rows:
               print(f"{r['key']}: {r['name']} / {r['style']} / {r['style_id']}")
           PY
@@ -74,7 +71,6 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -109,10 +105,7 @@ jobs:
         env:
           HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
           HF_XET_HIGH_PERFORMANCE: '1'
-        run: |
-          HF_TOKEN="$(hf auth --oidc-token)"
-          export HF_TOKEN
-          hf upload "$HF_DATASET_REPO" range-test.tar voicevox-full-preflight/range-test.tar --repo-type dataset --commit-message 'Add VOICEVOX bundle range preflight asset'
+        run: hf upload "$HF_DATASET_REPO" range-test.tar voicevox-full-preflight/range-test.tar --repo-type dataset --commit-message 'Add VOICEVOX bundle range preflight asset'
 
       - name: Install browser tester
         run: |
@@ -120,7 +113,7 @@ jobs:
           npm install --no-audit --no-fund playwright@1.54.2
           npx playwright install --with-deps chromium >/dev/null
 
-      - name: Verify browser CORS + Range on both public stores
+      - name: Verify browser CORS and byte-range on both stores
         run: |
           cat > test-range-preflight.cjs <<'JS'
           const {chromium}=require('playwright');
@@ -162,7 +155,6 @@ jobs:
         level: [N5, N4, N3, N2, N1]
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -226,8 +218,6 @@ jobs:
           SPEAKER_KEY: ${{ matrix.speaker.key }}
           LEVEL: ${{ matrix.level }}
         run: |
-          HF_TOKEN="$(hf auth --oidc-token)"
-          export HF_TOKEN
           ASSET="$SPEAKER_KEY-$LEVEL.tar"
           hf upload "$HF_DATASET_REPO" "voicevox-full-out/$ASSET" "voicevox-full/$SPEAKER_KEY/$ASSET" --repo-type dataset --commit-message "VOICEVOX full coverage $SPEAKER_KEY $LEVEL"
 
@@ -241,7 +231,7 @@ jobs:
           LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]')
           TAG="$RELEASE_NAMESPACE-$SPEAKER_KEY-$LOW"
           ASSET="$SPEAKER_KEY-$LEVEL.tar"
-          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "VOICEVOX full $SPEAKER_KEY $LEVEL" --notes "Full $LEVEL question coverage for $SPEAKER_NAME. Credit: VOICEVOX:$SPEAKER_NAME"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "VOICEVOX full $SPEAKER_KEY $LEVEL" --notes "Full $LEVEL coverage for $SPEAKER_NAME. Credit: VOICEVOX:$SPEAKER_NAME"
           gh release upload "$TAG" "voicevox-full-out/$ASSET" --clobber
 
       - name: Verify byte-range playback objects
@@ -298,7 +288,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -326,14 +315,10 @@ jobs:
           python - <<'PY'
           import json
           d=json.load(open('voicevox-full-index.json',encoding='utf-8'))
-          assert d['version']==3
-          assert d['coverage']=='full-per-speaker'
-          assert d['speakerCount']==43
-          assert d['indexed']==3310
-          assert d['recordingCount']==142330
-          counts={v['questionCount'] for v in d['speakers'].values()}
-          assert counts=={3310}, counts
-          for key,sp in d['speakers'].items():
+          assert d['version']==3 and d['coverage']=='full-per-speaker'
+          assert d['speakerCount']==43 and d['indexed']==3310 and d['recordingCount']==142330
+          assert {v['questionCount'] for v in d['speakers'].values()}=={3310}
+          for sp in d['speakers'].values():
               assert set(sp['bundles'])=={'N1','N2','N3','N4','N5'}
               assert sum(b['count'] for b in sp['bundles'].values())==3310
           print('Equal coverage verified: 43 speakers x 3310 questions')
@@ -347,9 +332,7 @@ jobs:
           from pathlib import Path
           s=Path('listening.html').read_text(encoding='utf-8')
           assert '日本語聽解挑戰 v1.9｜JLPT N1–N5' in s
-          assert 'voicevox-full-index.json' in s
-          assert 'full-per-speaker' in s
-          assert 'r.status!==206' in s
+          assert 'voicevox-full-index.json' in s and 'full-per-speaker' in s and 'r.status!==206' in s
           scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
           Path('/tmp/listening-v19.js').write_text('\n'.join(scripts),encoding='utf-8')
           PY
