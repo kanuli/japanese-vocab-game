@@ -1,0 +1,103 @@
+name: Fix Listening audio v1.7
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-listening-audio-v17.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Apply Listening audio fixes
+        run: python scripts/fix-listening-audio-v17.py
+
+      - name: Static and JavaScript checks
+        run: |
+          python -m py_compile scripts/fix-listening-audio-v17.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('listening.html').read_text(encoding='utf-8')
+          assert '日本語聽解挑戰 v1.7｜JLPT N1–N5' in s
+          assert 'id="voicevoxVoice"' in s
+          assert 'id="sampleVoice"' in s
+          assert 'function candidateAudio(candidate)' in s
+          assert 'activeAiAudio.src=""' not in s
+          assert 'candidate.audio.src=""' not in s
+          assert 'supertonic-sw.js' in s
+          assert 'supertonic-model-v1' in s
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+          node --check supertonic-sw.js
+
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser smoke test
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > /tmp/test-listening-v17.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.addInitScript(()=>{
+              HTMLMediaElement.prototype.play=function(){this.__testPlayCount=(this.__testPlayCount||0)+1;return Promise.resolve();};
+              HTMLMediaElement.prototype.pause=function(){};
+            });
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>document.querySelectorAll('#voicevoxVoice option').length>1,{timeout:30000});
+            if(!(await page.isVisible('#sampleVoice'))) throw new Error('Sample button is not visible');
+            const options=await page.locator('#voicevoxVoice option').count();
+            if(options<2) throw new Error('VOICEVOX speaker selector was not populated');
+            await page.check('#engineVoicevox');
+            await page.click('#sampleVoice');
+            await page.waitForFunction(()=>document.querySelector('#sampleVoiceStatus')?.textContent.includes('試聽'),{timeout:10000});
+            await page.click('#sampleVoice');
+            await page.click('#sampleVoice');
+            const sampleStatus=await page.textContent('#sampleVoiceStatus');
+            if(sampleStatus.includes('失敗')) throw new Error('Repeated VOICEVOX sample playback failed: '+sampleStatus);
+            const sw=await page.evaluate(async()=>!!(await navigator.serviceWorker.getRegistration('./')));
+            if(!sw) throw new Error('Supertonic persistent-cache service worker was not registered');
+            if(errors.length) throw new Error(errors.join(' | '));
+            console.log('VOICEVOX selector options:',options);
+            console.log('Repeated VOICEVOX playback lifecycle: OK');
+            console.log('Setup sample playback: OK');
+            console.log('Supertonic persistent cache registration: OK');
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 150s node /tmp/test-listening-v17.cjs
+
+      - name: Commit verified Listening v1.7
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html supertonic-sw.js
+          if git diff --cached --quiet; then
+            echo 'No Listening changes to commit'
+          else
+            git commit -m 'Fix VOICEVOX replay and add voice previews'
+            git pull --rebase origin main
+            git push origin main
+          fi
