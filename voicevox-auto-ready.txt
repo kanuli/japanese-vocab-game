@@ -1,0 +1,1 @@
+Automatic VOICEVOX startup verified in Chromium on 2026-08-12.
