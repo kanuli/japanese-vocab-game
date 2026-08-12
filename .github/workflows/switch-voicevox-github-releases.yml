@@ -107,7 +107,7 @@ jobs:
             if(!(await page.isChecked('#engineVoicevox'))) throw new Error('VOICEVOX GitHub engine is not selected by default');
             const body=await page.textContent('body');
             if(body.includes('OneDrive')||body.includes('Microsoft Application')||body.includes('Cloudflare')) throw new Error('Old storage/login UI leaked into page');
-            if(!body.includes('不需 Microsoft、OneDrive、Cloudflare、信用卡或額外登入')) throw new Error('No-login storage explanation missing');
+            if(!body.includes('不需外部雲端帳戶、信用卡或額外登入')) throw new Error('No-login storage explanation missing');
             if(errors.length) throw new Error(errors.join(' | '));
             console.log('GitHub Releases VOICEVOX browser smoke: OK');
             console.log(await page.textContent('#voicevoxStatus'));
