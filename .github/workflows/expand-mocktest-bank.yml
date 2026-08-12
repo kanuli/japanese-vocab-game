@@ -1,0 +1,34 @@
+name: Expand JLPT mock test bank
+
+on:
+  push:
+    paths:
+      - '.github/scripts/expand_mocktest_bank.py'
+      - '.github/workflows/expand-mocktest-bank.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Expand mock test bank
+        run: python .github/scripts/expand_mocktest_bank.py
+      - name: Validate JavaScript
+        run: node --check mocktest.js
+      - name: Verify official resource links and repeat avoidance
+        run: |
+          grep -q 'Official Practice Workbook' mocktest.html
+          grep -q 'buildOriginalScenes' mocktest.js
+          grep -q 'diversifyQuestions' mocktest.js
+          grep -q 'jlptmock_recent_' mocktest.js
+      - name: Commit expanded mock test
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mocktest.html mocktest.js
+          git commit -m "Expand JLPT mock test question variety" || exit 0
+          git push
