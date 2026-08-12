@@ -1,0 +1,39 @@
+name: Fix VOICEVOX full workflow v2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-voicevox-full-workflow-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Apply workflow corrections
+        run: |
+          python -m py_compile scripts/fix_voicevox_full_workflow_v2.py
+          python scripts/fix_voicevox_full_workflow_v2.py
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('.github/workflows/generate-voicevox-full-coverage.yml').read_text(encoding='utf-8')
+          assert 'hf auth --oidc-token' not in s
+          assert "with open(os.environ['GITHUB_OUTPUT']" in s
+          assert 'retry=preflight-v2-auto-oidc' in Path('.voicevox-full-trigger').read_text(encoding='utf-8')
+          print('Workflow preflight corrections validated')
+          PY
+      - name: Commit fixes and retrigger full build
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/generate-voicevox-full-coverage.yml .voicevox-full-trigger
+          git commit -m 'Fix and retrigger VOICEVOX full coverage preflight'
+          git pull --rebase origin main
+          git push origin main
