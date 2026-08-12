@@ -1,0 +1,48 @@
+name: Validate mixed VOICEVOX speakers
+
+on:
+  push:
+    paths:
+      - '.github/workflows/validate-voicevox-mixed.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Start VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            sleep 2
+          done
+      - name: Generate mixed sample
+        env:
+          JLPT: N5
+          COUNT: '12'
+          SPEAKER_NAME: MIXED
+          STYLE_NAME: ノーマル
+          OUTPUT_DIR: /tmp/voicevox-mixed
+        run: python scripts/generate_voicevox_pack.py
+      - name: Verify multiple speakers
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('/tmp/voicevox-mixed/voicevox-index.json').read_text(encoding='utf-8'))
+          speakers={r['speaker'] for r in d['items'].values()}
+          assert d.get('speakerMode') == 'mixed', d.get('speakerMode')
+          assert len(speakers) > 1, speakers
+          print('Mixed speakers:', len(speakers), sorted(speakers))
+          print('Files:', len(d['items']))
+          PY
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
