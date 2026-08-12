@@ -8,6 +8,17 @@
 
 遊戲只要求 Microsoft Graph 的 `Files.ReadWrite.AppFolder` 權限，因此只可存取 OneDrive 內屬於本遊戲的專用 App Folder，不需要讀取整個 OneDrive。
 
+## 0. 先確認你能使用 Microsoft App registrations
+
+Microsoft 現時的 App Registration 文件列出 Azure account / active subscription 及 Microsoft Entra tenant 為前置條件。
+
+1. 先登入 Microsoft Entra admin center。
+2. 看看是否可以進入 **Entra ID → App registrations**。
+3. 如果你已經看得到 **New registration**，直接做下一節。
+4. 如果系統說你沒有 tenant／directory，先建立 Microsoft Entra tenant（可使用 Default Directory／開發用 tenant），再回來做下一節。
+
+你的 1 TB OneDrive 仍然是實際儲存 VOICEVOX 音訊的位置；Entra App Registration 只用來讓這個 GitHub Pages 網頁安全地取得你的授權。
+
 ## 1. 建立 Microsoft App Registration
 
 1. 登入 Microsoft Entra admin center。
@@ -17,13 +28,13 @@
 5. 按 **Register**。
 6. 在 Overview 複製 **Application (client) ID**。
 
-> Client ID 不是密碼，可以放在瀏覽器或公開網站。不要建立或貼上 Client Secret。
+> Client ID 不是密碼，可以放在瀏覽器或公開網站。這是 browser SPA／public client，因此不要建立或貼上 Client Secret。
 
 ## 2. 設定 GitHub Pages Redirect URI
 
 1. 在剛建立的 App Registration 打開 **Authentication**。
 2. 選 **Add a platform → Single-page application**。
-3. 加入：
+3. 加入以下 Redirect URI（必須完全相同）：
 
 `https://kanuli.github.io/japanese-vocab-game/listening.html`
 
@@ -36,7 +47,7 @@
 3. 搜尋並勾選：`Files.ReadWrite.AppFolder`。
 4. 按 **Add permissions**。
 
-個人 Microsoft 帳戶不需要建立 Client Secret；登入時由使用者同意權限。
+`Files.ReadWrite.AppFolder` 讓遊戲讀寫自己的 App Folder，而不是取得整個 OneDrive 的完整檔案權限。
 
 ## 4. 在遊戲內連接 OneDrive
 
@@ -85,13 +96,14 @@ Microsoft 會建立類似：
 
 ## 6. iPhone
 
-在同一部 iPhone 的 Safari 開啟遊戲並登入 Microsoft 後，MSAL 會在瀏覽器保存登入狀態／token cache。遊戲每次播放時會向 Microsoft Graph 取得當下有效的短期 OneDrive download URL，再播放 MP3。
+在同一部 iPhone 的 Safari 開啟遊戲並登入 Microsoft 後，MSAL Browser 會管理登入／token cache。遊戲播放 VOICEVOX 時向 Microsoft Graph 取得當下有效的 OneDrive download URL，再播放該題的音訊檔。
 
 因此：
 
-- 不需要下載 Supertonic 約 400 MB 模型才能聽 VOICEVOX 錄音。
-- 不需要每次下載整個音訊庫，只會串流目前題目的小型音訊檔。
-- Microsoft 的短期 download URL 不會永久寫入 GitHub；遊戲需要時才重新取得。
+- 不需要下載 Supertonic 約 400 MB 模型才能聽已生成的 VOICEVOX 錄音。
+- 不需要每次下載整個音訊庫，只會串流目前題目的音訊檔。
+- 短期 download URL 不會永久寫入 GitHub；需要時重新取得。
+- 如果 Safari 清除了網站資料／登入狀態，可能需要重新登入 Microsoft，但 OneDrive 裡的音訊檔不會因此刪除。
 
 ## 7. 備援順序
 
@@ -101,4 +113,8 @@ Microsoft 會建立類似：
 2. 找不到錄音但 Supertonic 已啟用 → 使用 Supertonic AI。
 3. 兩者均不可用 → 使用裝置日語語音。
 
-下一步是建立批次 VOICEVOX 音訊產生器，把 Hanabira 題目轉成符合上述檔名的 MP3 與 `voicevox-index.json`。
+## 8. 還缺的部分：VOICEVOX 音訊檔
+
+OneDrive 連接完成不代表音訊已經存在。還需要把 Hanabira 題目用 VOICEVOX 批次生成為 MP3，並建立 `voicevox-index.json`。
+
+Repo 已使用固定題目 ID／檔名規則，所以下一步可以由 GitHub Actions 批次產生聲音包，再把聲音包放入上述 OneDrive App Folder，而不需要再次修改每一道題目的程式碼。
