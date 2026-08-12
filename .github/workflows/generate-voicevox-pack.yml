@@ -27,7 +27,6 @@ on:
 
 permissions:
   contents: write
-  id-token: write
 
 jobs:
   generate:
@@ -112,17 +111,6 @@ jobs:
                   assert d.get('voiceVariantCount') == len(expected)
           print('Validated', len(d['items']), 'audio files;', d.get('speakerCount'), 'speakers;', d.get('voiceVariantCount'), 'speaker-style variants')
           PY
-
-      - name: Mirror MP3 files to Hugging Face backup
-        continue-on-error: true
-        env:
-          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
-          HF_XET_HIGH_PERFORMANCE: '1'
-        run: |
-          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
-          hf upload kanuli1983/japanese-listening-voicevox-backup voicevox-pack . \
-            --repo-type dataset \
-            --commit-message "Mirror VOICEVOX audio from GitHub Actions ${GITHUB_SHA::7}"
 
       - name: Publish MP3 files to public GitHub Releases
         env:
