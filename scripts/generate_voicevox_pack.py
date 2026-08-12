@@ -5,8 +5,8 @@ Expected environment:
 - VOICEVOX_ENGINE_URL (default http://127.0.0.1:50021)
 - JLPT (ALL or N1..N5, default ALL)
 - COUNT (positive integer per selected level or ALL, default ALL)
-- SPEAKER_NAME (MIXED/ALL rotates available speakers; otherwise exact speaker name)
-- STYLE_NAME (preferred style name, default ノーマル; falls back to first style)
+- SPEAKER_NAME (MIXED/ALL rotates all available speakers; otherwise exact speaker name)
+- STYLE_NAME (ALL rotates every speech style; otherwise preferred exact style name)
 - OUTPUT_DIR (default voicevox-pack)
 
 The output layout is directly importable into the OneDrive App Folder:
@@ -31,7 +31,7 @@ ENGINE = os.environ.get("VOICEVOX_ENGINE_URL", "http://127.0.0.1:50021").rstrip(
 JLPT = os.environ.get("JLPT", "ALL").upper().strip()
 COUNT_RAW = os.environ.get("COUNT", "ALL").strip().upper()
 SPEAKER_NAME = os.environ.get("SPEAKER_NAME", "MIXED").strip()
-STYLE_NAME = os.environ.get("STYLE_NAME", "ノーマル").strip()
+STYLE_NAME = os.environ.get("STYLE_NAME", "ALL").strip()
 OUTPUT_DIR = Path(os.environ.get("OUTPUT_DIR", "voicevox-pack"))
 
 LEVELS = ["N5", "N4", "N3", "N2", "N1"]
@@ -43,6 +43,7 @@ FILES = {
     "N1": "grammar_ja_N1_full_alphabetical_0001.json",
 }
 HANABIRA_BASE = "https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/"
+ALL_STYLE_MODES = {"ALL", "MIXED", "*", "ANY"}
 
 
 def http_json(url: str, *, method: str = "GET", body: bytes | None = None, headers: dict[str, str] | None = None):
@@ -69,15 +70,17 @@ def wait_engine() -> None:
     raise RuntimeError(f"VOICEVOX Engine did not become ready: {last}")
 
 
-def preferred_style(speaker: dict) -> dict | None:
-    styles = speaker.get("styles") or []
+def styles_for_speaker(speaker: dict) -> list[dict]:
+    styles = list(speaker.get("styles") or [])
     if not styles:
-        return None
+        return []
+    if STYLE_NAME.upper() in ALL_STYLE_MODES:
+        return styles
     if STYLE_NAME:
         exact = next((s for s in styles if str(s.get("name", "")).strip() == STYLE_NAME), None)
         if exact is not None:
-            return exact
-    return styles[0]
+            return [exact]
+    return [styles[0]]
 
 
 def resolve_voices() -> list[tuple[int, str, str]]:
@@ -87,13 +90,11 @@ def resolve_voices() -> list[tuple[int, str, str]]:
     if mode in {"MIXED", "ALL", "RANDOM"}:
         voices: list[tuple[int, str, str]] = []
         for speaker in speakers:
-            style = preferred_style(speaker)
-            if style is None:
-                continue
             name = str(speaker.get("name", "")).strip()
             if not name:
                 continue
-            voices.append((int(style["id"]), name, str(style.get("name", "")).strip()))
+            for style in styles_for_speaker(speaker):
+                voices.append((int(style["id"]), name, str(style.get("name", "")).strip()))
         if not voices:
             raise RuntimeError("No VOICEVOX speakers/styles are available for MIXED mode")
         return voices
@@ -102,10 +103,13 @@ def resolve_voices() -> list[tuple[int, str, str]]:
     if not speaker:
         available = ", ".join(str(s.get("name", "")) for s in speakers)
         raise RuntimeError(f"Speaker not found: {SPEAKER_NAME}. Available: {available}")
-    style = preferred_style(speaker)
-    if not style:
+    styles = styles_for_speaker(speaker)
+    if not styles:
         raise RuntimeError(f"No style found for speaker: {SPEAKER_NAME}")
-    return [(int(style["id"]), str(speaker.get("name", SPEAKER_NAME)).strip(), str(style.get("name", "")).strip())]
+    return [
+        (int(style["id"]), str(speaker.get("name", SPEAKER_NAME)).strip(), str(style.get("name", "")).strip())
+        for style in styles
+    ]
 
 
 def selected_levels() -> list[str]:
@@ -187,18 +191,24 @@ def main() -> int:
         raise RuntimeError("No Hanabira examples found for the selected level(s)")
 
     levels = selected_levels()
+    speaker_count = len({speaker for _, speaker, _ in voices})
+    style_count = len(voices)
+    style_mode = "all" if STYLE_NAME.upper() in ALL_STYLE_MODES else "preferred"
     index = {
         "version": 1,
-        "speakerMode": "mixed" if len(voices) > 1 else "single",
+        "speakerMode": "mixed" if speaker_count > 1 else "single",
+        "styleMode": style_mode,
+        "speakerCount": speaker_count,
+        "voiceVariantCount": style_count,
         "voices": [
-            {"speaker": speaker, "style": style, "credit": f"VOICEVOX:{speaker}"}
-            for _, speaker, style in voices
+            {"styleId": style_id, "speaker": speaker, "style": style, "credit": f"VOICEVOX:{speaker}"}
+            for style_id, speaker, style in voices
         ],
         "items": {},
     }
 
-    if len(voices) > 1:
-        print(f"VOICEVOX MIXED mode: {len(voices)} speakers")
+    if speaker_count > 1 or style_count > 1:
+        print(f"VOICEVOX rotation: {speaker_count} speakers / {style_count} speaker-style variants")
         for _, speaker, style in voices:
             print(f"  - {speaker} / {style}")
     else:
@@ -217,6 +227,7 @@ def main() -> int:
         wav_to_mp3(wav, out)
         index["items"][q["id"]] = {
             "path": relative,
+            "styleId": style_id,
             "speaker": speaker,
             "style": style,
             "credit": f"VOICEVOX:{speaker}",
@@ -228,11 +239,17 @@ def main() -> int:
     (OUTPUT_DIR / "voicevox-index.json").write_text(
         json.dumps(index, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    voice_lines = "\n".join(f"- {speaker} / {style} / VOICEVOX:{speaker}" for _, speaker, style in voices)
+    voice_lines = "\n".join(
+        f"- {speaker} / {style} / style_id={style_id} / VOICEVOX:{speaker}"
+        for style_id, speaker, style in voices
+    )
     (OUTPUT_DIR / "README.txt").write_text(
         "Japanese Listening Game VOICEVOX pack\n"
         f"JLPT: {', '.join(levels)}\n"
-        f"Speaker mode: {'MIXED' if len(voices) > 1 else 'SINGLE'}\n"
+        f"Speaker mode: {'MIXED' if speaker_count > 1 else 'SINGLE'}\n"
+        f"Style mode: {style_mode.upper()}\n"
+        f"Speakers: {speaker_count}\n"
+        f"Speaker-style variants: {style_count}\n"
         f"Audio files: {len(index['items'])}\n\n"
         "Voices / credits:\n"
         f"{voice_lines}\n\n"
