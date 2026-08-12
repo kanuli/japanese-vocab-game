@@ -45,7 +45,7 @@ jobs:
           python3 -m http.server 8765 >/tmp/server.log 2>&1 &
           PID=$!
           trap 'kill $PID || true' EXIT
-          cat > /tmp/test-auto-voicevox.cjs <<'JS'
+          cat > test-auto-voicevox.cjs <<'JS'
           const {chromium}=require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true});
@@ -74,7 +74,7 @@ jobs:
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
-          timeout 150s node /tmp/test-auto-voicevox.cjs
+          timeout 150s node test-auto-voicevox.cjs
 
       - name: Commit verified page
         run: |
