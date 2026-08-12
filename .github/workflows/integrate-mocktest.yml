@@ -1,0 +1,73 @@
+name: Integrate JLPT mock test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/integrate-mocktest.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate mock test JavaScript
+        run: node --check mocktest.js
+
+      - name: Add mock test to existing navigation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          pages = {
+              "index.html": "vocab",
+              "grammar.html": "grammar",
+              "listening.html": "listening",
+          }
+          items = [
+              ("vocab", "./index.html", "📚 單字"),
+              ("grammar", "./grammar.html", "📝 文法"),
+              ("listening", "./listening.html", "🎧 聽解"),
+              ("mock", "./mocktest.html", "🧪 模擬試驗"),
+          ]
+          normal = "text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033"
+          active = "text-decoration:none;border:1px solid #3568dd;background:#eef3ff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#3568dd"
+
+          for filename, current in pages.items():
+              path = Path(filename)
+              text = path.read_text(encoding="utf-8")
+              links = "".join(
+                  f'<a href="{href}" style="{active if key == current else normal}">{label}</a>'
+                  for key, href, label in items
+              )
+              nav = f'<div class="site-nav" style="display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px">{links}</div>'
+              new, count = re.subn(r'<div class="site-nav"[^>]*>.*?</div>', nav, text, count=1, flags=re.S)
+              if count != 1:
+                  raise SystemExit(f"Could not locate site navigation in {filename}")
+              path.write_text(new, encoding="utf-8")
+              print(f"Updated {filename}")
+          PY
+
+      - name: Verify mock test link on all pages
+        run: |
+          grep -q './mocktest.html' index.html
+          grep -q './mocktest.html' grammar.html
+          grep -q './mocktest.html' listening.html
+          grep -q './mocktest.html' mocktest.html
+
+      - name: Commit navigation integration
+        run: |
+          if git diff --quiet; then
+            echo "Navigation already integrated."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html grammar.html listening.html
+          git commit -m "Add JLPT mock test to site navigation"
+          git push
