@@ -35,7 +35,7 @@ jobs:
               page=1
               while True:
                   raw=subprocess.check_output([
-                      'gh','api',f'/repos/{repo}/actions/runs/{run}/artifacts',
+                      'gh','api','-X','GET',f'/repos/{repo}/actions/runs/{run}/artifacts',
                       '-f','per_page=100','-f',f'page={page}'
                   ], text=True)
                   data=json.loads(raw)
