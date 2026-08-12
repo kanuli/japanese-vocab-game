@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>日本語聽解挑戰 v1.4｜JLPT N1–N5</title>
+<title>日本語聽解挑戰 v1.5｜JLPT N1–N5</title>
 <style>
 :root{--bg:#f5f7fb;--card:#fff;--text:#182033;--muted:#687082;--line:#dde3ec;--blue:#3568dd;--blue2:#edf3ff;--ok:#11784a;--okbg:#edf9f2;--bad:#b42318;--badbg:#fff0ee}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei","Yu Gothic UI",sans-serif}
@@ -58,11 +58,11 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500}.sheet-b
 <h2>Web 題庫</h2>
 <div class="source"><strong>🌐 Hanabira N1–N5 例句</strong><div id="webStatus" class="muted">載入中…</div><div id="counts" class="counts"></div><div class="row" style="margin-top:8px"><button id="reload" class="btn">重新載入 Web</button></div></div>
 <div class="source"><strong>🔊 日語語音</strong>
-<div class="muted" style="margin:5px 0 8px">VOICEVOX 音訊直接由公開 GitHub Releases 播放；不需外部雲端帳戶、信用卡或額外登入。Supertonic 與裝置語音只作備援。</div>
-<div class="radios three" style="margin-bottom:9px"><div class="radio"><input id="engineVoicevox" name="audioEngine" type="radio" value="voicevox" checked><label for="engineVoicevox">🎭 VOICEVOX<br>GitHub</label></div><div class="radio"><input id="engineAI" name="audioEngine" type="radio" value="ai"><label for="engineAI">✨ Supertonic<br>AI</label></div><div class="radio"><input id="engineDevice" name="audioEngine" type="radio" value="device"><label for="engineDevice">🖥️ 裝置<br>語音</label></div></div>
+<div class="muted" style="margin:5px 0 8px">VOICEVOX 以 GitHub Releases 為主來源，Hugging Face Dataset 為自動備援；兩者都不需學習者登入。Supertonic 與裝置語音作第二層備援。</div>
+<div class="radios three" style="margin-bottom:9px"><div class="radio"><input id="engineVoicevox" name="audioEngine" type="radio" value="voicevox" checked><label for="engineVoicevox">🎭 VOICEVOX<br>自動備援</label></div><div class="radio"><input id="engineAI" name="audioEngine" type="radio" value="ai"><label for="engineAI">✨ Supertonic<br>AI</label></div><div class="radio"><input id="engineDevice" name="audioEngine" type="radio" value="device"><label for="engineDevice">🖥️ 裝置<br>語音</label></div></div>
 <div id="voicevoxPanel">
 <div id="voicevoxStatus" class="notice" style="margin:0 0 8px">正在載入 VOICEVOX 公開音訊索引…</div>
-<div class="muted">音訊包由本專案 GitHub Actions 產生並直接發佈至 GitHub Releases。正常使用只需開啟網站並開始練習。</div>
+<div class="muted">音訊包由 GitHub Actions 自動發佈至 GitHub Releases，並可同步鏡像到 Hugging Face。播放失敗時會自動切換來源。</div>
 </div>
 <div id="aiPanel">
 <div id="aiStatus" class="notice" style="margin:0 0 8px">尚未下載 AI 模型。首次啟用約需下載 400 MB；之後瀏覽器通常可使用快取。</div>
@@ -98,7 +98,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500}.sheet-b
 </div>
 <div class="sheet-actions"><button id="replay" class="btn">🔊 再聽</button><button id="next" class="btn primary next">下一題 →</button></div>
 </div>
-<div class="footer">Web 句子來源：Hanabira。VOICEVOX 音訊由公開 GitHub Releases 提供，不需登入；Supertonic 3 在瀏覽器內 ONNX 運算；裝置日語語音只作備援。A/B/C/D 僅顯示繁體中文意思，回答後才顯示日文原句。JLPT 等級屬學習用分類。</div>
+<div class="footer">Web 句子來源：Hanabira。VOICEVOX 以 GitHub Releases 為主來源、Hugging Face Dataset 為自動備援，兩者均不需學習者登入；Supertonic 3 與裝置日語語音作第二層備援。A/B/C/D 僅顯示繁體中文意思，回答後才顯示日文原句。JLPT 等級屬學習用分類。</div>
 </div>
 
 <script>
@@ -140,9 +140,11 @@ function chosenDeviceVoice(){const n=$("#voice")?.value;if(n)return voices.find(
 function syncAudioPanels(){const mode=$("input[name=audioEngine]:checked")?.value||"ai";$("#voicevoxPanel").style.display=mode==="voicevox"?"block":"none";$("#aiPanel").style.display=mode==="ai"?"block":"none";$("#devicePanel").style.display=mode==="device"?"block":"none"}
 
 let voicevoxIndex={version:2,items:{}};
-async function loadVoicevoxIndex(){const st=$("#voicevoxStatus");try{const r=await fetch("./voicevox-release-index.json",{cache:"no-cache"});if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();if(!d||typeof d!=="object"||!d.items)throw new Error("索引格式不正確");voicevoxIndex=d;const n=Object.keys(d.items||{}).length;st.textContent=n?`✅ VOICEVOX 已準備：GitHub Releases 共 ${n.toLocaleString()} 題音訊。現在可直接開始。`:"⚠️ VOICEVOX 音訊索引目前是空的，將使用其他語音備援。";return n}catch(e){voicevoxIndex={version:2,items:{}};st.textContent="⚠️ VOICEVOX 公開音訊包尚未發佈或暫時無法讀取；將使用其他語音備援。";return 0}}
-async function prepareVoicevoxAudio(q){const rec=voicevoxIndex?.items?.[q.id];if(!rec?.url)return null;try{const audio=new Audio(rec.url);audio.preload="auto";return{audio,out:{...rec,source:"VOICEVOX / GitHub Releases"}}}catch{return null}}
-async function speakVoicevox(rate=1){const st=$("#voicevoxStatus");try{let prepared=game.voicevoxPrepared;if(!prepared&&game.voicevoxPromise)prepared=await game.voicevoxPromise;if(!prepared)prepared=await prepareVoicevoxAudio(game.current);if(!prepared)throw new Error("此題尚未有 VOICEVOX 音訊");game.voicevoxPrepared=prepared;activeAiAudio=prepared.audio;activeAiAudio.currentTime=0;activeAiAudio.playbackRate=rate;try{await activeAiAudio.play()}catch(e){if(String(e?.name||"").includes("NotAllowed")){$("#playCount").textContent="✅ VOICEVOX 已載入；iPhone/Safari 請再按一次播放。";return true}throw e}const meta=prepared.out;const who=[meta.speaker,meta.style].filter(Boolean).join("／");unlockAfterPlay(`VOICEVOX${who?" · "+who:""}`);return true}catch(e){st.textContent="⚠️ VOICEVOX 此題無法播放，已改用其他語音備援。";return false}}
+function voicevoxUrls(rec){const raw=Array.isArray(rec?.urls)?rec.urls:[rec?.url,rec?.backupUrl];return[...new Set(raw.filter(x=>typeof x==="string"&&x.trim()).map(x=>x.trim()))]}
+function voicevoxProvider(url){return /huggingface\.co\//i.test(url)?"Hugging Face 備援":"GitHub Releases"}
+async function loadVoicevoxIndex(){const st=$("#voicevoxStatus");try{const r=await fetch("./voicevox-release-index.json",{cache:"no-cache"});if(!r.ok)throw new Error(`HTTP ${r.status}`);const d=await r.json();if(!d||typeof d!=="object"||!d.items)throw new Error("索引格式不正確");voicevoxIndex=d;const n=Object.keys(d.items||{}).length;const backed=Object.values(d.items||{}).filter(rec=>voicevoxUrls(rec).some(u=>/huggingface\.co\//i.test(u))).length;st.textContent=n?`✅ VOICEVOX 已準備：${n.toLocaleString()} 題${backed?` · ${backed.toLocaleString()} 題已設定 Hugging Face 自動備援`:""}。現在可直接開始。`:"⚠️ VOICEVOX 音訊索引目前是空的，將使用其他語音備援。";return n}catch(e){voicevoxIndex={version:2,items:{}};st.textContent="⚠️ VOICEVOX 公開音訊包尚未發佈或暫時無法讀取；將使用其他語音備援。";return 0}}
+async function prepareVoicevoxAudio(q){const rec=voicevoxIndex?.items?.[q.id],urls=voicevoxUrls(rec);if(!urls.length)return null;try{const candidates=urls.map(url=>{const audio=new Audio(url);audio.preload="auto";return{url,audio,provider:voicevoxProvider(url)}});return{candidates,out:{...rec,source:"VOICEVOX"}}}catch{return null}}
+async function speakVoicevox(rate=1){const st=$("#voicevoxStatus");try{let prepared=game.voicevoxPrepared;if(!prepared&&game.voicevoxPromise)prepared=await game.voicevoxPromise;if(!prepared)prepared=await prepareVoicevoxAudio(game.current);if(!prepared?.candidates?.length)throw new Error("此題尚未有 VOICEVOX 音訊");game.voicevoxPrepared=prepared;let lastError=null;for(let i=0;i<prepared.candidates.length;i++){const candidate=prepared.candidates[i];activeAiAudio=candidate.audio;activeAiAudio.currentTime=0;activeAiAudio.playbackRate=rate;try{await activeAiAudio.play()}catch(e){lastError=e;if(String(e?.name||"").includes("NotAllowed")){$("#playCount").textContent=`✅ VOICEVOX 已載入（${candidate.provider}）；iPhone/Safari 請再按一次播放。`;return true}try{activeAiAudio.pause();activeAiAudio.src=""}catch{}activeAiAudio=null;continue}const meta=prepared.out;const who=[meta.speaker,meta.style].filter(Boolean).join("／");if(candidate.provider==="Hugging Face 備援")st.textContent="✅ GitHub 音訊不可用，已自動切換 Hugging Face 備援。";unlockAfterPlay(`VOICEVOX${who?" · "+who:""} · ${candidate.provider}`);return true}throw lastError||new Error("所有 VOICEVOX 音訊來源均無法播放")}catch(e){st.textContent="⚠️ GitHub 與 Hugging Face 的 VOICEVOX 音訊都無法播放；已改用其他語音備援。";return false}}
 
 async function waitForAiModule(){if(window.SupertonicAI)return window.SupertonicAI;await new Promise((resolve,reject)=>{let done=false;const ok=()=>{if(done)return;done=true;resolve()};window.addEventListener("supertonic-ai-module-ready",ok,{once:true});setTimeout(()=>{if(done)return;done=true;reject(new Error("AI 模組載入逾時"))},12000)});if(!window.SupertonicAI)throw new Error("AI 模組未載入");return window.SupertonicAI}
 async function enableAI(){const b=$("#enableAI");if(aiInitPromise)return aiInitPromise;b.disabled=true;aiInitPromise=(async()=>{try{const api=await waitForAiModule();$("#aiStatus").textContent="正在檢查 Supertonic 3 模型…";await api.preflight();await api.init(msg=>{$("#aiStatus").textContent=msg});$("#aiStatus").textContent="✅ Supertonic 3 AI 語音已準備，可選 F1–F5／M1–M5。";$("#engineAI").checked=true;syncAudioPanels();return true}catch(e){$("#aiStatus").textContent="⚠️ AI 語音無法啟用："+(e?.message||String(e))+"。已保留裝置語音備援。";$("#engineDevice").checked=true;syncAudioPanels();return false}finally{b.disabled=false;b.textContent=window.SupertonicAI?.isReady?.()?"✅ AI 語音已啟用":"重新嘗試啟用 AI 語音";aiInitPromise=null}})();return aiInitPromise}
