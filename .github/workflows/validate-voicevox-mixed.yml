@@ -1,48 +1,124 @@
-name: Validate mixed VOICEVOX speakers
+name: Validate all VOICEVOX speaker styles
 
 on:
   push:
     paths:
       - '.github/workflows/validate-voicevox-mixed.yml'
+      - 'scripts/generate_voicevox_pack.py'
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+
       - name: Install ffmpeg
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
+
       - name: Start VOICEVOX Engine
         run: |
           docker pull voicevox/voicevox_engine:cpu-latest
           docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
           for i in $(seq 1 120); do
-            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then
+              echo 'VOICEVOX Engine ready'
+              break
+            fi
+            if [ "$i" = 120 ]; then
+              docker logs voicevox-engine || true
+              exit 1
+            fi
             sleep 2
           done
-      - name: Generate mixed sample
+
+      - name: Synthesize every speech style
+        run: |
+          python - <<'PY'
+          import json, urllib.parse, urllib.request
+
+          def jget(url, method='GET', body=None, headers=None):
+              req=urllib.request.Request(url, data=body, method=method, headers=headers or {})
+              with urllib.request.urlopen(req, timeout=120) as r:
+                  return json.loads(r.read().decode('utf-8'))
+
+          def bget(url, method='GET', body=None, headers=None):
+              req=urllib.request.Request(url, data=body, method=method, headers=headers or {})
+              with urllib.request.urlopen(req, timeout=180) as r:
+                  return r.read()
+
+          speakers=jget('http://127.0.0.1:50021/speakers')
+          variants=[]
+          failures=[]
+          for sp in speakers:
+              speaker=str(sp.get('name','')).strip()
+              for st in (sp.get('styles') or []):
+                  style=str(st.get('name','')).strip()
+                  sid=int(st['id'])
+                  variants.append((speaker, style, sid))
+                  try:
+                      qs=urllib.parse.urlencode({'text':'こんにちは。','speaker':sid})
+                      query=jget(f'http://127.0.0.1:50021/audio_query?{qs}', method='POST', body=b'')
+                      payload=json.dumps(query, ensure_ascii=False).encode('utf-8')
+                      wav=bget(
+                          'http://127.0.0.1:50021/synthesis?'+urllib.parse.urlencode({'speaker':sid}),
+                          method='POST', body=payload, headers={'Content-Type':'application/json'})
+                      if len(wav) < 1000:
+                          raise RuntimeError(f'WAV too small: {len(wav)} bytes')
+                      print(f'OK {sid}: {speaker} / {style} ({len(wav)} bytes)')
+                  except Exception as exc:
+                      failures.append((speaker, style, sid, str(exc)))
+
+          if failures:
+              print('FAILED STYLES:')
+              for row in failures:
+                  print(row)
+              raise SystemExit(f'{len(failures)} VOICEVOX styles failed synthesis')
+
+          speaker_count=len({v[0] for v in variants})
+          print(f'Validated synthesis: {speaker_count} speakers / {len(variants)} speaker-style variants')
+          with open('/tmp/variant-count.txt','w',encoding='utf-8') as f:
+              f.write(str(len(variants)))
+          with open('/tmp/expected-variants.json','w',encoding='utf-8') as f:
+              json.dump([{'speaker':a,'style':b,'styleId':c} for a,b,c in variants],f,ensure_ascii=False)
+          PY
+
+      - name: Generate one complete all-style rotation
         env:
           JLPT: N5
-          COUNT: '12'
           SPEAKER_NAME: MIXED
-          STYLE_NAME: ノーマル
-          OUTPUT_DIR: /tmp/voicevox-mixed
-        run: python scripts/generate_voicevox_pack.py
-      - name: Verify multiple speakers
+          STYLE_NAME: ALL
+          OUTPUT_DIR: /tmp/voicevox-all-styles
+        run: |
+          export COUNT="$(cat /tmp/variant-count.txt)"
+          echo "Generating $COUNT N5 questions to cover one full speaker/style rotation"
+          python scripts/generate_voicevox_pack.py
+
+      - name: Verify every speaker/style pair was used
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          d=json.loads(Path('/tmp/voicevox-mixed/voicevox-index.json').read_text(encoding='utf-8'))
-          speakers={r['speaker'] for r in d['items'].values()}
+          d=json.loads(Path('/tmp/voicevox-all-styles/voicevox-index.json').read_text(encoding='utf-8'))
+          expected=json.loads(Path('/tmp/expected-variants.json').read_text(encoding='utf-8'))
+          expected_set={(x['speaker'],x['style'],int(x['styleId'])) for x in expected}
+          indexed_set={(x['speaker'],x['style'],int(x['styleId'])) for x in d['voices']}
+          used_set={(x['speaker'],x['style'],int(x['styleId'])) for x in d['items'].values()}
+
           assert d.get('speakerMode') == 'mixed', d.get('speakerMode')
-          assert len(speakers) > 1, speakers
-          print('Mixed speakers:', len(speakers), sorted(speakers))
-          print('Files:', len(d['items']))
+          assert d.get('styleMode') == 'all', d.get('styleMode')
+          assert indexed_set == expected_set, (len(indexed_set), len(expected_set))
+          assert used_set == expected_set, (len(used_set), len(expected_set))
+          assert d.get('speakerCount') == len({x[0] for x in expected_set})
+          assert d.get('voiceVariantCount') == len(expected_set)
+          print('ALL STYLE ROTATION OK')
+          print('Speakers:', d['speakerCount'])
+          print('Speaker/style variants:', d['voiceVariantCount'])
+          print('Generated files:', len(d['items']))
           PY
+
       - name: Stop engine
         if: always()
         run: docker stop voicevox-engine || true
