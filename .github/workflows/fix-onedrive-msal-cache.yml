@@ -1,0 +1,157 @@
+name: Fix OneDrive MSAL cache recovery
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-onedrive-msal-cache.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Patch MSAL recovery
+        run: python scripts/fix-onedrive-msal-cache.py
+
+      - name: Static checks
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('src/listening-onedrive-entry.js').read_text(encoding='utf-8')
+          for x in [
+            "ACCOUNT_HINT_KEY='jplistening_onedrive_login_hint'",
+            'isLostRequestCacheError',
+            'clearStaleAuthResponse',
+            'recoverSilentSession',
+            'a.ssoSilent({scopes:c.scopes,loginHint:hint})',
+            "e.code='onedrive_reconnect_required'",
+            "code==='no_account_error'"
+          ]:
+              assert x in s, x
+          assert 'acquireTokenPopup' not in s, 'automatic token path must not open a popup'
+          PY
+
+      - name: Unit-test stale redirect and silent SSO recovery
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('src/listening-onedrive-entry.js').read_text(encoding='utf-8')
+          old="""import {
+            PublicClientApplication,
+            BrowserCacheLocation,
+            InteractionRequiredAuthError
+          } from '@azure/msal-browser';"""
+          # Preserve indentation-independent exact source block.
+          old="""import {
+          PublicClientApplication,
+          BrowserCacheLocation,
+          InteractionRequiredAuthError
+          } from '@azure/msal-browser';""" if old not in s else old
+          if old not in s:
+              old="""import {
+  PublicClientApplication,
+  BrowserCacheLocation,
+  InteractionRequiredAuthError
+} from '@azure/msal-browser';"""
+          fake="""const BrowserCacheLocation={LocalStorage:'localStorage'};
+class InteractionRequiredAuthError extends Error{}
+class PublicClientApplication{
+  constructor(){this.active=null}
+  async initialize(){}
+  async handleRedirectPromise(){
+    if(globalThis.__TEST_MODE==='lost'){
+      const e=new Error('No token request found in cache');
+      e.errorCode='no_token_request_cache_error';
+      throw e;
+    }
+    return null;
+  }
+  getActiveAccount(){return this.active}
+  getAllAccounts(){return this.active?[this.active]:[]}
+  setActiveAccount(a){this.active=a}
+  async ssoSilent(){
+    if(globalThis.__TEST_MODE==='recover'){
+      const account={username:'listener@example.com',name:'Listener'};
+      this.active=account;
+      return {accessToken:'silent-token',account};
+    }
+    const e=new Error('login required');e.errorCode='login_required';throw e;
+  }
+  async loginPopup(){throw new Error('not used')}
+  async loginRedirect(){throw new Error('not used')}
+  async logoutPopup(){}
+  async acquireTokenSilent(){return {accessToken:'cached-token',account:this.active}}
+}"""
+          assert old in s
+          s=s.replace(old,fake,1)
+          s=s.replace("import { unzipSync, strFromU8 } from 'fflate';","const unzipSync=()=>({}); const strFromU8=()=>'';",1)
+          Path('test-msal-recovery-module.mjs').write_text(s,encoding='utf-8')
+          PY
+          cat > test-msal-recovery.mjs <<'JS'
+          import assert from 'node:assert/strict';
+          const mode=process.argv[2];
+          globalThis.__TEST_MODE=mode;
+          const store=new Map([['jplistening_onedrive_client_id','00000000-0000-0000-0000-000000000001']]);
+          if(mode==='recover')store.set('jplistening_onedrive_login_hint','listener@example.com');
+          globalThis.localStorage={getItem:k=>store.has(k)?store.get(k):null,setItem:(k,v)=>store.set(k,String(v)),removeItem:k=>store.delete(k)};
+          globalThis.location={href:'https://example.com/listening.html?code=fake&state=fake',origin:'https://example.com',pathname:'/listening.html',search:'?code=fake&state=fake',hash:''};
+          globalThis.history={state:null,replaceState:(_a,_b,url)=>{globalThis.__cleanedUrl=url}};
+          globalThis.window={ONEDRIVE_VOICEVOX_CONFIG:{clientId:'00000000-0000-0000-0000-000000000001',authority:'https://login.microsoftonline.com/consumers',redirectUri:'https://example.com/listening.html',scopes:['Files.ReadWrite.AppFolder']},dispatchEvent:()=>{}};
+          await import('./test-msal-recovery-module.mjs?mode='+mode);
+          const state=await window.OneDriveVoicevox.init();
+          if(mode==='lost'){
+            assert.equal(state.signedIn,false);
+            assert.equal(globalThis.__cleanedUrl,'/listening.html');
+            console.log('stale no_token_request_cache_error recovered without crash: OK');
+          }else{
+            assert.equal(state.signedIn,true);
+            assert.equal(state.account,'listener@example.com');
+            console.log('saved login hint + ssoSilent automatic recovery: OK');
+          }
+          JS
+          node test-msal-recovery.mjs lost
+          node test-msal-recovery.mjs recover
+
+      - name: Rebuild OneDrive browser client
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund --save-dev @azure/msal-browser@5.17.3 fflate@0.8.2 esbuild@0.25.9
+          npx esbuild src/listening-onedrive-entry.js \
+            --bundle \
+            --format=esm \
+            --platform=browser \
+            --target=es2020 \
+            --minify \
+            --outfile=vendor/onedrive-voicevox.js
+          node --check vendor/onedrive-voicevox.js
+
+      - name: Verify automatic Listening UI still intact
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          h=Path('listening.html').read_text(encoding='utf-8')
+          assert 'id="engineVoicevox" name="audioEngine" type="radio" value="voicevox" checked' in h
+          assert 'id="voicevoxSettings"' in h
+          assert 'VOICEVOX 已準備：OneDrive 已自動連接' in h
+          scripts=re.findall(r'<script>(.*?)</script>',h,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+
+      - name: Commit verified recovery
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/listening-onedrive-entry.js vendor/onedrive-voicevox.js
+          git commit -m 'Recover OneDrive session after MSAL cache loss'
+          git push
