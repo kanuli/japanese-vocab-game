@@ -1,0 +1,44 @@
+name: Apply JLPT mock diversity v2
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-mocktest-diversity-v2.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply diversity patch
+        run: python .github/scripts/improve_mocktest_diversity.py
+      - name: Fix browser cache version
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('mocktest.html')
+          s=p.read_text(encoding='utf-8')
+          s=re.sub(r'mocktest\.js\?v=[^"\s<]+','mocktest.js?v=20260813-diversity1',s)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Validate JavaScript
+        run: node --check mocktest.js
+      - name: Verify improved generators
+        run: |
+          grep -q 'function semanticUnique' mocktest.js
+          grep -q 'function takeDiverse' mocktest.js
+          grep -q 'スポーツセンター利用案内' mocktest.js
+          grep -q '市立美術館' mocktest.js
+          grep -q '駅前バス時刻表' mocktest.js
+          grep -q '予定が変わり' mocktest.js
+          grep -q 'function buildQuickResponse' mocktest.js
+          grep -q 'mocktest.js?v=20260813-diversity1' mocktest.html
+      - name: Commit improvement
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mocktest.js mocktest.html
+          git commit -m 'Improve JLPT reading and listening question diversity'
+          git push
