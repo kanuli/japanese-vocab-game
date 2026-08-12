@@ -1,0 +1,113 @@
+name: Mirror VOICEVOX to Hugging Face
+
+on:
+  workflow_run:
+    workflows: ["Generate VOICEVOX audio pack"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  mirror:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate mirror tool and public index
+        run: |
+          python -m py_compile scripts/mirror_releases_to_huggingface.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('voicevox-release-index.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          assert d.get('items'), 'VOICEVOX public index is empty'
+          print('Preparing to mirror', len(d['items']), 'VOICEVOX audio files')
+          PY
+
+      - name: Download existing GitHub Release audio
+        env:
+          VOICEVOX_PUBLIC_INDEX: voicevox-release-index.json
+          HF_MIRROR_DIR: hf-mirror
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          MIRROR_WORKERS: '8'
+        run: python scripts/mirror_releases_to_huggingface.py
+
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+
+      - name: Upload N5 backup
+        if: ${{ hashFiles('hf-mirror/voicevox/N5/*.mp3') != '' }}
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: hf upload kanuli1983/japanese-listening-voicevox-backup hf-mirror/voicevox/N5 voicevox/N5 --repo-type dataset --commit-message "Mirror N5 VOICEVOX from GitHub Releases"
+
+      - name: Upload N4 backup
+        if: ${{ hashFiles('hf-mirror/voicevox/N4/*.mp3') != '' }}
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: hf upload kanuli1983/japanese-listening-voicevox-backup hf-mirror/voicevox/N4 voicevox/N4 --repo-type dataset --commit-message "Mirror N4 VOICEVOX from GitHub Releases"
+
+      - name: Upload N3 backup
+        if: ${{ hashFiles('hf-mirror/voicevox/N3/*.mp3') != '' }}
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: hf upload kanuli1983/japanese-listening-voicevox-backup hf-mirror/voicevox/N3 voicevox/N3 --repo-type dataset --commit-message "Mirror N3 VOICEVOX from GitHub Releases"
+
+      - name: Upload N2 backup
+        if: ${{ hashFiles('hf-mirror/voicevox/N2/*.mp3') != '' }}
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: hf upload kanuli1983/japanese-listening-voicevox-backup hf-mirror/voicevox/N2 voicevox/N2 --repo-type dataset --commit-message "Mirror N2 VOICEVOX from GitHub Releases"
+
+      - name: Upload N1 backup
+        if: ${{ hashFiles('hf-mirror/voicevox/N1/*.mp3') != '' }}
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: hf upload kanuli1983/japanese-listening-voicevox-backup hf-mirror/voicevox/N1 voicevox/N1 --repo-type dataset --commit-message "Mirror N1 VOICEVOX from GitHub Releases"
+
+      - name: Upload backup index
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+        run: hf upload kanuli1983/japanese-listening-voicevox-backup hf-mirror/voicevox-release-index.json voicevox-release-index.json --repo-type dataset --commit-message "Update VOICEVOX backup index"
+
+      - name: Verify public Hugging Face fallback
+        run: |
+          URL=$(python - <<'PY'
+          import json
+          d=json.load(open('voicevox-release-index.json',encoding='utf-8'))
+          print(next(iter(d['items'].values()))['backupUrl'])
+          PY
+          )
+          echo "Checking public backup URL"
+          curl -fsSL --retry 8 --retry-delay 3 --range 0-255 "$URL" -o /tmp/hf-sample.mp3
+          test -s /tmp/hf-sample.mp3
+
+      - name: Commit multi-origin index
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add voicevox-release-index.json
+          if git diff --cached --quiet; then
+            echo 'Multi-origin index already current'
+          else
+            git commit -m 'Enable Hugging Face VOICEVOX backup URLs'
+            git pull --rebase origin main
+            git push origin main
+          fi
