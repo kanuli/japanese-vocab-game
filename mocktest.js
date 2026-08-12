@@ -63,6 +63,7 @@ function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function strip(s){const d=document.createElement("div");d.innerHTML=String(s??"").replace(/\[sound:[^\]]+\]/gi," ").replace(/<br\s*\/?>/gi,"；");return(d.textContent||"").replace(/\s+/g," ").trim()}
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function sample(a,n){return shuffle(a).slice(0,n)}
+function unique(a){const seen=new Set;return a.filter(x=>{const k=(x&&typeof x==="object")?(x.id||JSON.stringify(x)):String(x);if(seen.has(k))return false;seen.add(k);return true})}
 function kana(s){return!!s&&/^[ぁ-ゖァ-ヺー・ヽヾゝゞ]+$/.test(String(s).replace(/\s+/g,""))}
 function hasKanji(s){return/[\u3400-\u4DBF\u4E00-\u9FFF々〆ヵヶ]/.test(s||"")}
 function currentLevel(){return $("input[name=level]:checked")?.value||"N3"}
