@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>日本語文法挑戰 v2.4｜JLPT N1–N5</title>
+<title>日本語文法挑戰 v2.5｜JLPT N1–N5</title>
 <style>
 :root{--bg:#f5f7fb;--card:#fff;--text:#182033;--muted:#687082;--line:#dde3ec;--blue:#3568dd;--blue2:#edf3ff;--ok:#11784a;--okbg:#edf9f2;--bad:#b42318;--badbg:#fff0ee}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei","Yu Gothic UI",sans-serif}
@@ -24,16 +24,17 @@ h2{font-size:17px;margin:0 0 10px}.levels{display:grid;grid-template-columns:rep
 ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-spacing:0}.sheet-backdrop{position:fixed;inset:0;background:rgba(20,30,50,.18);display:none;z-index:50}
 .sheet{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(680px,calc(100% - 24px));background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 18px 60px rgba(20,30,55,.24);display:none;z-index:51;max-height:80vh;overflow:auto}
 .result{font-size:20px;font-weight:900;margin-bottom:10px}.result.ok{color:var(--ok)}.result.bad{color:var(--bad)}.answer-grid{display:grid;grid-template-columns:102px 1fr;gap:7px 10px;line-height:1.65}.label{color:var(--muted);font-size:13px;font-weight:700}.grammar{font-size:21px;font-weight:850}.meaning{font-weight:800}
-.sheet-actions{display:flex;gap:8px;margin-top:13px;position:sticky;bottom:0;background:#fff;padding-top:8px}.sheet-actions .next{flex:1;min-height:49px}.end{display:none;text-align:center;padding:28px}.end .big{font-size:42px;font-weight:900}
+.sheet-actions{display:flex;gap:8px;margin-top:13px;position:sticky;bottom:0;background:#fff;padding-top:8px}.sheet-actions .next{flex:1;min-height:49px}.end{display:none;text-align:center;padding:28px 8px}.end .big{font-size:42px;font-weight:900}
+.review-summary{margin:18px auto 14px;max-width:760px;text-align:left}.review-title{font-size:19px;font-weight:900;margin:18px 0 9px}.review-breakdown{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.review-stat{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fafbfe;text-align:center}.review-stat b{display:block;font-size:18px;margin-top:3px}.review-list{display:grid;gap:10px;margin-top:10px;text-align:left}.review-item{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff}.review-item.bad{border-color:#efb6b1;background:#fffafa}.review-q{font-size:18px;font-weight:800;line-height:1.8;margin-bottom:8px;font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif}.review-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.review-row{display:grid;grid-template-columns:88px 1fr;gap:5px 8px;line-height:1.55;font-size:14px}.review-label{color:var(--muted);font-weight:700}.review-correct{color:var(--ok);font-weight:800}.review-wrong{color:var(--bad);font-weight:800}.review-good{border:1px solid #b9dfca;background:var(--okbg);border-radius:12px;padding:12px;text-align:center;color:var(--ok);font-weight:800}.review-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
 .footer{font-size:11px;color:var(--muted);line-height:1.65;margin:16px 2px}.manual-list{max-height:160px;overflow:auto;font-size:12px}.manual-item{border-top:1px solid #edf0f4;padding:7px 0;display:flex;justify-content:space-between;gap:8px}
 .webBadge{display:inline-block;background:#eef3ff;color:#3568dd;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:800}.fallbackBadge{display:inline-block;background:#f3f4f6;color:#666;border-radius:999px;padding:2px 7px;font-size:11px;font-weight:800}
-@media(max-width:720px){.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.choice{min-height:60px}.radios,.types,.sources{grid-template-columns:1fr 1fr}.answer-grid{grid-template-columns:86px 1fr}.sheet{bottom:max(8px,env(safe-area-inset-bottom))}.question{font-size:clamp(23px,7vw,34px)}}
+@media(max-width:720px){.review-breakdown{grid-template-columns:1fr 1fr}.review-row{grid-template-columns:76px 1fr}.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.choices{grid-template-columns:1fr}.choice{min-height:60px}.radios,.types,.sources{grid-template-columns:1fr 1fr}.answer-grid{grid-template-columns:86px 1fr}.sheet{bottom:max(8px,env(safe-area-inset-bottom))}.question{font-size:clamp(23px,7vw,34px)}}
 </style>
 <script src="./vendor/kuromoji.js"></script>
 </head>
 <body>
 <div class="wrap"><div class="site-nav" style="display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px"><a href="./index.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">📚 單字</a><a href="./grammar.html" style="text-decoration:none;border:1px solid #3568dd;background:#eef3ff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#3568dd">📝 文法</a><a href="./listening.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">🎧 聽解</a><a href="./mocktest.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">🧪 模擬試驗</a></div>
-<div class="top"><div><h1>📝 日本語文法挑戰 v2.4</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
+<div class="top"><div><h1>📝 日本語文法挑戰 v2.5</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
 
 <div id="setup" class="grid">
 <section class="card">
@@ -92,7 +93,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-s
 <section id="quiz" class="card quiz">
 <div class="quiz-head"><button id="quit" class="btn">← 返回</button><div class="stats"><span id="progress" class="pill"></span><span id="score" class="pill">✅ 0</span><span id="streak" class="pill">🔥 0</span></div></div>
 <div id="question" class="question"></div><div id="questionType" class="prompt"></div><div id="choices" class="choices"></div>
-<div id="end" class="end"><div id="final" class="big"></div><p id="finalText"></p><button id="again" class="btn primary">再玩一次</button></div>
+<div id="end" class="end"><div id="final" class="big"></div><p id="finalText"></p><div id="reviewSummary" class="review-summary"><div class="review-title">📊 本次學習分析</div><div id="reviewBreakdown" class="review-breakdown"></div><div class="review-title">📝 錯題複習</div><div id="reviewList" class="review-list"></div></div><div class="review-actions"><button id="again" class="btn primary">再玩一次</button><button id="reviewWrongBtn" class="btn">只練錯題</button></div></div>
 </section>
 
 <div id="backdrop" class="sheet-backdrop"></div>
@@ -537,7 +538,7 @@ function availability(){
 }
 function start(){
  const p=pool(),n=+$("input[name=qcount]:checked").value;
- game={pool:p,order:shuffle(p),limit:n,infinite:n===0,index:0,score:0,streak:0,current:null,answered:false};
+ game={pool:p,order:shuffle(p),limit:n,infinite:n===0,index:0,score:0,streak:0,current:null,answered:false,history:[]};
  $("#setup").style.display="none";$("#quiz").style.display="block";$("#end").style.display="none";$("#question").style.display="";$("#questionType").style.display="";$("#choices").style.display="grid";next();
 }
 async function next(){
@@ -567,11 +568,20 @@ async function answer(v){
  }else{
    $("#aExp").textContent=q.exp||"";$("#aZh").textContent=q.zh||"";$("#aSource").textContent=q.source==="manual"?"手動題目":"內置繁中題庫";
  }
- $("#aLevel").textContent=q.level;$("#aType").textContent=q.type;game.index++;stats();showSheet();
+ $("#aLevel").textContent=q.level;$("#aType").textContent=q.type;game.history.push({q,selected:v,ok});game.index++;stats();showSheet();
 }
 function stats(){$("#progress").textContent=game.infinite?`第 ${game.index+1} 題`:`${Math.min(game.index+1,game.limit)} / ${game.limit}`;$("#score").textContent=`✅ ${game.score}`;$("#streak").textContent=`🔥 ${game.streak}`}
 function showSheet(){$("#backdrop").style.display="block";$("#sheet").style.display="block"}function hideSheet(){$("#backdrop").style.display="none";$("#sheet").style.display="none"}
-function finish(){hideSheet();$("#question").style.display="none";$("#questionType").style.display="none";$("#choices").style.display="none";$("#end").style.display="block";$("#final").textContent=`${game.score} / ${game.limit}`;$("#finalText").textContent=`正確率 ${Math.round(game.score/game.limit*100)}% · 錯題已保存。`}
+function buildReview(){
+ const h=game?.history||[], total=h.length||1, mistakes=h.filter(x=>!x.ok), types=["助詞","副詞","接続詞","文法"];
+ const labels={"助詞":"助詞","副詞":"副詞","接続詞":"接続詞","文法":"文法表現"};
+ $("#reviewBreakdown").innerHTML=types.map(t=>{const rows=h.filter(x=>x.q.type===t),good=rows.filter(x=>x.ok).length;return `<div class="review-stat"><span>${labels[t]}</span><b>${good} / ${rows.length}</b><span class="muted">${rows.length?Math.round(good/rows.length*100):0}%</span></div>`}).join("");
+ if(!mistakes.length){$("#reviewList").innerHTML='<div class="review-good">🎉 本次沒有錯題。全部答對！</div>';$("#reviewWrongBtn").style.display="none";return}
+ $("#reviewWrongBtn").style.display="inline-block";
+ $("#reviewList").innerHTML=mistakes.map((r,i)=>{const q=r.q,ex=q.source==="web"?zhFallback(q):(q.exp||""),full=q.q.replace("＿＿",q.a);return `<div class="review-item bad"><div class="review-meta"><span class="pill">${esc(q.level)}</span><span class="pill">${esc(labels[q.type]||q.type)}</span><span class="pill">${i+1} / ${mistakes.length}</span></div><div class="review-q" data-jp="${encodeURIComponent(full)}">${esc(full)}</div><div class="review-row"><div class="review-label">你的答案</div><div class="review-wrong">${esc(r.selected)}</div><div class="review-label">正確答案</div><div class="review-correct">${esc(q.a)}</div><div class="review-label">文法</div><div>${esc(q.grammar||q.a)}</div><div class="review-label">說明</div><div>${esc(ex||q.meaning||"請根據句子語意及接續判斷。")}</div></div></div>`}).join("");
+ const token=++renderToken;$$(".review-q").forEach(el=>setRuby(el,decodeURIComponent(el.dataset.jp),token));
+}
+function finish(){hideSheet();$("#question").style.display="none";$("#questionType").style.display="none";$("#choices").style.display="none";$("#end").style.display="block";const total=game.history.length||game.limit||1;$("#final").textContent=`${game.score} / ${total}`;$("#finalText").textContent=`正確率 ${Math.round(game.score/total*100)}% · 錯題已保存。`;buildReview() }
 function quit(){hideSheet();game=null;$("#quiz").style.display="none";$("#setup").style.display="grid";availability()}
 function saveManual(){
  const q=$("#mQ").value.trim(),a=$("#mA").value.trim(),w1=$("#mW1").value.trim(),w2=$("#mW2").value.trim(),w3=$("#mW3").value.trim();
@@ -590,7 +600,7 @@ async function importManual(file){try{const arr=JSON.parse(await file.text());if
 
 $$(".preset").forEach(b=>b.onclick=()=>{const s=new Set(b.dataset.l.split(","));$$(".level input").forEach(x=>x.checked=s.has(x.value));availability()});
 $$(".level input,.type input,.sourceCheck input").forEach(x=>x.onchange=availability);$$("input[name=mode]").forEach(x=>x.onchange=availability);
-$("#start").onclick=start;$("#quit").onclick=quit;$("#again").onclick=quit;$("#next").onclick=next;$("#reloadWeb").onclick=loadWeb;
+$("#start").onclick=start;$("#quit").onclick=quit;$("#again").onclick=quit;$("#reviewWrongBtn").onclick=()=>{quit();$("#modeWrong").checked=true;availability();};$("#next").onclick=next;$("#reloadWeb").onclick=loadWeb;
 $("#toggleManual").onclick=()=>$("#manualForm").style.display=$("#manualForm").style.display==="block"?"none":"block";$("#saveManual").onclick=saveManual;$("#export").onclick=exportManual;$("#import").onchange=e=>{if(e.target.files[0])importManual(e.target.files[0]);e.target.value=""};
 document.addEventListener("keydown",e=>{if($("#quiz").style.display!=="block")return;if(!game?.answered&&["1","2","3","4"].includes(e.key))$$(".choice")[+e.key-1]?.click();else if(game?.answered&&(e.key==="Enter"||e.key===" ")){e.preventDefault();next()}});
 
