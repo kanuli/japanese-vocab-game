@@ -26,3 +26,5 @@ jobs:
           fi
           git commit -m "Add end-of-game grammar review"
           git push
+
+# trigger v2.5
