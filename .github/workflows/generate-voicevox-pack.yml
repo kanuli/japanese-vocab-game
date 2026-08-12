@@ -39,6 +39,7 @@ jobs:
         run: |
           python -m py_compile scripts/generate_voicevox_pack.py
           python -m py_compile scripts/publish_voicevox_releases.py
+          python -m py_compile scripts/mirror_voicevox_huggingface.py
 
       - name: Install ffmpeg
         run: |
@@ -112,6 +113,21 @@ jobs:
           print('Validated', len(d['items']), 'audio files;', d.get('speakerCount'), 'speakers;', d.get('voiceVariantCount'), 'speaker-style variants')
           PY
 
+      - name: Mirror MP3 files to Hugging Face backup
+        continue-on-error: true
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+          PACK_DIR: voicevox-pack
+        run: |
+          if [ -z "$HF_TOKEN" ]; then
+            echo '::warning::HF_TOKEN is not configured. Hugging Face backup mirror skipped.'
+            exit 0
+          fi
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.2,<2'
+          python scripts/mirror_voicevox_huggingface.py
+
       - name: Publish MP3 files to public GitHub Releases
         env:
           GH_TOKEN: ${{ github.token }}
@@ -120,9 +136,10 @@ jobs:
           RELEASE_NAMESPACE: voicevox-v1
           RELEASE_MAX_ASSETS: '800'
           REPLACE_LEVELS: ${{ inputs.count == 'ALL' && '1' || '0' }}
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
         run: python scripts/publish_voicevox_releases.py
 
-      - name: Validate public release index
+      - name: Validate public multi-origin index
         run: |
           python - <<'PY'
           import json
@@ -130,12 +147,20 @@ jobs:
           p=Path('voicevox-release-index.json')
           d=json.loads(p.read_text(encoding='utf-8'))
           assert d.get('version') == 2
-          assert d.get('storage') == 'github-releases'
+          assert d.get('storage') == 'github-releases+hf-backup'
+          assert d.get('primaryStorage') == 'github-releases'
+          assert d.get('backupStorage') == 'huggingface-dataset'
+          assert d.get('huggingFaceDataset') == 'kanuli1983/japanese-listening-voicevox-backup'
           assert d.get('items')
           for qid, rec in d['items'].items():
-              assert rec.get('url','').startswith('https://github.com/kanuli/japanese-vocab-game/releases/download/'), (qid, rec)
+              urls=rec.get('urls') or []
+              assert len(urls) >= 2, (qid, rec)
+              assert urls[0].startswith('https://github.com/kanuli/japanese-vocab-game/releases/download/'), (qid, rec)
+              assert urls[1].startswith('https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/voicevox/'), (qid, rec)
+              assert rec.get('url') == urls[0]
+              assert rec.get('backupUrl') == urls[1]
               assert rec.get('credit','').startswith('VOICEVOX:')
-          print('Public index contains', len(d['items']), 'questions')
+          print('Multi-origin public index contains', len(d['items']), 'questions')
           PY
 
       - name: Commit updated public index
