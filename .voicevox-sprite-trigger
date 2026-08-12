@@ -1,0 +1,6 @@
+trigger=2026-08-12T21:45:00+08:00
+voices=43
+questions_per_voice=3310
+recordings=142330
+format=seekable-mp3-audio-sprites
+providers=github-releases+huggingface
