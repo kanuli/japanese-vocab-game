@@ -1,0 +1,401 @@
+name: Generate VOICEVOX full coverage
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.voicevox-full-trigger'
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_NAMESPACE: voicevox-full-v1
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      speakers: ${{ steps.matrix.outputs.speakers }}
+      speaker_count: ${{ steps.matrix.outputs.speaker_count }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+
+      - name: Build 43-speaker canonical-style matrix
+        id: matrix
+        run: |
+          curl -fsS http://127.0.0.1:50021/speakers -o /tmp/speakers.json
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          speakers=json.load(open('/tmp/speakers.json',encoding='utf-8'))
+          rows=[]
+          preferred=('ノーマル','Normal','NORMAL','通常')
+          for i,sp in enumerate(speakers,1):
+              name=str(sp.get('name','')).strip()
+              styles=list(sp.get('styles') or [])
+              if not name or not styles:
+                  continue
+              style=next((x for x in styles if str(x.get('name','')).strip() in preferred),styles[0])
+              rows.append({
+                  'key':f's{i:02d}',
+                  'name':name,
+                  'style_id':int(style['id']),
+                  'style':str(style.get('name','')).strip(),
+              })
+          if len(rows)!=43:
+              raise SystemExit(f'Expected 43 VOICEVOX speakers, engine exposes {len(rows)}')
+          print('speakers='+json.dumps(rows,ensure_ascii=False,separators=(',',':')))
+          print('speaker_count='+str(len(rows)))
+          for r in rows:
+              print(f"{r['key']}: {r['name']} / {r['style']} / {r['style_id']}")
+          PY
+
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
+
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build tiny TAR range-test asset
+        run: |
+          python - <<'PY'
+          import json, tarfile
+          from pathlib import Path
+          p=Path('/tmp/range-sample.bin'); p.write_bytes((b'VOICEVOX-RANGE-TEST-'*512)[:8192])
+          out=Path('range-test.tar')
+          with tarfile.open(out,'w',format=tarfile.USTAR_FORMAT) as tf:
+              info=tf.gettarinfo(str(p),arcname='sample.bin'); info.mtime=0
+              with p.open('rb') as f: tf.addfile(info,f)
+          with tarfile.open(out,'r:') as tf:
+              m=tf.getmember('sample.bin')
+              Path('range-test.json').write_text(json.dumps({'offset':m.offset_data,'size':m.size}),encoding='utf-8')
+          PY
+
+      - name: Publish range-test to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=voicevox-full-range-preflight-v1
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title 'VOICEVOX full coverage range preflight' --notes 'Small persistent asset used to verify browser byte-range playback.'
+          gh release upload "$TAG" range-test.tar --clobber
+
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+
+      - name: Publish range-test to Hugging Face
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          HF_TOKEN="$(hf auth --oidc-token)"
+          export HF_TOKEN
+          hf upload "$HF_DATASET_REPO" range-test.tar voicevox-full-preflight/range-test.tar --repo-type dataset --commit-message 'Add VOICEVOX bundle range preflight asset'
+
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Verify browser CORS + Range on both public stores
+        run: |
+          cat > test-range-preflight.cjs <<'JS'
+          const {chromium}=require('playwright');
+          const fs=require('fs');
+          (async()=>{
+            const meta=JSON.parse(fs.readFileSync('range-test.json','utf8'));
+            const start=meta.offset,end=meta.offset+meta.size-1;
+            const urls=[
+              'https://github.com/kanuli/japanese-vocab-game/releases/download/voicevox-full-range-preflight-v1/range-test.tar',
+              'https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/voicevox-full-preflight/range-test.tar'
+            ];
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            await page.goto('https://kanuli.github.io/japanese-vocab-game/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            for(const url of urls){
+              const got=await page.evaluate(async({url,start,end})=>{
+                const r=await fetch(url,{headers:{Range:`bytes=${start}-${end}`},cache:'no-store'});
+                const b=await r.arrayBuffer();
+                return {status:r.status,size:b.byteLength,url:r.url};
+              },{url,start,end});
+              if(got.status!==206) throw new Error(`Range preflight HTTP ${got.status}: ${url} -> ${got.url}`);
+              if(got.size!==meta.size) throw new Error(`Range preflight size ${got.size}/${meta.size}: ${url}`);
+              console.log('Range+CORS OK',url,got.size);
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node test-range-preflight.cjs
+
+  generate:
+    needs: [discover, preflight]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        speaker: ${{ fromJSON(needs.discover.outputs.speakers) }}
+        level: [N5, N4, N3, N2, N1]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check generator syntax
+        run: python -m py_compile scripts/generate_voicevox_full_level.py
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+
+      - name: Generate full level for speaker
+        env:
+          JLPT: ${{ matrix.level }}
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          STYLE_ID: ${{ matrix.speaker.style_id }}
+          STYLE_NAME: ${{ matrix.speaker.style }}
+          OUTPUT_DIR: voicevox-full-out
+        run: python scripts/generate_voicevox_full_level.py
+
+      - name: Validate bundle manifest
+        env:
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          key=os.environ['SPEAKER_KEY']; level=os.environ['LEVEL']
+          m=json.loads(Path(f'voicevox-full-out/{key}-{level}.json').read_text(encoding='utf-8'))
+          assert m['speakerKey']==key and m['level']==level
+          assert m['count']==len(m['questions']) and m['count']>0
+          tar=Path('voicevox-full-out')/m['asset']; assert tar.is_file() and tar.stat().st_size>1000
+          with tarfile.open(tar,'r:') as tf:
+              names={x.name for x in tf.getmembers() if x.isfile()}
+          assert len(names)==m['count']
+          for qid,q in m['questions'].items():
+              assert f'{qid}.mp3' in names and q['size']>=500 and q['offset']>=512
+          print('Validated',key,level,m['count'],'recordings')
+          PY
+
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+
+      - name: Upload bundle to Hugging Face
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          HF_TOKEN="$(hf auth --oidc-token)"
+          export HF_TOKEN
+          ASSET="$SPEAKER_KEY-$LEVEL.tar"
+          hf upload "$HF_DATASET_REPO" "voicevox-full-out/$ASSET" "voicevox-full/$SPEAKER_KEY/$ASSET" --repo-type dataset --commit-message "VOICEVOX full coverage $SPEAKER_KEY $LEVEL"
+
+      - name: Upload bundle to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]')
+          TAG="$RELEASE_NAMESPACE-$SPEAKER_KEY-$LOW"
+          ASSET="$SPEAKER_KEY-$LEVEL.tar"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "VOICEVOX full $SPEAKER_KEY $LEVEL" --notes "Full $LEVEL question coverage for $SPEAKER_NAME. Credit: VOICEVOX:$SPEAKER_NAME"
+          gh release upload "$TAG" "voicevox-full-out/$ASSET" --clobber
+
+      - name: Verify byte-range playback objects
+        env:
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          read START SIZE <<< "$(python - <<'PY'
+          import json,os
+          k=os.environ['SPEAKER_KEY']; l=os.environ['LEVEL']
+          d=json.load(open(f'voicevox-full-out/{k}-{l}.json',encoding='utf-8'))
+          q=next(iter(d['questions'].values()))
+          print(q['offset'],q['size'])
+          PY
+          )"
+          END=$((START + SIZE - 1))
+          LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]')
+          ASSET="$SPEAKER_KEY-$LEVEL.tar"
+          GH_URL="https://github.com/kanuli/japanese-vocab-game/releases/download/$RELEASE_NAMESPACE-$SPEAKER_KEY-$LOW/$ASSET"
+          HF_URL="https://huggingface.co/datasets/$HF_DATASET_REPO/resolve/main/voicevox-full/$SPEAKER_KEY/$ASSET"
+          for URL in "$GH_URL" "$HF_URL"; do
+            CODE=$(curl -L -sS --retry 8 --retry-delay 3 --range "$START-$END" -o /tmp/range.mp3 -w '%{http_code}' "$URL")
+            test "$CODE" = 206
+            test "$(stat -c%s /tmp/range.mp3)" -eq "$SIZE"
+            ffprobe -v error /tmp/range.mp3 >/dev/null
+            echo "Verified public MP3 range: $URL"
+          done
+
+      - name: Preserve small manifest for final index
+        env:
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          mkdir -p manifest-artifact
+          cp "voicevox-full-out/$SPEAKER_KEY-$LEVEL.json" "manifest-artifact/$SPEAKER_KEY-$LEVEL.json"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: voicevox-full-manifest-${{ matrix.speaker.key }}-${{ matrix.level }}
+          path: manifest-artifact/*.json
+          if-no-files-found: error
+          retention-days: 2
+          compression-level: 9
+
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
+
+  finalize:
+    needs: [discover, generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Download all 215 level manifests
+        uses: actions/download-artifact@v4
+        with:
+          pattern: voicevox-full-manifest-*
+          path: voicevox-full-manifests
+          merge-multiple: true
+
+      - name: Build and validate equal-coverage index
+        env:
+          MANIFEST_DIR: voicevox-full-manifests
+          INDEX_OUT: voicevox-full-index.json
+          EXPECTED_SPEAKERS: '43'
+          EXPECTED_QUESTIONS: '3310'
+          GITHUB_REPO: kanuli/japanese-vocab-game
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          RELEASE_NAMESPACE: voicevox-full-v1
+        run: |
+          test "$(find voicevox-full-manifests -type f -name '*.json' | wc -l)" -eq 215
+          python -m py_compile scripts/build_voicevox_full_index.py scripts/fix-listening-voicevox-full-v19.py
+          python scripts/build_voicevox_full_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('voicevox-full-index.json',encoding='utf-8'))
+          assert d['version']==3
+          assert d['coverage']=='full-per-speaker'
+          assert d['speakerCount']==43
+          assert d['indexed']==3310
+          assert d['recordingCount']==142330
+          counts={v['questionCount'] for v in d['speakers'].values()}
+          assert counts=={3310}, counts
+          for key,sp in d['speakers'].items():
+              assert set(sp['bundles'])=={'N1','N2','N3','N4','N5'}
+              assert sum(b['count'] for b in sp['bundles'].values())==3310
+          print('Equal coverage verified: 43 speakers x 3310 questions')
+          PY
+
+      - name: Patch Listening for full speaker bundles
+        run: |
+          python scripts/fix-listening-voicevox-full-v19.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('listening.html').read_text(encoding='utf-8')
+          assert '日本語聽解挑戰 v1.9｜JLPT N1–N5' in s
+          assert 'voicevox-full-index.json' in s
+          assert 'full-per-speaker' in s
+          assert 'r.status!==206' in s
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
+          Path('/tmp/listening-v19.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-v19.js
+
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser full-coverage smoke test
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > test-voicevox-full.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
+            await page.addInitScript(()=>{HTMLMediaElement.prototype.play=function(){return Promise.resolve()};HTMLMediaElement.prototype.pause=function(){}});
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>document.querySelectorAll('#voicevoxVoice option').length===44,{timeout:30000});
+            const labels=await page.locator('#voicevoxVoice option').allTextContents();
+            if(labels.slice(1).some(x=>!x.includes('3,310 題')))throw new Error('Not every VOICEVOX speaker shows 3,310 questions');
+            await page.selectOption('#voicevoxVoice',{index:1});
+            const desc=await page.textContent('#voicevoxVoiceDesc');
+            if(!desc.includes('完整 3,310 題'))throw new Error('Selected speaker does not report full coverage: '+desc);
+            await page.click('#sampleVoice');
+            await page.waitForFunction(()=>document.querySelector('#sampleVoiceStatus')?.textContent.includes('試聽'),{timeout:30000});
+            if(errors.length)throw new Error(errors.join(' | '));
+            console.log('43 equal VOICEVOX speakers: OK');
+            console.log('3,310 questions per speaker: OK');
+            console.log('Remote bundle-range sample playback: OK');
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 180s node test-voicevox-full.cjs
+
+      - name: Commit full index and Listening v1.9
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add voicevox-full-index.json listening.html
+          git commit -m 'Enable complete 43-speaker VOICEVOX library'
+          git pull --rebase origin main
+          git push origin main
