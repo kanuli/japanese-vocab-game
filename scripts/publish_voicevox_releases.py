@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Publish a generated VOICEVOX pack as public GitHub Release assets.
 
-The generated stable index is committed to the Pages repository. Each item gets a
-permanent public GitHub Release download URL, so the Listening page needs no login.
+GitHub Releases is the primary public audio source. Each index item also gets a
+Hugging Face Dataset fallback URL using the same generated relative path, so the
+Listening page can fail over automatically without learner login.
 """
 from __future__ import annotations
 
@@ -20,10 +21,26 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "kanuli/japanese-vocab-game")
 NAMESPACE = os.environ.get("RELEASE_NAMESPACE", "voicevox-v1")
 MAX_ASSETS = int(os.environ.get("RELEASE_MAX_ASSETS", "800"))
 REPLACE_LEVELS = os.environ.get("REPLACE_LEVELS", "0").lower() in {"1", "true", "yes"}
+HF_DATASET_REPO = os.environ.get(
+    "HF_DATASET_REPO", "kanuli1983/japanese-listening-voicevox-backup"
+).strip()
 
 
 def run(*args: str, check: bool = True) -> subprocess.CompletedProcess:
     return subprocess.run(args, check=check, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+
+def quote_path(path: str) -> str:
+    return "/".join(urllib.parse.quote(part, safe="") for part in str(path).split("/") if part)
+
+
+def hf_public_url(relative_path: str) -> str:
+    if not HF_DATASET_REPO:
+        return ""
+    return (
+        f"https://huggingface.co/datasets/{HF_DATASET_REPO}/resolve/main/"
+        f"{quote_path(relative_path)}"
+    )
 
 
 def ensure_release(tag: str, level: str, chunk: int) -> None:
@@ -53,7 +70,7 @@ def main() -> int:
     if not source_items:
         raise SystemExit("Generated pack has no items")
 
-    stable = {"version": 2, "storage": "github-releases", "items": {}}
+    stable = {"version": 2, "storage": "github-releases+hf-backup", "items": {}}
     if INDEX_OUT.is_file():
         try:
             old = json.loads(INDEX_OUT.read_text(encoding="utf-8"))
@@ -62,7 +79,10 @@ def main() -> int:
         except Exception:
             pass
     stable["version"] = 2
-    stable["storage"] = "github-releases"
+    stable["storage"] = "github-releases+hf-backup"
+    stable["primaryStorage"] = "github-releases"
+    stable["backupStorage"] = "huggingface-dataset" if HF_DATASET_REPO else ""
+    stable["huggingFaceDataset"] = HF_DATASET_REPO
     stable.setdefault("items", {})
 
     selected_levels = {str(rec.get("level", "")) for rec in source_items.values() if rec.get("level")}
@@ -92,7 +112,8 @@ def main() -> int:
 
             batch: list[Path] = []
             for qid, rec in chunk_rows:
-                path = PACK_DIR / str(rec["path"])
+                relative_path = str(rec["path"])
+                path = PACK_DIR / relative_path
                 if not path.is_file():
                     raise SystemExit(f"Missing audio: {path}")
                 batch.append(path)
@@ -101,8 +122,13 @@ def main() -> int:
                     f"https://github.com/{REPO}/releases/download/{urllib.parse.quote(tag)}/"
                     f"{urllib.parse.quote(asset)}"
                 )
+                backup_url = hf_public_url(relative_path)
+                urls = [public_url] + ([backup_url] if backup_url else [])
                 stable["items"][qid] = {
                     "url": public_url,
+                    "urls": urls,
+                    "backupUrl": backup_url,
+                    "path": relative_path,
                     "speaker": rec.get("speaker", ""),
                     "style": rec.get("style", ""),
                     "styleId": rec.get("styleId"),
@@ -129,6 +155,8 @@ def main() -> int:
     stable["speakerCount"] = pack.get("speakerCount")
     INDEX_OUT.write_text(json.dumps(stable, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Published {total_uploaded} audio assets across {len(releases_used)} release(s)")
+    if HF_DATASET_REPO:
+        print(f"Backup URL namespace: https://huggingface.co/datasets/{HF_DATASET_REPO}/resolve/main/")
     print(f"Stable index: {INDEX_OUT} ({len(stable['items'])} questions)")
     return 0
 
