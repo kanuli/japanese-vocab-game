@@ -24,9 +24,19 @@ on:
         required: true
         default: ALL
         type: string
+  push:
+    branches: [main]
+    paths:
+      - '.voicevox-trigger'
 
 permissions:
   contents: write
+
+env:
+  VOICEVOX_JLPT: ${{ github.event.inputs.jlpt || 'ALL' }}
+  VOICEVOX_COUNT: ${{ github.event.inputs.count || 'ALL' }}
+  VOICEVOX_SPEAKER: ${{ github.event.inputs.speaker_name || 'MIXED' }}
+  VOICEVOX_STYLE: ${{ github.event.inputs.style_name || 'ALL' }}
 
 jobs:
   generate:
@@ -34,6 +44,14 @@ jobs:
     timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
+
+      - name: Show requested generation mode
+        run: |
+          echo "Trigger: ${{ github.event_name }}"
+          echo "JLPT=$VOICEVOX_JLPT"
+          echo "COUNT=$VOICEVOX_COUNT"
+          echo "SPEAKER=$VOICEVOX_SPEAKER"
+          echo "STYLE=$VOICEVOX_STYLE"
 
       - name: Check generator syntax
         run: |
@@ -65,18 +83,21 @@ jobs:
 
       - name: Generate compressed MP3 pack
         env:
-          JLPT: ${{ inputs.jlpt }}
-          COUNT: ${{ inputs.count }}
-          SPEAKER_NAME: ${{ inputs.speaker_name }}
-          STYLE_NAME: ${{ inputs.style_name }}
+          JLPT: ${{ env.VOICEVOX_JLPT }}
+          COUNT: ${{ env.VOICEVOX_COUNT }}
+          SPEAKER_NAME: ${{ env.VOICEVOX_SPEAKER }}
+          STYLE_NAME: ${{ env.VOICEVOX_STYLE }}
           OUTPUT_DIR: voicevox-pack
         run: python scripts/generate_voicevox_pack.py
 
       - name: Validate pack
+        env:
+          SPEAKER_NAME: ${{ env.VOICEVOX_SPEAKER }}
+          STYLE_NAME: ${{ env.VOICEVOX_STYLE }}
         run: |
           test -f voicevox-pack/voicevox-index.json
           python - <<'PY'
-          import json, urllib.request
+          import json, os, urllib.request
           from pathlib import Path
           p=Path('voicevox-pack/voicevox-index.json')
           d=json.loads(p.read_text(encoding='utf-8'))
@@ -95,8 +116,8 @@ jobs:
               used_variants.add((rec.get('speaker',''), rec.get('style','')))
           assert not missing, missing
 
-          speaker_mode='${{ inputs.speaker_name }}'.upper()
-          style_mode='${{ inputs.style_name }}'.upper()
+          speaker_mode=os.environ.get('SPEAKER_NAME','MIXED').upper()
+          style_mode=os.environ.get('STYLE_NAME','ALL').upper()
           if speaker_mode in ('MIXED','ALL','RANDOM'):
               assert len(used_speakers) > 1, f'MIXED mode produced only {used_speakers}'
           if style_mode in ('ALL','MIXED','*','ANY'):
@@ -156,7 +177,7 @@ jobs:
           RELEASE_UPLOAD_BATCH: '10'
           RELEASE_UPLOAD_RETRIES: '6'
           RELEASE_RETRY_BASE_SECONDS: '3'
-          REPLACE_LEVELS: ${{ inputs.count == 'ALL' && '1' || '0' }}
+          REPLACE_LEVELS: ${{ env.VOICEVOX_COUNT == 'ALL' && '1' || '0' }}
           HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
         run: python scripts/publish_voicevox_releases.py
 
