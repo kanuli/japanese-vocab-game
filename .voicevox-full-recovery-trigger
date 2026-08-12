@@ -1,4 +1,5 @@
 source_run=31602476548
-missing=s41-N1,s42-N5,s42-N3,s43-N5
-reason=post-upload-github-cdn-503
-strategy=preserve-manifest-before-network-check
+first_recovery_run=31628234828
+missing=s31-N1,s37-N3,s40-N3
+reason=final-three-missing-manifests
+strategy=paginated-all-run-artifact-finalizer
