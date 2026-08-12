@@ -1,0 +1,29 @@
+name: Fix JLPT mock test unique helper
+on:
+  push:
+    paths:
+      - '.github/scripts/fix_mocktest_unique.py'
+      - '.github/workflows/fix-mocktest-unique.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add missing unique helper
+        run: python .github/scripts/fix_mocktest_unique.py
+      - name: Validate JavaScript
+        run: node --check mocktest.js
+      - name: Verify helper and cache bust
+        run: |
+          grep -F 'function unique(a)' mocktest.js
+          grep -F 'mocktest.js?v=20260813-unique-fix' mocktest.html
+      - name: Commit fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mocktest.js mocktest.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix JLPT mock test unique runtime error'
+          git push
