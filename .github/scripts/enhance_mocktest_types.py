@@ -10,7 +10,7 @@ function buildInfo'''
 
 s, n1 = re.subn(
     r'function buildReadingContent\(level,n\)\{.*?\}\nfunction buildInfo',
-    reading,
+    lambda _m: reading,
     s,
     count=1,
     flags=re.S,
@@ -26,7 +26,7 @@ function buildSection'''
 
 s, n2 = re.subn(
     r'function buildQuickResponse\(level,n\).*?\nfunction buildSection',
-    listening,
+    lambda _m: listening,
     s,
     count=1,
     flags=re.S,
