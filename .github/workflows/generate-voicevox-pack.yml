@@ -112,6 +112,40 @@ jobs:
           print('Validated', len(d['items']), 'audio files;', d.get('speakerCount'), 'speakers;', d.get('voiceVariantCount'), 'speaker-style variants')
           PY
 
+      - name: Preserve generated MP3 pack for publish retries
+        uses: actions/upload-artifact@v4
+        with:
+          name: voicevox-pack-${{ github.run_id }}
+          path: voicevox-pack/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
+
+  publish:
+    needs: generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check publisher syntax
+        run: python -m py_compile scripts/publish_voicevox_releases.py
+
+      - name: Restore generated MP3 pack
+        uses: actions/download-artifact@v4
+        with:
+          name: voicevox-pack-${{ github.run_id }}
+          path: voicevox-pack
+
+      - name: Confirm restored pack
+        run: |
+          test -f voicevox-pack/voicevox-index.json
+          echo "Restored $(find voicevox-pack -type f -name '*.mp3' | wc -l) MP3 files"
+
       - name: Publish MP3 files to public GitHub Releases
         env:
           GH_TOKEN: ${{ github.token }}
@@ -119,6 +153,9 @@ jobs:
           INDEX_OUT: voicevox-release-index.json
           RELEASE_NAMESPACE: voicevox-v1
           RELEASE_MAX_ASSETS: '800'
+          RELEASE_UPLOAD_BATCH: '10'
+          RELEASE_UPLOAD_RETRIES: '6'
+          RELEASE_RETRY_BASE_SECONDS: '3'
           REPLACE_LEVELS: ${{ inputs.count == 'ALL' && '1' || '0' }}
           HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
         run: python scripts/publish_voicevox_releases.py
@@ -136,6 +173,7 @@ jobs:
           assert d.get('backupStorage') == 'huggingface-dataset'
           assert d.get('huggingFaceDataset') == 'kanuli1983/japanese-listening-voicevox-backup'
           assert d.get('items')
+          assert (d.get('publisher') or {}).get('resumable') is True
           for qid, rec in d['items'].items():
               urls=rec.get('urls') or []
               assert len(urls) >= 2, (qid, rec)
@@ -144,6 +182,8 @@ jobs:
               assert rec.get('url') == urls[0]
               assert rec.get('backupUrl') == urls[1]
               assert rec.get('credit','').startswith('VOICEVOX:')
+              assert rec.get('release')
+              assert rec.get('asset')
           print('Multi-origin public index contains', len(d['items']), 'questions')
           PY
 
@@ -159,7 +199,3 @@ jobs:
             git pull --rebase origin main
             git push origin main
           fi
-
-      - name: Stop engine
-        if: always()
-        run: docker stop voicevox-engine || true
