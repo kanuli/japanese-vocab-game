@@ -1,0 +1,33 @@
+name: Fix JLPT mock test start
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-mocktest-start.yml'
+      - '.github/scripts/fix_mocktest_start.py'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch mock test start
+        run: python .github/scripts/fix_mocktest_start.py
+      - name: Validate JavaScript
+        run: node --check mocktest.js
+      - name: Verify reliability guards
+        run: |
+          grep -q 'fetchWithTimeout' mocktest.js
+          grep -q '正在組卷' mocktest.js
+          grep -q 'Mock test start failed' mocktest.js
+          grep -q 'Math.min(180,base.length)' mocktest.js
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mocktest.js
+          git commit -m "Fix JLPT mock test start on mobile"
+          git push
