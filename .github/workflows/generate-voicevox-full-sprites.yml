@@ -1,0 +1,305 @@
+name: Generate VOICEVOX full sprites
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.voicevox-sprite-trigger'
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_NAMESPACE: voicevox-full-v2
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      speakers: ${{ steps.matrix.outputs.speakers }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+      - name: Build exact 43-speaker matrix
+        id: matrix
+        run: |
+          curl -fsS http://127.0.0.1:50021/speakers -o /tmp/speakers.json
+          python - <<'PY'
+          import json,os
+          speakers=json.load(open('/tmp/speakers.json',encoding='utf-8')); rows=[]
+          preferred=('ノーマル','Normal','NORMAL','通常')
+          for i,sp in enumerate(speakers,1):
+              name=str(sp.get('name','')).strip(); styles=list(sp.get('styles') or [])
+              if not name or not styles: continue
+              st=next((x for x in styles if str(x.get('name','')).strip() in preferred),styles[0])
+              rows.append({'key':f's{i:02d}','name':name,'style_id':int(st['id']),'style':str(st.get('name','')).strip()})
+          assert len(rows)==43, len(rows)
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:f.write('speakers='+json.dumps(rows,ensure_ascii=False,separators=(',',':'))+'\n')
+          print('Confirmed 43 speakers')
+          for r in rows:print(r['key'],r['name'],'/',r['style'],'/',r['style_id'])
+          PY
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
+
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Build tiny seekable MP3 sprite
+        run: |
+          ffmpeg -hide_banner -loglevel error -y -f lavfi -i 'sine=frequency=440:duration=2' -f lavfi -i 'sine=frequency=880:duration=2' -filter_complex '[0:a][1:a]concat=n=2:v=0:a=1[a]' -map '[a]' -ac 1 -ar 24000 -codec:a libmp3lame -b:a 48k -write_xing 1 sprite-preflight.mp3
+          ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 sprite-preflight.mp3
+      - name: Publish preflight sprite to GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=voicevox-sprite-preflight-v1
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title 'VOICEVOX sprite media preflight' --notes 'Small seek/play test asset.'
+          gh release upload "$TAG" sprite-preflight.mp3 --clobber
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Publish preflight sprite to Hugging Face
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: hf upload "$HF_DATASET_REPO" sprite-preflight.mp3 voicevox-full-preflight/sprite-preflight.mp3 --repo-type dataset --commit-message 'Add VOICEVOX audio-sprite media preflight'
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Verify direct media load, seek and play from both stores
+        run: |
+          cat > test-media-sprite.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,args:['--autoplay-policy=no-user-gesture-required']});
+            const page=await browser.newPage();
+            await page.goto('https://kanuli.github.io/japanese-vocab-game/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            const urls=[
+              'https://github.com/kanuli/japanese-vocab-game/releases/download/voicevox-sprite-preflight-v1/sprite-preflight.mp3',
+              'https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/voicevox-full-preflight/sprite-preflight.mp3'
+            ];
+            for(const url of urls){
+              const result=await page.evaluate(async url=>{
+                const a=new Audio(url);a.muted=true;a.preload='metadata';
+                const wait=(event,timeout=20000)=>new Promise((res,rej)=>{const t=setTimeout(()=>rej(new Error(event+' timeout')),timeout);a.addEventListener(event,()=>{clearTimeout(t);res()},{once:true});a.addEventListener('error',()=>{clearTimeout(t);rej(new Error('media error '+(a.error?.code||'')))},{once:true})});
+                if(a.readyState<1)await wait('loadedmetadata');
+                const duration=a.duration;if(!(duration>3.5))throw new Error('bad duration '+duration);
+                a.currentTime=2.1;if(Math.abs(a.currentTime-2.1)>.2)await wait('seeked');
+                await a.play();await new Promise(r=>setTimeout(r,350));const now=a.currentTime;a.pause();
+                return {duration,now,readyState:a.readyState,currentSrc:a.currentSrc};
+              },url);
+              if(!(result.now>2.1))throw new Error('Media did not advance after seek: '+JSON.stringify(result));
+              console.log('Media seek/play OK',url,result);
+            }
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 120s node test-media-sprite.cjs
+
+  generate:
+    needs: [discover, preflight]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        speaker: ${{ fromJSON(needs.discover.outputs.speakers) }}
+        level: [N5, N4, N3, N2, N1]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check generator syntax
+        run: python -m py_compile scripts/generate_voicevox_full_sprite.py
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+      - name: Generate one speaker-level sprite
+        env:
+          JLPT: ${{ matrix.level }}
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          STYLE_ID: ${{ matrix.speaker.style_id }}
+          STYLE_NAME: ${{ matrix.speaker.style }}
+          OUTPUT_DIR: voicevox-sprite-out
+          GAP_MS: '180'
+        run: python scripts/generate_voicevox_full_sprite.py
+      - name: Validate sprite manifest
+        env:
+          KEY: ${{ matrix.speaker.key }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          python - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          k=os.environ['KEY']; l=os.environ['LEVEL']; p=Path(f'voicevox-sprite-out/{k}-{l}.json');d=json.loads(p.read_text(encoding='utf-8'))
+          assert d['version']==2 and d['format']=='audio-sprite-mp3' and d['count']==len(d['questions']) and d['count']>0
+          mp3=Path('voicevox-sprite-out')/d['asset'];assert mp3.is_file() and mp3.stat().st_size>10000
+          last=-1
+          for q in d['questions'].values():assert q['start']>=last and q['end']>q['start'];last=q['end']
+          subprocess.run(['ffprobe','-v','error',str(mp3)],check=True)
+          print('Validated',k,l,d['count'],'segments')
+          PY
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Upload sprite to Hugging Face
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+          KEY: ${{ matrix.speaker.key }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          ASSET="$KEY-$LEVEL.mp3"
+          hf upload "$HF_DATASET_REPO" "voicevox-sprite-out/$ASSET" "voicevox-full/$KEY/$ASSET" --repo-type dataset --commit-message "VOICEVOX full sprite $KEY $LEVEL"
+      - name: Upload sprite to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]');TAG="$RELEASE_NAMESPACE-$KEY-$LOW";ASSET="$KEY-$LEVEL.mp3"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "VOICEVOX full $KEY $LEVEL" --notes "All $LEVEL Listening questions for $SPEAKER_NAME. Credit: VOICEVOX:$SPEAKER_NAME"
+          gh release upload "$TAG" "voicevox-sprite-out/$ASSET" --clobber
+      - name: Verify both public media objects
+        env:
+          KEY: ${{ matrix.speaker.key }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]');ASSET="$KEY-$LEVEL.mp3"
+          for URL in "https://github.com/kanuli/japanese-vocab-game/releases/download/$RELEASE_NAMESPACE-$KEY-$LOW/$ASSET" "https://huggingface.co/datasets/$HF_DATASET_REPO/resolve/main/voicevox-full/$KEY/$ASSET"; do
+            curl -fIL --retry 8 --retry-delay 3 "$URL" >/dev/null
+          done
+      - name: Save manifest only
+        env:
+          KEY: ${{ matrix.speaker.key }}
+          LEVEL: ${{ matrix.level }}
+        run: |
+          mkdir manifest-artifact
+          cp "voicevox-sprite-out/$KEY-$LEVEL.json" "manifest-artifact/$KEY-$LEVEL.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: voicevox-sprite-manifest-${{ matrix.speaker.key }}-${{ matrix.level }}
+          path: manifest-artifact/*.json
+          retention-days: 2
+          compression-level: 9
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
+
+  finalize:
+    needs: [discover, generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: voicevox-sprite-manifest-*
+          path: voicevox-sprite-manifests
+          merge-multiple: true
+      - name: Build strict equal-coverage index
+        env:
+          MANIFEST_DIR: voicevox-sprite-manifests
+          INDEX_OUT: voicevox-full-index.json
+          EXPECTED_SPEAKERS: '43'
+          EXPECTED_QUESTIONS: '3310'
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          GITHUB_REPO: kanuli/japanese-vocab-game
+          RELEASE_NAMESPACE: voicevox-full-v2
+        run: |
+          test "$(find voicevox-sprite-manifests -name '*.json' | wc -l)" -eq 215
+          python -m py_compile scripts/build_voicevox_sprite_index.py scripts/fix-listening-voicevox-sprite-v19.py
+          python scripts/build_voicevox_sprite_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('voicevox-full-index.json',encoding='utf-8'))
+          assert d['version']==4 and d['coverage']=='full-per-speaker'
+          assert d['speakerCount']==43 and d['indexed']==3310 and d['recordingCount']==142330
+          assert {x['questionCount'] for x in d['speakers'].values()}=={3310}
+          assert all(sum(y['count'] for y in x['sprites'].values())==3310 for x in d['speakers'].values())
+          print('Verified exact equal coverage: 43 voices x 3310 questions')
+          PY
+      - name: Patch Listening v1.9
+        run: |
+          python scripts/fix-listening-voicevox-sprite-v19.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          s=Path('listening.html').read_text(encoding='utf-8')
+          assert '日本語聽解挑戰 v1.9｜JLPT N1–N5' in s and 'voicevox-full-index.json' in s and 'version!==4' in s
+          scripts=re.findall(r'<script>(.*?)</script>',s,re.S);Path('/tmp/v19.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/v19.js
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Browser validate 43 equal voices and remote sample
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 & PID=$!; trap 'kill $PID || true' EXIT
+          cat > test-final.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,args:['--autoplay-policy=no-user-gesture-required']});
+            const page=await browser.newPage();
+            const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>document.querySelectorAll('#voicevoxVoice option').length===44,{timeout:30000});
+            const labels=await page.locator('#voicevoxVoice option').allTextContents();if(labels.slice(1).some(x=>!x.includes('3,310 題')))throw new Error('Unequal voice labels');
+            await page.selectOption('#voicevoxVoice',{index:1});const desc=await page.textContent('#voicevoxVoiceDesc');if(!desc.includes('完整 3,310 題'))throw new Error(desc);
+            await page.click('#sampleVoice');await page.waitForFunction(()=>document.querySelector('#sampleVoiceStatus')?.textContent.includes('試聽'),{timeout:30000});
+            if(errors.length)throw new Error(errors.join(' | '));console.log('43 x 3310 UI + remote sample: OK');await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 120s node test-final.cjs
+      - name: Commit only after all 142,330 recordings validate
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add voicevox-full-index.json listening.html
+          git commit -m 'Enable 43 VOICEVOX voices with full 3310-question coverage'
+          git pull --rebase origin main
+          git push origin main
