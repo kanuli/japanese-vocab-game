@@ -1,0 +1,106 @@
+name: Generate VOICEVOX audio pack
+
+on:
+  workflow_dispatch:
+    inputs:
+      jlpt:
+        description: JLPT level
+        required: true
+        default: N5
+        type: choice
+        options: [N5, N4, N3, N2, N1]
+      count:
+        description: Number of Hanabira sentences (use ALL for full level)
+        required: true
+        default: '20'
+        type: string
+      speaker_name:
+        description: Exact VOICEVOX speaker name
+        required: true
+        default: 四国めたん
+        type: string
+      style_name:
+        description: Exact VOICEVOX style name (blank = first available style)
+        required: false
+        default: ノーマル
+        type: string
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check generator syntax
+        run: python -m py_compile scripts/generate_voicevox_pack.py
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then
+              echo 'VOICEVOX Engine ready'
+              break
+            fi
+            if [ "$i" = 120 ]; then
+              docker logs voicevox-engine || true
+              exit 1
+            fi
+            sleep 2
+          done
+          echo 'Available VOICEVOX speakers/styles:'
+          curl -fsS http://127.0.0.1:50021/speakers | python -m json.tool
+
+      - name: Generate compressed MP3 pack
+        env:
+          JLPT: ${{ inputs.jlpt }}
+          COUNT: ${{ inputs.count }}
+          SPEAKER_NAME: ${{ inputs.speaker_name }}
+          STYLE_NAME: ${{ inputs.style_name }}
+          OUTPUT_DIR: voicevox-pack
+        run: python scripts/generate_voicevox_pack.py
+
+      - name: Validate pack
+        run: |
+          test -f voicevox-pack/voicevox-index.json
+          test -d voicevox-pack/voicevox/${{ inputs.jlpt }}
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('voicevox-pack/voicevox-index.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          assert d.get('version') == 1
+          assert d.get('items')
+          missing=[]
+          for qid, rec in d['items'].items():
+              f=Path('voicevox-pack') / rec['path']
+              if not f.is_file() or f.stat().st_size < 500:
+                  missing.append(str(f))
+              assert rec.get('credit','').startswith('VOICEVOX:')
+          assert not missing, missing
+          print('Validated', len(d['items']), 'VOICEVOX audio files')
+          PY
+
+      - name: Create ZIP
+        run: |
+          cd voicevox-pack
+          zip -qr ../voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}.zip .
+
+      - name: Upload sound pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}
+          path: voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}.zip
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
