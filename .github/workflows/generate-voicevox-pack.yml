@@ -88,16 +88,11 @@ jobs:
           print('Validated', len(d['items']), 'VOICEVOX audio files')
           PY
 
-      - name: Create ZIP
-        run: |
-          cd voicevox-pack
-          zip -qr ../voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}.zip .
-
       - name: Upload sound pack
         uses: actions/upload-artifact@v4
         with:
           name: voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}
-          path: voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}.zip
+          path: voicevox-pack/
           if-no-files-found: error
           retention-days: 30
 
