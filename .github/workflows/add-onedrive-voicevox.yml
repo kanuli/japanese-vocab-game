@@ -83,7 +83,7 @@ jobs:
             await page.click('#showFirst');
             await page.click('#start');
             await page.waitForFunction(()=>document.querySelectorAll('.choice').length===4,{timeout:120000});
-            const choices=await page.$$eval('.choice',els=>els.map(e=>e.textContent.trim()));
+            const choices=await page.$$eval('.choice',els=>els.map(e=>e.textContent.replace(/^[A-D]\.\s*/,'').trim()));
             if(choices.some(x=>/[ぁ-ゖァ-ヺA-Za-z]/.test(x))) throw new Error('Learner-facing choice leaked Japanese/English: '+choices.join(' | '));
             if(errors.length) throw new Error(errors.join(' | '));
             console.log('Audio engines:',radios);
