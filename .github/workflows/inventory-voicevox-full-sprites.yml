@@ -1,0 +1,78 @@
+name: Inventory VOICEVOX full sprite manifests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.voicevox-inventory-trigger'
+
+permissions:
+  actions: read
+  contents: read
+
+env:
+  SOURCE_RUN_ID: '31602476548'
+  RECOVERY_RUN_ID: '31628234828'
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inventory every manifest across all artifact pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+
+          repo=os.environ['GITHUB_REPOSITORY']
+          runs=[os.environ['SOURCE_RUN_ID'], os.environ['RECOVERY_RUN_ID']]
+          names=[]
+          for run in runs:
+              page=1
+              while True:
+                  raw=subprocess.check_output([
+                      'gh','api',f'/repos/{repo}/actions/runs/{run}/artifacts',
+                      '-f','per_page=100','-f',f'page={page}'
+                  ], text=True)
+                  data=json.loads(raw)
+                  batch=data.get('artifacts',[])
+                  if not batch:
+                      break
+                  for a in batch:
+                      name=a.get('name','')
+                      if name.startswith('voicevox-sprite-manifest-') or name.startswith('voicevox-sprite-recovery-manifest-'):
+                          names.append((run,int(a['id']),name,bool(a.get('expired'))))
+                  if len(batch)<100:
+                      break
+                  page+=1
+
+          expected={f's{i:02d}-{level}.json' for i in range(1,44) for level in ('N1','N2','N3','N4','N5')}
+          actual=set()
+          byfile={}
+          for run,aid,name,expired in names:
+              stem=name
+              for prefix in ('voicevox-sprite-recovery-manifest-','voicevox-sprite-manifest-'):
+                  if stem.startswith(prefix):
+                      stem=stem[len(prefix):]
+                      break
+              fn=stem+'.json'
+              if fn in expected and not expired:
+                  actual.add(fn)
+                  byfile.setdefault(fn,[]).append((run,aid,name))
+
+          missing=sorted(expected-actual)
+          duplicates=sorted(k for k,v in byfile.items() if len(v)>1)
+          print('ARTIFACT_RECORDS',len(names))
+          print('UNIQUE_VALID_MANIFESTS',len(actual))
+          print('MISSING_COUNT',len(missing))
+          print('MISSING',','.join(missing) if missing else 'NONE')
+          print('DUPLICATES',','.join(duplicates) if duplicates else 'NONE')
+          if len(actual)+len(missing)!=215:
+              raise SystemExit('Inventory arithmetic mismatch')
+          if missing:
+              raise SystemExit(2)
+          PY
