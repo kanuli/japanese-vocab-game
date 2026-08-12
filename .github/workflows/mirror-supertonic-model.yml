@@ -1,0 +1,105 @@
+name: Mirror Supertonic model
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.supertonic-mirror-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: supertonic-3-model-v1
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Download official Supertonic 3 model and license
+        run: |
+          set -euo pipefail
+          mkdir -p supertonic-mirror/onnx supertonic-mirror/voice_styles gh-assets
+          BASE='https://huggingface.co/Supertone/supertonic-3/resolve/main'
+          for F in tts.json duration_predictor.onnx text_encoder.onnx vector_estimator.onnx vocoder.onnx; do
+            curl -fL --retry 8 --retry-delay 3 "$BASE/onnx/$F" -o "supertonic-mirror/onnx/$F"
+          done
+          for V in F1 F2 F3 F4 F5 M1 M2 M3 M4 M5; do
+            curl -fL --retry 8 --retry-delay 3 "$BASE/voice_styles/$V.json" -o "supertonic-mirror/voice_styles/$V.json"
+          done
+          curl -fL --retry 8 --retry-delay 3 "$BASE/LICENSE" -o supertonic-mirror/LICENSE
+          test "$(find supertonic-mirror -type f | wc -l)" -eq 16
+          test "$(stat -c%s supertonic-mirror/onnx/vector_estimator.onnx)" -gt 100000000
+          cp supertonic-mirror/onnx/tts.json gh-assets/onnx-tts.json
+          cp supertonic-mirror/onnx/duration_predictor.onnx gh-assets/onnx-duration_predictor.onnx
+          cp supertonic-mirror/onnx/text_encoder.onnx gh-assets/onnx-text_encoder.onnx
+          cp supertonic-mirror/onnx/vector_estimator.onnx gh-assets/onnx-vector_estimator.onnx
+          cp supertonic-mirror/onnx/vocoder.onnx gh-assets/onnx-vocoder.onnx
+          for V in F1 F2 F3 F4 F5 M1 M2 M3 M4 M5; do cp "supertonic-mirror/voice_styles/$V.json" "gh-assets/voice-$V.json"; done
+          cp supertonic-mirror/LICENSE gh-assets/LICENSE
+          sha256sum supertonic-mirror/onnx/* supertonic-mirror/voice_styles/* supertonic-mirror/LICENSE > supertonic-mirror/SHA256SUMS.txt
+
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+
+      - name: Mirror model to project Hugging Face dataset
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: hf upload "$HF_DATASET_REPO" supertonic-mirror supertonic-3 --repo-type dataset --commit-message 'Mirror licensed Supertonic 3 browser model'
+
+      - name: Mirror model to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic 3 browser model mirror' --notes 'Project-controlled mirror for the Japanese Listening Game. Original model: Supertone/supertonic-3. License is included as a release asset.'
+          gh release upload "$RELEASE_TAG" gh-assets/* --clobber
+
+      - name: Verify both mirrors are public
+        run: |
+          HF='https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/supertonic-3/onnx/tts.json'
+          GH='https://github.com/kanuli/japanese-vocab-game/releases/download/supertonic-3-model-v1/onnx-tts.json'
+          curl -fL --retry 8 --retry-delay 3 "$HF" -o /tmp/hf-tts.json
+          curl -fL --retry 8 --retry-delay 3 "$GH" -o /tmp/gh-tts.json
+          cmp /tmp/hf-tts.json /tmp/gh-tts.json
+          python - <<'PY'
+          import json
+          for p in ('/tmp/hf-tts.json','/tmp/gh-tts.json'):
+              d=json.load(open(p,encoding='utf-8')); assert d.get('ae',{}).get('sample_rate')
+          print('Supertonic Hugging Face + GitHub Release mirrors verified')
+          PY
+
+      - name: Patch browser to use project mirror with fallbacks
+        run: |
+          python -m py_compile scripts/patch_supertonic_mirror.py
+          python scripts/patch_supertonic_mirror.py
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('src/listening-supertonic-entry.js').read_text(encoding='utf-8')
+          vendor=Path('vendor/supertonic-browser.js').read_text(encoding='utf-8')
+          sw=Path('supertonic-sw.js').read_text(encoding='utf-8')
+          own='kanuli1983/japanese-listening-voicevox-backup/resolve/main/supertonic-3'
+          assert own in src and own in vendor
+          assert 'supertonic-3-model-v1' in sw
+          assert 'Supertone/supertonic-3/resolve/main' in sw
+          PY
+          node --check vendor/supertonic-browser.js
+          node --check supertonic-sw.js
+
+      - name: Commit project-controlled Supertonic sources
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/listening-supertonic-entry.js vendor/supertonic-browser.js supertonic-sw.js
+          git commit -m 'Use project-controlled Supertonic model mirrors'
+          git pull --rebase origin main
+          git push origin main
