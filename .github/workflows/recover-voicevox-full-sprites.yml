@@ -16,6 +16,7 @@ env:
   HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
   RELEASE_NAMESPACE: voicevox-full-v2
   SOURCE_RUN_ID: '31602476548'
+  FIRST_RECOVERY_RUN_ID: '31628234828'
 
 jobs:
   recover:
@@ -23,44 +24,35 @@ jobs:
     timeout-minutes: 180
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 3
       matrix:
         include:
-          - key: s41
-            name: 夜語トバリ
-            style_id: 118
+          - key: s31
+            name: Voidoll
+            style_id: 89
             style: ノーマル
             level: N1
-          - key: s42
-            name: 暁記ミタマ
-            style_id: 122
-            style: ノーマル
-            level: N5
-          - key: s42
-            name: 暁記ミタマ
-            style_id: 122
+          - key: s37
+            name: 東北ずん子
+            style_id: 107
             style: ノーマル
             level: N3
-          - key: s43
-            name: 里石ユカ
-            style_id: 126
-            style: つぼみ
-            level: N5
+          - key: s40
+            name: あんこもん
+            style_id: 113
+            style: ノーマル
+            level: N3
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
       - name: Check generator syntax
         run: python -m py_compile scripts/generate_voicevox_full_sprite.py
-
       - name: Install ffmpeg
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
-
       - name: Start official VOICEVOX Engine
         run: |
           docker pull voicevox/voicevox_engine:cpu-latest
@@ -70,7 +62,6 @@ jobs:
             if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
             sleep 2
           done
-
       - name: Regenerate only missing speaker-level sprite
         env:
           JLPT: ${{ matrix.level }}
@@ -81,7 +72,6 @@ jobs:
           OUTPUT_DIR: voicevox-sprite-out
           GAP_MS: '180'
         run: python scripts/generate_voicevox_full_sprite.py
-
       - name: Validate recovered sprite manifest
         env:
           KEY: ${{ matrix.key }}
@@ -91,29 +81,22 @@ jobs:
           import json,os,subprocess
           from pathlib import Path
           k=os.environ['KEY']; l=os.environ['LEVEL']
-          p=Path(f'voicevox-sprite-out/{k}-{l}.json')
-          d=json.loads(p.read_text(encoding='utf-8'))
+          p=Path(f'voicevox-sprite-out/{k}-{l}.json'); d=json.loads(p.read_text(encoding='utf-8'))
           assert d['version']==2 and d['format']=='audio-sprite-mp3'
           assert d['count']==len(d['questions']) and d['count']>0
-          mp3=Path('voicevox-sprite-out')/d['asset']
-          assert mp3.is_file() and mp3.stat().st_size>10000
+          mp3=Path('voicevox-sprite-out')/d['asset']; assert mp3.is_file() and mp3.stat().st_size>10000
           last=-1
-          for q in d['questions'].values():
-              assert q['start']>=last and q['end']>q['start']
-              last=q['end']
+          for q in d['questions'].values(): assert q['start']>=last and q['end']>q['start']; last=q['end']
           subprocess.run(['ffprobe','-v','error',str(mp3)],check=True)
           print('Recovered manifest validated:',k,l,d['count'],'segments')
           PY
-
-      # Critical recovery rule: preserve the timing manifest BEFORE any network upload/probe.
-      - name: Preserve recovered manifest before network checks
+      - name: Preserve recovered manifest before any network checks
         env:
           KEY: ${{ matrix.key }}
           LEVEL: ${{ matrix.level }}
         run: |
           mkdir -p manifest-artifact
           cp "voicevox-sprite-out/$KEY-$LEVEL.json" "manifest-artifact/$KEY-$LEVEL.json"
-
       - uses: actions/upload-artifact@v4
         with:
           name: voicevox-sprite-recovery-manifest-${{ matrix.key }}-${{ matrix.level }}
@@ -121,10 +104,8 @@ jobs:
           if-no-files-found: error
           retention-days: 2
           compression-level: 9
-
       - name: Install Hugging Face CLI
         run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
-
       - name: Refresh sprite on Hugging Face
         env:
           HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
@@ -134,7 +115,6 @@ jobs:
         run: |
           ASSET="$KEY-$LEVEL.mp3"
           hf upload "$HF_DATASET_REPO" "voicevox-sprite-out/$ASSET" "voicevox-full/$KEY/$ASSET" --repo-type dataset --commit-message "Recover VOICEVOX full sprite $KEY $LEVEL"
-
       - name: Refresh sprite on GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -142,20 +122,16 @@ jobs:
           SPEAKER_NAME: ${{ matrix.name }}
           LEVEL: ${{ matrix.level }}
         run: |
-          LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]')
-          TAG="$RELEASE_NAMESPACE-$KEY-$LOW"
-          ASSET="$KEY-$LEVEL.mp3"
+          LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]'); TAG="$RELEASE_NAMESPACE-$KEY-$LOW"; ASSET="$KEY-$LEVEL.mp3"
           gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "VOICEVOX full $KEY $LEVEL" --notes "All $LEVEL Listening questions for $SPEAKER_NAME. Credit: VOICEVOX:$SPEAKER_NAME"
           gh release upload "$TAG" "voicevox-sprite-out/$ASSET" --clobber
-
       - name: Probe both public media sources with real GET
         continue-on-error: true
         env:
           KEY: ${{ matrix.key }}
           LEVEL: ${{ matrix.level }}
         run: |
-          LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]')
-          ASSET="$KEY-$LEVEL.mp3"
+          LOW=$(printf '%s' "$LEVEL" | tr '[:upper:]' '[:lower:]'); ASSET="$KEY-$LEVEL.mp3"
           for URL in \
             "https://github.com/kanuli/japanese-vocab-game/releases/download/$RELEASE_NAMESPACE-$KEY-$LOW/$ASSET" \
             "https://huggingface.co/datasets/$HF_DATASET_REPO/resolve/main/voicevox-full/$KEY/$ASSET"; do
@@ -164,7 +140,6 @@ jobs:
             test -s /tmp/probe.bin
             echo "Public media GET OK: $URL ($(stat -c%s /tmp/probe.bin) bytes)"
           done
-
       - name: Stop engine
         if: always()
         run: docker stop voicevox-engine || true
@@ -172,40 +147,63 @@ jobs:
   finalize:
     needs: recover
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Download 211 preserved manifests from original production run
-        uses: actions/download-artifact@v4
-        with:
-          pattern: voicevox-sprite-manifest-*
-          path: voicevox-sprite-manifests
-          merge-multiple: true
-          github-token: ${{ github.token }}
-          repository: kanuli/japanese-vocab-game
-          run-id: ${{ env.SOURCE_RUN_ID }}
-
-      - name: Download four recovered manifests
-        uses: actions/download-artifact@v4
-        with:
-          pattern: voicevox-sprite-recovery-manifest-*
-          path: voicevox-sprite-manifests
-          merge-multiple: true
-
+      - name: Paginate and download all manifest artifacts from all recovery generations
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURRENT_RECOVERY_RUN_ID: ${{ github.run_id }}
+        run: |
+          mkdir -p voicevox-sprite-manifests /tmp/voicevox-artifacts
+          python - <<'PY'
+          import json, os, subprocess
+          repo=os.environ['GITHUB_REPOSITORY']
+          runs=[os.environ['SOURCE_RUN_ID'],os.environ['FIRST_RECOVERY_RUN_ID'],os.environ['CURRENT_RECOVERY_RUN_ID']]
+          artifacts=[]
+          for run in runs:
+              page=1
+              while True:
+                  raw=subprocess.check_output(['gh','api','-X','GET',f'/repos/{repo}/actions/runs/{run}/artifacts','-f','per_page=100','-f',f'page={page}'],text=True)
+                  batch=json.loads(raw).get('artifacts',[])
+                  if not batch: break
+                  for a in batch:
+                      name=a.get('name','')
+                      if (name.startswith('voicevox-sprite-manifest-') or name.startswith('voicevox-sprite-recovery-manifest-')) and not a.get('expired'):
+                          artifacts.append((run,int(a['id']),name))
+                  if len(batch)<100: break
+                  page+=1
+          print('Manifest artifacts discovered across runs:',len(artifacts))
+          for run,aid,name in artifacts:
+              print(run,aid,name)
+          open('/tmp/artifacts.tsv','w',encoding='utf-8').write('\n'.join(f'{run}\t{aid}\t{name}' for run,aid,name in artifacts)+'\n')
+          PY
+          while IFS=$'\t' read -r RUN AID NAME; do
+            test -n "$AID" || continue
+            curl --fail --location --silent --show-error --retry 5 \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$AID/zip" \
+              -o "/tmp/voicevox-artifacts/$AID.zip"
+            unzip -oq "/tmp/voicevox-artifacts/$AID.zip" -d voicevox-sprite-manifests
+          done < /tmp/artifacts.tsv
       - name: Confirm exact 215-manifest set
         run: |
-          COUNT=$(find voicevox-sprite-manifests -type f -name '*.json' | wc -l)
-          echo "Combined manifest count: $COUNT"
-          test "$COUNT" -eq 215
-          for F in s41-N1.json s42-N5.json s42-N3.json s43-N5.json; do test -s "voicevox-sprite-manifests/$F"; done
-
+          python - <<'PY'
+          from pathlib import Path
+          expected={f's{i:02d}-{l}.json' for i in range(1,44) for l in ('N1','N2','N3','N4','N5')}
+          actual={p.name for p in Path('voicevox-sprite-manifests').glob('*.json')}
+          missing=sorted(expected-actual); extra=sorted(actual-expected)
+          print('UNIQUE_MANIFESTS',len(actual)); print('MISSING',missing); print('EXTRA',extra)
+          assert actual==expected
+          print('EXACT MANIFEST SET OK: 215/215')
+          PY
       - name: Build and validate strict 43 x 3310 index
         env:
           MANIFEST_DIR: voicevox-sprite-manifests
@@ -221,17 +219,13 @@ jobs:
           python - <<'PY'
           import json
           d=json.load(open('voicevox-full-index.json',encoding='utf-8'))
-          assert d['version']==4
-          assert d['coverage']=='full-per-speaker'
-          assert d['speakerCount']==43
-          assert d['indexed']==3310
-          assert d['recordingCount']==142330
+          assert d['version']==4 and d['coverage']=='full-per-speaker'
+          assert d['speakerCount']==43 and d['indexed']==3310 and d['recordingCount']==142330
           assert {x['questionCount'] for x in d['speakers'].values()}=={3310}
           assert all(set(x['sprites'])=={'N1','N2','N3','N4','N5'} for x in d['speakers'].values())
           assert all(sum(y['count'] for y in x['sprites'].values())==3310 for x in d['speakers'].values())
           print('STRICT EQUAL COVERAGE OK: 43 x 3310 = 142330')
           PY
-
       - name: Patch Listening v1.9 and syntax check
         run: |
           python scripts/fix-listening-voicevox-sprite-v19.py
@@ -240,19 +234,15 @@ jobs:
           from pathlib import Path
           s=Path('listening.html').read_text(encoding='utf-8')
           assert '日本語聽解挑戰 v1.9｜JLPT N1–N5' in s
-          assert 'voicevox-full-index.json' in s
-          assert 'version!==4' in s
-          scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
-          Path('/tmp/v19.js').write_text('\n'.join(scripts),encoding='utf-8')
+          assert 'voicevox-full-index.json' in s and 'version!==4' in s
+          Path('/tmp/v19.js').write_text('\n'.join(re.findall(r'<script>(.*?)</script>',s,re.S)),encoding='utf-8')
           PY
           node --check /tmp/v19.js
-
       - name: Install browser tester
         run: |
           npm init -y >/dev/null 2>&1
           npm install --no-audit --no-fund playwright@1.54.2
           npx playwright install --with-deps chromium >/dev/null
-
       - name: Browser validate 43 equal voices and both providers
         run: |
           python3 -m http.server 8765 >/tmp/server.log 2>&1 & PID=$!; trap 'kill $PID || true' EXIT
@@ -260,37 +250,21 @@ jobs:
           const {chromium}=require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true,args:['--autoplay-policy=no-user-gesture-required']});
-            const page=await browser.newPage();
-            const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
+            const page=await browser.newPage(); const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
             await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
             await page.waitForFunction(()=>document.querySelectorAll('#voicevoxVoice option').length===44,{timeout:30000});
-            const labels=await page.locator('#voicevoxVoice option').allTextContents();
-            if(labels.slice(1).some(x=>!x.includes('3,310 題')))throw new Error('Unequal voice labels');
-            await page.selectOption('#voicevoxVoice',{index:1});
-            const desc=await page.textContent('#voicevoxVoiceDesc');
-            if(!desc.includes('完整 3,310 題'))throw new Error('Bad voice description: '+desc);
-            const index=await (await fetch('http://127.0.0.1:8765/voicevox-full-index.json')).json();
-            const firstKey=Object.keys(index.speakers)[0];
-            const sprite=index.speakers[firstKey].sprites.N5;
+            const labels=await page.locator('#voicevoxVoice option').allTextContents(); if(labels.slice(1).some(x=>!x.includes('3,310 題')))throw new Error('Unequal voice labels');
+            await page.selectOption('#voicevoxVoice',{index:1}); const desc=await page.textContent('#voicevoxVoiceDesc'); if(!desc.includes('完整 3,310 題'))throw new Error(desc);
+            const index=await (await fetch('http://127.0.0.1:8765/voicevox-full-index.json')).json(); const firstKey=Object.keys(index.speakers)[0]; const sprite=index.speakers[firstKey].sprites.N5;
             for(const url of [sprite.githubUrl,sprite.hfUrl]){
-              const result=await page.evaluate(async url=>{
-                const a=new Audio(url); a.muted=true; a.preload='metadata';
-                const ready=()=>new Promise((res,rej)=>{const t=setTimeout(()=>rej(new Error('media timeout')),25000);a.addEventListener('loadedmetadata',()=>{clearTimeout(t);res()},{once:true});a.addEventListener('error',()=>{clearTimeout(t);rej(new Error('media error '+(a.error?.code||'')))},{once:true})});
-                if(a.readyState<1)await ready();
-                a.currentTime=0.25; await a.play(); await new Promise(r=>setTimeout(r,300)); const now=a.currentTime; a.pause();
-                return {duration:a.duration,now,currentSrc:a.currentSrc};
-              },url);
-              if(!(result.duration>10&&result.now>0.25))throw new Error('Provider media failed: '+url+' '+JSON.stringify(result));
-              console.log('Provider browser playback OK',url,result);
+              const result=await page.evaluate(async url=>{const a=new Audio(url);a.muted=true;a.preload='metadata';const wait=()=>new Promise((res,rej)=>{const t=setTimeout(()=>rej(new Error('media timeout')),25000);a.addEventListener('loadedmetadata',()=>{clearTimeout(t);res()},{once:true});a.addEventListener('error',()=>{clearTimeout(t);rej(new Error('media error '+(a.error?.code||'')))},{once:true})});if(a.readyState<1)await wait();a.currentTime=.25;await a.play();await new Promise(r=>setTimeout(r,300));const now=a.currentTime;a.pause();return {duration:a.duration,now,currentSrc:a.currentSrc}},url);
+              if(!(result.duration>10&&result.now>.25))throw new Error('Provider media failed '+url+' '+JSON.stringify(result)); console.log('Provider playback OK',url,result);
             }
-            if(errors.length)throw new Error(errors.join(' | '));
-            console.log('BROWSER OK: 43 equal voices + GitHub + Hugging Face');
-            await browser.close();
+            if(errors.length)throw new Error(errors.join(' | ')); console.log('BROWSER OK: 43 equal voices + both providers'); await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
           timeout 150s node test-recovery-final.cjs
-
-      - name: Commit only after all recovery gates pass
+      - name: Commit only after every 142330-recording gate passes
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
