@@ -1,5 +1,13 @@
 const CACHE_NAME="supertonic-model-v1";
+const HF_HOST="huggingface.co";
+const OWN_PREFIX="/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/supertonic-3/";
+const OLD_PREFIX="/Supertone/supertonic-3/resolve/main/";
+const GH_BASE="https://github.com/kanuli/japanese-vocab-game/releases/download/supertonic-3-model-v1/";
 self.addEventListener("install",event=>{self.skipWaiting()});
 self.addEventListener("activate",event=>{event.waitUntil(self.clients.claim())});
-function isSupertonicAsset(request){try{const u=new URL(request.url);return u.hostname==="huggingface.co"&&u.pathname.startsWith("/Supertone/supertonic-3/resolve/")&&(u.pathname.includes("/onnx/")||u.pathname.includes("/voice_styles/"))}catch{return false}}
-self.addEventListener("fetch",event=>{if(!isSupertonicAsset(event.request))return;event.respondWith((async()=>{const cache=await caches.open(CACHE_NAME);const hit=await cache.match(event.request,{ignoreSearch:true});if(hit)return hit;const response=await fetch(event.request);if(response.ok||response.type==="opaque")await cache.put(event.request,response.clone());return response})())});
+function infoFor(request){try{const u=new URL(request.url);if(u.hostname!==HF_HOST)return null;let rel="";if(u.pathname.startsWith(OWN_PREFIX))rel=u.pathname.slice(OWN_PREFIX.length);else if(u.pathname.startsWith(OLD_PREFIX))rel=u.pathname.slice(OLD_PREFIX.length);else return null;const parts=rel.split("/");if(parts.length!==2)return null;const [section,file]=parts;if(section!=="onnx"&&section!=="voice_styles")return null;return{section,file}}catch{return null}}
+function releaseUrl(info){const name=info.section==="onnx"?`onnx-${info.file}`:`voice-${info.file}`;return GH_BASE+encodeURIComponent(name)}
+function upstreamUrl(info){return `https://huggingface.co/Supertone/supertonic-3/resolve/main/${info.section}/${info.file}`}
+async function legacyCacheHit(cache,info){const keys=await cache.keys();const suffix=`/${info.section}/${info.file}`;for(const req of keys){try{if(new URL(req.url).pathname.endsWith(suffix)){const hit=await cache.match(req);if(hit)return hit}}catch{}}return null}
+async function fetchOk(url){const r=await fetch(url,{cache:"force-cache"});if(!r.ok&&r.type!=="opaque")throw new Error(`HTTP ${r.status}`);return r}
+self.addEventListener("fetch",event=>{const info=infoFor(event.request);if(!info)return;event.respondWith((async()=>{const cache=await caches.open(CACHE_NAME);const exact=await cache.match(event.request,{ignoreSearch:true});if(exact)return exact;const legacy=await legacyCacheHit(cache,info);if(legacy){await cache.put(event.request,legacy.clone());return legacy}let response=null;try{response=await fetchOk(event.request)}catch{}if(!response){try{response=await fetchOk(releaseUrl(info))}catch{}}if(!response)response=await fetchOk(upstreamUrl(info));if(response.ok||response.type==="opaque")await cache.put(event.request,response.clone());return response})())});

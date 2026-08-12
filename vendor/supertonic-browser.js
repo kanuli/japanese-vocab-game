@@ -10917,8 +10917,8 @@ function writeWavFile(audioData, sampleRate) {
 }
 
 // src/listening-supertonic-entry.js
-var MODEL_BASE = "https://huggingface.co/Supertone/supertonic-3/resolve/main/onnx";
-var VOICE_BASE = "https://huggingface.co/Supertone/supertonic-3/resolve/main/voice_styles";
+var MODEL_BASE = "https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/supertonic-3/onnx";
+var VOICE_BASE = "https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/supertonic-3/voice_styles";
 var VOICES = ["F1", "F2", "F3", "F4", "F5", "M1", "M2", "M3", "M4", "M5"];
 ye.wasm.numThreads = 1;
 ye.wasm.wasmPaths = new URL("./ort/", import.meta.url).href;

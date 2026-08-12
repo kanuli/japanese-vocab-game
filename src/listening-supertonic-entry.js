@@ -1,8 +1,8 @@
 import * as ort from 'onnxruntime-web';
 import {loadTextToSpeech, loadVoiceStyle, writeWavFile} from './supertonic-helper.js';
 
-const MODEL_BASE='https://huggingface.co/Supertone/supertonic-3/resolve/main/onnx';
-const VOICE_BASE='https://huggingface.co/Supertone/supertonic-3/resolve/main/voice_styles';
+const MODEL_BASE='https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/supertonic-3/onnx';
+const VOICE_BASE='https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/supertonic-3/voice_styles';
 const VOICES=['F1','F2','F3','F4','F5','M1','M2','M3','M4','M5'];
 
 ort.env.wasm.numThreads=1;
