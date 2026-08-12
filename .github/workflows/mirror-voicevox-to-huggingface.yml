@@ -23,7 +23,7 @@ jobs:
   mirror:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure'
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,6 +48,37 @@ jobs:
           echo "run_id=$RUN_ID" >> "$GITHUB_OUTPUT"
           echo "Using saved VOICEVOX pack from workflow run $RUN_ID"
 
+      - name: Wait for GitHub installation quota if necessary
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set +e
+          JSON=$(gh api rate_limit 2>/tmp/rate-error.txt)
+          RC=$?
+          set -e
+          if [ "$RC" -ne 0 ]; then
+            echo "GitHub quota is currently too exhausted even to query rate_limit."
+            cat /tmp/rate-error.txt || true
+            echo "Known state: waiting for GitHub's installation quota reset before touching the saved artifact."
+            sleep 3700
+          else
+            REMAINING=$(printf '%s' "$JSON" | python -c "import json,sys; print(json.load(sys.stdin)['resources']['core']['remaining'])")
+            RESET=$(printf '%s' "$JSON" | python -c "import json,sys; print(json.load(sys.stdin)['resources']['core']['reset'])")
+            NOW=$(date +%s)
+            echo "GitHub core API remaining: $REMAINING"
+            echo "GitHub core API reset epoch: $RESET"
+            if [ "$REMAINING" -lt 1500 ]; then
+              WAIT=$((RESET - NOW + 30))
+              if [ "$WAIT" -lt 30 ]; then WAIT=30; fi
+              if [ "$WAIT" -gt 3700 ]; then WAIT=3700; fi
+              echo "Quota is below the safe recovery threshold. Waiting $WAIT seconds for the known reset window."
+              sleep "$WAIT"
+            else
+              echo "Quota preflight passed."
+            fi
+          fi
+
       - name: Download saved VOICEVOX pack
         uses: actions/download-artifact@v4
         with:
@@ -66,10 +97,11 @@ jobs:
           HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
         run: |
           python -m py_compile scripts/build_voicevox_multi_origin_index.py
+          python -m py_compile scripts/publish_voicevox_releases.py
           test -f voicevox-pack/voicevox-index.json
           COUNT=$(find voicevox-pack/voicevox -type f -name '*.mp3' | wc -l)
-          echo "Recovered $COUNT MP3 files from saved artifact"
-          test "$COUNT" -gt 0
+          echo "Recovered $COUNT MP3 files from saved artifact; no VOICEVOX regeneration required"
+          test "$COUNT" -eq 3310
           python scripts/build_voicevox_multi_origin_index.py
           python - <<'PY'
           import json
@@ -134,15 +166,53 @@ jobs:
           curl -fsSL --retry 8 --retry-delay 3 --range 0-255 "$URL" -o /tmp/hf-sample.mp3
           test -s /tmp/hf-sample.mp3
 
-      - name: Commit complete multi-origin index
+      - name: Commit usable backup-first index
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add voicevox-release-index.json
           if git diff --cached --quiet; then
-            echo 'Multi-origin index already current'
+            echo 'Backup-first index already current'
           else
-            git commit -m 'Publish complete VOICEVOX multi-origin index'
+            git commit -m 'Publish complete VOICEVOX Hugging Face fallback index'
+            git pull --rebase origin main
+            git push origin main
+          fi
+
+      - name: Resume remaining GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACK_DIR: voicevox-pack
+          INDEX_OUT: voicevox-release-index.json
+          RELEASE_NAMESPACE: voicevox-v1
+          RELEASE_MAX_ASSETS: '800'
+          RELEASE_UPLOAD_BATCH: '10'
+          RELEASE_UPLOAD_RETRIES: '4'
+          RELEASE_RETRY_BASE_SECONDS: '3'
+          REPLACE_LEVELS: '1'
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+        run: python scripts/publish_voicevox_releases.py
+
+      - name: Validate complete GitHub primary index
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('voicevox-release-index.json',encoding='utf-8'))
+          assert d.get('indexed') == 3310
+          assert len(d.get('items') or {}) == 3310
+          p=d.get('publisher') or {}
+          assert p.get('avoidClobberForNewAssets') is True
+          assert p.get('failFastOnRateLimit') is True
+          print('Validated all 3310 VOICEVOX entries after GitHub Release resume')
+          PY
+
+      - name: Commit completed GitHub primary index
+        run: |
+          git add voicevox-release-index.json
+          if git diff --cached --quiet; then
+            echo 'GitHub primary index already current'
+          else
+            git commit -m 'Complete VOICEVOX GitHub Release index'
             git pull --rebase origin main
             git push origin main
           fi
