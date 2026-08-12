@@ -25,6 +25,9 @@ on:
         default: ALL
         type: string
 
+permissions:
+  contents: write
+
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -33,7 +36,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check generator syntax
-        run: python -m py_compile scripts/generate_voicevox_pack.py
+        run: |
+          python -m py_compile scripts/generate_voicevox_pack.py
+          python -m py_compile scripts/publish_voicevox_releases.py
 
       - name: Install ffmpeg
         run: |
@@ -107,13 +112,44 @@ jobs:
           print('Validated', len(d['items']), 'audio files;', d.get('speakerCount'), 'speakers;', d.get('voiceVariantCount'), 'speaker-style variants')
           PY
 
-      - name: Upload sound pack
-        uses: actions/upload-artifact@v4
-        with:
-          name: voicevox-${{ inputs.jlpt }}-${{ inputs.speaker_name }}-${{ inputs.style_name }}
-          path: voicevox-pack/
-          if-no-files-found: error
-          retention-days: 30
+      - name: Publish MP3 files to public GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACK_DIR: voicevox-pack
+          INDEX_OUT: voicevox-release-index.json
+          RELEASE_NAMESPACE: voicevox-v1
+          RELEASE_MAX_ASSETS: '800'
+          REPLACE_LEVELS: ${{ inputs.count == 'ALL' && '1' || '0' }}
+        run: python scripts/publish_voicevox_releases.py
+
+      - name: Validate public release index
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('voicevox-release-index.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          assert d.get('version') == 2
+          assert d.get('storage') == 'github-releases'
+          assert d.get('items')
+          for qid, rec in d['items'].items():
+              assert rec.get('url','').startswith('https://github.com/kanuli/japanese-vocab-game/releases/download/'), (qid, rec)
+              assert rec.get('credit','').startswith('VOICEVOX:')
+          print('Public index contains', len(d['items']), 'questions')
+          PY
+
+      - name: Commit updated public index
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add voicevox-release-index.json
+          if git diff --cached --quiet; then
+            echo 'Public VOICEVOX index unchanged'
+          else
+            git commit -m 'Update public VOICEVOX release index'
+            git pull --rebase origin main
+            git push origin main
+          fi
 
       - name: Stop engine
         if: always()
