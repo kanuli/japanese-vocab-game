@@ -15,12 +15,12 @@ on:
         default: 'ALL'
         type: string
       speaker_name:
-        description: Exact VOICEVOX speaker name
+        description: MIXED = rotate all available VOICEVOX speakers; or enter one exact speaker name
         required: true
-        default: 四国めたん
+        default: MIXED
         type: string
       style_name:
-        description: Exact VOICEVOX style name (blank = first available style)
+        description: Preferred style for each speaker (falls back to that speaker's first style)
         required: false
         default: ノーマル
         type: string
@@ -70,7 +70,6 @@ jobs:
       - name: Validate pack
         run: |
           test -f voicevox-pack/voicevox-index.json
-          test -d voicevox-pack/voicevox
           python - <<'PY'
           import json
           from pathlib import Path
@@ -78,21 +77,19 @@ jobs:
           d=json.loads(p.read_text(encoding='utf-8'))
           assert d.get('version') == 1
           assert d.get('items')
+          assert d.get('voices')
           missing=[]
-          levels=set()
+          speakers=set()
           for qid, rec in d['items'].items():
               f=Path('voicevox-pack') / rec['path']
               if not f.is_file() or f.stat().st_size < 500:
                   missing.append(str(f))
               assert rec.get('credit','').startswith('VOICEVOX:')
-              levels.add(rec.get('level'))
+              speakers.add(rec.get('speaker',''))
           assert not missing, missing
-          requested='${{ inputs.jlpt }}'
-          if requested == 'ALL':
-              assert levels == {'N1','N2','N3','N4','N5'}, levels
-          else:
-              assert levels == {requested}, levels
-          print('Validated', len(d['items']), 'VOICEVOX audio files across', sorted(levels))
+          if '${{ inputs.speaker_name }}'.upper() in ('MIXED','ALL','RANDOM'):
+              assert len(speakers) > 1, f'MIXED mode produced only {speakers}'
+          print('Validated', len(d['items']), 'VOICEVOX audio files across', len(speakers), 'speakers')
           PY
 
       - name: Upload sound pack
