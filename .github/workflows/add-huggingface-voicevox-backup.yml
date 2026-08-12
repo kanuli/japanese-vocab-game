@@ -1,0 +1,100 @@
+name: Add Hugging Face VOICEVOX backup
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-huggingface-voicevox-backup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch Listening page
+        run: python scripts/patch-listening-hf-fallback.py
+
+      - name: Static checks
+        run: |
+          python -m py_compile scripts/mirror_voicevox_huggingface.py scripts/publish_voicevox_releases.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          h=Path('listening.html').read_text(encoding='utf-8')
+          for x in ['voicevoxUrls(rec)','Hugging Face 自動備援','prepared.candidates','voicevoxProvider(url)','GitHub 音訊不可用，已自動切換 Hugging Face 備援']:
+              assert x in h, x
+          scripts=re.findall(r'<script>(.*?)</script>',h,re.S)
+          Path('/tmp/listening-inline.js').write_text('\n'.join(scripts),encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+
+      - name: Unit-test multi-origin release index
+        run: |
+          mkdir -p /tmp/pack/voicevox/N5 /tmp/fakebin
+          printf 'audio-one' >/tmp/pack/voicevox/N5/N5-0-0.mp3
+          cat >/tmp/pack/voicevox-index.json <<'JSON'
+          {"version":1,"speakerCount":1,"voiceVariantCount":1,"items":{"N5-0-0":{"path":"voicevox/N5/N5-0-0.mp3","level":"N5","speaker":"四国めたん","style":"ノーマル","styleId":2,"credit":"VOICEVOX:四国めたん","text":"今日は三時に行きます。","grammar":"テスト"}}}
+          JSON
+          cat >/tmp/fakebin/gh <<'SH'
+          #!/usr/bin/env bash
+          if [ "$1" = release ] && [ "$2" = view ]; then exit 1; fi
+          exit 0
+          SH
+          chmod +x /tmp/fakebin/gh
+          PATH="/tmp/fakebin:$PATH" PACK_DIR=/tmp/pack INDEX_OUT=/tmp/multi-index.json RELEASE_NAMESPACE=voicevox-test RELEASE_MAX_ASSETS=800 REPLACE_LEVELS=1 GITHUB_REPOSITORY=kanuli/japanese-vocab-game HF_DATASET_REPO=kanuli1983/japanese-listening-voicevox-backup python scripts/publish_voicevox_releases.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('/tmp/multi-index.json').read_text())
+          r=d['items']['N5-0-0']
+          assert d['storage']=='github-releases+hf-backup'
+          assert r['urls'][0].startswith('https://github.com/kanuli/japanese-vocab-game/releases/download/')
+          assert r['urls'][1]=='https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/voicevox/N5/N5-0-0.mp3'
+          assert r['backupUrl']==r['urls'][1]
+          assert r['path']=='voicevox/N5/N5-0-0.mp3'
+          print('Multi-origin index unit test: OK')
+          PY
+
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser smoke test
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > test-hf-backup.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.route('**/voicevox-release-index.json',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({version:2,storage:'github-releases+hf-backup',items:{'N5-0-0':{url:'https://github.com/kanuli/japanese-vocab-game/releases/download/voicevox-v1-n5-001/N5-0-0.mp3',urls:['https://github.com/kanuli/japanese-vocab-game/releases/download/voicevox-v1-n5-001/N5-0-0.mp3','https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/voicevox/N5/N5-0-0.mp3'],backupUrl:'https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/voicevox/N5/N5-0-0.mp3'}}})}));
+            await page.goto('http://127.0.0.1:8765/listening.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>document.querySelector('#voicevoxStatus')?.textContent.includes('Hugging Face 自動備援'),{timeout:30000});
+            if(!(await page.isChecked('#engineVoicevox'))) throw new Error('VOICEVOX is not selected by default');
+            const body=await page.textContent('body');
+            if(!body.includes('GitHub Releases 為主來源')||!body.includes('Hugging Face Dataset 為自動備援')) throw new Error('Multi-origin learner UI missing');
+            if(errors.length) throw new Error(errors.join(' | '));
+            console.log(await page.textContent('#voicevoxStatus'));
+            console.log('Hugging Face backup browser smoke: OK');
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 150s node test-hf-backup.cjs
+
+      - name: Commit verified Listening fallback
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html
+          git commit -m 'Add automatic Hugging Face VOICEVOX fallback'
+          git push
