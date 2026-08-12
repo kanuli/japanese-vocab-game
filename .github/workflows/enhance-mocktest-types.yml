@@ -41,3 +41,5 @@ jobs:
           git add mocktest.js
           git commit -m "Align mock test item types with JLPT levels"
           git push
+
+# Triggered after preserving JavaScript escape sequences in the patch script.
