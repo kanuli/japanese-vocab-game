@@ -1,4 +1,5 @@
 // Cached large-vocabulary loader invoked by advanced_words.js before the game initializes.
+// v6 repair: GitHub-hosted Japanese-Chinese sources; Kaikki dependency removed.
 (function(){"use strict";
 const V="large-vocab-20260813-v5",M=`jpquiz_${V}_meta`,P=`jpquiz_${V}_chunk_`;
 function obj(t,i){return{id:`large-${i}`,level:t[0],reading:t[1],kanji:t[2]||"",displayWord:t[2]||t[1],meaning:t[3],pos:t[4]||"other",estimated:true,source:"進階補充詞（推定等級）"}}
