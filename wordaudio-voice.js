@@ -1,0 +1,1 @@
+document.write('<script type="module" src="./vendor/supertonic-browser.js"><\/script>');document.write('<script src="./wordaudio-ai.js?v=20260814v1"><\/script>');
