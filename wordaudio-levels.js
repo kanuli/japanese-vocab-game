@@ -1,0 +1,1 @@
+window.WA=window.WA||{};window.WA.levels=function(){return ["N1","N2","N3","N4","N5"];};
