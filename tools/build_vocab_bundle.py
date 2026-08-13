@@ -36,7 +36,7 @@ BAD_TAGS = {"arch", "obs", "rare", "dated", "person", "place", "company", "produ
 
 
 def request(url: str):
-    return urllib.request.Request(url, headers={"User-Agent": "japanese-vocab-game-builder/2.0"})
+    return urllib.request.Request(url, headers={"User-Agent": "japanese-vocab-game-builder/3.0"})
 
 
 def fetch_text(url: str) -> str:
@@ -141,7 +141,7 @@ def choose_entry(raw: dict):
 
 def clean_meaning(value, converter: OpenCC) -> str:
     text = clean_text(value)
-    text = re.sub(r"^\([^)]{1,30}\)\s*", "", text)
+    text = re.sub(r"^[（(][^）)]{1,30}[）)]\s*", "", text)
     text = re.sub(r"^(?:名詞|名词|動詞|动词|形容詞|形容词|副詞|副词|名|動|动)\s*", "", text)
     text = converter.convert(text)
     text = re.sub(r"\s+", " ", text).strip()
@@ -161,8 +161,6 @@ def kaikki_gloss(record: dict, word: str, converter: OpenCC) -> str:
     for sense in record.get("senses") or []:
         glosses.extend(sense.get("glosses") or [])
     for raw in glosses:
-        # zhwiktionary glosses often put the Japanese headword/reading on the first line
-        # and the Chinese definition on the final line. Prefer the final usable segment.
         pieces = [p.strip() for p in re.split(r"[\r\n]+", str(raw or "")) if p.strip()]
         for piece in reversed(pieces):
             piece = re.sub(r"^" + re.escape(word) + r"\s*[〖【（(][^〗】）)]{0,80}[〗】）)]\s*", "", piece)
@@ -205,7 +203,6 @@ def load_meanings(wanted: set[str], converter: OpenCC) -> tuple[dict[str, str], 
                 meanings[candidate] = value
                 stats["wikidict"] += 1
                 break
-    # Kaikki's zhwiktionary Japanese data is large but is processed only in CI, not in the learner's browser.
     try:
         with urllib.request.urlopen(request(URLS["kaikki"]), timeout=180) as response:
             for raw_line in response:
@@ -250,10 +247,7 @@ def best_rank(entry: dict, frequency: dict[str, int]) -> int:
     return rank
 
 
-def level_for(entry: dict, rank: int) -> str:
-    waller = entry["raw"].get("jlpt_waller")
-    if waller in {"N1", "N2", "N3", "N4", "N5"}:
-        return waller
+def estimated_level(rank: int) -> str:
     if rank <= 1200:
         return "N5"
     if rank <= 3000:
@@ -265,10 +259,53 @@ def level_for(entry: dict, rank: int) -> str:
     return "N1"
 
 
+def level_for(entry: dict, rank: int) -> str:
+    waller = entry["raw"].get("jlpt_waller")
+    if waller in {"N1", "N2", "N3", "N4", "N5"}:
+        return waller
+    return estimated_level(rank)
+
+
 def quality_key(item: dict):
     waller_priority = 0 if item["waller"] in {"N1", "N2", "N3", "N4", "N5"} else 1
     known_frequency = 0 if item["rank"] < 999999 else 1
     return (waller_priority, known_frequency, item["rank"], len(item["meaning"]), item["reading"])
+
+
+def direct_thesaurus_candidates(core: set[str], used: set[str], frequency: dict[str, int], converter: OpenCC) -> list[dict]:
+    """Use additional lexical entries from the open JA-ZH thesaurus, not orthographic duplicates."""
+    source = fetch_json(URLS["thesaurus"])
+    extras = []
+    for jp, raw_meaning in (source or {}).items():
+        word = str(jp or "").strip()
+        if not word or len(word) > 22 or not JAPANESE_RE.fullmatch(word):
+            continue
+        raw_text = clean_text(raw_meaning)
+        reading = word if KANA_RE.fullmatch(word) else ""
+        m = re.match(r"^[（(]([ぁ-ゖァ-ヺー・ヽヾゝゞ]+?)(?:\d+)?[）)]", raw_text)
+        if m and KANA_RE.fullmatch(m.group(1)):
+            reading = m.group(1)
+        if not reading:
+            continue
+        key = f"{reading}|{word}"
+        if key in core or key in used:
+            continue
+        meaning = clean_meaning(raw_meaning, converter)
+        if not meaning:
+            continue
+        rank = min(frequency.get(word, 999999), frequency.get(f"{word}|{reading}", 999999))
+        lead = raw_text[:28]
+        pos = "other"
+        if "動詞" in lead or "动词" in lead:
+            pos = "verb"
+        elif "形容詞" in lead or "形容词" in lead:
+            pos = "adj"
+        elif "副詞" in lead or "副词" in lead:
+            pos = "adv"
+        elif "名詞" in lead or "名词" in lead or re.search(r"(?:^|\s)名(?:\s|$)", lead):
+            pos = "noun"
+        extras.append({"level": estimated_level(rank), "reading": reading, "kanji": word if CJK_RE.search(word) else "", "meaning": meaning, "pos": pos, "rank": rank, "waller": None, "key": key})
+    return sorted(extras, key=quality_key)
 
 
 def main() -> int:
@@ -310,7 +347,9 @@ def main() -> int:
         previous = candidates.get(entry["key"])
         if previous is None or quality_key(item) < quality_key(previous):
             candidates[entry["key"]] = item
-    ranked = sorted(candidates.values(), key=quality_key)
+    extras = direct_thesaurus_candidates(core, set(candidates), frequency, converter)
+    source_stats["direct_thesaurus_candidates"] = len(extras)
+    ranked = sorted([*candidates.values(), *extras], key=quality_key)
     if len(ranked) > 12500:
         ranked = ranked[:12500]
     merged_unique = len(core | {x["key"] for x in ranked})
@@ -319,7 +358,7 @@ def main() -> int:
     counts = Counter(x["level"] for x in ranked)
     tuples = [[x["level"], x["reading"], x["kanji"], x["meaning"], x["pos"]] for x in ranked]
     meta = {
-        "version": "prebuilt-20260814-v2",
+        "version": "prebuilt-20260814-v3",
         "generated": datetime.now(timezone.utc).isoformat(),
         "generatedCount": len(tuples),
         "coreUniqueAtBuild": len(core),
