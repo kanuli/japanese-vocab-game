@@ -18,7 +18,8 @@ if n!=1:raise SystemExit('pool patch failed')
 # Underline the part that differs across all four choices. Every choice gets the
 # same treatment, so this helps comparison without revealing the answer.
 if 'function choiceDiffHTML' not in s:
-    diff=r'''function choiceDiffHTML(rows,v){const a=rows.map(x=>String(x.zh||"")),z=String(v||"");let p=0;while(p<Math.min(...a.map(x=>x.length))&&a.every(x=>x[p]===a[0][p]))p++;let q=0,m=Math.min(...a.map(x=>x.length))-p;while(q<m&&a.every(x=>x[x.length-1-q]===a[0][a[0].length-1-q]))q++;const e=q?z.length-q:z.length,mid=z.slice(p,e);return mid?esc(z.slice(0,p))+`<span class="choice-key">${esc(mid)}</span>`+esc(z.slice(e)):esc(z)}\n'''
+    diff='''function choiceDiffHTML(rows,v){const a=rows.map(x=>String(x.zh||"")),z=String(v||"");let p=0;while(p<Math.min(...a.map(x=>x.length))&&a.every(x=>x[p]===a[0][p]))p++;let q=0,m=Math.min(...a.map(x=>x.length))-p;while(q<m&&a.every(x=>x[x.length-1-q]===a[0][a[0].length-1-q]))q++;const e=q?z.length-q:z.length,mid=z.slice(p,e);return mid?esc(z.slice(0,p))+`<span class="choice-key">${esc(mid)}</span>`+esc(z.slice(e)):esc(z)}
+'''
     s=s.replace('async function fillZh',diff+'async function fillZh',1)
 if '.choice-key{' not in s:
     s=s.replace('.choice.wrong{border-color:var(--bad);background:var(--badbg);color:var(--bad)}','.choice.wrong{border-color:var(--bad);background:var(--badbg);color:var(--bad)}.choice-key{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;font-weight:900}',1)
