@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/refine-listening-zh-distractors.yml'
       - 'scripts/refine-listening-zh-distractors.py'
+      - 'scripts/listening-catalog-choice-gate.py'
 
 permissions:
   contents: write
@@ -16,7 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Apply refinement
-        run: python scripts/refine-listening-zh-distractors.py
+        run: |
+          python scripts/refine-listening-zh-distractors.py
+          python scripts/listening-catalog-choice-gate.py
       - name: JavaScript and static checks
         run: |
           python - <<'PY'
@@ -26,6 +29,7 @@ jobs:
           assert 'zhChoiceSim' in s
           assert 'mutations(x.jp).length>=3' in s
           assert '繁體中文翻譯也必須保持相似' in s
+          assert 'const peers=rows.filter(x=>x!==r).map(x=>zhChoiceSim(r.zh,x.zh))' in s
           assert '["ます","ません","ました","ませんでした"]' not in s
           assert 'Supertonic 3 AI 聲線' in s
           scripts=re.findall(r'<script>(.*?)</script>',s,re.S)
