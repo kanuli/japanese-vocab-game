@@ -1,1 +1,0 @@
-The vocabulary audio page can reuse the existing Supertonic AI model already included in the listening game.
