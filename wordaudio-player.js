@@ -1,1 +1,1 @@
-window.WA=window.WA||{};window.WA.playerReady=true;
+document.write('<script src="./wordaudio-controller.js?v=20260814v1"><\/script>');

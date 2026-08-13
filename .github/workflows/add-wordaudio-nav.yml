@@ -1,0 +1,39 @@
+name: Add vocabulary audio navigation
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  nav:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add navigation button and clean temporary files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          link='<a class="navlink" href="./wordaudio.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">🔊 單字聽力</a>'
+          for name in ['index.html','grammar.html','listening.html','mocktest.html']:
+              p=Path(name)
+              if not p.exists(): continue
+              s=p.read_text(encoding='utf-8')
+              if 'href="./wordaudio.html"' in s: continue
+              m=re.search(r'<a\b[^>]*href="\./index\.html"[^>]*>.*?</a>',s,re.S)
+              if m:
+                  s=s[:m.end()]+link+s[m.end():]
+                  p.write_text(s,encoding='utf-8')
+          for name in ['wordaudio-test.js','wordaudio-levels.js']:
+              Path(name).unlink(missing_ok=True)
+          PY
+      - name: Commit navigation update
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html grammar.html listening.html mocktest.html wordaudio-test.js wordaudio-levels.js || true
+          git diff --cached --quiet && exit 0
+          git commit -m "Add vocabulary audio navigation"
+          git push
