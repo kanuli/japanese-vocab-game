@@ -5,6 +5,9 @@ on:
   push:
     paths:
       - '.listening-no-repeat-trigger'
+      - '.github/workflows/fix-listening-no-repeat.yml'
+      - 'scripts/listening_jlpt_style_core.py'
+      - 'scripts/test_small_generator.py'
 
 permissions:
   contents: write
@@ -20,40 +23,46 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Fix generated-choice edge cases
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('scripts/test_small_generator.py');s=p.read_text(encoding='utf-8')
-          s=s.replace("f'今天的{event}是{time}開始。'","f'{day}的{event}改了地點，但開始時間仍是{time}。'")
-          s=s.replace("f'今天的{event}改為{time}開始。'","f'{day}的{event}改了地點，但時間仍是{time}。'")
-          s=s.replace("次は金曜日です。何が決まりましたか。","次は来週です。何が決まりましたか。")
-          s=s.replace("取消，改到星期五。","取消，改到下週。")
-          s=s.replace("f'星期五的{event}取消，改到{day}。'","f'下週的{event}取消，改回{day}。'")
-          p.write_text(s,encoding='utf-8')
-          PY
       - name: Build original N1-N5 Listening catalog
         run: |
           python -m py_compile scripts/listening_jlpt_style_core.py scripts/test_small_generator.py
           python scripts/test_small_generator.py
-      - name: Validate exact 10000-question target
+      - name: Validate exact 10000 target and Japanese-content uniqueness
         run: |
           python - <<'PY'
-          import json
+          import json,re,urllib.request
           d=json.load(open('listening-original-catalog.json',encoding='utf-8'))
           assert d['combinedTotal']==10000
           assert d['combinedCounts']=={'N5':2000,'N4':2000,'N3':2000,'N2':2000,'N1':2000}
           assert d['originalTotal']==len(d['items'])
           assert len({x['id'] for x in d['items']})==len(d['items'])
           assert all(len(x['choicesZh'])==4 and len(set(x['choicesZh']))==4 and x['correctZh'] in x['choicesZh'] for x in d['items'])
-          print('CATALOG PASS:',d['baseTotal'],'existing +',d['originalTotal'],'original =',d['combinedTotal'])
+          def norm(s): return re.sub(r'[\s　。、，,.！？!?「」『』（）()：:]','',s)
+          keys=[norm(x['jp']) for x in d['items']]
+          dup=len(keys)-len(set(keys))
+          assert dup==0, f'Original Japanese-content duplicates: {dup}'
+          type_labels=set(d['typeLabels'])
+          for lv in ['N5','N4','N3','N2','N1']:
+              rows=[x for x in d['items'] if x['level']==lv]
+              assert set(x['type'] for x in rows)==type_labels
+              print(lv,'original',len(rows),'unique',len({norm(x['jp']) for x in rows}),
+                    'types',{t:sum(x['type']==t for x in rows) for t in sorted(type_labels)})
+          print('CATALOG STRICT PASS:',d['baseTotal'],'existing +',d['originalTotal'],'unique original =',d['combinedTotal'])
+          for lv in ['N5','N3','N1']:
+              print('\nSAMPLES',lv)
+              rows=[x for x in d['items'] if x['level']==lv]
+              for x in rows[:5]:
+                  print(x['typeZh'],'|',x['jp'],'|',x['choicesZh'],'| ANSWER',x['correctZh'])
           PY
       - name: Commit validated catalog
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add scripts/test_small_generator.py listening-original-catalog.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Expand Listening catalog to 10000 JLPT-style questions'
+          git add listening-original-catalog.json
+          if git diff --cached --quiet; then
+            echo 'Catalog already current'
+            exit 0
+          fi
+          git commit -m 'Rebuild 10000-question Listening catalog with unique content'
           git pull --rebase origin main
           git push origin main
