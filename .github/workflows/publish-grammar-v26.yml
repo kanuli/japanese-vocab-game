@@ -1,0 +1,33 @@
+name: Publish grammar v2.6
+
+on:
+  push:
+    paths:
+      - 'data/v26_publish_trigger.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild grammar v2.6
+        run: |
+          cat data/v26_hex_01.txt data/v26_hex_02.txt data/v26_hex_03a.txt data/v26_hex_r01.txt data/v26_hex_r02.txt data/v26_hex_r03.txt data/v26_hex_r04a.txt > /tmp/v26.hex
+          for f in data/v26_hex_r04b.rev data/v26_hex_r05.rev data/v26_hex_r06.rev data/v26_hex_r07.rev data/v26_hex_r08.rev data/v26_hex_r09.rev data/v26_hex_r10.rev; do rev "$f" >> /tmp/v26.hex; done
+          xxd -r -p /tmp/v26.hex > /tmp/v26.xor
+          python3 -c "from pathlib import Path; p=Path('/tmp/v26.xor'); b=bytearray(p.read_bytes()); [b.extend(bytes(map(int,Path(f).read_text().strip().split(',')))) for f in ['data/v26_tail_dec_01.txt','data/v26_tail_dec_02.txt','data/v26_tail_dec_03.txt']]; p.write_bytes(b)"
+          python3 -c "from pathlib import Path; p=Path('/tmp/v26.xor'); Path('/tmp/v26.gz').write_bytes(bytes(x^165 for x in p.read_bytes()))"
+          gzip -dc /tmp/v26.gz > grammar.html
+          test "$(sha256sum grammar.html | cut -d' ' -f1)" = "bdf14eb1083b17f31dec86d32d47bd13247ffafbe1dac731dd9faf56f021e154"
+          grep -q '日本語文法挑戰 v2.6' grammar.html
+      - name: Commit grammar v2.6
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add grammar.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Publish grammar game v2.6"
+          git push
