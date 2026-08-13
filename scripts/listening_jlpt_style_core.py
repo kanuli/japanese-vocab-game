@@ -30,6 +30,11 @@ def base_counts():
         out[level]=n
     return out
 def pick(seq,i,mul=1,add=0):return seq[(i*mul+add)%len(seq)]
+def combo(i,*seqs):
+    out=[]
+    for seq in seqs:
+        out.append(seq[i%len(seq)]);i//=len(seq)
+    return out
 def rotate(correct,distractors,i):
     vals=[correct]+list(distractors);assert len(vals)==4 and len(set(vals))==4
     k=i%4;return vals[k:]+vals[:k]
