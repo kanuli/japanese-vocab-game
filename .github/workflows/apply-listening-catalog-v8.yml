@@ -1,0 +1,207 @@
+name: Apply listening GitHub catalog v8 fix
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/apply-listening-catalog-v8.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Patch listening game to use GitHub catalog
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import re
+
+          path = Path('listening.html')
+          s = path.read_text(encoding='utf-8')
+
+          def replace_once(old, new, label):
+              global s
+              if old not in s:
+                  raise SystemExit(f'missing expected text for {label}: {old[:100]!r}')
+              s = s.replace(old, new, 1)
+
+          def sub_block(pattern, new, label):
+              global s
+              rx = re.compile(pattern, re.S)
+              s2, n = rx.subn(lambda m: new, s, count=1)
+              if n != 1:
+                  raise SystemExit(f'expected one block for {label}, got {n}')
+              s = s2
+
+          # Visible UI and versioning.
+          s = s.replace('v1.9', 'v8.0')
+          replace_once('Web 例句 → 日語發音 → 4 個相似答案', 'GitHub 內置題庫 → 日語發音 → 4 個相似答案', 'subtitle')
+          replace_once('正在載入 Web 聽解題庫…', '正在載入 GitHub 聽解題庫…', 'loading notice')
+          replace_once('<h2>Web 題庫</h2>', '<h2>GitHub 聽解題庫</h2>', 'catalog heading')
+          replace_once('<strong>🌐 Hanabira N1–N5 例句</strong>', '<strong>📦 GitHub 內置 JLPT N1–N5 聽解題庫</strong>', 'catalog source heading')
+          replace_once('重新載入 Web', '重新載入題庫', 'reload label')
+          replace_once('先聽清楚，再找出你聽到的句子', '先聽清楚，再選出最符合內容的繁體中文答案', 'quiz instruction')
+          replace_once('<div class="label">文法</div>', '<div class="label">題型／解析</div>', 'answer analysis label')
+          replace_once('<div class="label">來源</div><div>Hanabira Web 例句</div>', '<div class="label">來源</div><div>GitHub 內置原創 JLPT 風格聽解題庫</div>', 'answer source')
+          replace_once('Web 句子來源：Hanabira。', '題目來源：GitHub 內置原創 JLPT 風格聽解題庫（N1–N5）。', 'footer source')
+          s = s.replace('每題使用不同預錄聲線（完整題庫）', '每題隨機 VOICEVOX 聲線（有預錄則使用）')
+          s = s.replace('完整聲線庫完成後，每個可選 VOICEVOX 聲線都有相同 3,310 題。', '43 個 VOICEVOX 聲線各有相同 3,310 題預錄；GitHub 10,000 題中未有對應預錄的題目會自動改用 Supertonic 或裝置日語語音。')
+          s = s.replace('每個聲線都有完整題庫', '每個聲線都有 3,310 題預錄')
+
+          # The pool now accepts catalog-supplied four-choice questions directly.
+          sub_block(
+              r'function pool\(\)\{.*?\}\nasync function fetchLevel',
+              '''function hasCatalogOptions(x){return Array.isArray(x?.choicesZh)&&x.choicesZh.length===4&&!!String(x?.correctZh||"").trim()}
+          function pool(){let p=items.filter(x=>selectedLevels().includes(x.level)&&(hasCatalogOptions(x)||mutations(x.jp).length>=3));if($("input[name=mode]:checked").value==="wrong")p=p.filter(x=>wrong.has(x.id));return uniqueBySentence(p)}
+          async function fetchLevel''',
+              'pool'
+          )
+
+          # Primary data source: the versioned GitHub catalog. Hanabira remains emergency-only fallback.
+          load_web = r'''async function loadWeb(){
+          $("#reload").disabled=true;
+          $("#webStatus").textContent="正在載入 GitHub N1–N5 聽解題庫…";
+          const c={N1:0,N2:0,N3:0,N4:0,N5:0};
+          try{
+            const r=await fetch("./listening-original-catalog.json",{cache:"no-cache"});
+            if(!r.ok)throw new Error("HTTP "+r.status);
+            const d=await r.json();
+            if(!Array.isArray(d?.items)||!d.items.length)throw new Error("題庫格式錯誤");
+            items=d.items.map(x=>({
+              id:String(x.id||""),level:String(x.level||"").toUpperCase(),jp:String(x.jp||"").trim(),en:"",
+              typeZh:String(x.typeZh||x.type||"聽解"),explanationZh:String(x.explanationZh||""),
+              grammar:[String(x.typeZh||x.type||"聽解"),String(x.explanationZh||"")].filter(Boolean).join("｜"),
+              category:String(x.typeZh||x.type||"聽解"),
+              choicesZh:Array.isArray(x.choicesZh)?x.choicesZh.map(v=>String(v||"").trim()):[],
+              correctZh:String(x.correctZh||"").trim(),source:String(x.source||"GitHub 內置題庫")
+            })).filter(x=>x.id&&/^N[1-5]$/.test(x.level)&&x.jp);
+            items.forEach(x=>{if(c[x.level]!==undefined)c[x.level]++});
+            $("#webStatus").textContent=`✅ 已載入 GitHub 內置聽解題庫 ${items.length.toLocaleString()} 題。四個答案優先直接使用題庫內的繁體中文選項。`;
+          }catch(catalogError){
+            items=[];
+            const rs=await Promise.allSettled(["N5","N4","N3","N2","N1"].map(async l=>[l,await fetchLevel(l)]));
+            for(const r of rs){
+              if(r.status!=="fulfilled")continue;
+              const [level,pts]=r.value;
+              pts.forEach((p,pi)=>(p.examples||[]).forEach((e,ei)=>{
+                const jp=String(e.jp||"").trim();if(jp.length<5||jp.length>95)return;
+                items.push({id:`${level}-${pi}-${ei}`,level,jp,en:e.en||"",grammar:cleanTitle(p.title),category:cat((p.short_explanation||"")+" "+(p.long_explanation||"")),typeZh:"",explanationZh:"",choicesZh:[],correctZh:"",source:"Hanabira emergency fallback"});
+                c[level]++;
+              }));
+            }
+            $("#webStatus").textContent=items.length?`⚠️ GitHub 內置題庫暫時載入失敗；目前只使用 Hanabira 緊急備援 ${items.length.toLocaleString()} 題。`:`❌ GitHub 題庫與緊急備援都無法載入。`;
+          }
+          $("#counts").innerHTML=Object.entries(c).map(([k,v])=>`<span class=count>${k}: ${v.toLocaleString()}</span>`).join("");
+          $("#reload").disabled=false;
+          render();
+          }'''
+          sub_block(r'async function loadWeb\(\)\{.*?\}\nconst GROUPS=', load_web+'\nconst GROUPS=', 'loadWeb')
+
+          # Use the catalog's intentionally similar choices instead of manufacturing unrelated choices.
+          make_choices = r'''function makeChoices(q){if(hasCatalogOptions(q))return{choicesZh:[...q.choicesZh],correctZh:q.correctZh,quality:"GitHub 題庫預製：四個相近語意選項"};const d=shuffle(mutations(q.jp));if(d.length<3)return null;return{choices:shuffle([q.jp,...d.slice(0,3)]),quality:"緊急備援：同一句只改一個關鍵細節"}}'''
+          sub_block(r'function makeChoices\(q\)\{.*?\}\nfunction render', make_choices+'\nfunction render', 'makeChoices')
+          s = s.replace('$("#total").textContent=`🎧 ${items.length.toLocaleString()} 句`', '$("#total").textContent=`🎧 ${items.length.toLocaleString()} 題`')
+          s = s.replace('個不重複句子。', '個不重複題目。')
+
+          # Catalog choices can occasionally contain Japanese action phrases. Translate only those rows;
+          # fully Traditional-Chinese catalog rows require no translation API call.
+          prepare_choices = r'''function catalogZhFix(z){z=String(z||"").trim();const pairs=[["明日的","明天的"],["今日的","今天的"],["会議","會議"],["駅","車站"],["国","國"],["学","學"],["気","氣"],["体","體"],["発","發"],["実","實"],["験","驗"],["対","對"],["応","應"],["変","變"],["関","關"],["広","廣"],["図","圖"],["号","號"],["楽","樂"]];for(const [a,b] of pairs)z=z.split(a).join(b);return z}
+          function catalogDisplayOk(z){z=String(z||"").trim();return !!z&&!/[ぁ-ゖァ-ヺ]/.test(z)}
+          async function prepareChineseChoices(q,m){
+            if(Array.isArray(m?.choicesZh)&&m.choicesZh.length===4){
+              const raws=m.choicesZh.map(v=>String(v||"").trim());
+              const target=normChoice(String(m.correctZh||""));
+              const correctIdx=raws.findIndex(v=>normChoice(v)===target);
+              if(correctIdx<0)return null;
+              const rows=[];
+              for(let i=0;i<raws.length;i++){
+                const raw=raws[i];let zh=catalogZhFix(raw);
+                if(!catalogDisplayOk(zh)){const translated=await translateJaZh(raw);if(translated)zh=catalogZhFix(translated)}
+                if(!catalogDisplayOk(zh))return null;
+                rows.push({jp:i===correctIdx?q.jp:`__catalog_wrong__${q.id}_${i}`,zh});
+              }
+              const keys=rows.map(x=>normChoice(x.zh));
+              if(new Set(keys).size!==rows.length)return null;
+              return shuffle(rows);
+            }
+            const rows=await Promise.all(m.choices.map(async jp=>{let zh="";if(jp===q.jp&&q.en)zh=await translateZh(q.en);if(!validTraditionalChoice(jp,zh))zh=await translateJaZh(jp);return{jp,zh}}));
+            if(rows.some(x=>!validTraditionalChoice(x.jp,x.zh)))return null;
+            const keys=rows.map(x=>normChoice(x.zh));if(new Set(keys).size!==rows.length)return null;
+            const correct=rows.find(x=>x.jp===q.jp);if(!correct)return null;
+            for(const x of rows){if(x===correct)continue;const len=Math.min(normChoice(x.zh).length,normChoice(correct.zh).length)/Math.max(1,Math.max(normChoice(x.zh).length,normChoice(correct.zh).length));if(len<.6||zhChoiceSim(x.zh,correct.zh)<.18)return null}
+            return rows;
+          }'''
+          sub_block(r'async function prepareChineseChoices\(q,m\)\{.*?\}\nasync function fillZh', prepare_choices+'\nasync function fillZh', 'prepareChineseChoices')
+
+          fill_zh = r'''async function fillZh(q,rt){if(q?.correctZh){let z=catalogZhFix(q.correctZh);if(!catalogDisplayOk(z))z=await translateJaZh(q.correctZh);if(rt!==renderToken)return;$("#aZh").textContent=z||"此題暫時未取得可靠的繁體中文翻譯。";return}const z=await translateZh(q.en);if(rt!==renderToken)return;$("#aZh").textContent=z||"此備援例句暫時未取得可靠的繁體中文翻譯。"}'''
+          sub_block(r'async function fillZh\(q,rt\)\{.*?\}\nfunction kataToHira', fill_zh+'\nfunction kataToHira', 'fillZh')
+
+          # Keep VOICEVOX recordings usable by matching catalog Japanese text back to the existing 3,310-question audio index.
+          replace_once('let voicevoxFullIndex=null;', 'let voicevoxFullIndex=null;\nlet voicevoxTextMap=null;', 'VOICEVOX text map state')
+          voicevox_prepare = r'''function voicevoxQuestionIdFor(q){if(!voicevoxFullIndex)return q?.id||"";if(voicevoxFullIndex.questions?.[q?.id])return q.id;if(!voicevoxTextMap){voicevoxTextMap=new Map();for(const [id,v] of Object.entries(voicevoxFullIndex.questions||{})){const k=jpKey(v?.text||"");if(k&&!voicevoxTextMap.has(k))voicevoxTextMap.set(k,id)}}return voicevoxTextMap.get(jpKey(q?.jp||""))||q?.id||""}
+          async function prepareVoicevoxAudio(q){if(voicevoxFullIndex){const p=fullPreparedFor(voicevoxQuestionIdFor(q));if(p)return p}const rec=voicevoxIndex?.items?.[q.id],urls=voicevoxUrls(rec);if(!urls.length)return null;return{candidates:urls.map(url=>({url,provider:voicevoxProvider(url),audio:null})),segment:null,out:{...rec,source:"VOICEVOX"}}}'''
+          sub_block(r'async function prepareVoicevoxAudio\(q\)\{.*?\}\nfunction waitMediaReady', voicevox_prepare+'\nfunction waitMediaReady', 'VOICEVOX catalog bridge')
+
+          # Save per-question outcomes and render a useful end-of-game missed-question review.
+          replace_once('cycle:1};', 'cycle:1,review:[]};', 'game review state')
+          replace_once('save("jplistening_wrong",[...wrong]);', 'save("jplistening_wrong",[...wrong]);if(game.review)game.review.push({q:{id:q.id,level:q.level,jp:q.jp,correctZh:game.currentZh||q.correctZh||"",explanationZh:q.explanationZh||"",typeZh:q.typeZh||""},ok});', 'review capture')
+          finish = r'''function finish(){stopAllAudio();hideSheet();$("#choices").style.display="none";$("#end").style.display="block";const total=Math.max(1,game.limit||game.index),pct=Math.round(game.score/total*100),missed=(game.review||[]).filter(x=>!x.ok);$("#final").textContent=`${game.score} / ${game.limit}`;if(!missed.length){$("#finalText").innerHTML=`正確率 ${pct}% · 🎉 全部正確，沒有錯題需要複習。`;return}const cards=missed.map((r,i)=>`<span style="display:block;text-align:left;border:1px solid var(--line);border-radius:12px;padding:11px;margin:9px 0;background:#fff"><strong>${i+1}. ${esc(r.q.level)} · ${esc(r.q.typeZh||"聽解")}</strong><br><span style="font-size:17px;font-weight:800">${esc(r.q.jp)}</span><br><span style="color:var(--ok);font-weight:800">✓ ${esc(r.q.correctZh||"")}</span>${r.q.explanationZh?`<br><span class="muted">${esc(r.q.explanationZh)}</span>`:""}</span>`).join("");$("#finalText").innerHTML=`正確率 ${pct}% · 錯題 ${missed.length} 題，已保存到「只練錯題」。<span style="display:block;margin-top:14px;font-weight:900;text-align:left">錯題複習</span>${cards}`}'''
+          sub_block(r'function finish\(\)\{.*?\}\nfunction quit', finish+'\nfunction quit', 'finish review')
+
+          path.write_text(s, encoding='utf-8')
+          Path('listening-version.txt').write_text('8.0.0-github-catalog\n', encoding='utf-8')
+
+          # Data-contract validation before committing.
+          catalog = json.loads(Path('listening-original-catalog.json').read_text(encoding='utf-8'))
+          rows = catalog.get('items') or []
+          if len(rows) != 10000:
+              raise SystemExit(f'catalog expected 10000 items, got {len(rows)}')
+          counts = {f'N{i}': 0 for i in range(1,6)}
+          for row in rows:
+              if row.get('level') in counts:
+                  counts[row['level']] += 1
+          if any(v != 2000 for v in counts.values()):
+              raise SystemExit(f'catalog level counts wrong: {counts}')
+          if 'listening-original-catalog.json' not in s or 'GitHub 題庫預製' not in s or 'voicevoxQuestionIdFor' not in s:
+              raise SystemExit('post-patch markers missing')
+          print('catalog counts:', counts)
+          print('listening.html patched successfully')
+          PY
+
+      - name: JavaScript syntax check
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          s=Path('listening.html').read_text(encoding='utf-8')
+          blocks=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',s,re.S)
+          if not blocks:
+              raise SystemExit('no inline script found')
+          Path('/tmp/listening-inline.js').write_text(blocks[-1],encoding='utf-8')
+          PY
+          node --check /tmp/listening-inline.js
+
+      - name: Commit validated fix
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html listening-version.txt
+          if git diff --cached --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Fix listening game to use GitHub 10k catalog v8'
+          git push origin HEAD:main
