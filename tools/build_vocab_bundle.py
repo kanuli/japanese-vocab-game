@@ -26,16 +26,21 @@ URLS = {
     "frequency": "https://raw.githubusercontent.com/jkindrix/japanese-language-data/main/data/enrichment/frequency-subtitles.json",
     "thesaurus": "https://raw.githubusercontent.com/lxl66566/Japanese-Chinese-thesaurus/main/final.json",
     "wikidict": "https://raw.githubusercontent.com/open-dict-data/wikidict-zh/master/data/ja-zh_wiki.txt",
+    "kaikki": "https://kaikki.org/zhwiktionary/%E6%97%A5%E8%AF%AD/kaikki.org-dictionary-%E6%97%A5%E8%AF%AD.jsonl",
 }
 KANA_RE = re.compile(r"^[ぁ-ゖァ-ヺー・ヽヾゝゞ]+$")
+KANA_ANY_RE = re.compile(r"[ぁ-ゖァ-ヺ]")
 JAPANESE_RE = re.compile(r"^[ぁ-ゖァ-ヺ\u3400-\u9fff々〆ヵヶー・]+$")
 CJK_RE = re.compile(r"[\u3400-\u9fff々]")
 BAD_TAGS = {"arch", "obs", "rare", "dated", "person", "place", "company", "product", "organization", "surname", "given", "n-pr", "X", "sk", "sK", "rk", "rK", "ok", "oK"}
 
 
+def request(url: str):
+    return urllib.request.Request(url, headers={"User-Agent": "japanese-vocab-game-builder/2.0"})
+
+
 def fetch_text(url: str) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": "japanese-vocab-game-builder/1.0"})
-    with urllib.request.urlopen(req, timeout=120) as response:
+    with urllib.request.urlopen(request(url), timeout=180) as response:
         return response.read().decode("utf-8", errors="replace")
 
 
@@ -150,9 +155,29 @@ def clean_meaning(value, converter: OpenCC) -> str:
     return "；".join(parts[:2])[:75]
 
 
+def kaikki_gloss(record: dict, word: str, converter: OpenCC) -> str:
+    glosses = []
+    glosses.extend(record.get("glosses") or [])
+    for sense in record.get("senses") or []:
+        glosses.extend(sense.get("glosses") or [])
+    for raw in glosses:
+        # zhwiktionary glosses often put the Japanese headword/reading on the first line
+        # and the Chinese definition on the final line. Prefer the final usable segment.
+        pieces = [p.strip() for p in re.split(r"[\r\n]+", str(raw or "")) if p.strip()]
+        for piece in reversed(pieces):
+            piece = re.sub(r"^" + re.escape(word) + r"\s*[〖【（(][^〗】）)]{0,80}[〗】）)]\s*", "", piece)
+            piece = re.sub(r"^" + re.escape(word) + r"\s*[:：—-]?\s*", "", piece)
+            if KANA_ANY_RE.search(piece):
+                continue
+            value = clean_meaning(piece, converter)
+            if value:
+                return value
+    return ""
+
+
 def load_meanings(wanted: set[str], converter: OpenCC) -> tuple[dict[str, str], dict[str, int]]:
     meanings: dict[str, str] = {}
-    stats = {"thesaurus": 0, "wikidict": 0}
+    stats = {"thesaurus": 0, "wikidict": 0, "kaikki": 0}
     thesaurus = fetch_json(URLS["thesaurus"])
     for jp, zh in (thesaurus or {}).items():
         key = str(jp or "").strip()
@@ -180,6 +205,23 @@ def load_meanings(wanted: set[str], converter: OpenCC) -> tuple[dict[str, str], 
                 meanings[candidate] = value
                 stats["wikidict"] += 1
                 break
+    # Kaikki's zhwiktionary Japanese data is large but is processed only in CI, not in the learner's browser.
+    try:
+        with urllib.request.urlopen(request(URLS["kaikki"]), timeout=180) as response:
+            for raw_line in response:
+                try:
+                    record = json.loads(raw_line.decode("utf-8", errors="replace"))
+                except Exception:
+                    continue
+                word = str(record.get("word") or "").strip()
+                if word not in wanted or word in meanings:
+                    continue
+                value = kaikki_gloss(record, word, converter)
+                if value:
+                    meanings[word] = value
+                    stats["kaikki"] += 1
+    except Exception as exc:
+        print(f"warning: Kaikki source unavailable: {exc}", file=sys.stderr)
     return meanings, stats
 
 
@@ -277,14 +319,14 @@ def main() -> int:
     counts = Counter(x["level"] for x in ranked)
     tuples = [[x["level"], x["reading"], x["kanji"], x["meaning"], x["pos"]] for x in ranked]
     meta = {
-        "version": "prebuilt-20260814-v1",
+        "version": "prebuilt-20260814-v2",
         "generated": datetime.now(timezone.utc).isoformat(),
         "generatedCount": len(tuples),
         "coreUniqueAtBuild": len(core),
         "mergedUniqueAtBuild": merged_unique,
         "countsByLevel": {level: counts.get(level, 0) for level in ["N1", "N2", "N3", "N4", "N5"]},
         "meaningSources": source_stats,
-        "source": "JMdict common (japanese-language-data) + Japanese-Chinese thesaurus + Wikidict ja-zh",
+        "source": "JMdict common + Japanese-Chinese thesaurus + Wikidict ja-zh + Kaikki zhwiktionary Japanese",
         "levelPolicy": "JLPT Waller when available; otherwise subtitle-frequency estimated N1-N5",
     }
     payload = json.dumps(tuples, ensure_ascii=False, separators=(",", ":"))
