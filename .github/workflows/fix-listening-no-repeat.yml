@@ -20,6 +20,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Fix generated-choice edge cases
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('scripts/test_small_generator.py');s=p.read_text(encoding='utf-8')
+          s=s.replace("f'今天的{event}是{time}開始。'","f'{day}的{event}改了地點，但開始時間仍是{time}。'")
+          s=s.replace("f'今天的{event}改為{time}開始。'","f'{day}的{event}改了地點，但時間仍是{time}。'")
+          s=s.replace("次は金曜日です。何が決まりましたか。","次は来週です。何が決まりましたか。")
+          s=s.replace("取消，改到星期五。","取消，改到下週。")
+          s=s.replace("f'星期五的{event}取消，改到{day}。'","f'下週的{event}取消，改回{day}。'")
+          p.write_text(s,encoding='utf-8')
+          PY
       - name: Build original N1-N5 Listening catalog
         run: |
           python -m py_compile scripts/listening_jlpt_style_core.py scripts/test_small_generator.py
@@ -33,14 +45,14 @@ jobs:
           assert d['combinedCounts']=={'N5':2000,'N4':2000,'N3':2000,'N2':2000,'N1':2000}
           assert d['originalTotal']==len(d['items'])
           assert len({x['id'] for x in d['items']})==len(d['items'])
-          assert all(len(x['choicesZh'])==4 and x['correctZh'] in x['choicesZh'] for x in d['items'])
+          assert all(len(x['choicesZh'])==4 and len(set(x['choicesZh']))==4 and x['correctZh'] in x['choicesZh'] for x in d['items'])
           print('CATALOG PASS:',d['baseTotal'],'existing +',d['originalTotal'],'original =',d['combinedTotal'])
           PY
       - name: Commit validated catalog
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add listening-original-catalog.json
+          git add scripts/test_small_generator.py listening-original-catalog.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'Expand Listening catalog to 10000 JLPT-style questions'
           git pull --rebase origin main
