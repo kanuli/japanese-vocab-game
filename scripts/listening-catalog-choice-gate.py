@@ -14,4 +14,4 @@ if old not in s:
 else:
     s=s.replace(old,new,1)
     p.write_text(s,encoding='utf-8')
-    print('added strict catalog Chinese-choice similarity gate')
+    print('catalog listening choice gate applied')
