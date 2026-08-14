@@ -26,5 +26,6 @@ jobs:
             echo "No page changes needed"
           else
             git commit -m "Improve translator voice controls"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
