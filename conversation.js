@@ -6,6 +6,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function st(t,c=''){const e=$('#playStatus');e.textContent=t;e.className='status'+(c?' '+c:'')}
 function vst(t,c=''){const e=$('#voiceStatus');e.textContent=t;e.className='status'+(c?' '+c:'')}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function jpHtml(s){const x=window.CONVERSATION_FURIGANA?.[String(s??'')];return $('#showFurigana')?.checked&&x?x:esc(s)}
 function levels(){const a=$$('.level input:checked').map(x=>x.value);return a.length?a:['N1','N2','N3','N4','N5']}
 function sceneById(id){return S.data.scenes.find(x=>x.id===id)||S.data.scenes[0]}
 function filteredItems(scene=S.scene){const l=levels();return scene.items.filter(x=>l.includes(x.level))}
@@ -40,10 +41,11 @@ function render(){
  $('#situationName').textContent=S.item.situation;
  $('#meta').innerHTML=`<span class="tag">${esc(S.item.level)}</span><span class="tag">${esc(S.mode==='learn'?'學習':S.mode==='listen'?'聽力':S.mode==='shadow'?'跟讀':'聽寫')}</span>`;
  const hide=(S.mode==='listen'||S.mode==='dictation')&&!$('#reveal').dataset.shown;
- $('#lines').innerHTML=S.item.lines.map((l,i)=>`<div class="line line-${l.role.toLowerCase()}"><div class="role">Speaker ${esc(l.role)}</div><div class="jp ${hide?'hidden-text':''}">${hide?'聽完後按「顯示日文」':esc(l.jp)}</div><div class="zh" style="${$('#showZh').checked?'':'display:none'}">${esc(l.zh)}</div><div class="line-actions"><button class="btn mini linePlay" data-i="${i}">🔊 只聽 ${esc(l.role)}</button></div></div>`).join('');
+ $('#lines').innerHTML=S.item.lines.map((l,i)=>`<div class="line line-${l.role.toLowerCase()}"><div class="role">Speaker ${esc(l.role)}</div><div class="jp ${hide?'hidden-text':''}">${hide?'聽完後按「顯示日文」':jpHtml(l.jp)}</div><div class="zh" style="${$('#showZh').checked?'':'display:none'}">${esc(l.zh)}</div><div class="line-actions"><button class="btn mini linePlay" data-i="${i}">🔊 只聽 ${esc(l.role)}</button></div></div>`).join('');
  $$('.linePlay').forEach(b=>b.onclick=()=>playLine(Number(b.dataset.i)));
  if(S.mode==='dictation')updateDictPrompt();
 }
+document.addEventListener('change',e=>{if(e.target?.id==='showFurigana')render()});
 function resetReveal(){delete $('#reveal').dataset.shown;$('#reveal').textContent='👁 顯示日文'}
 function randomDialog(){
  const a=allFiltered();if(!a.length)return;const [sc,it]=pick(a);resetReveal();setSelection(sc,it)
