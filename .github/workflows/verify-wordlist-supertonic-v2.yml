@@ -11,7 +11,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -80,6 +80,38 @@ jobs:
           JS
           timeout 180s node test-wordlist-supertonic.cjs
           rm -f test-wordlist-supertonic.cjs
+
+      - name: Full Supertonic initialization and synthesis
+        run: |
+          python3 -m http.server 8766 >/tmp/server-full.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > test-wordlist-supertonic-full.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,args:['--autoplay-policy=no-user-gesture-required']});
+            const page=await browser.newPage();
+            page.setDefaultTimeout(900000);
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto('http://127.0.0.1:8766/wordlist.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>!!window.SupertonicAI,{timeout:60000});
+            const result=await page.evaluate(async()=>{
+              const progress=[];
+              await window.SupertonicAI.init(msg=>{if(msg)progress.push(String(msg))});
+              if(!window.SupertonicAI.isReady())throw new Error('isReady false after init');
+              const out=await window.SupertonicAI.synthesize('日本',{voice:'F3',speed:1,totalSteps:2});
+              return {ready:window.SupertonicAI.isReady(),url:String(out?.url||''),duration:Number(out?.duration||0),sampleRate:Number(out?.sampleRate||0),progress};
+            });
+            if(!result.ready||!result.url.startsWith('blob:')||!(result.sampleRate>0))throw new Error('Bad synthesis result: '+JSON.stringify(result));
+            if(errors.length)throw new Error('Page errors: '+errors.join(' | '));
+            console.log('Full Supertonic initialization: OK');
+            console.log('Synthesis WAV blob: OK',result);
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 1200s node test-wordlist-supertonic-full.cjs
+          rm -f test-wordlist-supertonic-full.cjs
 
       - name: Commit verified cache-bust
         run: |
