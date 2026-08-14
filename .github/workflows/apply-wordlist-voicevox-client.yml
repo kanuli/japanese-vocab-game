@@ -1,0 +1,71 @@
+name: Apply wordlist VOICEVOX client
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-wordlist-voicevox-client.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch wordlist HTML
+        run: python scripts/patch-wordlist-voicevox-client.py
+      - name: JavaScript checks
+        run: |
+          node --check wordlist-audio.js
+          node --check wordlist-voicevox.js
+          node --check wordlist.js
+          grep -q 'wordlist-audio.js?v=3' wordlist.html
+          grep -q 'wordlist-voicevox.js?v=1' wordlist.html
+          grep -q 'wordlist.js?v=3' wordlist.html
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+      - name: Browser smoke test controls and diagnostics
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > test-wordlist-client.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto('http://127.0.0.1:8765/wordlist.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>document.querySelector('#audioEngine')&&document.querySelector('#repairAI'),{timeout:30000});
+            const state=await page.evaluate(async()=>({
+              engine:document.querySelector('#audioEngine')?.value,
+              voicevox:!!document.querySelector('#voicevoxVoice'),
+              repair:document.querySelector('#repairAI')?.textContent,
+              diagnostics:typeof window.WA?.supertonicDiagnostics==='function',
+              speakV:typeof window.WA?.speakVoicevox==='function'
+            }));
+            if(!state.voicevox||!state.diagnostics||!state.speakV)throw new Error(JSON.stringify(state));
+            if(!state.repair.includes('修復'))throw new Error('Repair button missing: '+JSON.stringify(state));
+            if(errors.length)throw new Error(errors.join(' | '));
+            console.log('Wordlist VOICEVOX/Supertonic controls: OK',state);
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 150s node test-wordlist-client.cjs
+      - name: Commit verified wordlist client
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add wordlist.html
+          if git diff --cached --quiet; then
+            echo 'No wordlist HTML change needed'
+          else
+            git commit -m 'Enable VOICEVOX vocabulary audio and Supertonic repair UI'
+            git pull --rebase origin main
+            git push origin main
+          fi
