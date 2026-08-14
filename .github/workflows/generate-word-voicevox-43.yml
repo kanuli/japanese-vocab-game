@@ -1,0 +1,255 @@
+name: Generate vocabulary VOICEVOX 43 voices
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-voicevox-full-trigger'
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: voicevox-vocab-v1
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      speakers: ${{ steps.matrix.outputs.speakers }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+      - name: Build canonical 43-speaker matrix
+        id: matrix
+        run: |
+          curl -fsS http://127.0.0.1:50021/speakers -o /tmp/speakers.json
+          python - <<'PY'
+          import json,os
+          speakers=json.load(open('/tmp/speakers.json',encoding='utf-8'))
+          preferred=('ノーマル','Normal','NORMAL','通常')
+          rows=[]
+          for sp in speakers:
+              name=str(sp.get('name','')).strip(); styles=list(sp.get('styles') or [])
+              if not name or not styles: continue
+              style=next((x for x in styles if str(x.get('name','')).strip() in preferred),styles[0])
+              rows.append({'name':name,'style_id':int(style['id']),'style':str(style.get('name','')).strip()})
+          if len(rows)<43: raise SystemExit(f'VOICEVOX exposes only {len(rows)} usable speakers; 43 required')
+          if len(rows)>43: print(f'VOICEVOX exposes {len(rows)} speakers; using the first canonical 43 for compatibility with the existing listening library')
+          rows=rows[:43]
+          for i,r in enumerate(rows,1): r['key']=f's{i:02d}'
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as out:
+              out.write('speakers='+json.dumps(rows,ensure_ascii=False,separators=(',',':'))+'\n')
+          for r in rows: print(f"{r['key']}: {r['name']} / {r['style']} / style {r['style_id']}")
+          PY
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
+
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build exact vocabulary catalog
+        run: |
+          node scripts/build_word_voicevox_catalog.mjs
+          python - <<'PY'
+          import json
+          d=json.load(open('word-voicevox-catalog.json',encoding='utf-8'))
+          assert d['version']==1 and d['wordCount']>=22000 and d['shardCount']==5
+          assert len(d['words'])==d['wordCount']
+          assert min(d['shardCounts'])>=4000
+          print('Catalog ready:',d['wordCount'],'words',d['shardCounts'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-voicevox-catalog
+          path: word-voicevox-catalog.json
+          retention-days: 3
+          compression-level: 9
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create persistent GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'VOICEVOX vocabulary — 43 voices' --notes 'Server-hosted Japanese vocabulary audio. 43 VOICEVOX speakers, five shards per speaker. Generated audio is played by HTTP byte range; users do not install VOICEVOX.'
+
+  generate:
+    needs: [discover, catalog, prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        speaker: ${{ fromJSON(needs.discover.outputs.speakers) }}
+        shard: [0, 1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-voicevox-catalog
+          path: .
+      - name: Validate generators
+        run: |
+          node --check scripts/build_word_voicevox_catalog.mjs
+          python -m py_compile scripts/generate_word_voicevox_shard.py scripts/build_word_voicevox_indexes.py
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+      - name: Generate vocabulary audio shard
+        env:
+          SHARD: ${{ matrix.shard }}
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          STYLE_ID: ${{ matrix.speaker.style_id }}
+          STYLE_NAME: ${{ matrix.speaker.style }}
+          OUTPUT_DIR: word-voicevox-out
+        run: python scripts/generate_word_voicevox_shard.py
+      - name: Validate local TAR and manifest
+        env:
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          k=os.environ['SPEAKER_KEY'];s=int(os.environ['SHARD'])
+          m=json.load(open(f'word-voicevox-out/{k}-shard{s}.json',encoding='utf-8'))
+          assert m['speakerKey']==k and m['shard']==s and m['count']>=4000
+          tar=Path('word-voicevox-out')/m['asset']; assert tar.is_file() and tar.stat().st_size>1000000
+          with tarfile.open(tar,'r:') as tf: files=[x for x in tf.getmembers() if x.isfile()]
+          assert len(files)==m['count']==len(m['members'])
+          print('Validated',k,'shard',s,m['count'],'recordings',tar.stat().st_size,'bytes')
+          PY
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Upload bundle to Hugging Face backup
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          ASSET="$SPEAKER_KEY-shard$SHARD.tar"
+          hf upload "$HF_DATASET_REPO" "word-voicevox-out/$ASSET" "voicevox-vocab/v1/$SPEAKER_KEY/$ASSET" --repo-type dataset --commit-message "VOICEVOX vocabulary $SPEAKER_KEY shard $SHARD"
+      - name: Upload bundle to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          ASSET="$SPEAKER_KEY-shard$SHARD.tar"
+          gh release upload "$RELEASE_TAG" "word-voicevox-out/$ASSET" --clobber
+      - name: Preserve manifest
+        env:
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          mkdir -p manifest-artifact
+          cp "word-voicevox-out/$SPEAKER_KEY-shard$SHARD.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-voicevox-manifest-${{ matrix.speaker.key }}-${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+          compression-level: 9
+      - name: Stop engine
+        if: always()
+        run: docker stop voicevox-engine || true
+
+  finalize:
+    needs: [discover, catalog, generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-voicevox-catalog
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-voicevox-manifest-*
+          path: word-voicevox-manifests
+          merge-multiple: true
+      - name: Build 43 speaker range indexes
+        env:
+          MANIFEST_DIR: word-voicevox-manifests
+          CATALOG: word-voicevox-catalog.json
+          OUT_DIR: word-voicevox-publish
+          GITHUB_REPO: kanuli/japanese-vocab-game
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          RELEASE_TAG: voicevox-vocab-v1
+          EXPECTED_SPEAKERS: '43'
+        run: |
+          test "$(find word-voicevox-manifests -type f -name '*.json' | wc -l)" -eq 215
+          python scripts/build_word_voicevox_indexes.py
+          python - <<'PY'
+          import json
+          d=json.load(open('word-voicevox-catalog.json',encoding='utf-8'))
+          assert d['version']==2 and d['status']=='ready' and d['speakerCount']==43 and d['wordCount']>=22000
+          assert d['recordingCount']==d['speakerCount']*d['wordCount']
+          assert len(d['words'])==d['wordCount'] and len(d['speakers'])==43
+          print('Final coverage:',d['recordingCount'],'recordings')
+          PY
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Upload speaker indexes to Hugging Face
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: hf upload "$HF_DATASET_REPO" word-voicevox-publish voicevox-vocab/v1/indexes --repo-type dataset --commit-message 'Publish 43 VOICEVOX vocabulary indexes'
+      - name: Upload speaker indexes to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$RELEASE_TAG" word-voicevox-publish/*-index.json --clobber
+      - name: Commit lightweight catalog for GitHub Pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-voicevox-catalog.json
+          if git diff --cached --quiet; then
+            echo 'Catalog already current'
+          else
+            git commit -m 'Publish 43-voice VOICEVOX vocabulary catalog'
+            git pull --rebase origin main
+            git push origin main
+          fi
