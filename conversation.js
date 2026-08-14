@@ -56,6 +56,7 @@ function stop(){
  if(S.audio){try{S.audio.pause();S.audio.currentTime=0}catch(e){}S.audio=null}
  if(S.blobUrl){try{URL.revokeObjectURL(S.blobUrl)}catch(e){}S.blobUrl=''}
  if('speechSynthesis'in window) speechSynthesis.cancel();
+ if(window.ConversationHostedAudio?.stop)window.ConversationHostedAudio.stop();
 }
 function selectedVoice(role){
  const s=role==='B'?$('#voiceB'):$('#voiceA'),v=s.value;
@@ -113,7 +114,7 @@ async function ensureSuper(){
   if('serviceWorker'in navigator){try{await navigator.serviceWorker.register('./supertonic-sw.js',{scope:'./'});await navigator.serviceWorker.ready}catch(e){}}
   await window.SupertonicAI.preflight();
   await window.SupertonicAI.init(m=>vst(m,'loading'));S.superReady=true;vst('✅ Supertonic AI 日語語音已準備。','ok');return true;
- }catch(e){vst('⚠️ Supertonic 無法載入，可切換到裝置日語或本機 VOICEVOX。','bad');return false}
+ }catch(e){vst('⚠️ Supertonic 無法載入，可切換到裝置日語。','bad');return false}
 }
 async function playAudioObject(url,token){
  return new Promise((resolve,reject)=>{const a=S.audio=new Audio(url);let done=false;
@@ -122,9 +123,9 @@ async function playAudioObject(url,token){
   if(token!==S.stopToken)return end(true);const p=a.play();if(p&&p.catch)p.catch(e=>end(false,e));
  });
 }
-async function speakSuper(text,role,token){
+async function speakSuper(text,role,token,voiceOverride=null){
  if(!await ensureSuper())throw Error('Supertonic unavailable');if(token!==S.stopToken)return;
- const voice=selectedVoice(role)||'F3',speed=Number($('#speed').value);
+ const voice=voiceOverride||selectedVoice(role)||'F3',speed=Number($('#speed').value);
  vst(`✨ Supertonic 正在產生 ${role}｜${voice}…`,'loading');
  const out=await window.SupertonicAI.synthesize(text,{voice,speed,totalSteps:5});if(token!==S.stopToken)return;
  await playAudioObject(out.url,token);vst(`✅ Supertonic ${voice} 播放完成。`,'ok');
@@ -150,7 +151,14 @@ async function speakDevice(text,role,token){
 async function speak(text,role,token){
  const eng=$('#engine').value;
  if(eng==='supertonic')return speakSuper(text,role,token);
- if(eng==='voicevox'||eng==='aivis')return speakApi(text,role,token,eng);
+ if(eng==='voicevox'||eng==='aivis'){
+  let used=false;
+  try{used=await window.ConversationHostedAudio?.speak?.(text,role,Number($('#speed').value))||false}catch(e){console.warn(e)}
+  if(token!==S.stopToken)return;
+  if(used)return;
+  vst(`${eng==='voicevox'?'VOICEVOX':'AivisSpeech'} 此句沒有本站預錄音，已自動使用 Supertonic 備援。`,'loading');
+  return speakSuper(text,role,token,role==='B'?'M3':'F3');
+ }
  return speakDevice(text,role,token);
 }
 async function playLine(i){
@@ -180,7 +188,7 @@ async function engineChanged(){
  stop();const e=$('#engine').value;S.apiVoices=[];
  if(e==='supertonic')populateSupertonic();
  else if(e==='device')populateDevice();
- else await connectApi(e);
+ else if(window.ConversationHostedAudio?.configure)await window.ConversationHostedAudio.configure(e,$('#voiceA'),$('#voiceB'),vst);
 }
 async function init(){
  try{
@@ -201,7 +209,7 @@ async function init(){
  $('#randomScene').onclick=randomDialog;$('#prevDialog').onclick=()=>moveDialog(-1);$('#nextDialog').onclick=()=>moveDialog(1);
  $('#playAll').onclick=playAll;$('#playA').onclick=()=>playLine(0);$('#playB').onclick=()=>playLine(1);$('#stop').onclick=()=>{stop();st('已停止。')};
  $('#dictListen').onclick=()=>playLine(S.dictLine);$('#dictCheck').onclick=checkDict;$('#dictOther').onclick=()=>{S.dictLine=S.dictLine?0:1;updateDictPrompt()};
- $('#engine').onchange=engineChanged;$('#connectVoices').onclick=()=>engineChanged();
+ $('#engine').onchange=engineChanged;
  $('#speed').oninput=()=>$('#speedValue').textContent=Number($('#speed').value).toFixed(2)+'×';
  render();
 }
