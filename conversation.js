@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const S={data:null,scene:null,item:null,mode:'learn',audio:null,blobUrl:'',stopToken:0,dictLine:0,superReady:false,systemVoices:[],apiVoices:[]};
-const STVOICES=[['F1','F1｜女聲 1'],['F2','F2｜女聲 2'],['F3','F3｜專業播音女聲'],['F4','F4｜女聲 4'],['F5','F5｜女聲 5'],['M1','M1｜男聲 1'],['M2','M2｜男聲 2'],['M3','M3｜男聲 3'],['M4','M4｜男聲 4'],['M5','M5｜男聲 5']];
+const STVOICES=[['F1','🌙 沉穩低柔女聲（F1）'],['F2','🌸 明亮活潑女聲（F2）'],['F3','🎙️ 專業播音女聲（F3）'],['F4','✨ 清晰自信女聲（F4）'],['F5','💕 溫柔療癒女聲（F5）'],['M1','⚡ 活力自信男聲（M1）'],['M2','🌑 低沉穩重男聲（M2）'],['M3','🧭 權威專業男聲（M3）'],['M4','🙂 柔和親切男聲（M4）'],['M5','📖 溫暖舒緩男聲（M5）']];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function st(t,c=''){const e=$('#playStatus');e.textContent=t;e.className='status'+(c?' '+c:'')}
 function vst(t,c=''){const e=$('#voiceStatus');e.textContent=t;e.className='status'+(c?' '+c:'')}
