@@ -1,0 +1,5 @@
+start=2026-08-14T20:28:00+08:00
+voices=43
+shards_per_voice=5
+mode=full-vocabulary
+storage=github-releases+huggingface-backup
