@@ -16,7 +16,8 @@ html.write_text(s,encoding='utf-8')
 
 js=Path('conversation.js')
 s=js.read_text(encoding='utf-8')
-s=s.replace(" if('speechSynthesis'in window) speechSynthesis.cancel();\n}"," if('speechSynthesis'in window) speechSynthesis.cancel();\n if(window.ConversationHostedAudio?.stop)window.ConversationHostedAudio.stop();\n}",1)
+if 'ConversationHostedAudio?.stop' not in s:
+    s=s.replace(" if('speechSynthesis'in window) speechSynthesis.cancel();\n}"," if('speechSynthesis'in window) speechSynthesis.cancel();\n if(window.ConversationHostedAudio?.stop)window.ConversationHostedAudio.stop();\n}",1)
 s=s.replace(" }catch(e){vst('⚠️ Supertonic 無法載入，可切換到裝置日語或本機 VOICEVOX。','bad');return false}"," }catch(e){vst('⚠️ Supertonic 無法載入，可切換到裝置日語。','bad');return false}",1)
 s=s.replace("async function speakSuper(text,role,token){\n if(!await ensureSuper())throw Error('Supertonic unavailable');if(token!==S.stopToken)return;\n const voice=selectedVoice(role)||'F3',speed=Number($('#speed').value);", "async function speakSuper(text,role,token,voiceOverride=null){\n if(!await ensureSuper())throw Error('Supertonic unavailable');if(token!==S.stopToken)return;\n const voice=voiceOverride||selectedVoice(role)||'F3',speed=Number($('#speed').value);",1)
 old="""async function speak(text,role,token){
@@ -38,8 +39,10 @@ new="""async function speak(text,role,token){
  }
  return speakDevice(text,role,token);
 }"""
-if old not in s: raise SystemExit('speak block not found')
-s=s.replace(old,new,1)
+if old in s:
+    s=s.replace(old,new,1)
+elif new not in s:
+    raise SystemExit('speak block not found')
 old="""async function engineChanged(){
  stop();const e=$('#engine').value;S.apiVoices=[];
  if(e==='supertonic')populateSupertonic();
@@ -52,7 +55,9 @@ new="""async function engineChanged(){
  else if(e==='device')populateDevice();
  else if(window.ConversationHostedAudio?.configure)await window.ConversationHostedAudio.configure(e,$('#voiceA'),$('#voiceB'),vst);
 }"""
-if old not in s: raise SystemExit('engineChanged block not found')
-s=s.replace(old,new,1)
+if old in s:
+    s=s.replace(old,new,1)
+elif new not in s:
+    raise SystemExit('engineChanged block not found')
 s=s.replace(" $('#engine').onchange=engineChanged;$('#connectVoices').onclick=()=>engineChanged();"," $('#engine').onchange=engineChanged;",1)
 js.write_text(s,encoding='utf-8')
