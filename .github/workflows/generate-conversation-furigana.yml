@@ -59,6 +59,14 @@ jobs:
           assert len(data)==src['uniqueLines'], (len(data),src['uniqueLines'])
           assert all(x in data for x in src['lines'])
           assert '<rt>*</rt>' not in js
+          sample='すみません。東京行きの電車は何番線ですか。'
+          rendered=data[sample]
+          assert '<ruby>東京<rt>とうきょう</rt></ruby>' in rendered, rendered
+          assert '<ruby>行<rt>い</rt></ruby>き' in rendered, rendered
+          assert '<ruby>行き<rt>' not in rendered, rendered
+          sample2='大きいロッカーが空いていない場合、品川まで別の方法はありますか。'
+          rendered2=data[sample2]
+          assert '<ruby>大<rt>おお</rt></ruby>きい' in rendered2, rendered2
           html=Path('conversation.html').read_text(encoding='utf-8')
           app=Path('conversation.js').read_text(encoding='utf-8')
           assert 'id="showFurigana"' in html
@@ -66,6 +74,7 @@ jobs:
           assert 'jpHtml(l.jp)' in app
           assert '<ruby>' in js and '<rt>' in js
           print('Validated:',src['sceneCount'],'scenes,',src['totalLines'],'lines,',src['uniqueLines'],'unique readings')
+          print('Regression sample:',rendered)
           PY
 
       - name: Remove temporary extraction file
