@@ -1,0 +1,85 @@
+name: Generate conversation furigana
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-furigana-trigger'
+      - 'conversation-data-*.js'
+      - 'conversation-expansion.js'
+      - 'scripts/extract_conversation_lines.mjs'
+      - 'scripts/build_conversation_furigana.py'
+      - '.github/patch-conversation-furigana.py'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Japanese tokenizer and UniDic
+        run: |
+          python -m pip install --quiet --disable-pip-version-check fugashi unidic
+          python -m unidic download
+
+      - name: Extract all conversation lines
+        run: node scripts/extract_conversation_lines.mjs
+
+      - name: Generate furigana map
+        run: python scripts/build_conversation_furigana.py
+
+      - name: Patch conversation page
+        run: python .github/patch-conversation-furigana.py
+
+      - name: Validate coverage and JavaScript
+        run: |
+          node --check conversation.js
+          node --check conversation-furigana.js
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          src=json.load(open('conversation-lines.json',encoding='utf-8'))
+          js=Path('conversation-furigana.js').read_text(encoding='utf-8')
+          m=re.search(r'window\.CONVERSATION_FURIGANA=Object\.freeze\((\{.*\})\);',js)
+          assert m, 'furigana map not found'
+          data=json.loads(m.group(1))
+          assert len(data)==src['uniqueLines'], (len(data),src['uniqueLines'])
+          assert all(x in data for x in src['lines'])
+          assert '<rt>*</rt>' not in js
+          html=Path('conversation.html').read_text(encoding='utf-8')
+          app=Path('conversation.js').read_text(encoding='utf-8')
+          assert 'id="showFurigana"' in html
+          assert 'conversation-furigana.js?v=20260815v1' in html
+          assert 'jpHtml(l.jp)' in app
+          assert '<ruby>' in js and '<rt>' in js
+          print('Validated:',src['sceneCount'],'scenes,',src['totalLines'],'lines,',src['uniqueLines'],'unique readings')
+          PY
+
+      - name: Remove temporary extraction file
+        run: rm -f conversation-lines.json
+
+      - name: Commit generated furigana and integration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation-furigana.js conversation.html conversation.js
+          if git diff --cached --quiet; then
+            echo 'Furigana already current'
+          else
+            git commit -m 'Add furigana to Situation Conversation'
+            git pull --rebase origin main
+            git push origin main
+          fi
