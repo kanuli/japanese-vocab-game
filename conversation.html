@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>日本語・場面別會話｜N1–N5</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#182033;--muted:#687082;--line:#dde3ec;--blue:#3568dd;--blue2:#edf3ff;--ok:#11784a;--okbg:#edf9f2;--bad:#b42318;--badbg:#fff0ee;--warn:#8a5a00;--warnbg:#fff8e7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei","Yu Gothic UI",sans-serif}button,select,input,textarea{font:inherit}button{cursor:pointer}.wrap{max-width:1040px;margin:auto;padding:18px}.site-nav{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px}.navlink{text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:var(--text)}.navlink.active{border-color:var(--blue);background:var(--blue2);color:var(--blue)}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}h1{font-size:clamp(25px,4vw,38px);margin:0}.sub,.muted{color:var(--muted);font-size:13px;line-height:1.5}.pill{display:inline-flex;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:13px;color:var(--muted);white-space:nowrap}.grid{display:grid;grid-template-columns:1.02fr .98fr;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 38px rgba(20,35,70,.08)}h2{font-size:17px;margin:0 0 11px}h3{font-size:14px;margin:16px 0 7px}.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.level input{position:absolute;opacity:0}.level label{display:block;border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 5px;text-align:center;font-weight:800}.level input:checked+label{background:var(--blue2);border-color:var(--blue);color:var(--blue)}.fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.field label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin-bottom:5px}.field select,.field input{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}.row{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 11px;font-weight:800;color:var(--text)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.good{background:var(--ok);border-color:var(--ok);color:#fff}.btn:disabled{opacity:.45;cursor:not-allowed}.notice,.status{border:1px solid var(--line);background:#fafbfe;border-radius:11px;padding:10px 12px;font-size:12px;line-height:1.55;color:var(--muted)}.status{margin-top:10px}.status.ok{background:var(--okbg);border-color:#b9dfca;color:var(--ok)}.status.bad{background:var(--badbg);border-color:#efb6b1;color:var(--bad)}.status.loading,.notice.warn{background:var(--warnbg);border-color:#efd58b;color:#6d5a20}
+.modebar{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}.mode{min-height:45px}.mode.active{background:var(--blue2);border-color:var(--blue);color:var(--blue)}.dialogue{margin-top:14px}.dhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:12px}.scene{font-size:13px;color:var(--muted);font-weight:700}.situation{font-size:22px;font-weight:900;margin-top:2px}.line{border:1px solid var(--line);border-radius:14px;padding:13px;margin:9px 0;background:#fff}.line-a{border-left:5px solid #3568dd}.line-b{border-left:5px solid #7b55c7}.role{font-size:11px;font-weight:900;color:var(--muted);margin-bottom:6px}.jp{font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP","Yu Gothic UI",serif;font-size:clamp(20px,3vw,27px);line-height:1.55;font-weight:700}.zh{margin-top:7px;color:#4f586a;line-height:1.55}.hidden-text{filter:blur(8px);user-select:none}.line-actions{display:flex;gap:6px;margin-top:8px}.mini{font-size:12px;padding:7px 9px}.playbar{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:8px;margin-top:12px}.playbar .btn{min-height:48px}.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{background:#f0f3f8;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:800;color:#536074}.dict{display:none;margin-top:12px;border-top:1px solid var(--line);padding-top:12px}.dict textarea{width:100%;min-height:86px;border:1px solid var(--line);border-radius:12px;padding:11px;resize:vertical;font-size:18px}.dict-result{margin-top:8px;font-size:13px;line-height:1.5}.switches{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.switch{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);font-weight:700}.advanced{margin-top:10px}.advanced summary{cursor:pointer;font-size:12px;font-weight:800;color:var(--muted)}.advanced .fields{margin-top:8px}.footer{font-size:11px;color:var(--muted);line-height:1.65;margin:16px 2px}
+@media(max-width:760px){.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.modebar{grid-template-columns:1fr 1fr}.playbar{grid-template-columns:1fr 1fr}.playbar .primary{grid-column:1/-1}.situation{font-size:20px}.jp{font-size:21px}.levels{gap:5px}.level label{padding:9px 2px}.card{padding:14px}}
+</style>
+<script type="module" src="./vendor/supertonic-browser.js"></script>
+</head>
+<body><div class="wrap">
+<div class="site-nav">
+<a class="navlink" href="./index.html">📚 單字</a>
+<a class="navlink" href="./wordaudio.html">🔊 單字聽力</a>
+<a class="navlink" href="./wordlist.html">📋 單字清單</a>
+<a class="navlink" href="./grammar.html">📝 文法</a>
+<a class="navlink" href="./listening.html">🎧 聽解</a>
+<a class="navlink active" href="./conversation.html">💬 場景會話</a>
+<a class="navlink" href="./mocktest.html">🧪 模擬試驗</a>
+<a class="navlink" href="./translator.html">🌐 語音・翻譯</a>
+</div>
+<div class="top"><div><h1>💬 日本語・場面別會話</h1><div class="sub">N1–N5｜車站、超市、餐廳、酒店、醫院、工作等真實場景｜聽力・跟讀・聽寫</div></div><div id="total" class="pill">載入中…</div></div>
+
+<div class="grid">
+<section class="card">
+<h2>1. 選擇程度與場景</h2>
+<div class="levels">
+<div class="level"><input id="lvN1" type="checkbox" value="N1" checked><label for="lvN1">N1</label></div>
+<div class="level"><input id="lvN2" type="checkbox" value="N2" checked><label for="lvN2">N2</label></div>
+<div class="level"><input id="lvN3" type="checkbox" value="N3" checked><label for="lvN3">N3</label></div>
+<div class="level"><input id="lvN4" type="checkbox" value="N4" checked><label for="lvN4">N4</label></div>
+<div class="level"><input id="lvN5" type="checkbox" value="N5" checked><label for="lvN5">N5</label></div>
+</div>
+<div class="fields" style="margin-top:10px">
+<div class="field"><label>場景</label><select id="scene"></select></div>
+<div class="field"><label>情況 / 難度</label><select id="situation"></select></div>
+</div>
+<div class="row" style="margin-top:9px"><button id="randomScene" class="btn">🎲 隨機場景</button><button id="prevDialog" class="btn">← 上一個</button><button id="nextDialog" class="btn">下一個 →</button></div>
+
+<h2 style="margin-top:19px">2. 練習模式</h2>
+<div class="modebar">
+<button class="btn mode active" data-mode="learn">📖 學習</button>
+<button class="btn mode" data-mode="listen">👂 聽力</button>
+<button class="btn mode" data-mode="shadow">🗣 跟讀</button>
+<button class="btn mode" data-mode="dictation">⌨️ 聽寫</button>
+</div>
+<div class="switches">
+<label class="switch"><input id="showZh" type="checkbox" checked> 顯示繁體中文</label>
+<label class="switch"><input id="autoNext" type="checkbox"> 完整播放後隨機下一題</label>
+</div>
+<div class="notice warn" style="margin-top:12px">N1–N5 是學習難度標籤，不冒充 JLPT 官方固定句子清單。重點是日本生活中實際會遇到的溝通。</div>
+</section>
+
+<aside class="card">
+<h2>3. 語音引擎</h2>
+<div class="field"><label>語音來源</label>
+<select id="engine">
+<option value="supertonic">✨ Supertonic AI｜瀏覽器即時生成</option>
+<option value="voicevox">🎭 VOICEVOX｜最多 43 位標準角色</option>
+<option value="aivis">💠 AivisSpeech｜VOICEVOX 相容 API</option>
+<option value="device">🔊 裝置 Japanese voice｜備援</option>
+</select></div>
+<div class="fields" style="margin-top:9px">
+<div class="field"><label>Speaker A</label><select id="voiceA"></select></div>
+<div class="field"><label>Speaker B</label><select id="voiceB"></select></div>
+</div>
+<div class="field" style="margin-top:9px"><label>語速 <b id="speedValue">0.90×</b></label><input id="speed" type="range" min="0.6" max="1.25" step="0.05" value="0.9"></div>
+<details class="advanced"><summary>VOICEVOX / AivisSpeech 連線設定</summary>
+<div class="fields">
+<div class="field"><label>VOICEVOX endpoint</label><input id="voicevoxEndpoint" value="http://127.0.0.1:50021"></div>
+<div class="field"><label>AivisSpeech endpoint</label><input id="aivisEndpoint" value="http://127.0.0.1:10101"></div>
+</div>
+<button id="connectVoices" class="btn" style="margin-top:7px">重新讀取聲線</button>
+</details>
+<div id="voiceStatus" class="status">Supertonic 會在第一次播放時載入。若 AI 語音不可用，仍可切換到裝置日語語音。</div>
+</aside>
+</div>
+
+<section class="card dialogue">
+<div class="dhead"><div><div id="sceneName" class="scene"></div><div id="situationName" class="situation"></div><div id="meta" class="meta"></div></div><button id="reveal" class="btn" style="display:none">👁 顯示日文</button></div>
+<div id="lines"></div>
+<div class="playbar">
+<button id="playAll" class="btn primary">▶ 完整會話</button>
+<button id="playA" class="btn">🔊 A</button>
+<button id="playB" class="btn">🔊 B</button>
+<button id="stop" class="btn">⏹ 停止</button>
+</div>
+<div id="dictation" class="dict">
+<div class="muted" id="dictPrompt">先聽一句，再把聽到的日文輸入下面。</div>
+<textarea id="dictInput" lang="ja" placeholder="ここに日本語を入力…"></textarea>
+<div class="row" style="margin-top:8px"><button id="dictListen" class="btn">🔊 再聽</button><button id="dictCheck" class="btn good">✓ 檢查</button><button id="dictOther" class="btn">A / B 切換</button></div>
+<div id="dictResult" class="dict-result"></div>
+</div>
+<div id="playStatus" class="status">選擇場景後即可播放。完整會話會用 Speaker A / B 交替播放。</div>
+</section>
+<div class="footer">日本語・場面別會話 v1｜繁體中文解釋｜Supertonic AI、VOICEVOX、AivisSpeech、裝置日語語音。VOICEVOX / AivisSpeech 本機 API 需在使用者裝置啟動相應引擎；Supertonic 與裝置語音可直接在支援的瀏覽器使用。</div>
+</div>
+<script src="./conversation-data-1.js?v=20260814v1"></script>
+<script src="./conversation-data-2.js?v=20260814v1"></script>
+<script src="./conversation-data-3.js?v=20260814v1"></script>
+<script src="./conversation-data-4.js?v=20260814v1"></script>
+<script src="./conversation-data-5.js?v=20260814v1"></script>
+<script src="./conversation.js?v=20260814v1"></script>
+</body></html>
