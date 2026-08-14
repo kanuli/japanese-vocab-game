@@ -1,0 +1,42 @@
+name: Install hosted Supertonic conversation client
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-supertonic-client-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch conversation client
+        run: |
+          python .github/patch-conversation-supertonic-hosted.py
+          node --check conversation-hosted-audio.js
+          node --check conversation.js
+          if grep -q '127.0.0.1' conversation.html conversation.js conversation-hosted-audio.js; then
+            echo 'Local TTS endpoint found in public conversation client' >&2
+            exit 1
+          fi
+          grep -q '伺服器預錄' conversation.html
+          grep -q 'ConversationHostedAudio' conversation.js
+          grep -q 'conversation-supertonic-index.json' conversation-hosted-audio.js
+      - name: Commit client changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation.html conversation.js
+          if git diff --cached --quiet; then
+            echo 'Hosted Supertonic client already installed'
+          else
+            git commit -m 'Prefer hosted Supertonic conversation audio'
+            git pull --rebase origin main
+            git push origin main
+          fi
