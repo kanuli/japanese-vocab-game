@@ -1,0 +1,94 @@
+name: Verify wordlist Supertonic v2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-wordlist-supertonic-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache-bust repaired audio loader
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('wordlist.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('./wordlist-audio.js?v=1','./wordlist-audio.js?v=2')
+          p.write_text(s,encoding='utf-8')
+          assert './wordlist-audio.js?v=2' in s
+          PY
+
+      - name: JavaScript syntax checks
+        run: |
+          node --check wordlist-audio.js
+          node --check wordlist.js
+          node --check supertonic-sw.js
+
+      - name: Install browser tester
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --no-audit --no-fund playwright@1.54.2
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser verify module, preflight and persistence
+        run: |
+          python3 -m http.server 8765 >/tmp/server.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          cat > /tmp/test-wordlist-supertonic.cjs <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            await page.goto('http://127.0.0.1:8765/wordlist.html',{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForFunction(()=>!!document.querySelector('#enableAI'),{timeout:20000});
+            await page.waitForFunction(()=>!!window.SupertonicAI,{timeout:60000});
+            const api=await page.evaluate(()=>({
+              hasPreflight:typeof window.SupertonicAI?.preflight==='function',
+              hasInit:typeof window.SupertonicAI?.init==='function',
+              hasSynth:typeof window.SupertonicAI?.synthesize==='function',
+              voices:window.SupertonicAI?.voices?.length||0
+            }));
+            if(!api.hasPreflight||!api.hasInit||!api.hasSynth||api.voices!==10)throw new Error('Bad Supertonic API: '+JSON.stringify(api));
+            const preflight=await page.evaluate(async()=>await window.SupertonicAI.preflight());
+            if(!(preflight?.sampleRate>0)||preflight?.voices?.length!==10)throw new Error('Supertonic preflight failed: '+JSON.stringify(preflight));
+            await page.waitForFunction(()=>navigator.serviceWorker?.controller||document.querySelector('#enableAI')?.textContent,{timeout:15000});
+            const state=await page.evaluate(async()=>({
+              button:document.querySelector('#enableAI')?.textContent||'',
+              status:document.querySelector('#voiceStatus')?.textContent||'',
+              sw:!!(await navigator.serviceWorker.getRegistration('./')),
+              controller:!!navigator.serviceWorker.controller
+            }));
+            if(!state.sw)throw new Error('Supertonic service worker not registered');
+            if(!/首次安裝|載入已安裝|已啟用/.test(state.button))throw new Error('Unexpected enable button: '+JSON.stringify(state));
+            if(errors.length)throw new Error('Page errors: '+errors.join(' | '));
+            console.log('Supertonic module API: OK');
+            console.log('Remote model preflight: OK',preflight);
+            console.log('Service worker registration: OK',state);
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          timeout 180s node /tmp/test-wordlist-supertonic.cjs
+
+      - name: Commit verified cache-bust
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add wordlist.html
+          if git diff --cached --quiet; then
+            echo 'No HTML cache-bust change needed'
+          else
+            git commit -m 'Verify and publish repaired wordlist Supertonic loader'
+            git pull --rebase origin main
+            git push origin main
+          fi
