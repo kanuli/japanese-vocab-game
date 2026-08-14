@@ -8,7 +8,8 @@ from fugashi import Tagger
 KANJI_CLASS=r'\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF々〆ヶ'
 KANA_CLASS=r'ぁ-ゖァ-ヺー'
 KANJI=re.compile(f'[{KANJI_CLASS}]')
-KANA=re.compile(f'[{KANA_CLASS}]')
+KANJI_GROUP=re.compile(f'^[{KANJI_CLASS}]+$')
+KANA_GROUP=re.compile(f'^[{KANA_CLASS}]+$')
 GROUPS=re.compile(f'([{KANJI_CLASS}]+|[{KANA_CLASS}]+|[^{KANJI_CLASS}{KANA_CLASS}]+)')
 
 def kata_to_hira(text: str) -> str:
@@ -33,38 +34,33 @@ def full_ruby(surface: str, reading: str) -> str:
     return f'<ruby>{html.escape(surface,quote=True)}<rt>{html.escape(reading,quote=True)}</rt></ruby>'
 
 def kanji_only_ruby(surface: str, reading: str) -> str:
-    """Place ruby only above kanji groups inside mixed kanji/kana tokens.
-
-    Example: 行き / いき -> <ruby>行<rt>い</rt></ruby>き
-             乗り換え / のりかえ -> <ruby>乗<rt>の</rt></ruby>り<ruby>換<rt>か</rt></ruby>え
-    Falls back to whole-token ruby if kana anchors cannot be aligned safely.
-    """
+    """Put ruby only above kanji groups, leaving okurigana outside ruby."""
     groups=GROUPS.findall(surface)
     if not groups or ''.join(groups) != surface:
         return full_ruby(surface,reading)
-    if not any(KANJI.fullmatch(g) for g in groups):
+    if not any(KANJI_GROUP.fullmatch(g) for g in groups):
         return html.escape(surface,quote=True)
-    if all(KANJI.fullmatch(g) for g in groups):
+    if all(KANJI_GROUP.fullmatch(g) for g in groups):
         return full_ruby(surface,reading)
 
     out=[]
     pos=0
     for i,g in enumerate(groups):
         safe=html.escape(g,quote=True)
-        if KANA.fullmatch(g):
+        if KANA_GROUP.fullmatch(g):
             expected=kata_to_hira(g)
             if not reading.startswith(expected,pos):
                 return full_ruby(surface,reading)
             out.append(safe)
             pos += len(expected)
             continue
-        if KANJI.fullmatch(g):
+        if KANJI_GROUP.fullmatch(g):
             next_kana=None
             for later in groups[i+1:]:
-                if KANA.fullmatch(later):
+                if KANA_GROUP.fullmatch(later):
                     next_kana=kata_to_hira(later)
                     break
-                if not KANJI.fullmatch(later):
+                if not KANJI_GROUP.fullmatch(later):
                     break
             if next_kana:
                 idx=reading.find(next_kana,pos)
@@ -82,7 +78,6 @@ def kanji_only_ruby(surface: str, reading: str) -> str:
                 out.append(f'<ruby>{safe}<rt>{html.escape(ruby_reading,quote=True)}</rt></ruby>')
                 pos=len(reading)
             continue
-        # Non-kana/non-kanji material inside a mixed token is uncommon; avoid a bad alignment.
         return full_ruby(surface,reading)
 
     if pos != len(reading):
@@ -115,7 +110,7 @@ def main():
         mapping[text]=rendered
         ruby_count += rendered.count('<ruby>')
     meta={
-        'version':2,
+        'version':3,
         'sceneCount':data['sceneCount'],
         'totalLines':data['totalLines'],
         'uniqueLines':data['uniqueLines'],
