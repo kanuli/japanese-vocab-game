@@ -1,0 +1,38 @@
+name: Patch Situation Conversation hosted audio
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-hosted-audio-trigger'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply hosted-audio architecture
+        run: |
+          python .github/patch-conversation-hosted-audio.py
+          node --check conversation-hosted-audio.js
+          node --check conversation.js
+          if grep -q '127.0.0.1' conversation.html; then
+            echo 'Local endpoint still visible in conversation.html' >&2
+            exit 1
+          fi
+          grep -q 'conversation-hosted-audio.js' conversation.html
+          grep -q 'ConversationHostedAudio' conversation.js
+      - name: Commit page changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add conversation.html conversation.js
+          if git diff --cached --quiet; then
+            echo "No page changes needed"
+          else
+            git commit -m "Remove local voice connection from Situation Conversation"
+            git pull --rebase origin main
+            git push origin main
+          fi
