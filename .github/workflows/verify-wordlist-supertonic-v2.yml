@@ -43,7 +43,7 @@ jobs:
           python3 -m http.server 8765 >/tmp/server.log 2>&1 &
           PID=$!
           trap 'kill $PID || true' EXIT
-          cat > /tmp/test-wordlist-supertonic.cjs <<'JS'
+          cat > test-wordlist-supertonic.cjs <<'JS'
           const {chromium}=require('playwright');
           (async()=>{
             const browser=await chromium.launch({headless:true});
@@ -78,7 +78,8 @@ jobs:
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           JS
-          timeout 180s node /tmp/test-wordlist-supertonic.cjs
+          timeout 180s node test-wordlist-supertonic.cjs
+          rm -f test-wordlist-supertonic.cjs
 
       - name: Commit verified cache-bust
         run: |
