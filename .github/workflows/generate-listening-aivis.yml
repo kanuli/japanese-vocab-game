@@ -91,7 +91,6 @@ jobs:
           HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
           RELEASE_TAG: listening-aivis-v1
         run: |
-          cp listening-aivis-out/aivis-model.json listening-aivis-out/aivis-model.json
           python scripts/build_listening_aivis_index.py
           python - <<'PY'
           import json
