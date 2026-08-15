@@ -1,0 +1,96 @@
+name: Install conversation world expansion
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/install-conversation-world-expansion.yml'
+      - '.conversation-world-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  validate-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Patch integration and normalize templates
+        run: python scripts/patch_conversation_world.py
+
+      - name: JavaScript syntax checks
+        run: |
+          node --check conversation-world-expansion.js
+          node --check conversation-expansion.js
+          node --check conversation.js
+          node --check scripts/extract_conversation_lines.mjs
+
+      - name: Validate exact 61-scene / 1525-dialogue coverage
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          global.window={};
+          for(let i=1;i<=5;i++)vm.runInThisContext(fs.readFileSync(`conversation-data-${i}.js`,'utf8'),{filename:`conversation-data-${i}.js`});
+          vm.runInThisContext(fs.readFileSync('conversation-expansion.js','utf8'),{filename:'conversation-expansion.js'});
+          vm.runInThisContext(fs.readFileSync('conversation-world-expansion.js','utf8'),{filename:'conversation-world-expansion.js'});
+          const scenes=window.SITUATION_SCENES||[];
+          const expectedNew=['immigration','realestate','moving','utilities','garbage','internet','salon','laundry','library','gym','onsen','school','childcare','jobhunt','hr','meeting','worksafety','dentist','eyeclinic','insurance','taxpension','bicycle','rentalcar','parking','trafficaccident','ferry','cinema','event','shrine','evacuation','petvet','pregnancy','community','marriage','embassy'];
+          if(scenes.length!==61)throw new Error(`Expected 61 scenes, got ${scenes.length}`);
+          const ids=new Set();let dialogues=0,lines=0;
+          for(const s of scenes){
+            if(ids.has(s.id))throw new Error(`Duplicate scene id ${s.id}`);ids.add(s.id);
+            if(s.items.length!==25)throw new Error(`${s.id}: expected 25 conversations, got ${s.items.length}`);
+            for(const lv of ['N1','N2','N3','N4','N5']){
+              const n=s.items.filter(x=>x.level===lv).length;
+              if(n!==5)throw new Error(`${s.id} ${lv}: expected 5, got ${n}`);
+            }
+            const keys=new Set();
+            for(const x of s.items){
+              const key=`${x.level}|${x.situation}`;
+              if(keys.has(key))throw new Error(`${s.id}: duplicate situation ${key}`);keys.add(key);
+              if(!Array.isArray(x.lines)||x.lines.length!==2)throw new Error(`${s.id}: invalid A/B lines for ${key}`);
+              for(const l of x.lines){
+                if(!String(l.jp||'').trim()||!String(l.zh||'').trim())throw new Error(`${s.id}: missing JP/ZH for ${key}`);
+                if(/だ場合|です場合/.test(l.jp))throw new Error(`${s.id}: bad template grammar: ${l.jp}`);
+                lines++;
+              }
+            }
+            dialogues+=s.items.length;
+          }
+          for(const id of expectedNew)if(!ids.has(id))throw new Error(`Missing new scene ${id}`);
+          if(dialogues!==1525)throw new Error(`Expected 1525 conversations, got ${dialogues}`);
+          if(lines!==3050)throw new Error(`Expected 3050 spoken lines, got ${lines}`);
+          console.log(`Validated ${scenes.length} scenes / ${dialogues} conversations / ${lines} spoken lines`);
+          NODE
+
+      - name: Validate page and audio extractor integration
+        run: |
+          grep -q 'conversation-world-expansion.js?v=20260815v1' conversation.html
+          grep -q '61 個真實生活場景' conversation.html
+          grep -q '1,525 組會話' conversation.html
+          grep -q "'conversation-world-expansion.js'" scripts/extract_conversation_lines.mjs
+          node scripts/extract_conversation_lines.mjs
+          node - <<'NODE'
+          const d=require('./conversation-lines.json');
+          if(d.sceneCount!==61)throw new Error(`Extractor sceneCount ${d.sceneCount}`);
+          if(d.totalLines!==3050)throw new Error(`Extractor totalLines ${d.totalLines}`);
+          if(d.uniqueLines<1500)throw new Error(`Too few unique Japanese lines: ${d.uniqueLines}`);
+          console.log(`Audio extractor: ${d.uniqueLines} unique Japanese lines from ${d.totalLines}`);
+          NODE
+          rm -f conversation-lines.json
+
+      - name: Commit verified expansion
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation-world-expansion.js conversation.html scripts/extract_conversation_lines.mjs
+          if git diff --cached --quiet; then
+            echo 'World expansion already integrated'
+          else
+            git commit -m 'Expand Situation Conversation to 1525 dialogues across 61 scenes'
+            git pull --rebase origin main
+            git push origin main
+          fi
