@@ -1,6 +1,5 @@
 import json
 import os
-import shutil
 import subprocess
 import tarfile
 import tempfile
@@ -19,15 +18,15 @@ if not CATALOG.is_file():
 
 catalog = json.loads(CATALOG.read_text(encoding='utf-8'))
 lines = catalog.get('lines') or {}
-if not (200 <= len(lines) <= 260):
-    raise SystemExit(f'Unexpected utterance count: {len(lines)}')
+if len(lines) != 1244:
+    raise SystemExit(f'Expected 1244 unique conversation utterances, got {len(lines)}')
 label = (catalog.get('voices') or {}).get(VOICE, VOICE)
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 tar_path = OUT_DIR / f'{VOICE}.tar'
 manifest_path = OUT_DIR / f'{VOICE}.json'
 
-# Supertonic 3 is CPU-native. One model instance is reused for the whole voice bundle.
+# One Supertonic 3 model instance is reused for all 1,244 utterances in this voice.
 tts = TTS(auto_download=True)
 style = tts.get_voice_style(voice_name=VOICE)
 
@@ -59,7 +58,7 @@ with tempfile.TemporaryDirectory(prefix=f'supertonic-{VOICE}-') as td:
             raise SystemExit(f'Invalid MP3 for {uid}')
         wav_path.unlink(missing_ok=True)
         mp3_files.append((uid, mp3_path))
-        if n % 25 == 0 or n == len(lines):
+        if n % 100 == 0 or n == len(lines):
             print(f'{VOICE}: generated {n}/{len(lines)}')
 
     with tarfile.open(tar_path, 'w') as tf:
@@ -83,11 +82,11 @@ if set(members) != set(lines):
     missing = sorted(set(lines) - set(members))[:10]
     extra = sorted(set(members) - set(lines))[:10]
     raise SystemExit(f'TAR member mismatch missing={missing} extra={extra}')
-if tar_path.stat().st_size < 100000:
+if tar_path.stat().st_size < 500000:
     raise SystemExit('TAR unexpectedly small')
 
 manifest = {
-    'version': 1,
+    'version': 2,
     'engine': 'supertonic-3',
     'voice': VOICE,
     'label': label,
