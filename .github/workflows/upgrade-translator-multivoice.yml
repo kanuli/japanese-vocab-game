@@ -1,0 +1,59 @@
+name: Upgrade Translator multi-voice
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.translator-multivoice-trigger'
+      - 'translator-hosted-voice.js'
+      - '.github/patch-translator-multivoice.py'
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch Translator only
+        run: python .github/patch-translator-multivoice.py
+      - name: Validate voice routing
+        run: |
+          node --check translator-hosted-voice.js
+          python - <<'PY'
+          from pathlib import Path
+          h=Path('translator.html').read_text(encoding='utf-8')
+          j=Path('translator-hosted-voice.js').read_text(encoding='utf-8')
+          for x in ('value="supertonic3"','value="voicevox"','value="aivis"','Supertonic 3','VOICEVOX','AivisSpeech / Style-Bert-VITS'):
+              assert x in h, x
+          assert 'translator-hosted-voice.js?v=20260815v1' in h
+          assert 'voicevox-full-index.json' in j
+          assert 'conversation-aivis-index.json' in j and 'listening-aivis-index.json' in j
+          assert 'totalSteps:5' not in h
+          assert '127.0.0.1' not in h and '127.0.0.1' not in j
+          print('Translator multi-voice validation passed.')
+          PY
+      - name: Ensure mock test is untouched
+        run: |
+          if git diff --name-only | grep -Fx 'mocktest.html'; then
+            echo 'mocktest.html must not be modified' >&2
+            exit 1
+          fi
+      - name: Commit Translator only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add translator.html
+          if git diff --cached --quiet; then
+            echo 'Translator already current'
+          else
+            git commit -m 'Add three voice engines to Translator'
+            git pull --rebase origin main
+            git push origin main
+          fi
