@@ -1,0 +1,59 @@
+name: Upgrade Listening multi-voice
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.listening-multivoice-trigger'
+      - 'listening-aivis-hosted.js'
+      - '.github/patch-listening-multivoice.py'
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch Listening only
+        run: python .github/patch-listening-multivoice.py
+      - name: Validate voice architecture
+        run: |
+          node --check listening-aivis-hosted.js
+          python - <<'PY'
+          from pathlib import Path
+          h=Path('listening.html').read_text(encoding='utf-8')
+          a=Path('listening-aivis-hosted.js').read_text(encoding='utf-8')
+          for text in ('engineVoicevox','engineAI','engineAivis','engineDevice','AivisSpeech / Style-Bert-VITS','Supertonic 3'):
+              assert text in h, text
+          assert 'listening-aivis-hosted.js?v=20260815v1' in h
+          assert 'listening-aivis-index.json' in a
+          assert 'totalSteps:5' not in h
+          assert '127.0.0.1' not in h
+          assert '127.0.0.1' not in a
+          print('Listening multi-voice validation passed.')
+          PY
+      - name: Ensure mock test is untouched
+        run: |
+          if git diff --name-only | grep -Fx 'mocktest.html'; then
+            echo 'mocktest.html must not be modified' >&2
+            exit 1
+          fi
+      - name: Commit Listening only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html
+          if git diff --cached --quiet; then
+            echo 'Listening page already current'
+          else
+            git commit -m 'Add AivisSpeech and standardize Listening voices'
+            git pull --rebase origin main
+            git push origin main
+          fi
