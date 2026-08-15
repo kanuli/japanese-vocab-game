@@ -15,8 +15,8 @@ lines = catalog.get('lines') or {}
 text_map = catalog.get('textMap') or {}
 if len(voices) != 10:
     raise SystemExit(f'Expected 10 voices, got {len(voices)}')
-if len(lines) != 1244:
-    raise SystemExit(f'Expected 1244 unique utterances, got {len(lines)}')
+if len(lines) < 2600:
+    raise SystemExit(f'Expected at least 2600 unique utterances, got {len(lines)}')
 
 out_voices = {}
 for key, label in voices.items():
@@ -25,7 +25,7 @@ for key, label in voices.items():
         raise SystemExit(f'Missing manifest: {p}')
     m = json.loads(p.read_text(encoding='utf-8'))
     if m.get('voice') != key or int(m.get('count', 0)) != len(lines):
-        raise SystemExit(f'Invalid manifest for {key}')
+        raise SystemExit(f'Invalid manifest for {key}: {m.get("count")} / {len(lines)}')
     if set(m.get('members') or {}) != set(lines):
         raise SystemExit(f'Member coverage mismatch for {key}')
     asset = m.get('asset') or f'{key}.tar'
@@ -41,10 +41,11 @@ for key, label in voices.items():
     }
 
 out = {
-    'version': 1,
+    'version': 2,
     'status': 'ready',
     'engine': 'supertonic-3',
     'language': 'ja',
+    'sceneCount': int(catalog.get('sceneCount', 0)),
     'sourceLineCount': int(catalog.get('sourceLineCount', 0)),
     'conversationCount': int(catalog.get('conversationCount', 0)),
     'utteranceCount': len(lines),
@@ -53,7 +54,7 @@ out = {
     'lines': text_map,
     'voices': out_voices,
 }
-if out['sourceLineCount'] != 1300 or out['conversationCount'] != 650:
-    raise SystemExit(f"Expected 650 conversations / 1300 source lines, got {out['conversationCount']} / {out['sourceLineCount']}")
+if out['sceneCount'] != 61 or out['sourceLineCount'] != 3050 or out['conversationCount'] != 1525:
+    raise SystemExit(f"Expected 61 scenes / 1525 conversations / 3050 source lines, got {out['sceneCount']} / {out['conversationCount']} / {out['sourceLineCount']}")
 OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')
 print(f"Final Supertonic 3 coverage: {out['voiceCount']} voices × {out['utteranceCount']} unique utterances = {out['recordingCount']} recordings")
