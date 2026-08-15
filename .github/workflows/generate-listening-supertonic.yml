@@ -1,0 +1,124 @@
+name: Generate Listening Supertonic 3 — 10 voices × 5 levels
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.listening-supertonic-full-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: listening-supertonic-v1
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/build_listening_audio_catalog.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: listening-audio-catalog-supertonic
+          path: listening-audio-catalog.json
+          retention-days: 3
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic 3 Listening — 10 voices' --notes '3,310 listening sentences split by JLPT level for ten Supertonic 3 voices. Each voice-level shard is independently generated and validated.'
+
+  generate:
+    needs: [catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        voice: [F1,F2,F3,F4,F5,M1,M2,M3,M4,M5]
+        level: [N1,N2,N3,N4,N5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: listening-audio-catalog-supertonic
+          path: .
+      - name: Install Supertonic 3 and ffmpeg
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+      - name: Generate isolated voice-level shard
+        env:
+          VOICE: ${{ matrix.voice }}
+          LEVEL: ${{ matrix.level }}
+          OUT_DIR: listening-supertonic-out
+        run: python scripts/generate_listening_supertonic_shard.py
+      - name: Validate and publish shard
+        env:
+          V: ${{ matrix.voice }}
+          L: ${{ matrix.level }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          v,l=os.environ['V'],os.environ['L'];m=json.load(open(f'listening-supertonic-out/{v}-{l}.json'))
+          assert m['count']>0 and len(m['members'])==m['count']
+          p=Path('listening-supertonic-out')/m['asset'];assert p.is_file() and p.stat().st_size>100000
+          with tarfile.open(p,'r:') as t:assert len([x for x in t.getmembers() if x.isfile()])==m['count']
+          PY
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "listening-supertonic-out/$V-$L.tar" "listening/supertonic/v1/$V-$L.tar" --repo-type dataset --commit-message "Listening Supertonic $V $L"
+          gh release upload "$RELEASE_TAG" "listening-supertonic-out/$V-$L.tar" --clobber
+          mkdir -p manifest-artifact && cp "listening-supertonic-out/$V-$L.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: listening-supertonic-manifest-${{ matrix.voice }}-${{ matrix.level }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+
+  finalize:
+    needs: [catalog,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: listening-audio-catalog-supertonic
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: listening-supertonic-manifest-*
+          path: listening-supertonic-manifests
+          merge-multiple: true
+      - name: Build final 33,100-recording index
+        run: |
+          test "$(find listening-supertonic-manifests -name '*.json' | wc -l)" -eq 50
+          python scripts/build_listening_supertonic_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('listening-supertonic-index.json'))
+          assert d['status']=='ready' and d['questionCount']==3310 and d['voiceCount']==10 and d['recordingCount']==33100
+          PY
+      - name: Commit final index
+        run: |
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening-supertonic-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish Listening Supertonic 3 index'; git pull --rebase origin main; git push origin main; fi
