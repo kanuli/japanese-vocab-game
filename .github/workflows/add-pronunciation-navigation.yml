@@ -1,0 +1,27 @@
+name: Add pronunciation navigation
+on:
+  push:
+    paths:
+      - '.github/add-pronunciation-navigation.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add pronunciation button to site navigation
+        run: python .github/add-pronunciation-navigation.py
+      - name: Commit navigation changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html wordaudio.html wordlist.html grammar.html listening.html conversation.html mocktest.html translator.html
+          if git diff --cached --quiet; then
+            echo "No navigation changes needed"
+          else
+            git commit -m "Add pronunciation page to navigation"
+            git pull --rebase origin main
+            git push origin main
+          fi
