@@ -1,0 +1,51 @@
+name: Upgrade Word List shared multi-voice
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.wordlist-shared-multivoice-trigger'
+      - '.github/patch-wordlist-shared-multivoice.py'
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch Word List only
+        run: python .github/patch-wordlist-shared-multivoice.py
+      - name: Validate shared voice architecture
+        run: |
+          node --check wordlist.js
+          node --check wordaudio-multivoice.js
+          python - <<'PY'
+          from pathlib import Path
+          h=Path('wordlist.html').read_text(encoding='utf-8')
+          j=Path('wordlist.js').read_text(encoding='utf-8')
+          m=Path('wordaudio-multivoice.js').read_text(encoding='utf-8')
+          assert 'wordaudio-multivoice.js?v=20260815v2' in h
+          assert 'wordlist-voicevox.js' not in h
+          for x in ('word-voicevox-catalog.json','word-supertonic3-catalog.json','word-aivis-catalog.json'):
+              assert x in m,x
+          for x in ('voicevox','supertonic3','aivis','device'):
+              assert x in m,x
+          assert "W.speak(w.reading,w)" in j
+          assert '127.0.0.1' not in h and '127.0.0.1' not in j and '127.0.0.1' not in m
+          print('Word List shared multi-engine validation passed.')
+          PY
+      - name: Ensure mock test is untouched
+        run: |
+          if git diff --name-only | grep -Fx 'mocktest.html'; then exit 1; fi
+      - name: Commit Word List only
+        run: |
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add wordlist.html wordlist.js
+          if git diff --cached --quiet; then echo current; else git commit -m 'Share three-engine vocabulary audio with Word List'; git pull --rebase origin main; git push origin main; fi
