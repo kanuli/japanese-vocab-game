@@ -15,8 +15,8 @@ lines = catalog.get('lines') or {}
 text_map = catalog.get('textMap') or {}
 if len(voices) != 10:
     raise SystemExit(f'Expected 10 voices, got {len(voices)}')
-if not (200 <= len(lines) <= 260):
-    raise SystemExit(f'Unexpected utterance count: {len(lines)}')
+if len(lines) != 1244:
+    raise SystemExit(f'Expected 1244 unique utterances, got {len(lines)}')
 
 out_voices = {}
 for key, label in voices.items():
@@ -45,16 +45,15 @@ out = {
     'status': 'ready',
     'engine': 'supertonic-3',
     'language': 'ja',
-    'codeLicense': 'MIT',
-    'modelLicense': 'OpenRAIL-M',
     'sourceLineCount': int(catalog.get('sourceLineCount', 0)),
+    'conversationCount': int(catalog.get('conversationCount', 0)),
     'utteranceCount': len(lines),
     'voiceCount': len(out_voices),
     'recordingCount': len(lines) * len(out_voices),
     'lines': text_map,
     'voices': out_voices,
 }
-if out['sourceLineCount'] != 260:
-    raise SystemExit(f"Expected sourceLineCount 260, got {out['sourceLineCount']}")
+if out['sourceLineCount'] != 1300 or out['conversationCount'] != 650:
+    raise SystemExit(f"Expected 650 conversations / 1300 source lines, got {out['conversationCount']} / {out['sourceLineCount']}")
 OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')
-print(f"Final Supertonic coverage: {out['voiceCount']} voices × {out['utteranceCount']} unique utterances = {out['recordingCount']} recordings")
+print(f"Final Supertonic 3 coverage: {out['voiceCount']} voices × {out['utteranceCount']} unique utterances = {out['recordingCount']} recordings")
