@@ -68,7 +68,7 @@ function selectedVoice(role){
 function populateSupertonic(){
  const opts='<option value="random">🎲 每次隨機</option>'+STVOICES.map(([v,n])=>`<option value="${v}">${n}</option>`).join('');
  $('#voiceA').innerHTML=opts;$('#voiceB').innerHTML=opts;$('#voiceA').value='F3';$('#voiceB').value='M3';
- vst('Supertonic AI：10 種 AI 聲線；完整會話可讓 A / B 使用不同聲線。');
+ vst('Supertonic 3：10 種 F1–F5 / M1–M5 聲線；優先使用本站伺服器預錄，缺漏時瀏覽器即時生成。');
 }
 function refreshSystemVoices(){
  if(!('speechSynthesis'in window))return [];
@@ -88,26 +88,6 @@ function loadSystemVoices(){
 function populateDevice(){
  refreshSystemVoices();renderDeviceVoices();
 }
-function canonicalSpeakers(raw,limit){
- const preferred=['ノーマル','Normal','NORMAL','通常'];const rows=[];
- for(const sp of raw||[]){const styles=sp.styles||[];if(!sp.name||!styles.length)continue;const style=styles.find(x=>preferred.includes(String(x.name||'').trim()))||styles[0];rows.push({name:sp.name,style:style.name||'',id:String(style.id)})}
- return limit?rows.slice(0,limit):rows;
-}
-async function connectApi(engine){
- const endpoint=(engine==='voicevox'?$('#voicevoxEndpoint'):$('#aivisEndpoint')).value.replace(/\/$/,'');
- vst(`正在連接 ${engine==='voicevox'?'VOICEVOX':'AivisSpeech'}…`,'loading');
- try{
-  const r=await fetch(endpoint+'/speakers',{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);
-  const rows=canonicalSpeakers(await r.json(),engine==='voicevox'?43:0);if(!rows.length)throw Error('找不到聲線');
-  S.apiVoices=rows;
-  const opts='<option value="random">🎲 每句隨機</option>'+rows.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}｜${esc(x.style)}</option>`).join('');
-  $('#voiceA').innerHTML=opts;$('#voiceB').innerHTML=opts;if(rows[0])$('#voiceA').value=rows[0].id;if(rows[1])$('#voiceB').value=rows[1].id;
-  vst(`✅ ${engine==='voicevox'?'VOICEVOX':'AivisSpeech'} 已連接：載入 ${rows.length} 個可用聲線${engine==='voicevox'?'（上限 43）':''}。`,'ok');return true;
- }catch(e){
-  S.apiVoices=[];$('#voiceA').innerHTML='<option value="">未連線</option>';$('#voiceB').innerHTML='<option value="">未連線</option>';
-  vst(`⚠️ 無法連接本機 ${engine==='voicevox'?'VOICEVOX':'AivisSpeech'}：${e.message||e}。可改用 Supertonic 或裝置日語。`,'bad');return false;
- }
-}
 async function ensureSuper(){
  try{
   for(let i=0;i<120&&!window.SupertonicAI;i++)await sleep(50);
@@ -115,8 +95,8 @@ async function ensureSuper(){
   if(window.SupertonicAI.isReady&&window.SupertonicAI.isReady()){S.superReady=true;return true}
   if('serviceWorker'in navigator){try{await navigator.serviceWorker.register('./supertonic-sw.js',{scope:'./'});await navigator.serviceWorker.ready}catch(e){}}
   await window.SupertonicAI.preflight();
-  await window.SupertonicAI.init(m=>vst(m,'loading'));S.superReady=true;vst('✅ Supertonic AI 日語語音已準備。','ok');return true;
- }catch(e){vst('⚠️ Supertonic 無法載入，可切換到裝置日語。','bad');return false}
+  await window.SupertonicAI.init(m=>vst(m,'loading'));S.superReady=true;vst('✅ Supertonic 3 日語語音已準備。','ok');return true;
+ }catch(e){vst('⚠️ Supertonic 3 無法載入，可切換到裝置日語。','bad');return false}
 }
 async function playAudioObject(url,token){
  return new Promise((resolve,reject)=>{const a=S.audio=new Audio(url);let done=false;
@@ -129,19 +109,8 @@ async function speakSuper(text,role,token,voiceOverride=null){
  if(!await ensureSuper())throw Error('Supertonic unavailable');if(token!==S.stopToken)return;
  const voice=voiceOverride||selectedVoice(role)||'F3',speed=Number($('#speed').value);
  vst(`✨ Supertonic 正在產生 ${role}｜${voice}…`,'loading');
- const out=await window.SupertonicAI.synthesize(text,{voice,speed,totalSteps:5});if(token!==S.stopToken)return;
+ const out=await window.SupertonicAI.synthesize(text,{voice,speed,totalSteps:8});if(token!==S.stopToken)return;
  await playAudioObject(out.url,token);vst(`✅ Supertonic ${voice} 播放完成。`,'ok');
-}
-async function speakApi(text,role,token,engine){
- const endpoint=(engine==='voicevox'?$('#voicevoxEndpoint'):$('#aivisEndpoint')).value.replace(/\/$/,'');
- if(!S.apiVoices.length){if(!await connectApi(engine))throw Error(engine+' not connected')}
- if(token!==S.stopToken)return;
- const speaker=selectedVoice(role);if(!speaker)throw Error('speaker unavailable');
- const q=await fetch(endpoint+`/audio_query?text=${encodeURIComponent(text)}&speaker=${encodeURIComponent(speaker)}`,{method:'POST'});
- if(!q.ok)throw Error('audio_query HTTP '+q.status);const query=await q.json();query.speedScale=Number($('#speed').value);
- const r=await fetch(endpoint+`/synthesis?speaker=${encodeURIComponent(speaker)}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(query)});
- if(!r.ok)throw Error('synthesis HTTP '+r.status);const blob=await r.blob();if(token!==S.stopToken)return;
- if(S.blobUrl)URL.revokeObjectURL(S.blobUrl);S.blobUrl=URL.createObjectURL(blob);await playAudioObject(S.blobUrl,token);
 }
 async function speakDevice(text,role,token){
  if(!('speechSynthesis'in window))throw Error('Speech Synthesis unsupported');
@@ -152,13 +121,19 @@ async function speakDevice(text,role,token){
 }
 async function speak(text,role,token){
  const eng=$('#engine').value;
- if(eng==='supertonic')return speakSuper(text,role,token);
+ if(eng==='supertonic'){
+  let used=false;
+  try{used=await window.ConversationHostedAudio?.speak?.(text,role,Number($('#speed').value))||false}catch(e){console.warn(e)}
+  if(token!==S.stopToken)return;if(used)return;
+  vst('Supertonic 3 此句暫無本站預錄音，改用瀏覽器即時生成。','loading');
+  return speakSuper(text,role,token);
+ }
  if(eng==='voicevox'||eng==='aivis'){
   let used=false;
   try{used=await window.ConversationHostedAudio?.speak?.(text,role,Number($('#speed').value))||false}catch(e){console.warn(e)}
   if(token!==S.stopToken)return;
   if(used)return;
-  vst(`${eng==='voicevox'?'VOICEVOX':'AivisSpeech'} 此句沒有本站預錄音，已自動使用 Supertonic 備援。`,'loading');
+  vst(`${eng==='voicevox'?'VOICEVOX':'AivisSpeech / Style-Bert-VITS'} 此句沒有本站預錄音，已自動使用 Supertonic 3 備援。`,'loading');
   return speakSuper(text,role,token,role==='B'?'M3':'F3');
  }
  return speakDevice(text,role,token);
@@ -188,7 +163,7 @@ function checkDict(){
 }
 async function engineChanged(){
  stop();const e=$('#engine').value;S.apiVoices=[];
- if(e==='supertonic')populateSupertonic();
+ if(e==='supertonic'){populateSupertonic();if(window.ConversationHostedAudio?.configure)await window.ConversationHostedAudio.configure(e,$('#voiceA'),$('#voiceB'),vst);}
  else if(e==='device')populateDevice();
  else if(window.ConversationHostedAudio?.configure)await window.ConversationHostedAudio.configure(e,$('#voiceA'),$('#voiceB'),vst);
 }

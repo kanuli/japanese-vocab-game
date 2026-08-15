@@ -52,9 +52,6 @@
 </div>
 <div class="switches">
 <label class="switch"><input id="showFurigana" type="checkbox" checked> 漢字顯示ふりがな</label>
-<label class="switch"><input id="showFurigana" type="checkbox" checked> 漢字顯示ふりがな</label>
-<label class="switch"><input id="showFurigana" type="checkbox" checked> 漢字顯示ふりがな</label>
-<label class="switch"><input id="showFurigana" type="checkbox" checked> 漢字顯示ふりがな</label>
 <label class="switch"><input id="showZh" type="checkbox" checked> 顯示繁體中文</label>
 <label class="switch"><input id="autoNext" type="checkbox"> 完整播放後隨機下一題</label>
 </div>
@@ -65,9 +62,9 @@
 <h2>3. 語音引擎</h2>
 <div class="field"><label>語音來源</label>
 <select id="engine">
-<option value="supertonic">✨ Supertonic AI｜瀏覽器即時生成</option>
+<option value="supertonic">✨ Supertonic 3｜伺服器預錄 / 瀏覽器備援</option>
 <option value="voicevox">🎭 VOICEVOX｜43 聲線伺服器錄音</option>
-<option value="aivis">💠 AivisSpeech｜伺服器音訊 / 自動備援</option>
+<option value="aivis">💠 AivisSpeech / Style-Bert-VITS｜伺服器預錄</option>
 <option value="device">🔊 裝置 Japanese voice｜備援</option>
 </select></div>
 <div class="fields" style="margin-top:9px">
@@ -76,7 +73,7 @@
 </div>
 <div class="field" style="margin-top:9px"><label>語速 <b id="speedValue">0.90×</b></label><input id="speed" type="range" min="0.6" max="1.25" step="0.05" value="0.9"></div>
 
-<div id="voiceStatus" class="status">VOICEVOX 直接使用本站 GitHub Releases / Hugging Face 公開錄音，不需要本機 IP。AivisSpeech 沒有伺服器錄音時會自動使用 Supertonic 備援。</div>
+<div id="voiceStatus" class="status">VOICEVOX 直接使用本站 GitHub Releases / Hugging Face 公開錄音，不需要本機 IP。AivisSpeech / Style-Bert-VITS 或其他伺服器錄音未命中時會自動使用 Supertonic 3 備援。</div>
 </aside>
 </div>
 
@@ -97,7 +94,7 @@
 </div>
 <div id="playStatus" class="status">選擇場景後即可播放。完整會話會用 Speaker A / B 交替播放。</div>
 </section>
-<div class="footer">日本語・場面別會話 v1.4｜26 場景 × 每場景 25 組 = 650 組會話｜N1–N5 每級每場景 5 組｜漢字ふりがな＋繁體中文解釋｜Supertonic AI、VOICEVOX、AivisSpeech、裝置日語語音。VOICEVOX 使用本站伺服器錄音（GitHub Releases 主來源、Hugging Face 備援），不需要本機 VOICEVOX 或 IP；AivisSpeech 若無本站錄音會自動切換 Supertonic。</div>
+<div class="footer">日本語・場面別會話 v1.4｜26 場景 × 每場景 25 組 = 650 組會話｜N1–N5 每級每場景 5 組｜漢字ふりがな＋繁體中文解釋｜Supertonic 3、VOICEVOX、AivisSpeech / Style-Bert-VITS、裝置日語語音。VOICEVOX 使用本站伺服器錄音（GitHub Releases 主來源、Hugging Face 備援），不需要本機 VOICEVOX 或 IP；AivisSpeech / Style-Bert-VITS 若無本站錄音會自動切換 Supertonic 3。</div>
 </div>
 <script src="./conversation-data-1.js?v=20260814v1"></script>
 <script src="./conversation-data-2.js?v=20260814v1"></script>
