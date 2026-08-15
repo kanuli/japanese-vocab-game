@@ -30,7 +30,7 @@ def mp3(wav,dest):
 
 def main():
     wait(); data=json.loads(CATALOG.read_text(encoding='utf-8')); lines=data.get('lines') or {}
-    if len(lines)!=1244:raise RuntimeError(f'Expected 1244 utterances, got {len(lines)}')
+    if len(lines)<2600:raise RuntimeError(f'Expected expanded catalog with at least 2600 utterances, got {len(lines)}')
     speakers=req_json(f'{ENGINE}/speakers');sp=next((x for x in speakers if str(x.get('name','')).strip()==SPEAKER_NAME),None)
     if not sp:raise RuntimeError('speaker missing')
     st=next((x for x in sp.get('styles') or [] if int(x.get('id',-1))==STYLE_ID),None)
@@ -53,9 +53,9 @@ def main():
         for m in tf.getmembers():
             if m.isfile():members[Path(m.name).stem]=[int(m.offset_data),int(m.size)]
     if set(members)!=set(lines):raise RuntimeError('TAR coverage mismatch')
-    manifest={'version':1,'speakerKey':SPEAKER_KEY,'speaker':SPEAKER_NAME,'style':actual,'styleId':STYLE_ID,'credit':f'VOICEVOX:{SPEAKER_NAME}','count':len(members),'asset':tar.name,'members':members}
+    manifest={'version':2,'speakerKey':SPEAKER_KEY,'speaker':SPEAKER_NAME,'style':actual,'styleId':STYLE_ID,'credit':f'VOICEVOX:{SPEAKER_NAME}','count':len(members),'asset':tar.name,'members':members}
     (OUT/f'{SPEAKER_KEY}.json').write_text(json.dumps(manifest,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
-    print('Built',tar,tar.stat().st_size,'bytes')
+    print('Built',tar,tar.stat().st_size,'bytes',len(members),'recordings')
 if __name__=='__main__':
     try:main()
     except Exception as e:print('ERROR',e,file=sys.stderr);raise
