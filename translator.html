@@ -23,7 +23,7 @@
 </select></div><div class="field"><label>日語播放速度</label><div class="speed"><input id="rate" type="range" min="0.55" max="1.35" value="0.9" step="0.05"><b id="ratev">0.90×</b></div></div><div class="field"><label>裝置 Japanese voice（備援）</label><select id="devvoice"><option value="">自動選擇</option></select></div></div><div id="status" class="status">輸入日文後，可以先播放語音或按「翻譯」。</div></section>
 <div class="results"><section class="result"><div class="rhead"><div class="rtitle">🇭🇰 繁體中文</div><div class="actions"><button id="copyzh" class="btn small" disabled>複製</button><button id="speakzh" class="btn small" disabled>🔊</button></div></div><div id="zh" class="out placeholder">翻譯結果會顯示在這裡。</div></section><section class="result"><div class="rhead"><div class="rtitle">🇬🇧 English</div><div class="actions"><button id="copyen" class="btn small" disabled>Copy</button><button id="speaken" class="btn small" disabled>🔊</button></div></div><div id="en" class="out placeholder">The English translation will appear here.</div></section></div>
 <div class="notice">不需要私人 API key。日語可選 VOICEVOX、Supertonic 3、AivisSpeech / Style-Bert-VITS；已收錄句子優先使用本站伺服器預錄，任意新句由 Supertonic 3 即時生成，裝置 Speech Synthesis 作最後備援。翻譯使用 MyMemory 公開服務，適合日常句子練習，免費公開服務可能有每日用量限制。</div><div class="footer">Japanese Learning｜語音・翻譯練習工具</div></div>
-<script src="./translator-hosted-voice.js?v=20260815v1"></script>
+<script src="./translator-hosted-voice.js?v=20260815v2"></script>
 <script>
 (()=>{'use strict';const $=s=>document.querySelector(s),jp=$('#jp'),zh=$('#zh'),en=$('#en'),status=$('#status');let voices=[],audio=null;const st3VoiceOptions=$('#voice').innerHTML;
 function st(t,c=''){status.textContent=t;status.className='status'+(c?' '+c:'')}
