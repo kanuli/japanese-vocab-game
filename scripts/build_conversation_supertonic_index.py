@@ -7,7 +7,8 @@ MANIFEST_DIR = Path(os.environ.get('MANIFEST_DIR', 'conversation-supertonic-mani
 OUT = Path(os.environ.get('OUT', 'conversation-supertonic-index.json'))
 GITHUB_REPO = os.environ.get('GITHUB_REPO', 'kanuli/japanese-vocab-game')
 HF_DATASET_REPO = os.environ.get('HF_DATASET_REPO', 'kanuli1983/japanese-listening-voicevox-backup')
-RELEASE_TAG = os.environ.get('RELEASE_TAG', 'conversation-supertonic-v1')
+RELEASE_TAG = os.environ.get('RELEASE_TAG', 'conversation-supertonic-v2')
+HF_FOLDER = os.environ.get('HF_FOLDER', 'conversation/supertonic/v2').strip('/')
 
 catalog = json.loads(CATALOG.read_text(encoding='utf-8'))
 voices = catalog.get('voices') or {}
@@ -36,7 +37,7 @@ for key, label in voices.items():
         'bitrateKbps': int(m.get('bitrateKbps', 96)),
         'qualitySteps': int(m.get('qualitySteps', 8)),
         'githubUrl': f'https://github.com/{GITHUB_REPO}/releases/download/{RELEASE_TAG}/{asset}',
-        'hfUrl': f'https://huggingface.co/datasets/{HF_DATASET_REPO}/resolve/main/conversation/supertonic/v1/{asset}?download=true',
+        'hfUrl': f'https://huggingface.co/datasets/{HF_DATASET_REPO}/resolve/main/{HF_FOLDER}/{asset}?download=true',
         'members': m['members'],
     }
 
