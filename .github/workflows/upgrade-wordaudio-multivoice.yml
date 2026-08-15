@@ -1,0 +1,65 @@
+name: Upgrade Word Audio multi-voice
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.wordaudio-multivoice-trigger'
+      - 'wordaudio-multivoice.js'
+      - '.github/patch-wordaudio-multivoice.py'
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Word Audio voice layer
+        run: python .github/patch-wordaudio-multivoice.py
+
+      - name: Validate isolated page
+        run: |
+          node --check wordaudio-multivoice.js
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('wordaudio.html').read_text(encoding='utf-8')
+          js=Path('wordaudio-multivoice.js').read_text(encoding='utf-8')
+          assert 'wordaudio-multivoice.js?v=20260815v1' in html
+          for x in ('VOICEVOX','Supertonic 3','AivisSpeech / Style-Bert-VITS'):
+              assert x in js, x
+          assert 'word-voicevox-catalog.json' in js
+          assert 'word-supertonic3-catalog.json' in js
+          assert 'word-aivis-catalog.json' in js
+          assert '127.0.0.1' not in html
+          assert '127.0.0.1' not in js
+          print('Word Audio validation passed; mocktest is outside this workflow.')
+          PY
+
+      - name: Ensure mock test is untouched
+        run: |
+          if git diff --name-only | grep -Fx 'mocktest.html'; then
+            echo 'mocktest.html must not be modified' >&2
+            exit 1
+          fi
+
+      - name: Commit Word Audio only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add wordaudio.html
+          if git diff --cached --quiet; then
+            echo 'Word Audio page already current'
+          else
+            git commit -m 'Enable three voice engines on Word Audio'
+            git pull --rebase origin main
+            git push origin main
+          fi
