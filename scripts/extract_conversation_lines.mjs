@@ -10,6 +10,7 @@ const files = [
   'conversation-data-4.js',
   'conversation-data-5.js',
   'conversation-expansion.js',
+  'conversation-world-expansion.js',
 ];
 
 for (const file of files) {
