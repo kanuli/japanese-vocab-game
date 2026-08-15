@@ -1,0 +1,52 @@
+name: Validate hosted voice readers
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.hosted-voice-readers-trigger'
+      - 'conversation-hosted-audio.js'
+      - 'translator-hosted-voice.js'
+      - '.github/patch-hosted-voice-readers.py'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch cache versions
+        run: python .github/patch-hosted-voice-readers.py
+      - name: Validate readers
+        run: |
+          node --check conversation-hosted-audio.js
+          node --check translator-hosted-voice.js
+          python - <<'PY'
+          from pathlib import Path
+          c=Path('conversation-hosted-audio.js').read_text(encoding='utf-8')
+          t=Path('translator-hosted-voice.js').read_text(encoding='utf-8')
+          ch=Path('conversation.html').read_text(encoding='utf-8')
+          th=Path('translator.html').read_text(encoding='utf-8')
+          assert 'conversation-voicevox-index.json' in c and 'conversation-aivis-index.json?v=2' in c
+          assert 'conversation-voicevox-index.json' in t and 'conversation-aivis-index.json?v=2' in t
+          assert 'conversation-hosted-audio.js?v=20260815v2' in ch
+          assert 'translator-hosted-voice.js?v=20260815v2' in th
+          assert '127.0.0.1' not in c and '127.0.0.1' not in t
+          print('Hosted reader validation passed.')
+          PY
+      - name: Ensure mock test is untouched
+        run: |
+          if git diff --name-only | grep -Fx 'mocktest.html'; then exit 1; fi
+      - name: Commit cache-version changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation.html translator.html
+          if git diff --cached --quiet; then echo current; else git commit -m 'Activate dedicated hosted voice readers'; git pull --rebase origin main; git push origin main; fi
