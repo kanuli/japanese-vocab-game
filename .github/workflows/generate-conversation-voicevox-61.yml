@@ -1,0 +1,195 @@
+name: Generate Conversation VOICEVOX — 61 scenes / 43 voices
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-voicevox-61-trigger'
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: conversation-voicevox-v2
+  HF_FOLDER: conversation/voicevox/v2
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      speakers: ${{ steps.matrix.outputs.speakers }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do curl -fsS http://127.0.0.1:50021/version >/dev/null && break; test "$i" != 120 || { docker logs voicevox-engine; exit 1; }; sleep 2; done
+      - name: Discover canonical 43 speakers
+        id: matrix
+        run: |
+          curl -fsS http://127.0.0.1:50021/speakers -o /tmp/speakers.json
+          python - <<'PY'
+          import json,os
+          d=json.load(open('/tmp/speakers.json'));preferred=('ノーマル','Normal','NORMAL','通常');rows=[]
+          for sp in d:
+              styles=list(sp.get('styles') or []);name=str(sp.get('name','')).strip()
+              if not name or not styles:continue
+              st=next((x for x in styles if str(x.get('name','')).strip() in preferred),styles[0])
+              rows.append({'name':name,'style_id':int(st['id']),'style':str(st.get('name','')).strip()})
+          if len(rows)<43:raise SystemExit(f'Only {len(rows)} speakers')
+          rows=rows[:43]
+          for i,r in enumerate(rows,1):r['key']=f's{i:02d}'
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:f.write('speakers='+json.dumps(rows,ensure_ascii=False,separators=(',',':'))+'\n')
+          print('VOICEVOX speakers:',len(rows));print(*rows,sep='\n')
+          PY
+      - if: always()
+        run: docker stop voicevox-engine || true
+
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build expanded conversation catalog
+        run: |
+          node scripts/build_conversation_audio_catalog.mjs
+          node - <<'NODE'
+          const d=require('./conversation-audio-catalog.json');
+          if(d.version!==3||d.sceneCount!==61||d.conversationCount!==1525||d.sourceLineCount!==3050||d.utteranceCount!==2677)throw new Error(JSON.stringify(d));
+          console.log(`VOICEVOX target: 43 × ${d.utteranceCount} = ${43*d.utteranceCount} recordings`);
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conversation-audio-catalog-voicevox-v2
+          path: conversation-audio-catalog.json
+          retention-days: 5
+          compression-level: 9
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create v2 GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'VOICEVOX Conversation v2 — 61 scenes / 43 voices' --notes '61 real-life scenes, 1,525 dialogue groups, 2,677 unique Japanese utterances, all 43 canonical VOICEVOX speakers. Server-hosted byte-range TARs; learners do not install VOICEVOX.'
+
+  generate:
+    needs: [discover,catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        speaker: ${{ fromJSON(needs.discover.outputs.speakers) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: conversation-audio-catalog-voicevox-v2
+          path: .
+      - name: Validate generator
+        run: python -m py_compile scripts/generate_conversation_voicevox_bundle.py scripts/build_conversation_voicevox_index.py
+      - name: Install ffmpeg and start VOICEVOX
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do curl -fsS http://127.0.0.1:50021/version >/dev/null && break; test "$i" != 120 || { docker logs voicevox-engine; exit 1; }; sleep 2; done
+      - name: Generate full 2677-utterance speaker bundle
+        env:
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          STYLE_ID: ${{ matrix.speaker.style_id }}
+          STYLE_NAME: ${{ matrix.speaker.style }}
+          OUTPUT_DIR: conversation-voicevox-out
+        run: python scripts/generate_conversation_voicevox_bundle.py
+      - name: Validate bundle
+        env:
+          K: ${{ matrix.speaker.key }}
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          k=os.environ['K'];cat=json.load(open('conversation-audio-catalog.json'));expected=cat['utteranceCount']
+          m=json.load(open(f'conversation-voicevox-out/{k}.json'))
+          assert expected==2677 and m['count']==expected and len(m['members'])==expected
+          p=Path('conversation-voicevox-out')/m['asset'];assert p.stat().st_size>1000000
+          with tarfile.open(p,'r:') as t:assert len([x for x in t.getmembers() if x.isfile()])==expected
+          print('Validated',k,expected,'recordings')
+          PY
+      - name: Upload Hugging Face backup
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+          K: ${{ matrix.speaker.key }}
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "conversation-voicevox-out/$K.tar" "$HF_FOLDER/$K.tar" --repo-type dataset --commit-message "VOICEVOX 61-scene conversation $K"
+      - name: Upload GitHub Release primary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          K: ${{ matrix.speaker.key }}
+        run: gh release upload "$RELEASE_TAG" "conversation-voicevox-out/$K.tar" --clobber
+      - name: Preserve manifest
+        run: mkdir -p manifest-artifact && cp conversation-voicevox-out/${{ matrix.speaker.key }}.json manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conversation-voicevox-v2-manifest-${{ matrix.speaker.key }}
+          path: manifest-artifact/*.json
+          retention-days: 5
+          compression-level: 9
+      - if: always()
+        run: docker stop voicevox-engine || true
+
+  finalize:
+    needs: [catalog,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: conversation-audio-catalog-voicevox-v2
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: conversation-voicevox-v2-manifest-*
+          path: conversation-voicevox-manifests
+          merge-multiple: true
+      - name: Build v2 server index
+        env:
+          GITHUB_REPO: kanuli/japanese-vocab-game
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          RELEASE_TAG: conversation-voicevox-v2
+          HF_FOLDER: conversation/voicevox/v2
+        run: |
+          test "$(find conversation-voicevox-manifests -name '*.json' | wc -l)" -eq 43
+          python scripts/build_conversation_voicevox_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('conversation-voicevox-index.json'))
+          assert d['status']=='ready' and d['version']==2
+          assert d['sceneCount']==61 and d['conversationCount']==1525 and d['sourceLineCount']==3050
+          assert d['speakerCount']==43 and d['utteranceCount']==2677 and d['recordingCount']==115111
+          print('Full VOICEVOX v2 coverage:',d['recordingCount'])
+          PY
+      - name: Commit atomic v2 index switch
+        run: |
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation-voicevox-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish 61-scene VOICEVOX Conversation index'; git pull --rebase origin main; git push origin main; fi
