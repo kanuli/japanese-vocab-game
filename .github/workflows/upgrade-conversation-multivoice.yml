@@ -1,0 +1,63 @@
+name: Upgrade Conversation multi-voice
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-multivoice-trigger'
+      - '.github/patch-conversation-multivoice.py'
+
+permissions:
+  contents: write
+
+jobs:
+  validate-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch Conversation only
+        run: python .github/patch-conversation-multivoice.py
+      - name: Validate voice and furigana UI
+        run: |
+          node --check conversation.js
+          node --check conversation-hosted-audio.js
+          python - <<'PY'
+          from pathlib import Path
+          h=Path('conversation.html').read_text(encoding='utf-8')
+          j=Path('conversation.js').read_text(encoding='utf-8')
+          a=Path('conversation-hosted-audio.js').read_text(encoding='utf-8')
+          assert h.count('id="showFurigana"')==1, h.count('id="showFurigana"')
+          for x in ('VOICEVOX','Supertonic 3','AivisSpeech / Style-Bert-VITS'):
+              assert x in h or x in j or x in a, x
+          assert 'totalSteps:5' not in j
+          assert 'canonicalSpeakers' not in j
+          assert 'connectApi(' not in j
+          assert 'speakApi(' not in j
+          assert 'voicevoxEndpoint' not in j and 'aivisEndpoint' not in j
+          assert '127.0.0.1' not in h and '127.0.0.1' not in j
+          assert "eng==='supertonic'" in j and 'ConversationHostedAudio?.speak' in j
+          print('Conversation validation passed.')
+          PY
+      - name: Ensure mock test is untouched
+        run: |
+          if git diff --name-only | grep -Fx 'mocktest.html'; then
+            echo 'mocktest.html must not be modified' >&2
+            exit 1
+          fi
+      - name: Commit Conversation only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation.html conversation.js conversation-hosted-audio.js
+          if git diff --cached --quiet; then
+            echo 'Conversation already current'
+          else
+            git commit -m 'Standardize Conversation voice engines'
+            git pull --rebase origin main
+            git push origin main
+          fi
