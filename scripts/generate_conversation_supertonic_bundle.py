@@ -18,15 +18,15 @@ if not CATALOG.is_file():
 
 catalog = json.loads(CATALOG.read_text(encoding='utf-8'))
 lines = catalog.get('lines') or {}
-if len(lines) != 1244:
-    raise SystemExit(f'Expected 1244 unique conversation utterances, got {len(lines)}')
+if len(lines) < 2600:
+    raise SystemExit(f'Expected expanded conversation catalog with at least 2600 utterances, got {len(lines)}')
 label = (catalog.get('voices') or {}).get(VOICE, VOICE)
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 tar_path = OUT_DIR / f'{VOICE}.tar'
 manifest_path = OUT_DIR / f'{VOICE}.json'
 
-# One Supertonic 3 model instance is reused for all 1,244 utterances in this voice.
+# One Supertonic 3 model instance is reused for the complete expanded catalog.
 tts = TTS(auto_download=True)
 style = tts.get_voice_style(voice_name=VOICE)
 
@@ -86,7 +86,7 @@ if tar_path.stat().st_size < 500000:
     raise SystemExit('TAR unexpectedly small')
 
 manifest = {
-    'version': 2,
+    'version': 3,
     'engine': 'supertonic-3',
     'voice': VOICE,
     'label': label,
