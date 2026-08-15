@@ -1,0 +1,29 @@
+name: Add pronunciation furigana
+on:
+  push:
+    paths:
+      - '.github/workflows/add-pronunciation-furigana.yml'
+      - '.github/patch-pronunciation-furigana.py'
+      - 'pronunciation-furigana.js'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add furigana support to pronunciation page
+        run: python .github/patch-pronunciation-furigana.py
+      - name: Commit pronunciation page update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pronunciation.html
+          if git diff --cached --quiet; then
+            echo "No pronunciation page changes needed"
+          else
+            git commit -m "Show furigana above kanji in pronunciation practice"
+            git pull --rebase origin main
+            git push origin main
+          fi
