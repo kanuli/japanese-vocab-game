@@ -1,0 +1,163 @@
+name: Generate Conversation Supertonic — 61 scenes / 10 voices
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-supertonic-61-trigger'
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: conversation-supertonic-v2
+  HF_FOLDER: conversation/supertonic/v2
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build exact 61-scene catalog
+        run: |
+          node scripts/build_conversation_audio_catalog.mjs
+          node - <<'NODE'
+          const d=require('./conversation-audio-catalog.json');
+          if(d.version!==3||d.sceneCount!==61||d.conversationCount!==1525||d.sourceLineCount!==3050||d.utteranceCount!==2677||d.voiceCount!==10)throw new Error(JSON.stringify(d));
+          console.log(`Supertonic target: 10 × ${d.utteranceCount} = ${10*d.utteranceCount} recordings`);
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conversation-audio-catalog-supertonic-v2
+          path: conversation-audio-catalog.json
+          retention-days: 5
+          compression-level: 9
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create v2 GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic Conversation v2 — 61 scenes / 10 voices' --notes '61 real-life scenes, 1,525 dialogue groups, 2,677 unique Japanese utterances, all ten Supertonic F1-F5/M1-M5 voices. Server-hosted byte-range TARs; browser Supertonic remains a fallback.'
+
+  generate:
+    needs: [catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        voice: [F1,F2,F3,F4,F5,M1,M2,M3,M4,M5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: conversation-audio-catalog-supertonic-v2
+          path: .
+      - name: Validate generator
+        run: python -m py_compile scripts/generate_conversation_supertonic_bundle.py scripts/build_conversation_supertonic_index.py
+      - name: Install Supertonic 3 and ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+      - name: Generate one complete 2677-utterance voice bundle
+        env:
+          VOICE: ${{ matrix.voice }}
+          CATALOG: conversation-audio-catalog.json
+          OUT_DIR: conversation-supertonic-out
+          SUPERTONIC_CACHE_DIR: ${{ runner.temp }}/supertonic-cache
+        run: python scripts/generate_conversation_supertonic_bundle.py
+      - name: Validate TAR and manifest
+        env:
+          VOICE: ${{ matrix.voice }}
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          v=os.environ['VOICE'];cat=json.load(open('conversation-audio-catalog.json'));expected=cat['utteranceCount']
+          m=json.load(open(f'conversation-supertonic-out/{v}.json',encoding='utf-8'))
+          assert expected==2677 and m['voice']==v and m['count']==expected
+          p=Path('conversation-supertonic-out')/m['asset'];assert p.is_file() and p.stat().st_size>1000000
+          with tarfile.open(p,'r:') as tf: files=[x for x in tf.getmembers() if x.isfile()]
+          assert len(files)==expected==len(m['members'])
+          print('Validated',v,expected,'recordings')
+          PY
+      - name: Upload Hugging Face backup
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+          VOICE: ${{ matrix.voice }}
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "conversation-supertonic-out/$VOICE.tar" "$HF_FOLDER/$VOICE.tar" --repo-type dataset --commit-message "Supertonic 61-scene conversation $VOICE"
+      - name: Upload GitHub Release primary
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VOICE: ${{ matrix.voice }}
+        run: gh release upload "$RELEASE_TAG" "conversation-supertonic-out/$VOICE.tar" --clobber
+      - name: Preserve manifest
+        run: mkdir -p manifest-artifact && cp "conversation-supertonic-out/${{ matrix.voice }}.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conversation-supertonic-v2-manifest-${{ matrix.voice }}
+          path: manifest-artifact/*.json
+          retention-days: 5
+          compression-level: 9
+
+  finalize:
+    needs: [catalog,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: conversation-audio-catalog-supertonic-v2
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: conversation-supertonic-v2-manifest-*
+          path: conversation-supertonic-manifests
+          merge-multiple: true
+      - name: Build v2 server index
+        env:
+          CATALOG: conversation-audio-catalog.json
+          MANIFEST_DIR: conversation-supertonic-manifests
+          OUT: conversation-supertonic-index.json
+          GITHUB_REPO: kanuli/japanese-vocab-game
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          RELEASE_TAG: conversation-supertonic-v2
+          HF_FOLDER: conversation/supertonic/v2
+        run: |
+          test "$(find conversation-supertonic-manifests -type f -name '*.json' | wc -l)" -eq 10
+          python scripts/build_conversation_supertonic_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('conversation-supertonic-index.json',encoding='utf-8'))
+          assert d['status']=='ready' and d['version']==2 and d['voiceCount']==10
+          assert d['sceneCount']==61 and d['conversationCount']==1525 and d['sourceLineCount']==3050
+          assert d['utteranceCount']==2677 and d['recordingCount']==26770
+          print('Full Supertonic v2 coverage:',d['recordingCount'])
+          PY
+      - name: Commit atomic v2 index switch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation-supertonic-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish 61-scene hosted Supertonic Conversation index'; git pull --rebase origin main; git push origin main; fi
