@@ -1,0 +1,51 @@
+name: Upgrade conversation audio for 1525 dialogues
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/upgrade-conversation-audio-for-1525.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch audio generation workflows
+        run: python scripts/patch_conversation_audio_workflows.py
+      - name: Build expanded audio catalog
+        run: |
+          node --check scripts/build_conversation_audio_catalog.mjs
+          node scripts/build_conversation_audio_catalog.mjs
+          node - <<'NODE'
+          const d=require('./conversation-audio-catalog.json');
+          if(d.version!==3||d.sceneCount!==61||d.conversationCount!==1525||d.sourceLineCount!==3050)throw new Error(JSON.stringify(d));
+          if(d.utteranceCount<2600)throw new Error('Too few unique utterances '+d.utteranceCount);
+          if(Object.values(d.levelCounts).some(n=>n!==305))throw new Error('Bad level counts '+JSON.stringify(d.levelCounts));
+          console.log(`Expanded hosted-audio target: ${d.utteranceCount} unique utterances; VOICEVOX=${d.utteranceCount*43}; Supertonic=${d.utteranceCount*10}`);
+          NODE
+          rm -f conversation-audio-catalog.json
+      - name: Validate workflow syntax-sensitive replacements
+        run: |
+          grep -q 'd.*sceneCount.*61' .github/workflows/generate-conversation-voicevox-43.yml
+          grep -q 'd.*conversationCount.*1525' .github/workflows/generate-conversation-supertonic.yml
+          grep -q "recordingCount.*43\*d\['utteranceCount'\]" .github/workflows/generate-conversation-voicevox-43.yml
+          grep -q "recordingCount.*10\*d\['utteranceCount'\]" .github/workflows/generate-conversation-supertonic.yml
+          python -m py_compile scripts/build_conversation_voicevox_index.py scripts/build_conversation_supertonic_index.py
+      - name: Commit upgraded workflows
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/workflows/generate-conversation-voicevox-43.yml .github/workflows/generate-conversation-supertonic.yml
+          if git diff --cached --quiet; then
+            echo 'Audio workflows already upgraded'
+          else
+            git commit -m 'Upgrade conversation hosted audio for 1525 dialogues'
+            git pull --rebase origin main
+            git push origin main
+          fi
