@@ -18,17 +18,19 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install expansion into page
         run: python .github/patch-conversation-expansion.py
-      - name: Validate JavaScript and exact coverage
+      - name: Validate JavaScript and exact 61-scene coverage
         run: |
           node --check conversation-expansion.js
+          node --check conversation-world-expansion.js
           node --check conversation.js
           node - <<'NODE'
           const fs=require('fs'),vm=require('vm');
           global.window={};
           for(let i=1;i<=5;i++)vm.runInThisContext(fs.readFileSync(`conversation-data-${i}.js`,'utf8'),{filename:`conversation-data-${i}.js`});
           vm.runInThisContext(fs.readFileSync('conversation-expansion.js','utf8'),{filename:'conversation-expansion.js'});
+          vm.runInThisContext(fs.readFileSync('conversation-world-expansion.js','utf8'),{filename:'conversation-world-expansion.js'});
           const scenes=window.SITUATION_SCENES||[];
-          if(scenes.length!==26)throw new Error(`Expected 26 scenes, got ${scenes.length}`);
+          if(scenes.length!==61)throw new Error(`Expected 61 scenes, got ${scenes.length}`);
           let dialogues=0,lines=0;
           for(const s of scenes){
             if(s.items.length!==25)throw new Error(`${s.id}: expected 25 conversations, got ${s.items.length}`);
@@ -41,26 +43,27 @@ jobs:
               const key=`${x.level}|${x.situation}`;
               if(keys.has(key))throw new Error(`${s.id}: duplicate situation ${key}`);
               keys.add(key);
-              if(!Array.isArray(x.lines)||x.lines.length<2)throw new Error(`${s.id}: invalid lines for ${key}`);
+              if(!Array.isArray(x.lines)||x.lines.length!==2)throw new Error(`${s.id}: invalid lines for ${key}`);
               for(const l of x.lines){if(!l.jp||!l.zh)throw new Error(`${s.id}: missing JP/ZH for ${key}`);lines++}
             }
             dialogues+=s.items.length;
           }
-          if(dialogues!==650)throw new Error(`Expected 650 conversations, got ${dialogues}`);
-          if(lines!==1300)throw new Error(`Expected 1300 spoken lines, got ${lines}`);
+          if(dialogues!==1525)throw new Error(`Expected 1525 conversations, got ${dialogues}`);
+          if(lines!==3050)throw new Error(`Expected 3050 spoken lines, got ${lines}`);
           console.log(`Validated ${scenes.length} scenes / ${dialogues} conversations / ${lines} spoken lines`);
           NODE
           grep -q 'conversation-expansion.js' conversation.html
-          grep -q '650 組會話' conversation.html
+          grep -q 'conversation-world-expansion.js' conversation.html
+          grep -q '1,525 組會話' conversation.html
       - name: Commit page integration
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add conversation.html
           if git diff --cached --quiet; then
-            echo 'Expansion already integrated'
+            echo '61-scene expansion already integrated'
           else
-            git commit -m 'Expand Situation Conversation to 650 dialogues'
+            git commit -m 'Keep Situation Conversation at 1525 dialogues'
             git pull --rebase origin main
             git push origin main
           fi
