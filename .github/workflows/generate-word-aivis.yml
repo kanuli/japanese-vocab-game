@@ -1,0 +1,167 @@
+name: Generate shared Word AivisSpeech / Style-Bert-VITS — 20 shards
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-aivis-full-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-aivis-v1
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python scripts/build_word_shared_audio_catalog.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-shared-audio-catalog-aivis
+          path: word-shared-audio-catalog.json
+          retention-days: 3
+
+  model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Start official AivisSpeech and audit default model/license
+        run: |
+          mkdir -p "$HOME/.local/share/AivisSpeech-Engine"
+          sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
+          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 300); do curl -fsS http://127.0.0.1:10101/speakers >/dev/null && break; test "$i" != 300 || { docker logs aivis-engine; exit 1; }; sleep 2; done
+          MAX_STYLES=4 OUT=aivis-model.json python scripts/discover_aivis_model.py
+          docker stop aivis-engine
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-aivis-model
+          path: aivis-model.json
+          retention-days: 3
+
+  prepare-storage:
+    needs: model
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'AivisSpeech vocabulary — Style-Bert-VITS' --notes 'Shared 22,333-word Japanese vocabulary audio for Word List and Word Audio. The AIVMX model and license are audited before generation and the model/license hashes are validated across all shards.'
+
+  generate:
+    needs: [catalog,model,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-shared-audio-catalog-aivis
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-aivis-model
+          path: .
+      - name: Install ffmpeg and Hugging Face CLI
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Start official AivisSpeech
+        run: |
+          mkdir -p "$HOME/.local/share/AivisSpeech-Engine"
+          sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
+          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 300); do curl -fsS http://127.0.0.1:10101/speakers >/dev/null && break; test "$i" != 300 || { docker logs aivis-engine; exit 1; }; sleep 2; done
+      - name: Generate all audited styles for one word shard
+        env:
+          SHARD: ${{ matrix.shard }}
+          MODEL: aivis-model.json
+          OUT_DIR: word-aivis-out
+        run: python scripts/generate_word_aivis_shard.py
+      - name: Validate, publish, and preserve manifests
+        env:
+          S: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          mkdir -p manifest-artifact
+          python - <<'PY'
+          import glob,json,os,tarfile
+          from pathlib import Path
+          s=os.environ['S'];model=json.load(open('aivis-model.json'));expected=len(model['styles']);files=glob.glob(f'word-aivis-out/a*-shard{s}.json');assert len(files)==expected,(len(files),expected)
+          for f in files:
+              m=json.load(open(f));assert m['count']>=900 and m['licenseSha256']==model['licenseSha256']
+              p=Path('word-aivis-out')/m['asset'];assert p.is_file() and p.stat().st_size>100000
+              with tarfile.open(p,'r:') as tf:assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
+          PY
+          for p in word-aivis-out/a*-shard$S.tar; do f=$(basename "$p"); hf upload "$HF_DATASET_REPO" "$p" "word/aivis/v1/$f" --repo-type dataset --commit-message "Word Aivis shard $S $f"; gh release upload "$RELEASE_TAG" "$p" --clobber; done
+          cp word-aivis-out/a*-shard$S.json manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-aivis-manifests-shard-${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+      - if: always()
+        run: docker stop aivis-engine || true
+
+  finalize:
+    needs: [catalog,model,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-shared-audio-catalog-aivis
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-aivis-model
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-aivis-manifests-shard-*
+          path: word-aivis-manifests
+          merge-multiple: true
+      - name: Build final shared Aivis catalog
+        run: |
+          STYLE_COUNT=$(python -c "import json;print(len(json.load(open('aivis-model.json'))['styles']))")
+          test "$(find word-aivis-manifests -name '*.json' | wc -l)" -eq "$((STYLE_COUNT*20))"
+          python scripts/build_word_aivis_catalog.py
+          python - <<'PY'
+          import json
+          d=json.load(open('word-aivis-catalog.json'))
+          assert d['status']=='ready' and d['wordCount']==22333 and 1<=d['voiceCount']<=4 and d['recordingCount']==22333*d['voiceCount'] and d['shardCount']==20
+          for v in d['voices']:
+              x=json.load(open(f'word-aivis-{v}-index.json'));assert x['wordCount']==22333 and len(x['bundles'])==20
+          print('Final word Aivis coverage:',d['recordingCount'])
+          PY
+      - name: Commit lightweight Aivis catalogs/indexes
+        run: |
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-aivis-catalog.json word-aivis-*-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish shared Word AivisSpeech library'; git pull --rebase origin main; git push origin main; fi
