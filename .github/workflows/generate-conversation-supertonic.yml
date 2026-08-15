@@ -1,4 +1,4 @@
-name: Generate conversation Supertonic 10 voices
+name: Generate conversation Supertonic 3 — 10 voices
 
 on:
   workflow_dispatch:
@@ -22,15 +22,16 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - name: Build exact conversation utterance catalog
+      - name: Build exact 650-conversation utterance catalog
         run: |
           node scripts/build_conversation_audio_catalog.mjs
           node - <<'NODE'
           const d=require('./conversation-audio-catalog.json');
-          if(d.sourceLineCount!==260)throw new Error('Expected 260 source lines');
-          if(d.utteranceCount<200||d.utteranceCount>260)throw new Error('Unexpected unique utterance count');
-          if(d.voiceCount!==10)throw new Error('Expected 10 voices');
-          console.log(`Catalog: ${d.sourceLineCount} source lines -> ${d.utteranceCount} unique utterances`);
+          if(d.sceneCount!==26||d.conversationCount!==650)throw new Error('Expected 26 scenes / 650 conversations');
+          if(d.sourceLineCount!==1300)throw new Error('Expected 1,300 source lines');
+          if(d.utteranceCount!==1244)throw new Error('Expected 1,244 unique utterances');
+          if(d.voiceCount!==10)throw new Error('Expected 10 Supertonic voices');
+          console.log(`Catalog: ${d.conversationCount} conversations / ${d.sourceLineCount} lines -> ${d.utteranceCount} unique utterances`);
           NODE
       - uses: actions/upload-artifact@v4
         with:
@@ -48,7 +49,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic conversation — 10 voices' --notes 'Server-hosted Japanese situation-conversation audio generated with Supertonic 3. Ten built-in voices (F1-F5, M1-M5). One byte-range TAR bundle per voice; browser Supertonic remains an automatic fallback.'
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic 3 conversation — 10 voices' --notes 'Server-hosted Japanese situation-conversation audio generated with Supertonic 3. Ten built-in voices (F1-F5, M1-M5), covering all 1,244 unique utterances from 650 conversations. One byte-range TAR bundle per voice; browser Supertonic 3 remains an automatic fallback.'
 
   generate:
     needs: [catalog, prepare-storage]
@@ -74,8 +75,8 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg
-          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.3.1'
-      - name: Generate one complete voice bundle
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+      - name: Generate one complete Supertonic 3 voice bundle
         env:
           VOICE: ${{ matrix.voice }}
           CATALOG: conversation-audio-catalog.json
@@ -91,12 +92,12 @@ jobs:
           from pathlib import Path
           v=os.environ['VOICE']
           m=json.load(open(f'conversation-supertonic-out/{v}.json',encoding='utf-8'))
-          assert m['voice']==v and 200<=m['count']<=260
+          assert m['voice']==v and m['count']==1244
           p=Path('conversation-supertonic-out')/m['asset']
-          assert p.is_file() and p.stat().st_size>100000
+          assert p.is_file() and p.stat().st_size>500000
           with tarfile.open(p,'r:') as tf:
               files=[x for x in tf.getmembers() if x.isfile()]
-          assert len(files)==m['count']==len(m['members'])
+          assert len(files)==1244==len(m['members'])
           print('Validated',v,m['count'],'recordings',p.stat().st_size,'bytes')
           PY
       - name: Install Hugging Face CLI
@@ -106,7 +107,7 @@ jobs:
           HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
           HF_XET_HIGH_PERFORMANCE: '1'
           VOICE: ${{ matrix.voice }}
-        run: hf upload "$HF_DATASET_REPO" "conversation-supertonic-out/$VOICE.tar" "conversation/supertonic/v1/$VOICE.tar" --repo-type dataset --commit-message "Supertonic conversation $VOICE"
+        run: hf upload "$HF_DATASET_REPO" "conversation-supertonic-out/$VOICE.tar" "conversation/supertonic/v1/$VOICE.tar" --repo-type dataset --commit-message "Supertonic 3 conversation $VOICE"
       - name: Upload TAR to GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -157,10 +158,10 @@ jobs:
           import json
           d=json.load(open('conversation-supertonic-index.json',encoding='utf-8'))
           assert d['version']==1 and d['status']=='ready' and d['voiceCount']==10
-          assert d['sourceLineCount']==260 and 200<=d['utteranceCount']<=260
-          assert d['recordingCount']==d['voiceCount']*d['utteranceCount']
+          assert d['conversationCount']==650 and d['sourceLineCount']==1300 and d['utteranceCount']==1244
+          assert d['recordingCount']==12440
           assert len(d['voices'])==10
-          print('Published coverage:',d['recordingCount'],'recordings')
+          print('Published Supertonic 3 coverage:',d['recordingCount'],'recordings')
           PY
       - name: Commit lightweight index for GitHub Pages
         run: |
@@ -168,9 +169,9 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add conversation-supertonic-index.json
           if git diff --cached --quiet; then
-            echo 'Supertonic conversation index already current'
+            echo 'Supertonic 3 conversation index already current'
           else
-            git commit -m 'Publish hosted Supertonic conversation index'
+            git commit -m 'Publish full hosted Supertonic 3 conversation index'
             git pull --rebase origin main
             git push origin main
           fi
