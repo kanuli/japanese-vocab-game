@@ -1,0 +1,50 @@
+name: Activate Listening hosted Supertonic 3
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.listening-hosted-supertonic-trigger'
+      - 'listening-supertonic-hosted.js'
+      - 'listening-aivis-hosted.js'
+      - '.github/patch-listening-hosted-supertonic.py'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Patch Listening only
+        run: python .github/patch-listening-hosted-supertonic.py
+      - name: Validate hosted readers
+        run: |
+          node --check listening-supertonic-hosted.js
+          node --check listening-aivis-hosted.js
+          python - <<'PY'
+          from pathlib import Path
+          h=Path('listening.html').read_text(encoding='utf-8')
+          assert 'listening-supertonic-hosted.js?v=20260815v1' in h
+          assert 'listening-aivis-hosted.js?v=20260815v2' in h
+          assert 'aiHostedStatus' in h
+          assert 'ListeningSupertonicHosted?.speak' in h
+          assert 'ListeningSupertonicHosted?.init' in h
+          assert 'totalSteps:5' not in h
+          assert '127.0.0.1' not in h
+          print('Listening hosted readers validated.')
+          PY
+      - name: Ensure mock test is untouched
+        run: |
+          if git diff --name-only | grep -Fx 'mocktest.html'; then exit 1; fi
+      - name: Commit Listening only
+        run: |
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html
+          if git diff --cached --quiet; then echo current; else git commit -m 'Prefer hosted Supertonic 3 in Listening'; git pull --rebase origin main; git push origin main; fi
