@@ -1,0 +1,133 @@
+name: Pilot Conversation voice engines
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-voice-pilot-trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Build current 650-conversation catalog
+        run: |
+          node scripts/build_conversation_audio_catalog.mjs
+          python - <<'PY'
+          import json
+          d=json.load(open('conversation-audio-catalog.json',encoding='utf-8'))
+          assert d['conversationCount']==650 and d['sourceLineCount']==1300 and d['utteranceCount']==1244
+          first=next(iter(d['lines'].values()))['text']
+          open('/tmp/sample.txt','w',encoding='utf-8').write(first)
+          print('Pilot text:',first)
+          PY
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+
+      - name: Pilot Supertonic 3
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+          python - <<'PY'
+          from supertonic import TTS
+          text=open('/tmp/sample.txt',encoding='utf-8').read().strip()
+          tts=TTS(auto_download=True)
+          style=tts.get_voice_style(voice_name='F3')
+          wav,duration=tts.synthesize(text=text,voice_style=style,total_steps=8,speed=1.0,max_chunk_length=300,silence_duration=.12,lang='ja',verbose=False)
+          tts.save_audio(wav,'/tmp/supertonic3.wav')
+          print('Supertonic 3 duration:',duration)
+          PY
+          test -s /tmp/supertonic3.wav
+          ffprobe -v error -show_entries format=duration -of default=nw=1 /tmp/supertonic3.wav
+
+      - name: Pilot VOICEVOX
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name pilot-voicevox -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            curl -fsS http://127.0.0.1:50021/speakers >/tmp/vv-speakers.json && break
+            test "$i" != 120 || { docker logs pilot-voicevox; exit 1; }
+            sleep 2
+          done
+          STYLE_ID=$(python - <<'PY'
+          import json
+          d=json.load(open('/tmp/vv-speakers.json'))
+          print(d[0]['styles'][0]['id'])
+          PY
+          )
+          curl -fsS -X POST 'http://127.0.0.1:50021/audio_query' --get --data-urlencode text@/tmp/sample.txt --data-urlencode "speaker=$STYLE_ID" >/tmp/vv-query.json
+          curl -fsS -H 'Content-Type: application/json' -X POST -d @/tmp/vv-query.json "http://127.0.0.1:50021/synthesis?speaker=$STYLE_ID" >/tmp/voicevox.wav
+          test -s /tmp/voicevox.wav
+          ffprobe -v error -show_entries format=duration -of default=nw=1 /tmp/voicevox.wav
+          docker stop pilot-voicevox
+
+      - name: Prepare persistent AivisSpeech data directory
+        run: |
+          mkdir -p "$HOME/.local/share/AivisSpeech-Engine"
+          sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
+
+      - name: Pilot AivisSpeech / Style-Bert-VITS
+        run: |
+          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          docker run --rm -d --name pilot-aivis -p 127.0.0.1:10101:10101 \
+            -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" \
+            ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 300); do
+            if curl -fsS http://127.0.0.1:10101/speakers >/tmp/aivis-speakers.json; then break; fi
+            if [ "$i" = 300 ]; then docker logs pilot-aivis; exit 1; fi
+            sleep 2
+          done
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/aivis-speakers.json',encoding='utf-8'))
+          rows=[]
+          for sp in d:
+              for st in sp.get('styles') or []:
+                  rows.append({'speaker':sp.get('name',''),'style':st.get('name',''),'style_id':int(st['id'])})
+          if not rows: raise SystemExit('AivisSpeech exposed no styles')
+          print('AivisSpeech styles:',len(rows))
+          print('Selected pilot:',rows[0])
+          json.dump(rows,open('/tmp/aivis-styles.json','w',encoding='utf-8'),ensure_ascii=False,indent=2)
+          open('/tmp/aivis-style-id','w').write(str(rows[0]['style_id']))
+          PY
+          STYLE_ID=$(cat /tmp/aivis-style-id)
+          curl -fsS -X POST 'http://127.0.0.1:10101/audio_query' --get --data-urlencode text@/tmp/sample.txt --data-urlencode "speaker=$STYLE_ID" >/tmp/aivis-query.json
+          curl -fsS -H 'Content-Type: application/json' -X POST -d @/tmp/aivis-query.json "http://127.0.0.1:10101/synthesis?speaker=$STYLE_ID" >/tmp/aivis.wav
+          test -s /tmp/aivis.wav
+          ffprobe -v error -show_entries format=duration -of default=nw=1 /tmp/aivis.wav
+          docker stop pilot-aivis
+
+      - name: Validate all three outputs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          for p in ['/tmp/supertonic3.wav','/tmp/voicevox.wav','/tmp/aivis.wav']:
+              x=Path(p); assert x.is_file() and x.stat().st_size>1000,(p,x.stat().st_size if x.exists() else 0)
+              print(p,x.stat().st_size)
+          print('PASS: VOICEVOX + Supertonic 3 + AivisSpeech all synthesized the current Conversation sample.')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conversation-voice-pilot
+          path: |
+            /tmp/aivis-styles.json
+            /tmp/supertonic3.wav
+            /tmp/voicevox.wav
+            /tmp/aivis.wav
+          retention-days: 1
