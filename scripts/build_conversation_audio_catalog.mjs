@@ -7,9 +7,12 @@ for (const file of files) {
   const src = fs.readFileSync(file, 'utf8');
   vm.runInThisContext(src, { filename: file });
 }
+// The expansion layer adds 20 more conversations to each of the 26 scenes.
+const expansion = fs.readFileSync('conversation-expansion.js', 'utf8');
+vm.runInThisContext(expansion, { filename: 'conversation-expansion.js' });
 
 const scenes = global.window.SITUATION_SCENES || [];
-if (!Array.isArray(scenes) || !scenes.length) throw new Error('No conversation scenes loaded');
+if (!Array.isArray(scenes) || scenes.length !== 26) throw new Error(`Expected 26 conversation scenes, got ${scenes.length}`);
 
 const voices = {
   F1: '🌙 沉穩低柔女聲（F1）',
@@ -29,11 +32,16 @@ function norm(s) {
 }
 
 let sourceLineCount = 0;
+let conversationCount = 0;
+const levelCounts = {N1:0,N2:0,N3:0,N4:0,N5:0};
 const byNorm = new Map();
 const lines = {};
 const textMap = {};
 for (const scene of scenes) {
+  if ((scene.items || []).length !== 25) throw new Error(`${scene.id}: expected 25 conversations, got ${(scene.items||[]).length}`);
   for (const item of scene.items || []) {
+    conversationCount++;
+    levelCounts[item.level] = (levelCounts[item.level] || 0) + 1;
     for (const line of item.lines || []) {
       sourceLineCount++;
       const text = String(line.jp || '').trim();
@@ -51,20 +59,25 @@ for (const scene of scenes) {
 }
 
 const out = {
-  version: 1,
+  version: 2,
   status: 'catalog',
-  engine: 'supertonic-3',
+  engine: 'shared-conversation-audio',
   language: 'ja',
+  sceneCount: scenes.length,
+  conversationCount,
   sourceLineCount,
   utteranceCount: Object.keys(lines).length,
   voiceCount: Object.keys(voices).length,
+  levelCounts,
   voices,
   lines,
   textMap
 };
 
-if (sourceLineCount !== 260) throw new Error(`Expected 260 source lines, got ${sourceLineCount}`);
-if (out.utteranceCount < 200 || out.utteranceCount > 260) throw new Error(`Unexpected unique utterance count ${out.utteranceCount}`);
+if (conversationCount !== 650) throw new Error(`Expected 650 conversations, got ${conversationCount}`);
+if (sourceLineCount !== 1300) throw new Error(`Expected 1300 source lines, got ${sourceLineCount}`);
+if (out.utteranceCount !== 1244) throw new Error(`Expected 1244 unique utterances, got ${out.utteranceCount}`);
+for (const lv of ['N1','N2','N3','N4','N5']) if (levelCounts[lv] !== 130) throw new Error(`${lv}: expected 130 conversations, got ${levelCounts[lv]}`);
 if (out.voiceCount !== 10) throw new Error('Expected 10 Supertonic voices');
 fs.writeFileSync('conversation-audio-catalog.json', JSON.stringify(out, null, 2) + '\n');
-console.log(`Conversation audio catalog: ${sourceLineCount} source lines -> ${out.utteranceCount} unique utterances × ${out.voiceCount} voices`);
+console.log(`Conversation audio catalog: ${conversationCount} conversations / ${sourceLineCount} source lines -> ${out.utteranceCount} unique utterances × ${out.voiceCount} Supertonic voices`);
