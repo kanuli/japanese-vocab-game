@@ -1,0 +1,139 @@
+name: Generate shared Word Supertonic 3 — 10 voices × 20 shards
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-supertonic3-full-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-supertonic3-v1
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Derive the exact 22,333-word shared catalog from completed VOICEVOX
+        run: python scripts/build_word_shared_audio_catalog.py
+      - name: Validate source identity
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('word-shared-audio-catalog.json'))
+          assert d['wordCount']==22333 and d['shardCount']==20 and len(d['items'])==22333 and len(d['words'])==22333
+          assert min(d['shardCounts'])>=900 and max(d['shardCounts'])<=1300
+          print('Shared word shards:',d['shardCounts'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-shared-audio-catalog-supertonic3
+          path: word-shared-audio-catalog.json
+          retention-days: 3
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic 3 vocabulary — 10 voices' --notes 'Shared 22,333-word Japanese vocabulary audio for Word List and Word Audio. Ten Supertonic 3 voices split into 20 deterministic shards per voice; GitHub Releases primary, Hugging Face backup.'
+
+  generate:
+    needs: [catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        voice: [F1,F2,F3,F4,F5,M1,M2,M3,M4,M5]
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-shared-audio-catalog-supertonic3
+          path: .
+      - name: Install Supertonic 3 and ffmpeg
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+      - name: Generate one isolated word shard
+        env:
+          VOICE: ${{ matrix.voice }}
+          SHARD: ${{ matrix.shard }}
+          OUT_DIR: word-supertonic-out
+        run: python scripts/generate_word_supertonic_shard.py
+      - name: Validate and publish shard
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          v,s=os.environ['V'],os.environ['S'];m=json.load(open(f'word-supertonic-out/{v}-shard{s}.json'))
+          assert m['count']>=900 and len(m['members'])==m['count']
+          p=Path('word-supertonic-out')/m['asset'];assert p.is_file() and p.stat().st_size>100000
+          with tarfile.open(p,'r:') as tf:assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
+          print(v,s,m['count'],p.stat().st_size)
+          PY
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "word-supertonic-out/$V-shard$S.tar" "word/supertonic3/v1/$V-shard$S.tar" --repo-type dataset --commit-message "Word Supertonic 3 $V shard $S"
+          gh release upload "$RELEASE_TAG" "word-supertonic-out/$V-shard$S.tar" --clobber
+          mkdir -p manifest-artifact && cp "word-supertonic-out/$V-shard$S.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-manifest-${{ matrix.voice }}-${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+
+  finalize:
+    needs: [catalog,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-shared-audio-catalog-supertonic3
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-manifest-*
+          path: word-supertonic-manifests
+          merge-multiple: true
+      - name: Build final shared Word List / Word Audio catalogs
+        run: |
+          test "$(find word-supertonic-manifests -name '*.json' | wc -l)" -eq 200
+          python scripts/build_word_supertonic_catalog.py
+          python - <<'PY'
+          import json
+          d=json.load(open('word-supertonic3-catalog.json'))
+          assert d['status']=='ready' and d['wordCount']==22333 and d['voiceCount']==10 and d['recordingCount']==223330 and d['shardCount']==20
+          for v in d['voices']:
+              x=json.load(open(f'word-supertonic3-{v}-index.json'))
+              assert x['wordCount']==22333 and x['shardCount']==20 and len(x['bundles'])==20
+          print('Final word Supertonic 3 coverage:',d['recordingCount'])
+          PY
+      - name: Commit lightweight catalogs and indexes
+        run: |
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-supertonic3-catalog.json word-supertonic3-*-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish shared Word Supertonic 3 library'; git pull --rebase origin main; git push origin main; fi
