@@ -1,0 +1,123 @@
+name: Generate Conversation AivisSpeech / Style-Bert-VITS
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-aivis-full-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: conversation-aivis-v1
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build current Conversation catalog
+        run: node scripts/build_conversation_audio_catalog.mjs
+      - name: Validate Aivis generator
+        run: python -m py_compile scripts/generate_conversation_aivis_pack.py scripts/build_conversation_aivis_index.py
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Prepare AivisSpeech persistent data
+        run: |
+          mkdir -p "$HOME/.local/share/AivisSpeech-Engine"
+          sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
+      - name: Start official AivisSpeech CPU engine
+        run: |
+          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 \
+            -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" \
+            ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 300); do
+            curl -fsS http://127.0.0.1:10101/speakers >/dev/null && break
+            test "$i" != 300 || { docker logs aivis-engine; exit 1; }
+            sleep 2
+          done
+      - name: Audit AIVMX model metadata before generation
+        run: |
+          curl -fsS http://127.0.0.1:10101/aivm_models -o /tmp/aivm-models.json
+          python - <<'PY'
+          import json,re
+          d=json.load(open('/tmp/aivm-models.json',encoding='utf-8'))
+          defaults=[x for x in d.values() if x.get('is_default_model')]
+          assert defaults,'No default AIVMX model'
+          m=defaults[0];manifest=m.get('manifest') or {};lic=str(manifest.get('license') or '');arch=str(manifest.get('model_architecture') or '')
+          assert not m.get('is_private_model'), 'Default model unexpectedly private'
+          assert 'Style-Bert-VITS2' in arch, arch
+          accepted=('acml','aivis common model license','cc0','creative commons zero','パブリックドメイン')
+          assert any(x in lic.lower() for x in accepted), 'License not on publish allowlist: '+re.sub(r'\s+',' ',lic)[:500]
+          print('Model:',manifest.get('name'),manifest.get('version'),arch)
+          print('License preview:',re.sub(r'\s+',' ',lic)[:500])
+          PY
+      - name: Generate up to four licensed Aivis styles
+        env:
+          MAX_STYLES: '4'
+          OUTPUT_DIR: conversation-aivis-out
+        run: python scripts/generate_conversation_aivis_pack.py
+      - name: Validate generated packs
+        run: |
+          python - <<'PY'
+          import json,tarfile
+          from pathlib import Path
+          info=json.load(open('conversation-aivis-out/aivis-model.json',encoding='utf-8'))
+          assert 1<=len(info['styles'])<=4
+          for s in info['styles']:
+              k=s['key'];m=json.load(open(f'conversation-aivis-out/{k}.json',encoding='utf-8'));assert m['count']==1244
+              p=Path('conversation-aivis-out')/m['asset'];assert p.is_file() and p.stat().st_size>500000
+              with tarfile.open(p,'r:') as t: assert len([x for x in t.getmembers() if x.isfile()])==1244
+          print('Validated Aivis styles:',len(info['styles']))
+          PY
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'AivisSpeech Conversation — Style-Bert-VITS' --notes 'Server-hosted AivisSpeech / Style-Bert-VITS2 Japanese audio for all 1,244 unique Situation Conversation utterances. Model license is checked before generation and recorded in the published index.'
+      - name: Install Hugging Face CLI
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Upload all Aivis TARs to Hugging Face and GitHub Release
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for p in conversation-aivis-out/a*.tar; do
+            f=$(basename "$p")
+            hf upload "$HF_DATASET_REPO" "$p" "conversation/aivis/v1/$f" --repo-type dataset --commit-message "Aivis Conversation $f"
+            gh release upload "$RELEASE_TAG" "$p" --clobber
+          done
+      - name: Build server index
+        env:
+          MANIFEST_DIR: conversation-aivis-out
+          GITHUB_REPO: kanuli/japanese-vocab-game
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          RELEASE_TAG: conversation-aivis-v1
+        run: |
+          python scripts/build_conversation_aivis_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('conversation-aivis-index.json',encoding='utf-8'))
+          assert d['status']=='ready' and d['utteranceCount']==1244 and d['conversationCount']==650
+          assert 1<=d['voiceCount']<=4 and d['recordingCount']==d['utteranceCount']*d['voiceCount']
+          print('Published Aivis recordings:',d['recordingCount'])
+          PY
+      - name: Commit Aivis index
+        run: |
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation-aivis-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish licensed AivisSpeech Conversation index'; git pull --rebase origin main; git push origin main; fi
+      - if: always()
+        run: docker stop aivis-engine || true
