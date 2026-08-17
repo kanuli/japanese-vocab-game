@@ -1,0 +1,163 @@
+name: Generate Pronunciation VOICEVOX — remaining 6,690 × 43 voices
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.pronunciation-voicevox-original-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_NAMESPACE: pronunciation-voicevox-original-v1
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/build_pronunciation_original_audio_catalog.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pronunciation-original-audio-catalog-vv
+          path: pronunciation-original-audio-catalog.json
+          retention-days: 3
+
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      speakers: ${{ steps.matrix.outputs.speakers }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi; if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi; sleep 2; done
+      - id: matrix
+        name: Discover canonical 43 speakers
+        run: |
+          curl -fsS http://127.0.0.1:50021/speakers -o /tmp/speakers.json
+          python - <<'PY'
+          import json,os
+          speakers=json.load(open('/tmp/speakers.json',encoding='utf-8')); rows=[]; preferred=('ノーマル','Normal','NORMAL','通常')
+          for i,sp in enumerate(speakers,1):
+              name=str(sp.get('name','')).strip(); styles=list(sp.get('styles') or [])
+              if not name or not styles: continue
+              style=next((x for x in styles if str(x.get('name','')).strip() in preferred),styles[0])
+              rows.append({'key':f's{i:02d}','name':name,'style_id':int(style['id']),'style':str(style.get('name','')).strip()})
+          if len(rows)!=43: raise SystemExit(f'Expected 43 speakers, got {len(rows)}')
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:f.write('speakers='+json.dumps(rows,ensure_ascii=False,separators=(',',':'))+'\n')
+          print('Confirmed',len(rows),'speakers')
+          PY
+      - if: always()
+        run: docker stop voicevox-engine || true
+
+  generate:
+    needs: [catalog,discover]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        speaker: ${{ fromJSON(needs.discover.outputs.speakers) }}
+        level: [N1,N2,N3,N4,N5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: pronunciation-original-audio-catalog-vv
+          path: .
+      - name: Install ffmpeg and start official VOICEVOX Engine
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi; if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi; sleep 2; done
+      - name: Generate one speaker-level bundle
+        env:
+          JLPT: ${{ matrix.level }}
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          STYLE_ID: ${{ matrix.speaker.style_id }}
+          STYLE_NAME: ${{ matrix.speaker.style }}
+          OUTPUT_DIR: pronunciation-voicevox-original-out
+        run: python scripts/generate_pronunciation_voicevox_original_level.py
+      - name: Validate and upload to Hugging Face + GitHub Release
+        env:
+          K: ${{ matrix.speaker.key }}
+          L: ${{ matrix.level }}
+          N: ${{ matrix.speaker.name }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          k,l=os.environ['K'],os.environ['L'];m=json.load(open(f'pronunciation-voicevox-original-out/{k}-{l}.json',encoding='utf-8'))
+          assert m['count']>0 and len(m['members'])==m['count']
+          p=Path('pronunciation-voicevox-original-out')/m['asset'];assert p.is_file() and p.stat().st_size>100000
+          with tarfile.open(p,'r:') as tf:assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
+          print('Validated',k,l,m['count'])
+          PY
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          ASSET="$K-$L.tar"; LOW=$(printf '%s' "$L" | tr '[:upper:]' '[:lower:]'); TAG="$RELEASE_NAMESPACE-$K-$LOW"
+          hf upload "$HF_DATASET_REPO" "pronunciation-voicevox-original-out/$ASSET" "pronunciation/voicevox/original-v1/$K/$ASSET" --repo-type dataset --commit-message "Pronunciation VOICEVOX $K $L"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Pronunciation VOICEVOX $K $L" --notes "Remaining original pronunciation sentences for $N. Credit: VOICEVOX:$N"
+          gh release upload "$TAG" "pronunciation-voicevox-original-out/$ASSET" --clobber
+          mkdir -p manifest-artifact && cp "pronunciation-voicevox-original-out/$K-$L.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pronunciation-voicevox-manifest-${{ matrix.speaker.key }}-${{ matrix.level }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+      - if: always()
+        run: docker stop voicevox-engine || true
+
+  finalize:
+    needs: [catalog,discover,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: pronunciation-original-audio-catalog-vv
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pronunciation-voicevox-manifest-*
+          path: pronunciation-voicevox-original-manifests
+          merge-multiple: true
+      - name: Build complete 287,670-recording index
+        run: |
+          test "$(find pronunciation-voicevox-original-manifests -name '*.json' | wc -l)" -eq 215
+          python scripts/build_pronunciation_voicevox_original_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('pronunciation-voicevox-original-index.json',encoding='utf-8'))
+          assert d['status']=='ready' and d['questionCount']==6690 and d['speakerCount']==43 and d['recordingCount']==287670
+          assert {s['questionCount'] for s in d['speakers'].values()}=={6690}
+          print('READY VOICEVOX:',d['recordingCount'])
+          PY
+      - name: Publish final index atomically
+        run: |
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pronunciation-voicevox-original-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish pronunciation VOICEVOX 6,690 index'; git pull --rebase origin main; git push origin main; fi
