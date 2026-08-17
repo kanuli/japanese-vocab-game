@@ -1,0 +1,71 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/deploy-static-pages.yml'
+      - 'index.html'
+      - 'grammar.html'
+      - 'listening.html'
+      - 'mocktest.html'
+      - 'pronunciation.html'
+      - 'translator.html'
+      - 'conversation.html'
+      - 'wordaudio.html'
+      - 'wordlist.html'
+      - 'vocab-plus-game.html'
+      - 'vocabulary-plus.html'
+      - '*.js'
+      - '*.css'
+      - '*.json'
+      - 'data/**'
+      - 'vendor/**'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-static-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Verify production-critical assets before deployment
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          required=['index.html','grammar.html','listening.html','mocktest.html','pronunciation.html','translator.html','conversation.html','wordaudio.html','wordlist.html','conversation-hosted-audio.js','conversation-voicevox-index.json','conversation-supertonic-index.json']
+          missing=[p for p in required if not Path(p).is_file()]
+          assert not missing, missing
+          vv=json.load(open('conversation-voicevox-index.json',encoding='utf-8'))
+          st=json.load(open('conversation-supertonic-index.json',encoding='utf-8'))
+          assert (vv.get('version'),vv.get('speakerCount'),vv.get('utteranceCount'),vv.get('recordingCount'))==(2,43,2677,115111)
+          assert (st.get('version'),st.get('voiceCount'),st.get('utteranceCount'),st.get('recordingCount'))==(2,10,2677,26770)
+          print('Production assets validated before Pages deployment.')
+          PY
+
+      - name: Upload static site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
