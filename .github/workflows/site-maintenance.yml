@@ -1,0 +1,234 @@
+name: Full-site maintenance and browser smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'conversation-supertonic-index.json'
+      - '.site-maintenance-trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Inventory all web pages
+        run: |
+          mapfile -t PAGES < <(git ls-files '*.html' | sort)
+          test "${#PAGES[@]}" -gt 0
+          printf 'Pages under maintenance (%s):\n' "${#PAGES[@]}"
+          printf ' - %s\n' "${PAGES[@]}"
+          printf '%s\n' "${PAGES[@]}" > /tmp/site-pages.txt
+
+      - name: Static HTML, local resource, duplicate-ID and syntax maintenance
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import unquote, urlsplit
+          import re, sys
+
+          root=Path('.').resolve()
+          pages=[Path(x.strip()) for x in Path('/tmp/site-pages.txt').read_text().splitlines() if x.strip()]
+          failures=[]
+
+          class Scan(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.ids=[]; self.refs=[]; self.title=False; self.body=False
+              def handle_starttag(self, tag, attrs):
+                  a=dict(attrs)
+                  if tag=='title': self.title=True
+                  if tag=='body': self.body=True
+                  if a.get('id'): self.ids.append(a['id'])
+                  if tag in {'script','img','audio','video','source','link','iframe'}:
+                      key='src' if tag not in {'link'} else 'href'
+                      if a.get(key): self.refs.append(a[key])
+                  if tag=='a' and a.get('href'): self.refs.append(a['href'])
+
+          for page in pages:
+              text=page.read_text(encoding='utf-8')
+              s=Scan(); s.feed(text)
+              if not s.title or not s.body: failures.append(f'{page}: missing title/body')
+              if len(text)<300: failures.append(f'{page}: unexpectedly small ({len(text)} bytes)')
+              seen=set(); dup=[]
+              for x in s.ids:
+                  if x in seen and x not in dup: dup.append(x)
+                  seen.add(x)
+              if dup: failures.append(f'{page}: duplicate static IDs {dup}')
+              for raw in s.refs:
+                  raw=raw.strip()
+                  if not raw or raw.startswith(('#','mailto:','tel:','javascript:','data:','blob:')): continue
+                  u=urlsplit(raw)
+                  if u.scheme or u.netloc or raw.startswith('//'): continue
+                  path=unquote(u.path)
+                  if not path: continue
+                  target=(page.parent/path).resolve() if not path.startswith('/') else (root/path.lstrip('/')).resolve()
+                  try: target.relative_to(root)
+                  except ValueError:
+                      failures.append(f'{page}: local reference escapes repo: {raw}'); continue
+                  if not target.exists(): failures.append(f'{page}: missing local reference {raw} -> {target.relative_to(root)}')
+
+          # Core custom JavaScript that powers interactive pages must parse.
+          core_js=[
+              'conversation.js','conversation-hosted-audio.js','mocktest.js',
+              'wordaudio-ai.js','wordaudio-controller.js','wordaudio-data.js','wordaudio-init.js',
+              'wordaudio-list.js','wordaudio-multivoice.js','wordaudio-player.js','wordaudio-voice.js',
+              'wordlist-audio.js','wordlist-voicevox.js','wordlist.js','translator-hosted-voice.js',
+              'pronunciation-furigana.js'
+          ]
+          missing=[x for x in core_js if not Path(x).is_file()]
+          if missing: failures.append('Missing core JS: '+', '.join(missing))
+
+          if failures:
+              print('\n'.join('FAIL '+x for x in failures),file=sys.stderr)
+              raise SystemExit(1)
+          print(f'Static HTML maintenance OK: {len(pages)} pages; local references and IDs clean.')
+          PY
+          for f in conversation.js conversation-hosted-audio.js mocktest.js wordaudio-ai.js wordaudio-controller.js wordaudio-data.js wordaudio-init.js wordaudio-list.js wordaudio-multivoice.js wordaudio-player.js wordaudio-voice.js wordlist-audio.js wordlist-voicevox.js wordlist.js translator-hosted-voice.js pronunciation-furigana.js; do
+            node --check "$f"
+          done
+
+      - name: Validate full learning databases and hosted conversation audio
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          global.window={};
+          for(let i=1;i<=5;i++) vm.runInThisContext(fs.readFileSync(`conversation-data-${i}.js`,'utf8'),{filename:`conversation-data-${i}.js`});
+          for(const f of ['conversation-expansion.js','conversation-world-expansion.js']) vm.runInThisContext(fs.readFileSync(f,'utf8'),{filename:f});
+          const scenes=window.SITUATION_SCENES||[];
+          if(scenes.length!==61) throw new Error(`conversation scenes ${scenes.length}/61`);
+          let groups=0,lines=0;
+          const ids=new Set();
+          for(const s of scenes){
+            if(ids.has(s.id)) throw new Error('duplicate scene '+s.id); ids.add(s.id);
+            if(!Array.isArray(s.items)||s.items.length!==25) throw new Error(`${s.id}: groups ${s.items?.length}/25`);
+            for(const lv of ['N1','N2','N3','N4','N5']) if(s.items.filter(x=>x.level===lv).length!==5) throw new Error(`${s.id}: ${lv} distribution`);
+            for(const x of s.items){
+              if(!Array.isArray(x.lines)||x.lines.length!==2) throw new Error(`${s.id}: invalid dialogue`);
+              for(const l of x.lines){if(!l.jp||!l.zh)throw new Error(`${s.id}: missing JP/ZH`); lines++}
+            }
+            groups+=s.items.length;
+          }
+          if(groups!==1525||lines!==3050) throw new Error(`conversation totals ${groups}/1525 ${lines}/3050`);
+          console.log('Conversation database OK:',scenes.length,'scenes',groups,'groups',lines,'lines');
+          NODE
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm'); global.window={};
+          vm.runInThisContext(fs.readFileSync('conversation-furigana.js','utf8'));
+          const m=window.CONVERSATION_FURIGANA_META||{};
+          if(m.sceneCount!==61||m.totalLines!==3050||m.uniqueLines!==2677||m.mappedLines!==2677)throw new Error('furigana meta '+JSON.stringify(m));
+          if(Object.keys(window.CONVERSATION_FURIGANA||{}).length!==2677)throw new Error('furigana map coverage');
+          console.log('Furigana OK:',m.mappedLines,'/',m.uniqueLines,'unique utterances');
+          NODE
+          python - <<'PY'
+          import json
+          vv=json.load(open('conversation-voicevox-index.json',encoding='utf-8'))
+          assert vv['version']==2 and vv['status']=='ready'
+          assert vv['sceneCount']==61 and vv['conversationCount']==1525 and vv['sourceLineCount']==3050
+          assert vv['utteranceCount']==2677 and vv['speakerCount']==43 and vv['recordingCount']==115111
+          assert len(vv['lines'])==2677 and len(vv['speakers'])==43
+          for k,v in vv['speakers'].items(): assert len(v['members'])==2677, (k,len(v['members']))
+          st=json.load(open('conversation-supertonic-index.json',encoding='utf-8'))
+          assert st['version']==2 and st['status']=='ready'
+          assert st['sceneCount']==61 and st['conversationCount']==1525 and st['sourceLineCount']==3050
+          assert st['utteranceCount']==2677 and st['voiceCount']==10 and st['recordingCount']==26770
+          assert len(st['lines'])==2677 and len(st['voices'])==10
+          assert set(st['voices'])=={'F1','F2','F3','F4','F5','M1','M2','M3','M4','M5'}
+          for k,v in st['voices'].items(): assert len(v['members'])==2677, (k,len(v['members']))
+          client=open('conversation-hosted-audio.js',encoding='utf-8').read()
+          assert 'conversation-voicevox-index.json?v=20260817v2' in client
+          assert 'conversation-supertonic-index.json?v=20260817v2' in client
+          html=open('conversation.html',encoding='utf-8').read()
+          assert 'conversation-hosted-audio.js?v=20260817v2' in html
+          print('Hosted conversation audio OK: VOICEVOX',vv['recordingCount'],'Supertonic',st['recordingCount'])
+          PY
+
+      - name: Install Chromium browser test runtime
+        run: |
+          npm init -y >/dev/null 2>&1
+          npm install --silent playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Browser smoke test every local HTML page
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/site-http.log 2>&1 &
+          echo $! >/tmp/site-http.pid
+          trap 'kill $(cat /tmp/site-http.pid) 2>/dev/null || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/index.html >/dev/null && break; sleep 1; done
+          cat > /tmp/maintenance-smoke.cjs <<'NODE'
+          const {chromium}=require(process.cwd()+'/node_modules/playwright');
+          const fs=require('fs');
+          const pages=fs.readFileSync('/tmp/site-pages.txt','utf8').trim().split(/\r?\n/).filter(Boolean);
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({serviceWorkers:'block'});
+            const results=[]; let failed=false;
+            for(const p of pages){
+              const page=await context.newPage(); const errors=[]; const badLocal=[];
+              page.on('pageerror',e=>errors.push(String(e)));
+              page.on('response',r=>{if(r.url().startsWith('http://127.0.0.1:4173/')&&r.status()>=400)badLocal.push(`${r.status()} ${r.url()}`)});
+              try{
+                const response=await page.goto('http://127.0.0.1:4173/'+p+'?maintenance='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+                if(!response||response.status()>=400)throw new Error('page HTTP '+(response?.status()||'none'));
+                await page.waitForTimeout(2200);
+                const state=await page.evaluate(()=>({title:document.title.trim(),text:(document.body?.innerText||'').trim().length,body:!!document.body}));
+                if(!state.title||!state.body||state.text<20)throw new Error('invalid DOM '+JSON.stringify(state));
+                if(errors.length)throw new Error('page errors: '+errors.join(' | '));
+                if(badLocal.length)throw new Error('local resource errors: '+badLocal.join(' | '));
+                console.log('PASS',p,state.title,`bodyChars=${state.text}`); results.push([p,'PASS']);
+              }catch(e){failed=true; console.error('FAIL',p,e.message); results.push([p,'FAIL',e.message]);}
+              await page.close();
+            }
+            await browser.close();
+            fs.writeFileSync('/tmp/browser-results.json',JSON.stringify(results,null,2));
+            if(failed)process.exit(1);
+          })();
+          NODE
+          node /tmp/maintenance-smoke.cjs
+
+      - name: Wait for matching GitHub Pages deployment and verify every live page
+        env:
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          echo 'Waiting for live site to expose the completed Supertonic v2 index...'
+          ok=0
+          for i in {1..36}; do
+            if curl -fsSL --max-time 30 "https://kanuli.github.io/japanese-vocab-game/conversation-supertonic-index.json?maintenance=$RUN_ID-$i" -o /tmp/live-st.json; then
+              if python - <<'PY'
+          import json
+          try:
+              d=json.load(open('/tmp/live-st.json'))
+              assert d.get('version')==2 and d.get('voiceCount')==10 and d.get('utteranceCount')==2677 and d.get('recordingCount')==26770
+          except Exception: raise SystemExit(1)
+          PY
+              then ok=1; break; fi
+            fi
+            sleep 10
+          done
+          test "$ok" -eq 1 || { echo 'GitHub Pages did not publish the completed v2 index in time' >&2; exit 1; }
+          while IFS= read -r p; do
+            code=$(curl -sS -L --max-time 30 -o /tmp/live-page.html -w '%{http_code}' "https://kanuli.github.io/japanese-vocab-game/$p?maintenance=$RUN_ID")
+            test "$code" = 200 || { echo "LIVE FAIL $p HTTP $code" >&2; exit 1; }
+            grep -qi '<title' /tmp/live-page.html || { echo "LIVE FAIL $p missing title" >&2; exit 1; }
+            echo "LIVE PASS $p"
+          done < /tmp/site-pages.txt
+
+      - name: Maintenance summary
+        run: |
+          echo '=================================================='
+          echo 'FULL-SITE MAINTENANCE PASSED'
+          echo 'Conversation: 61 scenes / 1,525 dialogues / 3,050 lines'
+          echo 'Furigana: 2,677 / 2,677 unique utterances'
+          echo 'VOICEVOX: 43 × 2,677 = 115,111 recordings'
+          echo 'Supertonic: 10 × 2,677 = 26,770 recordings'
+          echo "HTML pages tested: $(wc -l < /tmp/site-pages.txt)"
+          echo 'Static references: PASS'
+          echo 'Browser smoke tests: PASS'
+          echo 'Live GitHub Pages checks: PASS'
+          echo '=================================================='
