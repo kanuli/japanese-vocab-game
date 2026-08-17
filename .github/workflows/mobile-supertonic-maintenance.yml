@@ -1,0 +1,123 @@
+name: Mobile Supertonic safety maintenance
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 3 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'mobile-supertonic-guard.js'
+      - 'wordaudio-multivoice.js'
+      - 'wordlist-audio.js'
+      - 'conversation.js'
+      - 'conversation-hosted-audio.js'
+      - 'wordaudio.html'
+      - 'wordlist.html'
+      - 'listening.html'
+      - 'conversation.html'
+      - 'pronunciation.html'
+      - 'translator.html'
+      - '.mobile-supertonic-safety-trigger'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mobile-supertonic-maintenance
+  cancel-in-progress: true
+
+jobs:
+  mobile-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Static mobile policy validation
+        run: |
+          node --check mobile-supertonic-guard.js
+          node --check wordaudio-multivoice.js
+          node --check wordlist-audio.js
+          node --check conversation.js
+          node --check conversation-hosted-audio.js
+          python - <<'PY'
+          from pathlib import Path
+          pages=['wordaudio.html','wordlist.html','listening.html','conversation.html','pronunciation.html','translator.html']
+          for p in pages:
+              s=Path(p).read_text(encoding='utf-8')
+              assert s.count('mobile-supertonic-guard.js')==1, (p,'mobile guard')
+          wa=Path('wordaudio-multivoice.js').read_text(encoding='utf-8')
+          assert 'MOBILE_SUPERTONIC_LOCAL_DISABLED' in wa
+          assert "el('audioEngine').value='voicevox'" in wa
+          c=Path('conversation.js').read_text(encoding='utf-8')
+          assert "speakEngine?.('voicevox'" in c and 'localSuperAllowed' in c
+          l=Path('listening.html').read_text(encoding='utf-8')
+          assert '手機安全模式：Supertonic 只使用伺服器預錄' in l
+          p=Path('pronunciation.html').read_text(encoding='utf-8')
+          assert "$('#enableLocal').disabled=true" in p
+          t=Path('translator.html').read_text(encoding='utf-8')
+          assert "if(!localSuperAllowed())$('#engine').value='voicevox'" in t
+          print('Static mobile policy validation PASS')
+          PY
+      - name: Install Chromium
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps chromium >/dev/null
+      - name: iPhone browser smoke test
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/mobile-http.log 2>&1 &
+          echo $! >/tmp/mobile-http.pid
+          trap 'kill $(cat /tmp/mobile-http.pid) 2>/dev/null || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/index.html >/dev/null && break; sleep 1; done
+          cat >/tmp/mobile-safe.cjs <<'NODE'
+          const {chromium}=require(process.cwd()+'/node_modules/playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({
+              userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1',
+              viewport:{width:390,height:844},hasTouch:true,isMobile:true,serviceWorkers:'block'
+            });
+            const pages=['wordaudio.html','wordlist.html','listening.html','conversation.html','pronunciation.html','translator.html'];
+            let failed=false;
+            for(const p of pages){
+              const page=await context.newPage(),errors=[];
+              page.on('pageerror',e=>errors.push(String(e)));
+              try{
+                const r=await page.goto('http://127.0.0.1:4173/'+p+'?mobileSafety='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+                if(!r||r.status()>=400)throw new Error('HTTP '+(r?.status()||'none'));
+                await page.waitForTimeout(3000);
+                const s=await page.evaluate(()=>({
+                  guard:window.MobileSupertonicGuard||null,
+                  mode:document.documentElement.dataset.mobileSupertonic||'',
+                  audioEngine:document.querySelector('#audioEngine')?.value||'',
+                  engine:document.querySelector('#engine')?.value||'',
+                  enableAI:document.querySelector('#enableAI')?.disabled??null,
+                  enableLocal:document.querySelector('#enableLocal')?.disabled??null
+                }));
+                if(!s.guard||s.guard.isMobile!==true||s.guard.localAllowed!==false||s.mode!=='hosted-only')throw new Error('guard '+JSON.stringify(s));
+                if((p==='wordaudio.html'||p==='wordlist.html')&&s.audioEngine!=='voicevox')throw new Error('word audio engine '+JSON.stringify(s));
+                if(p==='translator.html'&&s.engine!=='voicevox')throw new Error('translator engine '+JSON.stringify(s));
+                if(p==='listening.html'&&s.enableAI!==true)throw new Error('listening local Supertonic button enabled');
+                if(p==='pronunciation.html'&&s.enableLocal!==true)throw new Error('pronunciation local Supertonic button enabled');
+                if(errors.length)throw new Error(errors.join(' | '));
+                console.log('MOBILE PASS',p,JSON.stringify(s));
+              }catch(e){failed=true;console.error('MOBILE FAIL',p,e.message)}
+              await page.close();
+            }
+            await browser.close();if(failed)process.exit(1);
+          })();
+          NODE
+          node /tmp/mobile-safe.cjs
+      - name: Mobile maintenance summary
+        run: |
+          echo 'MOBILE SUPERTONIC SAFETY PASSED'
+          echo 'Local Supertonic model: disabled on mobile'
+          echo 'Word audio/list: VOICEVOX default'
+          echo 'Conversation: hosted Supertonic -> VOICEVOX -> device fallback'
+          echo 'Listening: hosted Supertonic only; local install disabled'
+          echo 'Pronunciation: hosted reference only; local install disabled'
+          echo 'Translator: VOICEVOX hosted first; arbitrary miss -> device voice'
