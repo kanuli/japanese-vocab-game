@@ -1,9 +1,28 @@
 {
   "version": 1,
-  "status": "pending",
-  "checkedAt": null,
-  "playwright": {"current": "1.55.0", "latest": null, "autoUpdate": "test-then-update"},
-  "githubActions": {},
-  "voicevoxEngine": {"latest": null, "policy": "report-only-for-hosted-audio"},
-  "supertonic": {"policy": "pinned", "reason": "Production browser and hosted audio are validated; no blind automatic upgrade."}
+  "status": "ok",
+  "checkedAt": "2026-08-17T10:36:17Z",
+  "playwright": {
+    "previous": "1.55.0",
+    "latest": "1.62.1",
+    "current": "1.62.1",
+    "candidateTest": "pass",
+    "autoUpdated": true
+  },
+  "githubActions": {
+    "checkout": "v7.0.1",
+    "setupPython": "v7.0.0",
+    "configurePages": "v6.0.0",
+    "uploadPagesArtifact": "v5.0.0",
+    "deployPages": "v5.0.0",
+    "policy": "report-only; major workflow actions are not blindly replaced"
+  },
+  "voicevoxEngine": {
+    "latest": "0.25.2",
+    "policy": "report-only for already-hosted audio; checked before future regeneration"
+  },
+  "supertonic": {
+    "policy": "pinned",
+    "reason": "Production browser/hosted audio is validated; no blind automatic upgrade."
+  }
 }
