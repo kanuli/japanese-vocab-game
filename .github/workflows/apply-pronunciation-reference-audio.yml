@@ -1,0 +1,108 @@
+name: Apply pronunciation reference audio controls
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.pronunciation-reference-audio-trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pronunciation-reference-audio-patch
+  cancel-in-progress: true
+
+jobs:
+  patch-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Apply pronunciation reference UI and playback integration
+        run: |
+          python scripts/patch_pronunciation_reference_audio.py
+          node --check pronunciation-reference-audio.js
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('pronunciation.html').read_text(encoding='utf-8')
+          assert s.count('id="referenceEngine"') == 1
+          assert s.count('id="referenceVoice"') == 1
+          assert s.count('pronunciation-reference-audio.js?v=20260817v1') == 1
+          assert 'Supertonic 3｜伺服器預錄' in s
+          assert 'VOICEVOX｜伺服器預錄' in s
+          assert 'PronunciationReferenceAudio?.prepare' in s
+          print('Pronunciation reference static integration PASS')
+          PY
+
+      - name: Install iPhone WebKit test runtime
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps webkit >/dev/null
+
+      - name: Verify real mobile Supertonic and VOICEVOX reference playback
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/pron-http.log 2>&1 &
+          echo $! >/tmp/pron-http.pid
+          trap 'kill $(cat /tmp/pron-http.pid) 2>/dev/null || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/pronunciation.html >/dev/null && break; sleep 1; done
+          cat >/tmp/pronunciation-reference-test.cjs <<'NODE'
+          const {webkit}=require(process.cwd()+'/node_modules/playwright');
+          (async()=>{
+            const browser=await webkit.launch({headless:true});
+            const context=await browser.newContext({
+              userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1',
+              viewport:{width:390,height:844},hasTouch:true,isMobile:true,serviceWorkers:'block'
+            });
+            const page=await context.newPage();
+            const errs=[]; page.on('pageerror',e=>errs.push(String(e)));
+            const r=await page.goto('http://127.0.0.1:4173/pronunciation.html?test='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            if(!r||r.status()>=400)throw new Error('HTTP '+(r?.status()||'none'));
+            await page.waitForFunction(()=>window.PronunciationReferenceAudio&&document.querySelector('#referenceEngine'),null,{timeout:20000});
+            await page.evaluate(()=>{
+              const b=document.createElement('button');b.id='__unlockPron';b.textContent='unlock';b.style.cssText='position:fixed;left:8px;top:8px;width:120px;height:70px;z-index:2147483647';document.body.appendChild(b);
+            });
+            await page.locator('#__unlockPron').tap();
+            await page.waitForTimeout(400);
+            const base=await page.evaluate(()=>({
+              mobile:window.MobileSupertonicGuard?.isMobile,
+              local:window.MobileSupertonicGuard?.localAllowed,
+              state:window.MobileSupertonicGuard?.audioState?.(),
+              engine:document.querySelector('#referenceEngine')?.value,
+              voices:document.querySelector('#referenceVoice')?.options.length
+            }));
+            if(!base.mobile||base.local!==false||base.state?.audioContextState!=='running'||base.engine!=='supertonic'||base.voices<11)throw new Error('base '+JSON.stringify(base));
+            console.log('PRONUNCIATION MOBILE UI PASS',JSON.stringify(base));
+            const st=await page.evaluate(()=>window.PronunciationReferenceAudio.testHosted('supertonic'));
+            if(st?.engine!=='supertonic'||!st?.played)throw new Error('Supertonic test '+JSON.stringify(st));
+            console.log('PRONUNCIATION SUPERTONIC PASS',JSON.stringify({engine:st.engine,key:st.key,label:st.label,provider:st.provider,scoreBytes:st.scoreBytes?.byteLength||0}));
+            const vv=await page.evaluate(()=>window.PronunciationReferenceAudio.testHosted('voicevox'));
+            if(vv?.engine!=='voicevox'||!vv?.played)throw new Error('VOICEVOX test '+JSON.stringify(vv));
+            console.log('PRONUNCIATION VOICEVOX PASS',JSON.stringify({engine:vv.engine,key:vv.key,label:vv.label,provider:vv.provider,scoreBytes:vv.scoreBytes?.byteLength||0}));
+            const sel=await page.evaluate(async()=>{document.querySelector('#referenceEngine').value='voicevox';document.querySelector('#referenceEngine').dispatchEvent(new Event('change'));await new Promise(r=>setTimeout(r,300));return document.querySelector('#referenceVoice').options.length;});
+            if(sel<44)throw new Error('VOICEVOX selector only '+sel+' options');
+            if(errs.length)throw new Error('page errors: '+errs.join(' | '));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          node /tmp/pronunciation-reference-test.cjs
+
+      - name: Commit pronunciation page integration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pronunciation.html
+          if git diff --cached --quiet; then
+            echo 'No pronunciation.html change to commit.'
+            exit 0
+          fi
+          git commit -m 'Enable Supertonic and VOICEVOX on pronunciation page'
+          git pull --rebase origin main
+          git push origin HEAD:main
