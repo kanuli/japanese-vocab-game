@@ -37,6 +37,7 @@ async function speakSupertonic(text,role,rate){const d=await loadSupertonic();if
 async function speakAivis(text,role,rate){const d=await loadAivis();if(!d||!d.speakers)return false;const uid=d.lines?.[norm(text)];if(!uid)return false;const keys=Object.keys(d.speakers);if(!keys.length)return false;const key=chosenKey(role,keys),sp=d.speakers[key];
  if(Array.isArray(sp?.members?.[uid])){const used=await playRangeUrls([sp.githubUrl,sp.hfUrl],sp.members[uid],rate);if(!used)return false;H.status(`✅ AivisSpeech / Style-Bert-VITS ${sp.displayName||`${sp.speaker||key}｜${sp.style||''}`} · 伺服器預錄 · ${/huggingface\.co/i.test(used)?'Hugging Face 備援':'GitHub Releases'}`,'ok');return true}
  const rec=d.lines?.[norm(text)]||d.lines?.[text],x=rec&&rec[key];if(!x)return false;const urls=(Array.isArray(x.urls)?x.urls:[x.githubUrl,x.hfUrl,x.url]).filter(Boolean);for(const url of urls){try{if(Array.isArray(x.segment))await playSegment(url,Number(x.segment[0]),Number(x.segment[1]),rate);else if(Array.isArray(x.member)){const bytes=await rangeBytes(url,Number(x.member[0]),Number(x.member[1]));await playBytes(bytes,rate)}else continue;H.status(`✅ AivisSpeech / Style-Bert-VITS ${sp?.speaker||key}`,'ok');return true}catch(e){console.warn(e)}}return false}
-async function speak(text,role,rate){if(H.engine==='supertonic')return speakSupertonic(text,role,rate);if(H.engine==='voicevox')return speakVoicevox(text,role,rate);if(H.engine==='aivis')return speakAivis(text,role,rate);return false}
-window.ConversationHostedAudio={configure,speak,stop};
+async function speakEngine(engine,text,role,rate){if(engine==='supertonic')return speakSupertonic(text,role,rate);if(engine==='voicevox')return speakVoicevox(text,role,rate);if(engine==='aivis')return speakAivis(text,role,rate);return false}
+async function speak(text,role,rate){return speakEngine(H.engine,text,role,rate)}
+window.ConversationHostedAudio={configure,speak,speakEngine,stop};
 })();

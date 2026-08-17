@@ -3,6 +3,7 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const S={data:null,scene:null,item:null,mode:'learn',audio:null,blobUrl:'',stopToken:0,dictLine:0,superReady:false,systemVoices:[],apiVoices:[]};
 const STVOICES=[['F1','🌙 沉穩低柔女聲（F1）'],['F2','🌸 明亮活潑女聲（F2）'],['F3','🎙️ 專業播音女聲（F3）'],['F4','✨ 清晰自信女聲（F4）'],['F5','💕 溫柔療癒女聲（F5）'],['M1','⚡ 活力自信男聲（M1）'],['M2','🌑 低沉穩重男聲（M2）'],['M3','🧭 權威專業男聲（M3）'],['M4','🙂 柔和親切男聲（M4）'],['M5','📖 溫暖舒緩男聲（M5）']];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const localSuperAllowed=()=>window.MobileSupertonicGuard?.localAllowed!==false;
 function st(t,c=''){const e=$('#playStatus');e.textContent=t;e.className='status'+(c?' '+c:'')}
 function vst(t,c=''){const e=$('#voiceStatus');e.textContent=t;e.className='status'+(c?' '+c:'')}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -89,6 +90,7 @@ function populateDevice(){
  refreshSystemVoices();renderDeviceVoices();
 }
 async function ensureSuper(){
+ if(!localSuperAllowed()){vst('📱 手機安全模式：不載入本機 Supertonic；使用伺服器預錄／VOICEVOX 備援。','loading');return false}
  try{
   for(let i=0;i<120&&!window.SupertonicAI;i++)await sleep(50);
   if(!window.SupertonicAI)throw Error('Supertonic module not ready');
@@ -125,6 +127,13 @@ async function speak(text,role,token){
   let used=false;
   try{used=await window.ConversationHostedAudio?.speak?.(text,role,Number($('#speed').value))||false}catch(e){console.warn(e)}
   if(token!==S.stopToken)return;if(used)return;
+  if(!localSuperAllowed()){
+   vst('📱 Supertonic 伺服器錄音暫不可用；手機改用 VOICEVOX 伺服器備援。','loading');
+   try{used=await window.ConversationHostedAudio?.speakEngine?.('voicevox',text,role,Number($('#speed').value))||false}catch(e){console.warn(e)}
+   if(token!==S.stopToken)return;if(used)return;
+   vst('📱 VOICEVOX 亦暫不可用，改用裝置 Japanese voice。','loading');
+   return speakDevice(text,role,token);
+  }
   vst('Supertonic 3 此句暫無本站預錄音，改用瀏覽器即時生成。','loading');
   return speakSuper(text,role,token);
  }
@@ -133,6 +142,12 @@ async function speak(text,role,token){
   try{used=await window.ConversationHostedAudio?.speak?.(text,role,Number($('#speed').value))||false}catch(e){console.warn(e)}
   if(token!==S.stopToken)return;
   if(used)return;
+  if(!localSuperAllowed()){
+   if(eng!=='voicevox')try{used=await window.ConversationHostedAudio?.speakEngine?.('voicevox',text,role,Number($('#speed').value))||false}catch(e){console.warn(e)}
+   if(token!==S.stopToken)return;if(used)return;
+   vst('📱 手機不啟動本機 Supertonic；改用裝置 Japanese voice。','loading');
+   return speakDevice(text,role,token);
+  }
   vst(`${eng==='voicevox'?'VOICEVOX':'AivisSpeech / Style-Bert-VITS'} 此句沒有本站預錄音，已自動使用 Supertonic 3 備援。`,'loading');
   return speakSuper(text,role,token,role==='B'?'M3':'F3');
  }
