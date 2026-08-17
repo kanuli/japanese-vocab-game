@@ -11,7 +11,7 @@ function loadResultHistory(){
   const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
   const allowed=new Set(['index.html','grammar.html','listening.html','mocktest.html']);
   if(!allowed.has(page)||document.querySelector('script[data-result-history]'))return;
-  const s=document.createElement('script');s.src=BASE+'result-history.js?v=20260818v1';s.defer=true;s.dataset.resultHistory='1';(document.head||document.documentElement).appendChild(s);
+  const s=document.createElement('script');s.src=BASE+'result-history.js?v=20260818v2';s.defer=true;s.dataset.resultHistory='1';(document.head||document.documentElement).appendChild(s);
 }
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function mount(){
