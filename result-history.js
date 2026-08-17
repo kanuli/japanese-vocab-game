@@ -17,6 +17,7 @@ const clean=s=>String(s??'').replace(/\s+/g,' ').trim();
 const clip=(s,n=500)=>{s=clean(s);return s.length>n?s.slice(0,n-1)+'…':s};
 const uid=()=>`${PAGE_ID}-${Date.now()}-${Math.random().toString(36).slice(2,9)}`;
 const visible=el=>!!el&&getComputedStyle(el).display!=='none'&&getComputedStyle(el).visibility!=='hidden';
+const plainText=(el,n=600)=>{if(!el)return'';const c=el.cloneNode(true);c.querySelectorAll?.('rt,rp').forEach(x=>x.remove());return clip(c.textContent,n);};
 
 function openDB(){
   if(dbPromise)return dbPromise;
@@ -74,8 +75,8 @@ function mountPanel(){
   injectCSS();
   const host=document.createElement('section');host.id='resultHistoryPanel';host.className='rh-card';
   host.innerHTML=`<div class="rh-head"><div><div class="rh-title">${panelTitle()}</div><div class="rh-sub">${PRACTICE?'按正確率排名；同分時題數較多者優先。每次遊戲的答案與錯題會保留，可隨時重看。':'按完成時間保存每次模擬試驗的 180 分制推定分數、各 scoring section 與合格判定。'}</div></div><div class="rh-actions"><button class="rh-btn" id="rhRefresh">重新整理</button><button class="rh-btn danger" id="rhClear">清除記錄</button></div></div><div id="rhContent" class="rh-wrap"><div class="rh-empty">尚未有成績記錄。</div></div>`;
-  const setup=$('#setup');
-  if(setup)setup.insertAdjacentElement('afterend',host);else(document.querySelector('.footer')||document.body).insertAdjacentElement('beforebegin',host);
+  const footer=document.querySelector('.footer');
+  if(footer)footer.insertAdjacentElement('beforebegin',host);else(document.querySelector('.wrap')||document.body).appendChild(host);
   const d=document.createElement('dialog');d.id='rhDialog';d.className='rh-dialog';d.innerHTML=`<div class="rh-dialog-head"><div><div id="rhDialogTitle" class="rh-dialog-title">成績詳情</div><div id="rhDialogSub" class="rh-small"></div></div><button class="rh-btn" id="rhClose">關閉 ✕</button></div><div id="rhDialogBody" class="rh-dialog-body"></div>`;document.body.appendChild(d);
   $('#rhRefresh').onclick=renderPanel;
   $('#rhClear').onclick=async()=>{if(confirm('確定清除這一頁的全部成績記錄？此動作不能復原。')){await clearRuns();renderPanel();}};
@@ -95,11 +96,11 @@ async function renderPanel(){
   const runs=await getRuns();
   if(!runs.length){box.innerHTML='<div class="rh-empty">尚未有成績記錄。完成下一局後會自動加入。</div>';return;}
   if(PRACTICE){
-    runs.sort((a,b)=>pct(b)-pct(a)||(b.total||0)-(a.total||0)-0||String(b.createdAt).localeCompare(String(a.createdAt)));
+    runs.sort((a,b)=>pct(b)-pct(a)||(b.total||0)-(a.total||0)||String(b.createdAt).localeCompare(String(a.createdAt)));
     box.innerHTML=`<table class="rh-table"><thead><tr><th>排名</th><th>日期／時間</th><th>JLPT</th><th>題數</th><th>分數</th><th>正確率</th><th>錯題</th><th>模式</th><th>檢討</th></tr></thead><tbody>${runs.map((r,i)=>`<tr><td class="rh-rank">${i+1}</td><td>${esc(fmtDate(r.createdAt))}</td><td>${esc(fmtLevels(r))}</td><td>${r.total||0}${r.incomplete?' *':''}</td><td class="rh-score">${r.score||0} / ${r.total||0}</td><td class="rh-score ${pct(r)>=80?'rh-good':pct(r)<60?'rh-bad':''}">${pct(r)}%</td><td class="${(r.wrong||0)>0?'rh-bad':'rh-good'}">${r.wrong||0}</td><td>${esc(modeText(r.mode))}</td><td><button class="rh-btn" data-rh-view="${esc(r.id)}">查看</button></td></tr>`).join('')}</tbody></table>${runs.some(r=>r.incomplete)?'<div class="rh-small" style="padding:8px 10px">* 中途返回／無限模式結束時，以已回答題目計算。</div>':''}`;
   }else{
     runs.sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
-    box.innerHTML=`<table class="rh-table"><thead><tr><th>日期／時間</th><th>級別</th><th>模式</th><th>總分</th><th>Scoring sections</th><th>判定</th><th>詳情</th></tr></thead><tbody>${runs.map(r=>`<tr><td>${esc(fmtDate(r.createdAt))}</td><td><b>${esc(r.level||'—')}</b></td><td>${esc(modeText(r.mode))}</td><td class="rh-score">${esc(r.totalScore||'—')}</td><td>${(r.sections||[]).map(x=>`<span class="rh-chip">${esc(clip(x,80))}</span>`).join('')||'—'}</td><td class="rh-status ${/合格|PASS/i.test(r.status||'')?'rh-good':/不合格|FAIL/i.test(r.status||'')?'rh-bad':''}">${esc(r.status||'—')}</td><td><button class="rh-btn" data-rh-view="${esc(r.id)}">查看</button></td></tr>`).join('')}</tbody></table>`;
+    box.innerHTML=`<table class="rh-table"><thead><tr><th>日期／時間</th><th>級別</th><th>模式</th><th>總分</th><th>Scoring sections</th><th>判定</th><th>詳情</th></tr></thead><tbody>${runs.map(r=>`<tr><td>${esc(fmtDate(r.createdAt))}</td><td><b>${esc(r.level||'—')}</b></td><td>${esc(modeText(r.mode))}</td><td class="rh-score">${esc(r.totalScore||'—')}</td><td>${(r.sections||[]).map(x=>`<span class="rh-chip">${esc(clip(x,80))}</span>`).join('')||'—'}</td><td class="rh-status ${/未達|不合格|FAIL/i.test(r.status||'')?'rh-bad':/合格|PASS/i.test(r.status||'')?'rh-good':''}">${esc(r.status||'—')}</td><td><button class="rh-btn" data-rh-view="${esc(r.id)}">查看</button></td></tr>`).join('')}</tbody></table>`;
   }
   box.querySelectorAll('[data-rh-view]').forEach(b=>b.onclick=()=>showRun(b.dataset.rhView,runs));
 }
@@ -139,11 +140,11 @@ function beginPractice(){
 function collectGrid(){
   const grid=$('#sheet .answer-grid')||$('.answer-grid');if(!grid)return{};
   const kids=[...grid.children],out={};
-  for(let i=0;i<kids.length-1;i+=2){const k=clip(kids[i]?.textContent,80),v=clip(kids[i+1]?.textContent,600);if(k&&v)out[k]=v;}
+  for(let i=0;i<kids.length-1;i+=2){const k=plainText(kids[i],80),v=plainText(kids[i+1],600);if(k&&v)out[k]=v;}
   return out;
 }
 function currentQuestion(meta){
-  const q=clean($('#question')?.textContent||$('.question')?.textContent||'');
+  const q=plainText($('#question')||$('.question'),500);
   return clip(q||meta['正確句子']||meta['漢字']||meta['讀音']||'',500);
 }
 function capturePracticeAnswer(btn){
@@ -151,7 +152,7 @@ function capturePracticeAnswer(btn){
   setTimeout(()=>{
     if(!current||current.saved)return;
     const correctBtn=$('#choices .choice.correct');
-    const selected=clip(btn.textContent,600),correct=clip(correctBtn?.textContent||'',600),meta=collectGrid();
+    const selected=plainText(btn,600),correct=plainText(correctBtn,600),meta=collectGrid();
     const ok=btn.classList.contains('correct')&&!btn.classList.contains('wrong')||(selected&&correct&&selected===correct);
     const detail={question:currentQuestion(meta),selected,correct:correct||meta['正確答案']||meta['繁體中文']||meta['正確句子']||'',ok,level:meta['JLPT']||meta['等級']||'',meta};
     const fingerprint=`${detail.question}|${detail.selected}|${current.details.length}`;
@@ -175,9 +176,9 @@ function watchPracticeEnd(){
 function installPractice(){
   document.addEventListener('click',e=>{
     const start=e.target.closest('#start');if(start)beginPractice();
-    const choice=e.target.closest('#choices .choice');if(choice)capturePracticeAnswer(choice);
     const quit=e.target.closest('#quit');if(quit&&current&&!current.saved&&current.details.length)savePractice(true);
-  },false);
+  },true);
+  document.addEventListener('click',e=>{const choice=e.target.closest('#choices .choice');if(choice)capturePracticeAnswer(choice);},false);
   watchPracticeEnd();
 }
 
@@ -194,8 +195,17 @@ async function saveMock(){
   const run={id:current.id,page:PAGE_ID,createdAt:current.createdAt,level:level.match(/N[1-5]/)?.[0]||current.level||level,mode:current.mode,totalScore,status,sections:$$('#scoreGrid .scorebox').map(x=>clip(x.textContent,300)),note:clip($('#resultNote')?.textContent||'',700),durationSec:Math.max(0,Math.round((Date.now()-current.startedAt)/1000)),review:parseMockReview()};
   await putRun(run);renderPanel();
 }
+async function migrateLegacyMock(){
+  const marker='jp_mock_history_migrated_v1';if(localStorage.getItem(marker))return;
+  try{
+    const hist=JSON.parse(localStorage.getItem('jlpt_mock_history')||'[]');
+    if(Array.isArray(hist)){for(const x of hist){if(!x?.at)continue;await putRun({id:`mock-legacy-${x.at}`,page:PAGE_ID,createdAt:x.at,level:x.level||'',mode:x.mode||'',totalScore:Number.isFinite(x.total)?`${x.total} / 180`:'—',status:x.passed?'合格圏':'未達合格圏',sections:[],note:'舊版模擬試驗記錄：當時只保存總分與合格判定。',review:[],legacy:true});}}
+  }catch{}
+  try{localStorage.setItem(marker,'1')}catch{}
+}
 function installMock(){
-  document.addEventListener('click',e=>{if(e.target.closest('#start'))beginMock();},false);
+  migrateLegacyMock().then(renderPanel);
+  document.addEventListener('click',e=>{if(e.target.closest('#start'))beginMock();},true);
   const result=$('#resultPage');if(!result)return;
   const check=()=>{if(visible(result))setTimeout(saveMock,80);};
   new MutationObserver(check).observe(result,{attributes:true,childList:true,subtree:true,attributeFilter:['style','class']});check();
