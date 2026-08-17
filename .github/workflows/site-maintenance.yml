@@ -78,9 +78,9 @@ jobs:
                   try: target.relative_to(root)
                   except ValueError: failures.append(f'{page}: reference escapes repo {raw}'); continue
                   if not target.exists(): failures.append(f'{page}: missing local reference {raw}')
-          required=['site-health.js','conversation.js','conversation-hosted-audio.js','mocktest.js','wordaudio-ai.js','wordaudio-controller.js','wordaudio-data.js','wordaudio-init.js','wordaudio-multivoice.js','wordaudio-player.js','wordaudio-voice.js','wordlist-audio.js','wordlist-voicevox.js','wordlist.js','translator-hosted-voice.js','pronunciation-furigana.js']
+          required=['site-health.js','maintenance-playwright-version.txt','conversation.js','conversation-hosted-audio.js','mocktest.js','wordaudio-ai.js','wordaudio-controller.js','wordaudio-data.js','wordaudio-init.js','wordaudio-multivoice.js','wordaudio-player.js','wordaudio-voice.js','wordlist-audio.js','wordlist-voicevox.js','wordlist.js','translator-hosted-voice.js','pronunciation-furigana.js']
           missing=[x for x in required if not Path(x).is_file()]
-          if missing: failures.append('Missing core JS: '+', '.join(missing))
+          if missing: failures.append('Missing core file: '+', '.join(missing))
           if failures:
               print('\n'.join('FAIL '+x for x in failures),file=sys.stderr); raise SystemExit(1)
           print(f'Static maintenance OK: {len(pages)} pages; resources, IDs and health integration clean.')
@@ -115,8 +115,11 @@ jobs:
       - name: Install Chromium browser test runtime
         id: browser_runtime
         run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          test -n "$PW_VERSION"
+          echo "Using Playwright $PW_VERSION"
           npm init -y >/dev/null 2>&1
-          npm install --silent playwright@1.55.0
+          npm install --silent "playwright@$PW_VERSION"
           npx playwright install --with-deps chromium >/dev/null
 
       - name: Browser smoke test every local HTML page
@@ -168,16 +171,8 @@ jobs:
           python - <<'PY'
           import json,os,datetime
           ok=lambda x:x=='success'
-          status={
-            'version':1,'status':'ok' if os.environ['OVERALL']=='success' else 'error',
-            'checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
-            'runId':int(os.environ['GITHUB_RUN_ID']),'pages':int(os.environ.get('PAGE_COUNT') or 0),
-            'conversation':{'scenes':61,'groups':1525,'lines':3050},'furigana':{'mapped':2677,'unique':2677},
-            'voicevox':{'voices':43,'utterances':2677,'recordings':115111},'supertonic':{'voices':10,'utterances':2677,'recordings':26770},
-            'checks':{'static':ok(os.environ.get('STATIC_OUTCOME')),'browser':ok(os.environ.get('BROWSER_OUTCOME')),'live':ok(os.environ.get('LIVE_OUTCOME'))}
-          }
-          open('maintenance-status.json','w',encoding='utf-8').write(json.dumps(status,ensure_ascii=False,indent=2)+'\n')
-          print(json.dumps(status,ensure_ascii=False))
+          status={'version':1,'status':'ok' if os.environ['OVERALL']=='success' else 'error','checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'runId':int(os.environ['GITHUB_RUN_ID']),'pages':int(os.environ.get('PAGE_COUNT') or 0),'conversation':{'scenes':61,'groups':1525,'lines':3050},'furigana':{'mapped':2677,'unique':2677},'voicevox':{'voices':43,'utterances':2677,'recordings':115111},'supertonic':{'voices':10,'utterances':2677,'recordings':26770},'checks':{'static':ok(os.environ.get('STATIC_OUTCOME')),'browser':ok(os.environ.get('BROWSER_OUTCOME')),'live':ok(os.environ.get('LIVE_OUTCOME'))}}
+          open('maintenance-status.json','w',encoding='utf-8').write(json.dumps(status,ensure_ascii=False,indent=2)+'\n');print(json.dumps(status,ensure_ascii=False))
           PY
           git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add maintenance-status.json
