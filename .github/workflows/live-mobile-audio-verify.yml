@@ -1,0 +1,38 @@
+name: Live mobile hosted audio verification
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.live-mobile-audio-trigger'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-mobile-hosted-audio-verify
+  cancel-in-progress: true
+
+jobs:
+  live-mobile-audio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install WebKit mobile browser runtime
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps webkit >/dev/null
+      - name: Verify live GitHub Pages mobile audio
+        run: |
+          sed 's#http://127.0.0.1:4173#https://kanuli.github.io/japanese-vocab-game#g' .github/mobile-hosted-audio-test.cjs > /tmp/live-mobile-hosted-audio.cjs
+          node /tmp/live-mobile-hosted-audio.cjs
+      - name: Live verification summary
+        run: |
+          echo 'LIVE MOBILE AUDIO PASSED'
+          echo 'GitHub Pages + iPhone/WebKit + real VOICEVOX + real Hosted Supertonic verified.'
