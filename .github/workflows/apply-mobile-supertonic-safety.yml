@@ -1,0 +1,45 @@
+name: Apply mobile Supertonic safety
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-mobile-supertonic.py'
+      - 'mobile-supertonic-guard.js'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-mobile-supertonic-safety
+  cancel-in-progress: false
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply mobile-safe Supertonic policy
+        run: python .github/patch-mobile-supertonic.py
+      - name: Validate patched JavaScript
+        run: |
+          node --check mobile-supertonic-guard.js
+          node --check wordaudio-multivoice.js
+          node --check wordlist-audio.js
+          node --check conversation.js
+          node --check conversation-hosted-audio.js
+      - name: Commit patched pages
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add '*.html' conversation.js conversation-hosted-audio.js .github/workflows/site-maintenance.yml
+          if git diff --cached --quiet; then
+            echo 'No patch changes required.'
+            exit 0
+          fi
+          git commit -m 'Enable mobile-safe hosted audio fallback'
+          git pull --rebase origin main
+          git push origin main
