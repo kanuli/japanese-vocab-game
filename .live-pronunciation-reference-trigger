@@ -1,2 +1,2 @@
-2026-08-17T20:24+08:00
-Verify live iPhone/WebKit pronunciation Supertonic 10 voices and VOICEVOX 43 voices with acoustic scoring reference bytes.
+2026-08-17T20:28+08:00
+Rerun live pronunciation verification with correct post-restore VOICEVOX selector counting.
