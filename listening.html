@@ -25,7 +25,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500}.sheet-b
 </style>
 <script src="./vendor/kuromoji.js"></script>
 <script type="module" src="./vendor/supertonic-browser.js"></script>
-<script src="./mobile-supertonic-guard.js?v=20260817v1"></script>
+<script src="./mobile-supertonic-guard.js?v=20260817v4"></script>
 <script defer src="./site-health.js?v=20260817v1"></script>
 </head>
 <body>
@@ -112,7 +112,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500}.sheet-b
 <div class="footer">題目資料：GitHub 原創 JLPT 風格題 6,690 題 + GitHub Hanabira 基礎例句 3,310 題，共 10,000 筆；遊戲內按日文內容去重。VOICEVOX 以 GitHub Releases 為主來源、Hugging Face Dataset 為自動備援，兩者均不需學習者登入；Supertonic 3、AivisSpeech / Style-Bert-VITS 與裝置日語備援共同組成多聲線播放系統。A/B/C/D 僅顯示繁體中文意思，回答後才顯示日文原句。JLPT 等級屬學習用分類。</div>
 </div>
 
-<script src="./listening-supertonic-hosted.js?v=20260815v1"></script>
+<script src="./listening-supertonic-hosted.js?v=20260817v2"></script>
 <script src="./listening-aivis-hosted.js?v=20260815v2"></script>
 <script>
 (()=>{"use strict";
@@ -174,7 +174,7 @@ function waitMediaReady(a){if(a.readyState>=1)return Promise.resolve();return ne
 async function candidateAudio(c){if(!c.audio||!c.audio.src){c.audio=new Audio(c.url);c.audio.preload="metadata"}await waitMediaReady(c.audio);return c.audio}
 function clearVoicevoxStop(){if(activeVoicevoxStopTimer){clearTimeout(activeVoicevoxStopTimer);activeVoicevoxStopTimer=null}}
 async function playAudioSegment(a,segment,rate){clearVoicevoxStop();a.pause();if(segment){a.currentTime=Math.max(0,segment.start);a.playbackRate=rate;await a.play();const ms=Math.max(80,((segment.end-segment.start)/rate)*1000+80);activeVoicevoxStopTimer=setTimeout(()=>{try{a.pause();a.currentTime=segment.start}catch{}activeVoicevoxStopTimer=null},ms);return}a.currentTime=0;a.playbackRate=rate;await a.play()}
-async function playPreparedVoicevox(prepared,rate=1,forSample=false){let last=null;for(const c of prepared?.candidates||[]){try{const a=await candidateAudio(c);activeAiAudio=a;await playAudioSegment(a,prepared.segment,rate);const meta=prepared.out||{},who=[meta.speaker,meta.style].filter(Boolean).join("／");if(forSample){$("#sampleVoiceStatus").textContent=`✅ 試聽：${who||"VOICEVOX"} · ${c.provider} · ${meta.text||""}`;return true}$("#voicevoxStatus").textContent=c.provider==="Hugging Face 備援"?"✅ GitHub 音訊不可用，已自動切換 Hugging Face 備援。":`✅ VOICEVOX 正在使用 ${c.provider}。`;unlockAfterPlay(`VOICEVOX${who?" · "+who:""} · ${c.provider}`);return true}catch(e){last=e;c.audio=null;activeAiAudio=null}}throw last||new Error("所有 VOICEVOX 音訊來源均無法播放")}
+async function playPreparedVoicevox(prepared,rate=1,forSample=false){let last=null;for(const c of prepared?.candidates||[]){try{const mg=window.MobileSupertonicGuard;if(mg&&mg.isMobile&&mg.playSharedUrl){activeAiAudio=null;await mg.playSharedUrl(c.url,rate,prepared.segment?prepared.segment.start:null,prepared.segment?prepared.segment.end:null);}else{const a=await candidateAudio(c);activeAiAudio=a;await playAudioSegment(a,prepared.segment,rate);}const meta=prepared.out||{},who=[meta.speaker,meta.style].filter(Boolean).join("／");if(forSample){$("#sampleVoiceStatus").textContent=`✅ 試聽：${who||"VOICEVOX"} · ${c.provider} · ${meta.text||""}`;return true}$("#voicevoxStatus").textContent=c.provider==="Hugging Face 備援"?"✅ GitHub 音訊不可用，已自動切換 Hugging Face 備援。":`✅ VOICEVOX 正在使用 ${c.provider}。`;unlockAfterPlay(`VOICEVOX${who?" · "+who:""} · ${c.provider}`);return true}catch(e){last=e;c.audio=null;activeAiAudio=null}}throw last||new Error("所有 VOICEVOX 音訊來源均無法播放")}
 async function playVoicevoxRecord(rec,rate=1,forSample=false){return playPreparedVoicevox({candidates:voicevoxUrls(rec).map(url=>({url,provider:voicevoxProvider(url),audio:null})),segment:null,out:{...rec,source:"VOICEVOX"}},rate,forSample)}
 async function prepareVoicevoxSetupSample(){if(voicevoxFullIndex){const keys=Object.keys(voicevoxFullIndex.speakers||{});let key=selectedVoicevoxSpeaker();if(key==="random"||!voicevoxFullIndex.speakers?.[key])key=keys[0];const qid=Object.keys(voicevoxFullIndex.questions||{})[0];return fullPreparedFor(qid,key)}const name=selectedVoicevoxSpeaker(),rec=Object.values(voicevoxIndex?.items||{}).find(r=>name==="random"||r?.speaker===name);if(!rec)return null;return{candidates:voicevoxUrls(rec).map(url=>({url,provider:voicevoxProvider(url),audio:null})),segment:null,out:{...rec,source:"VOICEVOX"}}}
 async function speakVoicevox(rate=1){try{let p=game.voicevoxPrepared;if(!p&&game.voicevoxPromise)p=await game.voicevoxPromise;if(!p)p=await prepareVoicevoxAudio(game.current);if(!p)throw new Error("此題沒有 VOICEVOX 音訊");game.voicevoxPrepared=p;return await playPreparedVoicevox(p,rate,false)}catch(e){$("#voicevoxStatus").textContent="⚠️ GitHub 與 Hugging Face 的 VOICEVOX 音訊暫時都無法播放；已改用其他語音備援。";return false}}
