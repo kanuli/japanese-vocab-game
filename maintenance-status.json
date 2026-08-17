@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "status": "ok",
+  "checkedAt": "2026-08-17T10:12:12Z",
+  "runId": 32018885967,
+  "pages": 11,
+  "conversation": {"scenes": 61, "groups": 1525, "lines": 3050},
+  "furigana": {"mapped": 2677, "unique": 2677},
+  "voicevox": {"voices": 43, "utterances": 2677, "recordings": 115111},
+  "supertonic": {"voices": 10, "utterances": 2677, "recordings": 26770},
+  "checks": {"static": true, "browser": true, "live": true}
+}
