@@ -6,7 +6,7 @@ function loadVoiceTest(){
   if(/(?:^|\/)(?:mocktest|mock-test)(?:\.html)?(?:$|\/)/.test(path))return;
   if(document.getElementById('siteVoiceTest')||document.querySelector('script[data-site-voice-test]'))return;
   const s=document.createElement('script');
-  s.src=BASE+'site-voice-test.js?v=20260817v1';s.defer=true;s.dataset.siteVoiceTest='1';
+  s.src=BASE+'site-voice-test.js?v=20260817v3';s.defer=true;s.dataset.siteVoiceTest='1';
   (document.head||document.documentElement).appendChild(s);
 }
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
