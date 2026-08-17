@@ -43,9 +43,12 @@ jobs:
             const st=await page.evaluate(async()=>{const o=await PronunciationReferenceAudio.testHosted('supertonic');return{engine:o?.engine,played:o?.played,key:o?.key,label:o?.label,provider:o?.provider,scoreBytes:o?.scoreBytes?.byteLength||0}});
             if(st.engine!=='supertonic'||!st.played||st.scoreBytes<=0)throw Error('ST '+JSON.stringify(st));
             console.log('LIVE PRONUNCIATION SUPERTONIC PASS',JSON.stringify(st));
-            const vv=await page.evaluate(async()=>{const o=await PronunciationReferenceAudio.testHosted('voicevox');return{engine:o?.engine,played:o?.played,key:o?.key,label:o?.label,provider:o?.provider,scoreBytes:o?.scoreBytes?.byteLength||0,voiceCount:document.querySelector('#referenceVoice')?.options.length||0}});
-            if(vv.engine!=='voicevox'||!vv.played||vv.voiceCount<44||vv.scoreBytes<=0)throw Error('VV '+JSON.stringify(vv));
+            const vv=await page.evaluate(async()=>{const o=await PronunciationReferenceAudio.testHosted('voicevox');return{engine:o?.engine,played:o?.played,key:o?.key,label:o?.label,provider:o?.provider,scoreBytes:o?.scoreBytes?.byteLength||0}});
+            if(vv.engine!=='voicevox'||!vv.played||vv.scoreBytes<=0)throw Error('VV '+JSON.stringify(vv));
             console.log('LIVE PRONUNCIATION VOICEVOX PASS',JSON.stringify(vv));
+            const voicevoxOptions=await page.evaluate(async()=>{referenceEngine.value='voicevox';referenceEngine.dispatchEvent(new Event('change'));await PronunciationReferenceAudio.sync();return referenceVoice.options.length;});
+            if(voicevoxOptions<44)throw Error('VOICEVOX selector only '+voicevoxOptions+' options');
+            console.log('LIVE PRONUNCIATION VOICE SELECTOR PASS',JSON.stringify({supertonicOptions:ui.voiceCount,voicevoxOptions}));
             if(errs.length)throw Error('page errors '+errs.join(' | '));
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
