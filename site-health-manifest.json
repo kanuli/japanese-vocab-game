@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "enabled": true,
+  "publishedAt": "2026-08-17T10:38:40Z",
+  "maintenance": "daily",
+  "dependencyCheck": "weekly",
+  "huggingFaceBackupCheck": "daily",
+  "browserHealthCheck": "on-page-open"
+}
