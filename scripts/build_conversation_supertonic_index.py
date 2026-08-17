@@ -32,6 +32,7 @@ for key, label in voices.items():
     asset = m.get('asset') or f'{key}.tar'
     out_voices[key] = {
         'label': label,
+        'asset': asset,
         'codec': m.get('codec', 'mp3'),
         'sampleRate': int(m.get('sampleRate', 44100)),
         'bitrateKbps': int(m.get('bitrateKbps', 96)),
