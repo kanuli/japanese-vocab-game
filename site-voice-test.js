@@ -9,7 +9,7 @@ const CFG={
 const cache={catalog:new Map(),index:new Map()};
 let ctx=null,source=null,audio=null,blobUrl='';
 const isMobile=()=>window.MobileSupertonicGuard?.isMobile===true||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent||'');
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
 const el=id=>document.getElementById(id);
 function stop(){
   try{source?.stop();}catch(_){ } source=null;
@@ -83,10 +83,11 @@ function chooseSample(c){
   return ks[0];
 }
 async function populate(eng){
-  const s=el('svtVoice'),st=el('svtStatus');
+  const s=el('svtVoice'),st=el('svtStatus'),previous=s?.value||'random';
   s.disabled=true;s.innerHTML='<option>聲線資料載入中…</option>';st.textContent=`正在讀取 ${CFG[eng].label} 聲線資料…`;
   const c=await catalog(eng),all=Object.keys(group(c,eng));
   s.innerHTML='<option value="random">🎲 隨機聲線</option>'+all.map(k=>`<option value="${esc(k)}">${esc(voiceName(group(c,eng)[k],k))}</option>`).join('');
+  s.value=(previous==='random'||all.includes(previous))?previous:'random';
   s.disabled=false;st.textContent=`✅ ${CFG[eng].label}：${all.length} 種聲線可測試。`;
   return c;
 }
@@ -122,5 +123,5 @@ function mount(){
   el('svtVoice').addEventListener('focus',()=>{if(el('svtVoice').options.length<=1)populate(el('svtEngine').value).catch(()=>{});},{once:true});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
-window.JapaneseSiteVoiceTest={test,stop,populate,version:'20260817.1'};
+window.JapaneseSiteVoiceTest={test,stop,populate,version:'20260817.2'};
 })();
