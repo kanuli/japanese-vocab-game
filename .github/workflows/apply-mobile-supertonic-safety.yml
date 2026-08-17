@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/patch-mobile-supertonic.py'
       - 'mobile-supertonic-guard.js'
+      - '.mobile-supertonic-safety-trigger'
 
 permissions:
   contents: write
@@ -24,6 +25,8 @@ jobs:
           ref: main
       - name: Apply mobile-safe Supertonic policy
         run: python .github/patch-mobile-supertonic.py
+      - name: Keep maintenance workflow for direct connector update
+        run: git checkout -- .github/workflows/site-maintenance.yml
       - name: Validate patched JavaScript
         run: |
           node --check mobile-supertonic-guard.js
@@ -35,7 +38,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add '*.html' conversation.js conversation-hosted-audio.js .github/workflows/site-maintenance.yml
+          git add '*.html' conversation.js conversation-hosted-audio.js
           if git diff --cached --quiet; then
             echo 'No patch changes required.'
             exit 0
