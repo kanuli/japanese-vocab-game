@@ -1,9 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
   "status": "ok",
-  "checkedAt": "2026-08-17T10:33:48Z",
+  "checkedAt": "2026-08-17T13:44:28Z",
   "dataset": "kanuli1983/japanese-listening-voicevox-backup",
-  "totalFiles": 4264,
+  "totalFiles": 4271,
   "listening": {
     "expected": 3310,
     "found": 3310
@@ -19,6 +19,18 @@
   "vocabularyIndexes": {
     "expected": 43,
     "found": 43
+  },
+  "pronunciationSupertonicOriginal": {
+    "indexStatus": "building",
+    "expectedWhenReady": 100,
+    "found": 7,
+    "enforced": false
+  },
+  "pronunciationVoicevoxOriginal": {
+    "indexStatus": "building",
+    "expectedWhenReady": 215,
+    "found": 0,
+    "enforced": false
   },
   "listeningIndex": true,
   "publicSamples": true,
