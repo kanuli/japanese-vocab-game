@@ -36,7 +36,7 @@ async function probeHosted(page,catalogName,groupName,label){
     const key=Object.keys(group)[0];
     const meta=group[key];
     if(!meta)throw new Error(label+' no voice metadata');
-    const idxUrls=[meta.indexGithubUrl,meta.indexUrl,meta.indexHfUrl].filter(Boolean);
+    const idxUrls=[meta.indexHfUrl,meta.indexGithubUrl,meta.indexUrl].filter(Boolean);
     let idx=null,lastIndexError=null;
     for(const u of idxUrls){
       try{
@@ -52,7 +52,7 @@ async function probeHosted(page,catalogName,groupName,label){
     const row=Object.entries(bundle.members||{})[0];
     if(!row)throw new Error(label+' no bundle member');
     const member=row[1],offset=Number(member[0]),size=Number(member[1]);
-    const urls=[bundle.githubUrl,bundle.hfUrl,bundle.url].filter(Boolean);
+    const urls=[bundle.hfUrl,bundle.githubUrl,bundle.url].filter(Boolean);
     let bytes=null,status=0,usedUrl='',lastRangeError=null;
     for(const url of urls){
       try{
