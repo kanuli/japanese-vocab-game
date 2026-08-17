@@ -1,2 +1,2 @@
-2026-08-17T18:38+08:00
-Validate all pages with the safely upgraded Playwright 1.62.1 maintenance runtime.
+2026-08-17T19:01+08:00
+Validate all desktop and live pages after mobile-only Supertonic hosted fallback rollout.
