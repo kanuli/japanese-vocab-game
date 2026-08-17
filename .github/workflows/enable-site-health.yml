@@ -1,0 +1,50 @@
+name: Enable site health check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/enable-site-health.yml'
+      - 'site-health.js'
+      - 'scripts/patch_site_health.py'
+
+permissions:
+  contents: write
+
+jobs:
+  inject:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Inject lightweight health checker into every root HTML page
+        run: python scripts/patch_site_health.py
+      - name: Validate injection and JavaScript
+        run: |
+          node --check site-health.js
+          python - <<'PY'
+          from pathlib import Path
+          pages=sorted(Path('.').glob('*.html'))
+          assert len(pages)>=11, len(pages)
+          bad=[]
+          for p in pages:
+              s=p.read_text(encoding='utf-8')
+              if s.count('site-health.js')!=1: bad.append((str(p),s.count('site-health.js')))
+          assert not bad,bad
+          print('Site health enabled on',len(pages),'pages')
+          PY
+      - name: Commit verified page integration
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- '*.html'
+          if git diff --cached --quiet; then
+            echo 'All pages already include site health.'
+          else
+            git commit -m 'Enable site health check on all pages'
+            git pull --rebase origin main
+            git push origin main
+          fi
