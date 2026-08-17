@@ -1,0 +1,4 @@
+start=2026-08-17T20:52:00+08:00
+scope=6690x10
+shards=2-per-voice-level
+sdk=supertonic-1.3.1
