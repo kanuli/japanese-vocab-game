@@ -1,0 +1,97 @@
+name: Finalize Pronunciation Hosted Audio — 10,000 coverage
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pronunciation-hosted-finalize
+  cancel-in-progress: false
+
+jobs:
+  check-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      ready: ${{ steps.check.outputs.ready }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - id: check
+        name: Validate combined 10,000 hosted coverage
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          def load(p): return json.loads(Path(p).read_text(encoding='utf-8'))
+          old_st=load('listening-supertonic-index.json')
+          new_st=load('pronunciation-supertonic-original-index.json')
+          old_vv=load('voicevox-full-index.json')
+          new_vv=load('pronunciation-voicevox-original-index.json')
+          ready=(new_st.get('status')=='ready' and new_vv.get('status')=='ready')
+          if ready:
+              assert old_st.get('questionCount')==3310 and old_st.get('voiceCount')==10 and old_st.get('recordingCount')==33100
+              assert new_st.get('questionCount')==6690 and new_st.get('voiceCount')==10 and new_st.get('recordingCount')==66900
+              assert old_vv.get('indexed')==3310 and old_vv.get('speakerCount')==43 and old_vv.get('recordingCount')==142330
+              assert new_vv.get('questionCount')==6690 and new_vv.get('speakerCount')==43 and new_vv.get('recordingCount')==287670
+              assert {v.get('questionCount') for v in new_st.get('voices',{}).values()}=={6690}
+              assert {v.get('questionCount') for v in new_vv.get('speakers',{}).values()}=={6690}
+              print('FULL READY: Supertonic 10x10,000=100,000; VOICEVOX 43x10,000=430,000')
+          else:
+              print('Still building:',new_st.get('status'),new_vv.get('status'))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('ready='+('true' if ready else 'false')+'\n')
+          PY
+      - name: Publish ready status and cache-bust
+        if: steps.check.outputs.ready == 'true'
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('pronunciation.html');s=p.read_text(encoding='utf-8')
+          s=s.replace('pronunciation-reference-audio.js?v=20260817v1','pronunciation-reference-audio.js?v=20260817v3')
+          s=s.replace('pronunciation-reference-audio.js?v=20260817v2','pronunciation-reference-audio.js?v=20260817v3')
+          p.write_text(s,encoding='utf-8')
+          status={'version':1,'status':'ready','sentenceCount':10000,'supertonic':{'voices':10,'recordings':100000},'voicevox':{'voices':43,'recordings':430000},'fallbackForDatabaseSentences':False}
+          Path('pronunciation-hosted-status.json').write_text(json.dumps(status,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
+          assert 'pronunciation-reference-audio.js?v=20260817v3' in s
+          PY
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pronunciation.html pronunciation-hosted-status.json
+          if git diff --cached --quiet; then echo 'Already published'; else git commit -m 'Mark pronunciation hosted audio 10,000 ready'; git pull --rebase origin main; git push origin main; fi
+
+  deploy:
+    needs: check-and-publish
+    if: needs.check-and-publish.outputs.ready == 'true'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - name: Re-validate pronunciation production state
+        run: |
+          python - <<'PY'
+          import json
+          st=json.load(open('pronunciation-supertonic-original-index.json',encoding='utf-8'))
+          vv=json.load(open('pronunciation-voicevox-original-index.json',encoding='utf-8'))
+          ps=json.load(open('pronunciation-hosted-status.json',encoding='utf-8'))
+          assert st['recordingCount']==66900 and vv['recordingCount']==287670
+          assert ps['status']=='ready' and ps['sentenceCount']==10000
+          print('Pronunciation hosted 10k validated for deploy')
+          PY
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: '.'
+      - id: deployment
+        uses: actions/deploy-pages@v4
