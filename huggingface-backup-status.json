@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "status": "checking",
+  "checkedAt": null,
+  "dataset": "kanuli1983/japanese-listening-voicevox-backup",
+  "listening": {"expected": 3310, "found": null},
+  "conversation": {"expected": 43, "found": null},
+  "vocabularyBundles": {"expected": 215, "found": null},
+  "vocabularyIndexes": {"expected": 43, "found": null},
+  "publicSamples": false
+}
