@@ -12,23 +12,31 @@ from supertonic import TTS
 VOICE = os.environ.get('VOICE', '').strip()
 CATALOG = Path(os.environ.get('CATALOG', 'conversation-audio-catalog.json'))
 OUT_DIR = Path(os.environ.get('OUT_DIR', 'conversation-supertonic-out'))
+SHARD_COUNT = max(1, int(os.environ.get('SHARD_COUNT', '1')))
+SHARD_INDEX = int(os.environ.get('SHARD_INDEX', '0'))
 
 if VOICE not in {'F1','F2','F3','F4','F5','M1','M2','M3','M4','M5'}:
     raise SystemExit(f'Invalid VOICE: {VOICE!r}')
 if not CATALOG.is_file():
     raise SystemExit(f'Catalog not found: {CATALOG}')
+if SHARD_INDEX < 0 or SHARD_INDEX >= SHARD_COUNT:
+    raise SystemExit(f'Invalid shard {SHARD_INDEX}/{SHARD_COUNT}')
 
 catalog = json.loads(CATALOG.read_text(encoding='utf-8'))
-lines = catalog.get('lines') or {}
-if len(lines) < 2600:
-    raise SystemExit(f'Expected expanded conversation catalog with at least 2600 utterances, got {len(lines)}')
+all_lines = catalog.get('lines') or {}
+if len(all_lines) < 2600:
+    raise SystemExit(f'Expected expanded conversation catalog with at least 2600 utterances, got {len(all_lines)}')
+all_items = list(all_lines.items())
+lines = dict(all_items[SHARD_INDEX::SHARD_COUNT]) if SHARD_COUNT > 1 else all_lines
+if not lines:
+    raise SystemExit(f'No lines selected for shard {SHARD_INDEX}/{SHARD_COUNT}')
 label = (catalog.get('voices') or {}).get(VOICE, VOICE)
 
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 tar_path = OUT_DIR / f'{VOICE}.tar'
 manifest_path = OUT_DIR / f'{VOICE}.json'
 
-# One Supertonic 3 model instance is reused for the complete expanded catalog.
+# One Supertonic 3 model instance is reused for this complete catalog or shard.
 tts = TTS(auto_download=True)
 style = tts.get_voice_style(voice_name=VOICE)
 sample_rate = int(getattr(tts, 'sample_rate', 44100) or 44100)
@@ -53,14 +61,12 @@ def _synth(text, speed):
     )
 
 def _split_clauses(text):
-    # Prefer natural Japanese sentence/clause boundaries while keeping punctuation.
     parts = [x.strip() for x in re.findall(r'.+?(?:[。！？!?]|$)', text) if x.strip()]
     if len(parts) > 1:
         return parts
     parts = [x.strip() for x in re.findall(r'.+?(?:[、，,；;：:]|$)', text) if x.strip()]
     if len(parts) > 1:
         return parts
-    # Last-resort split near the middle at a safe character boundary.
     if len(text) >= 12:
         mid = len(text) // 2
         return [text[:mid].strip(), text[mid:].strip()]
@@ -83,18 +89,13 @@ def synthesize_resilient(uid, text):
         raise RuntimeError(f'{VOICE} {uid}: all synthesis retries failed: {failures[-3:]}')
 
     rendered = []
-    durations = []
     used_speeds = []
     for i, piece in enumerate(pieces, 1):
         piece_ok = False
         for speed in DIRECT_SPEEDS:
             try:
-                wav, duration = _synth(piece, speed)
+                wav, _duration = _synth(piece, speed)
                 rendered.append(np.asarray(wav, dtype=np.float32))
-                try:
-                    durations.append(float(np.asarray(duration).reshape(-1)[0]))
-                except Exception:
-                    durations.append(rendered[-1].shape[-1] / sample_rate)
                 used_speeds.append(speed)
                 piece_ok = True
                 break
@@ -142,8 +143,9 @@ with tempfile.TemporaryDirectory(prefix=f'supertonic-{VOICE}-') as td:
             raise SystemExit(f'Invalid MP3 for {uid}')
         wav_path.unlink(missing_ok=True)
         mp3_files.append((uid, mp3_path))
-        if n % 100 == 0 or n == len(lines):
-            print(f'{VOICE}: generated {n}/{len(lines)}')
+        if n % 50 == 0 or n == len(lines):
+            prefix=f'shard {SHARD_INDEX+1}/{SHARD_COUNT} ' if SHARD_COUNT>1 else ''
+            print(f'{VOICE}: {prefix}generated {n}/{len(lines)}')
 
     with tarfile.open(tar_path, 'w') as tf:
         for uid, path in mp3_files:
@@ -166,7 +168,8 @@ if set(members) != set(lines):
     missing = sorted(set(lines) - set(members))[:10]
     extra = sorted(set(members) - set(lines))[:10]
     raise SystemExit(f'TAR member mismatch missing={missing} extra={extra}')
-if tar_path.stat().st_size < 500000:
+min_size = 100000 if SHARD_COUNT > 1 else 500000
+if tar_path.stat().st_size < min_size:
     raise SystemExit('TAR unexpectedly small')
 
 manifest = {
@@ -182,9 +185,11 @@ manifest = {
     'synthesisSpeed': 1.0,
     'asset': tar_path.name,
     'count': len(members),
+    'shardIndex': SHARD_INDEX,
+    'shardCount': SHARD_COUNT,
     'fallbackCount': len(fallbacks),
     'fallbacks': fallbacks,
     'members': members,
 }
 manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, separators=(',', ':')) + '\n', encoding='utf-8')
-print(f'Built {tar_path} ({tar_path.stat().st_size:,} bytes), {len(members)} recordings, {len(fallbacks)} resilient fallbacks')
+print(f'Built {tar_path} ({tar_path.stat().st_size:,} bytes), {len(members)} recordings, {len(fallbacks)} resilient fallbacks, shard {SHARD_INDEX+1}/{SHARD_COUNT}')
