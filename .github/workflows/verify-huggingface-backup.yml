@@ -1,0 +1,77 @@
+name: Verify Hugging Face audio backup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7 4 * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-huggingface-backup.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: huggingface-backup-integrity
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Hugging Face client
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Inspect public dataset files and samples
+        id: inspect
+        env:
+          HF_REPO: kanuli1983/japanese-listening-voicevox-backup
+        run: |
+          python - <<'PY'
+          from huggingface_hub import HfApi,hf_hub_url
+          import json,datetime,urllib.request,os
+          repo=os.environ['HF_REPO']; api=HfApi(); files=api.list_repo_files(repo_id=repo,repo_type='dataset')
+          listening=[x for x in files if x.startswith('voicevox/') and x.endswith('.mp3')]
+          conversation=[x for x in files if x.startswith('conversation/voicevox/v2/') and x.endswith('.tar')]
+          vocab=[x for x in files if x.startswith('voicevox-vocab/v1/') and x.endswith('.tar')]
+          vidx=[x for x in files if x.startswith('voicevox-vocab/v1/indexes/') and x.endswith('-index.json')]
+          root_index='voicevox-release-index.json' in files
+          samples=[]
+          for group in (listening,conversation,vocab,vidx):
+              if group: samples.append(group[0])
+          sample_ok=True; sample_errors=[]
+          for path in samples:
+              try:
+                  url=hf_hub_url(repo_id=repo,filename=path,repo_type='dataset')
+                  req=urllib.request.Request(url,headers={'Range':'bytes=0-255','User-Agent':'japanese-site-hf-health/1.0'})
+                  with urllib.request.urlopen(req,timeout=45) as r:
+                      b=r.read(256)
+                      if not b: raise RuntimeError('empty response')
+              except Exception as e:
+                  sample_ok=False; sample_errors.append(f'{path}: {e}')
+          ok=(len(listening)>=3310 and len(conversation)>=43 and len(vocab)>=215 and len(vidx)>=43 and root_index and sample_ok)
+          d={'version':1,'status':'ok' if ok else 'error','checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'dataset':repo,'totalFiles':len(files),'listening':{'expected':3310,'found':len(listening)},'conversation':{'expected':43,'found':len(conversation)},'vocabularyBundles':{'expected':215,'found':len(vocab)},'vocabularyIndexes':{'expected':43,'found':len(vidx)},'listeningIndex':root_index,'publicSamples':sample_ok,'sampleErrors':sample_errors[:5]}
+          open('huggingface-backup-status.json','w',encoding='utf-8').write(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
+          print(json.dumps(d,ensure_ascii=False,indent=2))
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('healthy='+('true' if ok else 'false')+'\n')
+          PY
+      - name: Publish Hugging Face health status
+        run: |
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add huggingface-backup-status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Update Hugging Face backup health status'
+          git pull --rebase origin main
+          git push origin main
+      - name: Enforce complete public backup
+        if: steps.inspect.outputs.healthy != 'true'
+        run: |
+          echo 'Hugging Face backup is incomplete or not publicly readable. See huggingface-backup-status.json.' >&2
+          exit 1
