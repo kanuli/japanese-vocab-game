@@ -96,10 +96,10 @@ jobs:
             const r=await page.goto('http://127.0.0.1:4173/wordaudio.html?realMobileAudio='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
             if(!r||r.status()>=400)throw new Error('wordaudio HTTP '+(r?.status()||'none'));
             await page.waitForTimeout(1200);
-            await page.tap('body',{position:{x:30,y:30}});
-            await page.waitForTimeout(250);
+            await page.touchscreen.tap(30,30);
+            await page.waitForTimeout(350);
             const base=await page.evaluate(()=>({mode:document.documentElement.dataset.mobileSupertonic,guard:window.MobileSupertonicGuard?.audioState?.(),version:window.MobileSupertonicGuard?.version,engine:document.querySelector('#audioEngine')?.value}));
-            if(base.mode!=='hosted-only'||base.version<4||base.engine!=='voicevox')throw new Error('mobile setup '+JSON.stringify(base));
+            if(base.mode!=='hosted-only'||base.version<4||base.engine!=='voicevox'||base.guard?.unlockRequested!==true)throw new Error('mobile setup '+JSON.stringify(base));
             console.log('UNLOCK STATE',JSON.stringify(base));
 
             async function probe(catalogName,groupName,label){
@@ -131,9 +131,9 @@ jobs:
               const q=await context.newPage(),errs=[];q.on('pageerror',e=>errs.push(String(e)));
               const rr=await q.goto('http://127.0.0.1:4173/'+p+'?mobileAudio='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
               if(!rr||rr.status()>=400)throw new Error(p+' HTTP '+(rr?.status()||'none'));
-              await q.waitForTimeout(1200);await q.tap('body',{position:{x:25,y:25}});await q.waitForTimeout(150);
+              await q.waitForTimeout(1200);await q.touchscreen.tap(25,25);await q.waitForTimeout(250);
               const s=await q.evaluate(()=>({mode:document.documentElement.dataset.mobileSupertonic,version:window.MobileSupertonicGuard?.version,state:window.MobileSupertonicGuard?.audioState?.(),local:window.MobileSupertonicGuard?.localAllowed}));
-              if(s.mode!=='hosted-only'||s.version<4||s.local!==false||errs.length)throw new Error(p+' '+JSON.stringify({s,errs}));
+              if(s.mode!=='hosted-only'||s.version<4||s.local!==false||s.state?.unlockRequested!==true||errs.length)throw new Error(p+' '+JSON.stringify({s,errs}));
               console.log('MOBILE PAGE PASS',p,JSON.stringify(s));await q.close();
             }
             await browser.close();
