@@ -19,6 +19,7 @@ on:
       - 'conversation.html'
       - 'pronunciation.html'
       - 'translator.html'
+      - '.github/mobile-hosted-audio-test.cjs'
       - '.mobile-hosted-playback-trigger'
       - '.mobile-supertonic-safety-trigger'
 
@@ -46,6 +47,7 @@ jobs:
           node --check listening-supertonic-hosted.js
           node --check conversation-hosted-audio.js
           node --check translator-hosted-voice.js
+          node --check .github/mobile-hosted-audio-test.cjs
           python - <<'PY'
           import json
           from pathlib import Path
@@ -82,69 +84,12 @@ jobs:
           echo $! >/tmp/mobile-http.pid
           trap 'kill $(cat /tmp/mobile-http.pid) 2>/dev/null || true' EXIT
           for i in {1..30}; do curl -fsS http://127.0.0.1:4173/wordaudio.html >/dev/null && break; sleep 1; done
-          cat >/tmp/mobile-hosted-audio.cjs <<'NODE'
-          const {webkit}=require(process.cwd()+'/node_modules/playwright');
-          const timeout=(p,ms,label)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error(label+' timeout')),ms))]);
-          (async()=>{
-            const browser=await webkit.launch({headless:true});
-            const context=await browser.newContext({
-              userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1',
-              viewport:{width:390,height:844},hasTouch:true,isMobile:true,serviceWorkers:'block'
-            });
-            const page=await context.newPage();
-            const errors=[];page.on('pageerror',e=>errors.push(String(e)));
-            const r=await page.goto('http://127.0.0.1:4173/wordaudio.html?realMobileAudio='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
-            if(!r||r.status()>=400)throw new Error('wordaudio HTTP '+(r?.status()||'none'));
-            await page.waitForTimeout(1200);
-            await page.touchscreen.tap(30,30);
-            await page.waitForTimeout(350);
-            const base=await page.evaluate(()=>({mode:document.documentElement.dataset.mobileSupertonic,guard:window.MobileSupertonicGuard?.audioState?.(),version:window.MobileSupertonicGuard?.version,engine:document.querySelector('#audioEngine')?.value}));
-            if(base.mode!=='hosted-only'||base.version<4||base.engine!=='voicevox'||base.guard?.unlockRequested!==true)throw new Error('mobile setup '+JSON.stringify(base));
-            console.log('UNLOCK STATE',JSON.stringify(base));
-
-            async function probe(catalogName,groupName,label){
-              return page.evaluate(async ({catalogName,groupName,label})=>{
-                const g=window.MobileSupertonicGuard;if(!g?.playHostedBytes)throw new Error('shared player missing');
-                const cat=await fetch('./'+catalogName+'?probe='+Date.now(),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(label+' catalog HTTP '+r.status);return r.json()});
-                if(cat.status!=='ready')throw new Error(label+' catalog not ready');
-                const group=cat[groupName]||{},key=Object.keys(group)[0],meta=group[key];if(!meta)throw new Error(label+' no voice metadata');
-                const idxUrl=meta.indexGithubUrl||meta.indexUrl||meta.indexHfUrl;if(!idxUrl)throw new Error(label+' no index URL');
-                const idx=await fetch(idxUrl,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(label+' index HTTP '+r.status);return r.json()});
-                const bundle=Object.values(idx.bundles||{})[0];if(!bundle)throw new Error(label+' no bundle');
-                const row=Object.entries(bundle.members||{})[0];if(!row)throw new Error(label+' no bundle member');
-                const member=row[1],offset=Number(member[0]),size=Number(member[1]),url=bundle.githubUrl||bundle.hfUrl||bundle.url;if(!url||!size)throw new Error(label+' invalid bundle member');
-                const resp=await fetch(url,{headers:{Range:'bytes='+offset+'-'+(offset+size-1)},cache:'no-store'});
-                const len=Number(resp.headers.get('content-length')||0);if(resp.status!==206&&!(resp.status===200&&len===size))throw new Error(label+' Range HTTP '+resp.status+' len '+len+' expected '+size);
-                const bytes=await resp.arrayBuffer();if(bytes.byteLength!==size)throw new Error(label+' bytes '+bytes.byteLength+'/'+size);
-                const started=performance.now();const out=await g.playHostedBytes(bytes,1);return{label,key,status:resp.status,size,backend:out?.backend||'',ms:Math.round(performance.now()-started),state:g.audioState()};
-              },{catalogName,groupName,label});
-            }
-            const vv=await timeout(probe('word-voicevox-catalog.json','speakers','VOICEVOX'),20000,'VOICEVOX real playback');
-            console.log('REAL AUDIO PASS',JSON.stringify(vv));
-            const st=await timeout(probe('word-supertonic3-catalog.json','voices','Supertonic'),20000,'Supertonic real playback');
-            console.log('REAL AUDIO PASS',JSON.stringify(st));
-            if(!vv.backend||!st.backend)throw new Error('missing playback backend');
-            if(errors.length)throw new Error(errors.join(' | '));
-
-            const other=['wordlist.html','listening.html','conversation.html','pronunciation.html','translator.html'];
-            for(const p of other){
-              const q=await context.newPage(),errs=[];q.on('pageerror',e=>errs.push(String(e)));
-              const rr=await q.goto('http://127.0.0.1:4173/'+p+'?mobileAudio='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
-              if(!rr||rr.status()>=400)throw new Error(p+' HTTP '+(rr?.status()||'none'));
-              await q.waitForTimeout(1200);await q.touchscreen.tap(25,25);await q.waitForTimeout(250);
-              const s=await q.evaluate(()=>({mode:document.documentElement.dataset.mobileSupertonic,version:window.MobileSupertonicGuard?.version,state:window.MobileSupertonicGuard?.audioState?.(),local:window.MobileSupertonicGuard?.localAllowed}));
-              if(s.mode!=='hosted-only'||s.version<4||s.local!==false||s.state?.unlockRequested!==true||errs.length)throw new Error(p+' '+JSON.stringify({s,errs}));
-              console.log('MOBILE PAGE PASS',p,JSON.stringify(s));await q.close();
-            }
-            await browser.close();
-          })().catch(e=>{console.error('MOBILE HOSTED AUDIO FAIL',e);process.exit(1)});
-          NODE
-          node /tmp/mobile-hosted-audio.cjs
+          node .github/mobile-hosted-audio-test.cjs
 
       - name: Mobile hosted audio summary
         run: |
           echo 'MOBILE HOSTED AUDIO PASSED'
-          echo 'iPhone/WebKit: first-touch audio unlock verified'
+          echo 'iPhone/WebKit: real button tap unlock verified'
           echo 'VOICEVOX: real catalog -> index -> Range bytes -> shared player verified'
           echo 'Supertonic: real catalog -> index -> Range bytes -> shared player verified'
           echo 'Local 400 MB Supertonic remains disabled only on mobile'
