@@ -5,7 +5,7 @@ function loadPageVoiceAudition(){
   const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
   const allowed=new Set(['wordaudio.html','wordlist.html','listening.html','conversation.html','pronunciation.html','translator.html']);
   if(!allowed.has(page)||document.querySelector('script[data-page-voice-audition]'))return;
-  const s=document.createElement('script');s.src=BASE+'page-voice-audition.js?v=20260818v1';s.defer=true;s.dataset.pageVoiceAudition='1';(document.head||document.documentElement).appendChild(s);
+  const s=document.createElement('script');s.src=BASE+'page-voice-audition.js?v=20260817v5';s.defer=true;s.dataset.pageVoiceAudition='1';(document.head||document.documentElement).appendChild(s);
 }
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function mount(){
