@@ -1,0 +1,146 @@
+name: Generate Pronunciation Supertonic — remaining 6,690 × 10 voices
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.pronunciation-supertonic-original-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: pronunciation-supertonic-original-v1
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/build_pronunciation_original_audio_catalog.py
+      - name: Validate 6,690 catalog
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('pronunciation-original-audio-catalog.json',encoding='utf-8'))
+          assert d['questionCount']==6690 and len(d['questions'])==6690
+          assert set(d['levels'])=={'N1','N2','N3','N4','N5'}
+          print(d['levels'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pronunciation-original-audio-catalog
+          path: pronunciation-original-audio-catalog.json
+          retention-days: 3
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Pronunciation Supertonic — remaining 6,690 sentences' --notes 'Hosted Supertonic 3 audio for the 6,690 original pronunciation sentences. Two shards per voice/level, 10 voices.'
+
+  generate:
+    needs: [catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        voice: [F1,F2,F3,F4,F5,M1,M2,M3,M4,M5]
+        level: [N1,N2,N3,N4,N5]
+        shard: [0,1]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: pronunciation-original-audio-catalog
+          path: .
+      - name: Install Supertonic 3.1 runtime and ffmpeg
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.3.1' 'numpy<3'
+      - name: Generate resilient shard
+        env:
+          VOICE: ${{ matrix.voice }}
+          LEVEL: ${{ matrix.level }}
+          SHARD_COUNT: '2'
+          SHARD_INDEX: ${{ matrix.shard }}
+          OUT_DIR: pronunciation-supertonic-original-out
+        run: python scripts/generate_pronunciation_supertonic_original_shard.py
+      - name: Validate TAR and publish to both stores
+        env:
+          V: ${{ matrix.voice }}
+          L: ${{ matrix.level }}
+          P: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          v,l,p=os.environ['V'],os.environ['L'],os.environ['P']
+          m=json.load(open(f'pronunciation-supertonic-original-out/{v}-{l}-p{p}.json',encoding='utf-8'))
+          assert m['count']>0 and len(m['members'])==m['count']
+          tar=Path('pronunciation-supertonic-original-out')/m['asset']; assert tar.is_file() and tar.stat().st_size>100000
+          with tarfile.open(tar,'r:') as tf: assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
+          print('Validated',v,l,p,m['count'],'fallbacks',m['fallbackCount'])
+          PY
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          ASSET="$V-$L-p$P.tar"
+          hf upload "$HF_DATASET_REPO" "pronunciation-supertonic-original-out/$ASSET" "pronunciation/supertonic/original-v1/$ASSET" --repo-type dataset --commit-message "Pronunciation Supertonic $V $L p$P"
+          gh release upload "$RELEASE_TAG" "pronunciation-supertonic-original-out/$ASSET" --clobber
+          mkdir -p manifest-artifact && cp "pronunciation-supertonic-original-out/$V-$L-p$P.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pronunciation-supertonic-manifest-${{ matrix.voice }}-${{ matrix.level }}-p${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+
+  finalize:
+    needs: [catalog,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: pronunciation-original-audio-catalog
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pronunciation-supertonic-manifest-*
+          path: pronunciation-supertonic-original-manifests
+          merge-multiple: true
+      - name: Build complete 66,900-recording index
+        run: |
+          test "$(find pronunciation-supertonic-original-manifests -name '*.json' | wc -l)" -eq 100
+          python scripts/build_pronunciation_supertonic_original_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('pronunciation-supertonic-original-index.json',encoding='utf-8'))
+          assert d['status']=='ready' and d['questionCount']==6690 and d['voiceCount']==10 and d['recordingCount']==66900
+          assert {v['questionCount'] for v in d['voices'].values()}=={6690}
+          print('READY Supertonic:',d['recordingCount'])
+          PY
+      - name: Publish final index atomically
+        run: |
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pronunciation-supertonic-original-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish pronunciation Supertonic 6,690 index'; git pull --rebase origin main; git push origin main; fi
