@@ -9,7 +9,7 @@ const CFG={
 const cache={catalog:new Map(),index:new Map()};
 let ctx=null,source=null,audio=null,blobUrl='';
 const isMobile=()=>window.MobileSupertonicGuard?.isMobile===true||/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent||'');
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const el=id=>document.getElementById(id);
 function stop(){
   try{source?.stop();}catch(_){ } source=null;
@@ -123,5 +123,5 @@ function mount(){
   el('svtVoice').addEventListener('focus',()=>{if(el('svtVoice').options.length<=1)populate(el('svtEngine').value).catch(()=>{});},{once:true});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount,{once:true});else mount();
-window.JapaneseSiteVoiceTest={test,stop,populate,version:'20260817.2'};
+window.JapaneseSiteVoiceTest={test,stop,populate,version:'20260817.3'};
 })();
