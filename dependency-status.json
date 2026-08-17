@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "status": "pending",
+  "checkedAt": null,
+  "playwright": {"current": "1.55.0", "latest": null, "autoUpdate": "test-then-update"},
+  "githubActions": {},
+  "voicevoxEngine": {"latest": null, "policy": "report-only-for-hosted-audio"},
+  "supertonic": {"policy": "pinned", "reason": "Production browser and hosted audio are validated; no blind automatic upgrade."}
+}
