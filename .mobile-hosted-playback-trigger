@@ -1,2 +1,2 @@
-2026-08-17T19:26+08:00
-Rerun iPhone-WebKit hosted audio validation with real touchscreen input.
+2026-08-17T19:30+08:00
+Run iPhone-WebKit hosted audio validation using a real hit-testable button tap.
