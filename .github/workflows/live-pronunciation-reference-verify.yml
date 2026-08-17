@@ -1,0 +1,58 @@
+name: Live pronunciation reference audio verification
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.live-pronunciation-reference-trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install WebKit
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps webkit >/dev/null
+      - name: Verify live pronunciation Supertonic and VOICEVOX
+        run: |
+          cat >/tmp/live-pronunciation.cjs <<'NODE'
+          const {webkit}=require(process.cwd()+'/node_modules/playwright');
+          (async()=>{
+            const browser=await webkit.launch({headless:true});
+            const context=await browser.newContext({
+              userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1',
+              viewport:{width:390,height:844},hasTouch:true,isMobile:true,serviceWorkers:'block'
+            });
+            const page=await context.newPage();const errs=[];page.on('pageerror',e=>errs.push(String(e)));
+            const url='https://kanuli.github.io/japanese-vocab-game/pronunciation.html?liveRef='+Date.now();
+            const r=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});if(!r||r.status()>=400)throw Error('HTTP '+(r?.status()||'none'));
+            await page.waitForFunction(()=>window.PronunciationReferenceAudio&&document.querySelector('#referenceEngine')&&document.querySelector('#referenceVoice')?.options.length>=11,null,{timeout:25000});
+            await page.evaluate(()=>{const b=document.createElement('button');b.id='__liveUnlock';b.textContent='unlock';b.style.cssText='position:fixed;left:8px;top:8px;width:120px;height:70px;z-index:2147483647';document.body.appendChild(b)});
+            await page.locator('#__liveUnlock').tap();await page.waitForTimeout(350);
+            const ui=await page.evaluate(()=>({engine:referenceEngine.value,voiceCount:referenceVoice.options.length,mobile:MobileSupertonicGuard.isMobile,local:MobileSupertonicGuard.localAllowed,state:MobileSupertonicGuard.audioState()}));
+            if(ui.engine!=='supertonic'||ui.voiceCount<11||!ui.mobile||ui.local!==false||ui.state.audioContextState!=='running')throw Error('UI '+JSON.stringify(ui));
+            const st=await page.evaluate(async()=>{const o=await PronunciationReferenceAudio.testHosted('supertonic');return{engine:o?.engine,played:o?.played,key:o?.key,label:o?.label,provider:o?.provider,scoreBytes:o?.scoreBytes?.byteLength||0}});
+            if(st.engine!=='supertonic'||!st.played||st.scoreBytes<=0)throw Error('ST '+JSON.stringify(st));
+            console.log('LIVE PRONUNCIATION SUPERTONIC PASS',JSON.stringify(st));
+            const vv=await page.evaluate(async()=>{const o=await PronunciationReferenceAudio.testHosted('voicevox');return{engine:o?.engine,played:o?.played,key:o?.key,label:o?.label,provider:o?.provider,scoreBytes:o?.scoreBytes?.byteLength||0,voiceCount:document.querySelector('#referenceVoice')?.options.length||0}});
+            if(vv.engine!=='voicevox'||!vv.played||vv.voiceCount<44||vv.scoreBytes<=0)throw Error('VV '+JSON.stringify(vv));
+            console.log('LIVE PRONUNCIATION VOICEVOX PASS',JSON.stringify(vv));
+            if(errs.length)throw Error('page errors '+errs.join(' | '));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          node /tmp/live-pronunciation.cjs
+      - name: Summary
+        run: |
+          echo 'LIVE PRONUNCIATION REFERENCE AUDIO PASSED'
+          echo 'Supertonic 10 voices: live mobile playback + acoustic scoring reference verified.'
+          echo 'VOICEVOX 43 voices: live mobile playback + Supertonic acoustic scoring reference verified.'
