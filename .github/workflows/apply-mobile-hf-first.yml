@@ -1,0 +1,54 @@
+name: Apply mobile Hugging Face first audio fix
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/patch-mobile-hf-first.py'
+      - '.mobile-hf-first-trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-mobile-hf-first
+  cancel-in-progress: false
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply mobile HF-first source ordering
+        run: python .github/patch-mobile-hf-first.py
+      - name: Validate patched clients
+        run: |
+          node --check wordaudio-multivoice.js
+          node --check wordlist-voicevox.js
+          node --check listening-supertonic-hosted.js
+          node --check conversation-hosted-audio.js
+          node --check translator-hosted-voice.js
+          python - <<'PY'
+          from pathlib import Path
+          assert 'mobileFirst' in Path('conversation-hosted-audio.js').read_text(encoding='utf-8')
+          assert 'mobileFirst' in Path('translator-hosted-voice.js').read_text(encoding='utf-8')
+          assert 'indexHfUrl' in Path('wordaudio-multivoice.js').read_text(encoding='utf-8')
+          assert 'mobileCandidates' in Path('listening.html').read_text(encoding='utf-8')
+          print('Mobile HF-first clients validated.')
+          PY
+      - name: Commit HF-first mobile sources
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add wordaudio-multivoice.js wordlist-voicevox.js listening-supertonic-hosted.js conversation-hosted-audio.js translator-hosted-voice.js listening.html
+          if git diff --cached --quiet; then
+            echo 'No HF-first changes required.'
+            exit 0
+          fi
+          git commit -m 'Prefer CORS-safe hosted audio sources on mobile'
+          git pull --rebase origin main
+          git push origin main
