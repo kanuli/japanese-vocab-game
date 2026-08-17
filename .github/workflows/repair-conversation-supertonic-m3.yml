@@ -1,0 +1,132 @@
+name: Repair Conversation Supertonic M3 and finalize v2
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.conversation-supertonic-m3-repair-trigger'
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+env:
+  SOURCE_RUN_ID: '31891262001'
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: conversation-supertonic-v2
+  HF_FOLDER: conversation/supertonic/v2
+
+jobs:
+  repair-and-finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build and validate current 61-scene catalog
+        run: |
+          node scripts/build_conversation_audio_catalog.mjs
+          node - <<'NODE'
+          const d=require('./conversation-audio-catalog.json');
+          if(d.version!==3||d.sceneCount!==61||d.conversationCount!==1525||d.sourceLineCount!==3050||d.utteranceCount!==2677||d.voiceCount!==10)throw new Error(JSON.stringify(d));
+          console.log('Catalog OK:',d.sceneCount,d.conversationCount,d.utteranceCount);
+          NODE
+
+      - name: Download the nine already-successful manifests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p conversation-supertonic-manifests
+          for v in F1 F2 F3 F4 F5 M1 M2 M4 M5; do
+            mkdir -p "old-$v"
+            gh run download "$SOURCE_RUN_ID" -n "conversation-supertonic-v2-manifest-$v" -D "old-$v"
+            test -f "old-$v/$v.json"
+            cp "old-$v/$v.json" "conversation-supertonic-manifests/$v.json"
+          done
+          test "$(find conversation-supertonic-manifests -maxdepth 1 -name '*.json' | wc -l)" -eq 9
+
+      - name: Install current Supertonic SDK and ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.3.1'
+          python - <<'PY'
+          import supertonic
+          print('Supertonic package:',getattr(supertonic,'__version__','1.3.1'))
+          PY
+
+      - name: Generate repaired complete M3 bundle
+        env:
+          VOICE: M3
+          CATALOG: conversation-audio-catalog.json
+          OUT_DIR: conversation-supertonic-out
+          SUPERTONIC_CACHE_DIR: ${{ runner.temp }}/supertonic-cache
+        run: python scripts/generate_conversation_supertonic_bundle.py
+
+      - name: Validate repaired M3 TAR and coverage
+        run: |
+          python - <<'PY'
+          import json,tarfile
+          from pathlib import Path
+          cat=json.load(open('conversation-audio-catalog.json',encoding='utf-8'))
+          m=json.load(open('conversation-supertonic-out/M3.json',encoding='utf-8'))
+          assert m['voice']=='M3' and m['count']==cat['utteranceCount']==2677
+          assert len(m['members'])==2677 and set(m['members'])==set(cat['lines'])
+          p=Path('conversation-supertonic-out/M3.tar')
+          assert p.is_file() and p.stat().st_size>1000000
+          with tarfile.open(p,'r:') as tf:
+            assert len([x for x in tf.getmembers() if x.isfile()])==2677
+          print('M3 complete; resilient fallbacks:',m.get('fallbackCount',0))
+          PY
+
+      - name: Upload repaired M3 to Hugging Face backup
+        env:
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" conversation-supertonic-out/M3.tar "$HF_FOLDER/M3.tar" --repo-type dataset --commit-message 'Repair Supertonic 61-scene conversation M3'
+
+      - name: Upload repaired M3 to GitHub Release primary
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$RELEASE_TAG" conversation-supertonic-out/M3.tar --clobber
+
+      - name: Merge M3 manifest and build final ten-voice v2 index
+        env:
+          CATALOG: conversation-audio-catalog.json
+          MANIFEST_DIR: conversation-supertonic-manifests
+          OUT: conversation-supertonic-index.json
+          GITHUB_REPO: kanuli/japanese-vocab-game
+          HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+          RELEASE_TAG: conversation-supertonic-v2
+          HF_FOLDER: conversation/supertonic/v2
+        run: |
+          cp conversation-supertonic-out/M3.json conversation-supertonic-manifests/M3.json
+          test "$(find conversation-supertonic-manifests -maxdepth 1 -name '*.json' | wc -l)" -eq 10
+          python scripts/build_conversation_supertonic_index.py
+          python - <<'PY'
+          import json
+          d=json.load(open('conversation-supertonic-index.json',encoding='utf-8'))
+          assert d['version']==2 and d['status']=='ready'
+          assert d['sceneCount']==61 and d['conversationCount']==1525 and d['sourceLineCount']==3050
+          assert d['utteranceCount']==2677 and d['voiceCount']==10 and d['recordingCount']==26770
+          assert set(d['voices'])=={'F1','F2','F3','F4','F5','M1','M2','M3','M4','M5'}
+          print('FINAL SUPERTONIC V2 OK:',d['recordingCount'],'recordings')
+          PY
+
+      - name: Commit atomic v2 index switch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add conversation-supertonic-index.json
+          git commit -m 'Complete 61-scene hosted Supertonic Conversation index'
+          git pull --rebase origin main
+          git push origin main
