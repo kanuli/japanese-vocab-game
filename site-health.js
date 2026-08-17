@@ -1,6 +1,12 @@
 (()=>{'use strict';
 const BASE='./';
 const MAX_AGE=48*60*60*1000;
+function loadPageVoiceAudition(){
+  const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+  const allowed=new Set(['wordaudio.html','wordlist.html','listening.html','conversation.html','pronunciation.html','translator.html']);
+  if(!allowed.has(page)||document.querySelector('script[data-page-voice-audition]'))return;
+  const s=document.createElement('script');s.src=BASE+'page-voice-audition.js?v=20260818v1';s.defer=true;s.dataset.pageVoiceAudition='1';(document.head||document.documentElement).appendChild(s);
+}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function mount(){
   if(document.getElementById('siteHealthBadge')) return document.getElementById('siteHealthBadge');
@@ -33,6 +39,7 @@ async function run(){
     paint(el,'ok','● 系統正常',parts.join('\n'));
   }catch(e){paint(el,'bad','⚠ 無法讀取健康狀態','健康檢查失敗：'+(e?.message||e));}
 }
+loadPageVoiceAudition();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-window.JapaneseSiteHealth={run};
+window.JapaneseSiteHealth={run,loadPageVoiceAudition};
 })();
