@@ -96,14 +96,10 @@ jobs:
           STYLE_NAME: ${{ matrix.speaker.style }}
           OUTPUT_DIR: pronunciation-voicevox-original-out
         run: python scripts/generate_pronunciation_voicevox_original_level.py
-      - name: Validate and upload to Hugging Face + GitHub Release
+      - name: Validate bundle and preserve manifest
         env:
           K: ${{ matrix.speaker.key }}
           L: ${{ matrix.level }}
-          N: ${{ matrix.speaker.name }}
-          GH_TOKEN: ${{ github.token }}
-          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
-          HF_XET_HIGH_PERFORMANCE: '1'
         run: |
           python - <<'PY'
           import json,os,tarfile
@@ -114,16 +110,44 @@ jobs:
           with tarfile.open(p,'r:') as tf:assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
           print('Validated',k,l,m['count'])
           PY
+          mkdir -p manifest-artifact
+          cp "pronunciation-voicevox-original-out/$K-$L.json" manifest-artifact/
+      - name: Publish bundle to Hugging Face and GitHub Release with retry
+        env:
+          K: ${{ matrix.speaker.key }}
+          L: ${{ matrix.level }}
+          N: ${{ matrix.speaker.name }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
           python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
-          ASSET="$K-$L.tar"; LOW=$(printf '%s' "$L" | tr '[:upper:]' '[:lower:]'); TAG="$RELEASE_NAMESPACE-$K-$LOW"
-          hf upload "$HF_DATASET_REPO" "pronunciation-voicevox-original-out/$ASSET" "pronunciation/voicevox/original-v1/$K/$ASSET" --repo-type dataset --commit-message "Pronunciation VOICEVOX $K $L"
-          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Pronunciation VOICEVOX $K $L" --notes "Remaining original pronunciation sentences for $N. Credit: VOICEVOX:$N"
-          gh release upload "$TAG" "pronunciation-voicevox-original-out/$ASSET" --clobber
-          mkdir -p manifest-artifact && cp "pronunciation-voicevox-original-out/$K-$L.json" manifest-artifact/
+          ASSET="$K-$L.tar"
+          LOW=$(printf '%s' "$L" | tr '[:upper:]' '[:lower:]')
+          TAG="$RELEASE_NAMESPACE-$K-$LOW"
+
+          HF_OK=0
+          for n in 1 2 3 4 5; do
+            if hf upload "$HF_DATASET_REPO" "pronunciation-voicevox-original-out/$ASSET" "pronunciation/voicevox/original-v1/$K/$ASSET" --repo-type dataset --commit-message "Pronunciation VOICEVOX $K $L"; then HF_OK=1; break; fi
+            echo "Hugging Face upload attempt $n failed; retrying..."
+            sleep $((n * 10))
+          done
+          test "$HF_OK" -eq 1
+
+          GH_OK=0
+          for n in 1 2 3 4 5; do
+            gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Pronunciation VOICEVOX $K $L" --notes "Remaining original pronunciation sentences for $N. Credit: VOICEVOX:$N" || true
+            if gh release upload "$TAG" "pronunciation-voicevox-original-out/$ASSET" --clobber; then GH_OK=1; break; fi
+            echo "GitHub Release upload attempt $n failed; retrying..."
+            sleep $((n * 10))
+          done
+          test "$GH_OK" -eq 1
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: pronunciation-voicevox-manifest-${{ matrix.speaker.key }}-${{ matrix.level }}
           path: manifest-artifact/*.json
+          if-no-files-found: error
           retention-days: 3
       - if: always()
         run: docker stop voicevox-engine || true
