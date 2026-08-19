@@ -1,0 +1,297 @@
+name: Recover Pronunciation Hosted Audio — reuse HF TARs first
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.pronunciation-recovery-trigger'
+
+permissions:
+  contents: write
+  actions: read
+  id-token: write
+
+env:
+  ST_RUN_ID: '32032526514'
+  VV_RUN_ID: '32032540897'
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  ST_RELEASE_TAG: pronunciation-supertonic-original-v1
+  VV_RELEASE_NAMESPACE: pronunciation-voicevox-original-v1
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      st_matrix: ${{ steps.plan.outputs.st_matrix }}
+      vv_matrix: ${{ steps.plan.outputs.vv_matrix }}
+      st_count: ${{ steps.plan.outputs.st_count }}
+      vv_count: ${{ steps.plan.outputs.vv_count }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read original run artifacts and authoritative VOICEVOX job metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --paginate "/repos/$GITHUB_REPOSITORY/actions/runs/$ST_RUN_ID/artifacts?per_page=100" --jq '.artifacts[]?.name' > /tmp/st-artifacts.txt
+          gh api --paginate "/repos/$GITHUB_REPOSITORY/actions/runs/$VV_RUN_ID/artifacts?per_page=100" --jq '.artifacts[]?.name' > /tmp/vv-artifacts.txt
+          gh api --paginate "/repos/$GITHUB_REPOSITORY/actions/runs/$VV_RUN_ID/jobs?per_page=100&filter=all" --jq '.jobs[]?.name' > /tmp/vv-jobs.txt
+          echo "Existing Supertonic manifest artifacts: $(grep -c '^pronunciation-supertonic-manifest-' /tmp/st-artifacts.txt || true) / 100"
+          echo "Existing VOICEVOX manifest artifacts: $(grep -c '^pronunciation-voicevox-manifest-' /tmp/vv-artifacts.txt || true) / 215"
+      - id: plan
+        name: Build only-missing recovery matrices
+        run: |
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          st_have=set(Path('/tmp/st-artifacts.txt').read_text(encoding='utf-8').splitlines())
+          vv_have=set(Path('/tmp/vv-artifacts.txt').read_text(encoding='utf-8').splitlines())
+          voices=['F1','F2','F3','F4','F5','M1','M2','M3','M4','M5']; levels=['N1','N2','N3','N4','N5']
+          st=[]
+          for v in voices:
+              for l in levels:
+                  for p in (0,1):
+                      a=f'pronunciation-supertonic-manifest-{v}-{l}-p{p}'
+                      if a not in st_have: st.append({'voice':v,'level':l,'shard':p})
+
+          meta={}
+          rx=re.compile(r'^generate \((s\d+), (.*), (\d+), (.*), (N[1-5])\)$')
+          for line in Path('/tmp/vv-jobs.txt').read_text(encoding='utf-8').splitlines():
+              m=rx.match(line.strip())
+              if not m: continue
+              k,name,sid,style,level=m.groups(); row=(name,int(sid),style)
+              if k in meta and meta[k]!=row: raise SystemExit(f'VOICEVOX metadata changed for {k}: {meta[k]} vs {row}')
+              meta[k]=row
+          if len(meta)!=43: raise SystemExit(f'Expected 43 VOICEVOX speakers from original run, got {len(meta)}')
+          vv=[]
+          for k in sorted(meta):
+              name,sid,style=meta[k]
+              for l in levels:
+                  a=f'pronunciation-voicevox-manifest-{k}-{l}'
+                  if a not in vv_have: vv.append({'key':k,'name':name,'style_id':sid,'style':style,'level':l})
+
+          print('Supertonic missing manifests:',len(st),st)
+          print('VOICEVOX missing manifests:',len(vv))
+          out=os.environ['GITHUB_OUTPUT']
+          with open(out,'a',encoding='utf-8') as f:
+              f.write('st_matrix='+json.dumps(st,ensure_ascii=False,separators=(',',':'))+'\n')
+              f.write('vv_matrix='+json.dumps(vv,ensure_ascii=False,separators=(',',':'))+'\n')
+              f.write('st_count='+str(len(st))+'\n')
+              f.write('vv_count='+str(len(vv))+'\n')
+          PY
+
+  repair-supertonic:
+    needs: plan
+    if: ${{ needs.plan.outputs.st_count != '0' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.st_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/build_pronunciation_original_audio_catalog.py
+      - name: Recover existing TAR from Hugging Face, otherwise synthesize only this missing shard
+        env:
+          VOICE: ${{ matrix.voice }}
+          LEVEL: ${{ matrix.level }}
+          SHARD_INDEX: ${{ matrix.shard }}
+          SHARD_COUNT: '2'
+          OUT_DIR: pronunciation-supertonic-original-out
+        run: |
+          mkdir -p "$OUT_DIR"
+          ASSET="$VOICE-$LEVEL-p$SHARD_INDEX.tar"
+          URL="https://huggingface.co/datasets/$HF_DATASET_REPO/resolve/main/pronunciation/supertonic/original-v1/$ASSET"
+          if curl -fL --retry 5 --retry-all-errors --connect-timeout 20 --max-time 1800 -o "$OUT_DIR/$ASSET" "$URL"; then
+            echo "RECOVERY_SOURCE=hf" >> "$GITHUB_ENV"
+            ENGINE_KIND=supertonic ASSET_PATH="$OUT_DIR/$ASSET" MANIFEST_OUT="$OUT_DIR/$VOICE-$LEVEL-p$SHARD_INDEX.json" \
+              python scripts/rebuild_pronunciation_manifest_from_tar.py
+          else
+            echo "HF TAR absent; synthesizing only $VOICE/$LEVEL/p$SHARD_INDEX"
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+            python -m pip install --quiet --disable-pip-version-check 'supertonic==1.3.1' 'numpy<3'
+            python scripts/generate_pronunciation_supertonic_original_shard.py
+            echo "RECOVERY_SOURCE=generated" >> "$GITHUB_ENV"
+          fi
+      - name: Ensure both storage copies with retry
+        env:
+          V: ${{ matrix.voice }}
+          L: ${{ matrix.level }}
+          P: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          ASSET="$V-$L-p$P.tar"
+          if [ "$RECOVERY_SOURCE" = generated ]; then
+            python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+            ok=0; for n in 1 2 3 4 5; do hf upload "$HF_DATASET_REPO" "pronunciation-supertonic-original-out/$ASSET" "pronunciation/supertonic/original-v1/$ASSET" --repo-type dataset --commit-message "Recover pronunciation Supertonic $V $L p$P" && ok=1 && break; sleep $((n*10)); done; test "$ok" -eq 1
+          fi
+          ok=0
+          for n in 1 2 3 4 5; do
+            gh release view "$ST_RELEASE_TAG" >/dev/null 2>&1 || gh release create "$ST_RELEASE_TAG" --title 'Pronunciation Supertonic — remaining 6,690 sentences' --notes 'Hosted Supertonic 3 audio for the 6,690 original pronunciation sentences.' || true
+            gh release upload "$ST_RELEASE_TAG" "pronunciation-supertonic-original-out/$ASSET" --clobber && ok=1 && break
+            sleep $((n*10))
+          done
+          test "$ok" -eq 1
+      - name: Preserve repaired manifest
+        run: |
+          mkdir -p manifest-artifact
+          cp "pronunciation-supertonic-original-out/${{ matrix.voice }}-${{ matrix.level }}-p${{ matrix.shard }}.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovery-supertonic-manifest-${{ matrix.voice }}-${{ matrix.level }}-p${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 7
+
+  repair-voicevox:
+    needs: plan
+    if: ${{ needs.plan.outputs.vv_count != '0' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        include: ${{ fromJSON(needs.plan.outputs.vv_matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python scripts/build_pronunciation_original_audio_catalog.py
+      - name: Recover existing TAR from Hugging Face, otherwise synthesize only this missing speaker-level bundle
+        env:
+          SPEAKER_KEY: ${{ matrix.key }}
+          SPEAKER_NAME: ${{ matrix.name }}
+          STYLE_ID: ${{ matrix.style_id }}
+          STYLE_NAME: ${{ matrix.style }}
+          JLPT: ${{ matrix.level }}
+          LEVEL: ${{ matrix.level }}
+          OUTPUT_DIR: pronunciation-voicevox-original-out
+        run: |
+          mkdir -p "$OUTPUT_DIR"
+          ASSET="$SPEAKER_KEY-$LEVEL.tar"
+          URL="https://huggingface.co/datasets/$HF_DATASET_REPO/resolve/main/pronunciation/voicevox/original-v1/$SPEAKER_KEY/$ASSET"
+          if curl -fL --retry 5 --retry-all-errors --connect-timeout 20 --max-time 1800 -o "$OUTPUT_DIR/$ASSET" "$URL"; then
+            echo "RECOVERY_SOURCE=hf" >> "$GITHUB_ENV"
+            ENGINE_KIND=voicevox ASSET_PATH="$OUTPUT_DIR/$ASSET" MANIFEST_OUT="$OUTPUT_DIR/$SPEAKER_KEY-$LEVEL.json" \
+              python scripts/rebuild_pronunciation_manifest_from_tar.py
+          else
+            echo "HF TAR absent; synthesizing only $SPEAKER_KEY/$LEVEL"
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+            docker pull voicevox/voicevox_engine:cpu-latest
+            docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+            for i in $(seq 1 120); do curl -fsS http://127.0.0.1:50021/version >/dev/null && break; [ "$i" = 120 ] && { docker logs voicevox-engine || true; exit 1; }; sleep 2; done
+            python scripts/generate_pronunciation_voicevox_original_level.py
+            docker stop voicevox-engine || true
+            echo "RECOVERY_SOURCE=generated" >> "$GITHUB_ENV"
+          fi
+      - name: Ensure both storage copies with retry
+        env:
+          K: ${{ matrix.key }}
+          L: ${{ matrix.level }}
+          N: ${{ matrix.name }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          ASSET="$K-$L.tar"; LOW=$(printf '%s' "$L" | tr '[:upper:]' '[:lower:]'); TAG="$VV_RELEASE_NAMESPACE-$K-$LOW"
+          if [ "$RECOVERY_SOURCE" = generated ]; then
+            python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+            ok=0; for n in 1 2 3 4 5; do hf upload "$HF_DATASET_REPO" "pronunciation-voicevox-original-out/$ASSET" "pronunciation/voicevox/original-v1/$K/$ASSET" --repo-type dataset --commit-message "Recover pronunciation VOICEVOX $K $L" && ok=1 && break; sleep $((n*10)); done; test "$ok" -eq 1
+          fi
+          ok=0
+          for n in 1 2 3 4 5; do
+            gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Pronunciation VOICEVOX $K $L" --notes "Remaining original pronunciation sentences for $N. Credit: VOICEVOX:$N" || true
+            gh release upload "$TAG" "pronunciation-voicevox-original-out/$ASSET" --clobber && ok=1 && break
+            sleep $((n*10))
+          done
+          test "$ok" -eq 1
+      - name: Preserve repaired manifest
+        run: |
+          mkdir -p manifest-artifact
+          cp "pronunciation-voicevox-original-out/${{ matrix.key }}-${{ matrix.level }}.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: recovery-voicevox-manifest-${{ matrix.key }}-${{ matrix.level }}
+          path: manifest-artifact/*.json
+          retention-days: 7
+      - if: always()
+        run: docker stop voicevox-engine >/dev/null 2>&1 || true
+
+  finalize:
+    needs: [plan,repair-supertonic,repair-voicevox]
+    if: ${{ always() && needs.plan.result == 'success' && (needs.repair-supertonic.result == 'success' || needs.repair-supertonic.result == 'skipped') && (needs.repair-voicevox.result == 'success' || needs.repair-voicevox.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - run: python scripts/build_pronunciation_original_audio_catalog.py
+      - name: Download all surviving original Supertonic manifests
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.ST_RUN_ID }}
+          pattern: pronunciation-supertonic-manifest-*
+          path: pronunciation-supertonic-original-manifests
+          merge-multiple: true
+      - name: Download repaired Supertonic manifests
+        if: ${{ needs.plan.outputs.st_count != '0' }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: recovery-supertonic-manifest-*
+          path: pronunciation-supertonic-original-manifests
+          merge-multiple: true
+      - name: Download all surviving original VOICEVOX manifests
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.VV_RUN_ID }}
+          pattern: pronunciation-voicevox-manifest-*
+          path: pronunciation-voicevox-original-manifests
+          merge-multiple: true
+      - name: Download repaired VOICEVOX manifests
+        if: ${{ needs.plan.outputs.vv_count != '0' }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: recovery-voicevox-manifest-*
+          path: pronunciation-voicevox-original-manifests
+          merge-multiple: true
+      - name: Build and validate both complete indexes
+        run: |
+          ST=$(find pronunciation-supertonic-original-manifests -name '*.json' | wc -l)
+          VV=$(find pronunciation-voicevox-original-manifests -name '*.json' | wc -l)
+          echo "Recovered manifest totals: Supertonic=$ST/100 VOICEVOX=$VV/215"
+          test "$ST" -eq 100
+          test "$VV" -eq 215
+          python scripts/build_pronunciation_supertonic_original_index.py
+          python scripts/build_pronunciation_voicevox_original_index.py
+          python - <<'PY'
+          import json
+          st=json.load(open('pronunciation-supertonic-original-index.json',encoding='utf-8'))
+          vv=json.load(open('pronunciation-voicevox-original-index.json',encoding='utf-8'))
+          assert (st['status'],st['questionCount'],st['voiceCount'],st['recordingCount'])==('ready',6690,10,66900)
+          assert (vv['status'],vv['questionCount'],vv['speakerCount'],vv['recordingCount'])==('ready',6690,43,287670)
+          print('READY Supertonic',st['recordingCount'])
+          print('READY VOICEVOX',vv['recordingCount'])
+          PY
+      - name: Publish both indexes atomically
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pronunciation-supertonic-original-index.json pronunciation-voicevox-original-index.json
+          if git diff --cached --quiet; then echo 'Indexes already current'; exit 0; fi
+          git commit -m 'Recover pronunciation hosted audio indexes'
+          git pull --rebase origin main
+          git push origin main
