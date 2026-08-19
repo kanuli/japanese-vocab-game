@@ -44,10 +44,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - env:
+      - name: Ensure GitHub Release exists with retry
+        env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Pronunciation Supertonic — remaining 6,690 sentences' --notes 'Hosted Supertonic 3 audio for the 6,690 original pronunciation sentences. Two shards per voice/level, 10 voices.'
+          for n in 1 2 3 4 5; do
+            if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+              echo "Release ready: $RELEASE_TAG"
+              exit 0
+            fi
+            if gh release create "$RELEASE_TAG" --title 'Pronunciation Supertonic — remaining 6,690 sentences' --notes 'Hosted Supertonic 3 audio for the 6,690 original pronunciation sentences. Two shards per voice/level, 10 voices.'; then
+              echo "Created release: $RELEASE_TAG"
+              exit 0
+            fi
+            echo "Release API attempt $n failed; retrying..."
+            sleep $((n * 10))
+          done
+          echo "Unable to prepare GitHub Release after retries" >&2
+          exit 1
 
   generate:
     needs: [catalog,prepare-storage]
@@ -81,14 +95,11 @@ jobs:
           SHARD_INDEX: ${{ matrix.shard }}
           OUT_DIR: pronunciation-supertonic-original-out
         run: python scripts/generate_pronunciation_supertonic_original_shard.py
-      - name: Validate TAR and publish to both stores
+      - name: Validate TAR and preserve manifest
         env:
           V: ${{ matrix.voice }}
           L: ${{ matrix.level }}
           P: ${{ matrix.shard }}
-          GH_TOKEN: ${{ github.token }}
-          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
-          HF_XET_HIGH_PERFORMANCE: '1'
         run: |
           python - <<'PY'
           import json,os,tarfile
@@ -100,15 +111,41 @@ jobs:
           with tarfile.open(tar,'r:') as tf: assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
           print('Validated',v,l,p,m['count'],'fallbacks',m['fallbackCount'])
           PY
+          mkdir -p manifest-artifact
+          cp "pronunciation-supertonic-original-out/$V-$L-p$P.json" manifest-artifact/
+      - name: Publish TAR to Hugging Face and GitHub Release with retry
+        env:
+          V: ${{ matrix.voice }}
+          L: ${{ matrix.level }}
+          P: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
           python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
           ASSET="$V-$L-p$P.tar"
-          hf upload "$HF_DATASET_REPO" "pronunciation-supertonic-original-out/$ASSET" "pronunciation/supertonic/original-v1/$ASSET" --repo-type dataset --commit-message "Pronunciation Supertonic $V $L p$P"
-          gh release upload "$RELEASE_TAG" "pronunciation-supertonic-original-out/$ASSET" --clobber
-          mkdir -p manifest-artifact && cp "pronunciation-supertonic-original-out/$V-$L-p$P.json" manifest-artifact/
+          HF_OK=0
+          for n in 1 2 3 4 5; do
+            if hf upload "$HF_DATASET_REPO" "pronunciation-supertonic-original-out/$ASSET" "pronunciation/supertonic/original-v1/$ASSET" --repo-type dataset --commit-message "Pronunciation Supertonic $V $L p$P"; then HF_OK=1; break; fi
+            echo "Hugging Face upload attempt $n failed; retrying..."
+            sleep $((n * 10))
+          done
+          test "$HF_OK" -eq 1
+
+          GH_OK=0
+          for n in 1 2 3 4 5; do
+            gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Pronunciation Supertonic — remaining 6,690 sentences' --notes 'Hosted Supertonic 3 audio for the 6,690 original pronunciation sentences. Two shards per voice/level, 10 voices.' || true
+            if gh release upload "$RELEASE_TAG" "pronunciation-supertonic-original-out/$ASSET" --clobber; then GH_OK=1; break; fi
+            echo "GitHub Release upload attempt $n failed; retrying..."
+            sleep $((n * 10))
+          done
+          test "$GH_OK" -eq 1
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: pronunciation-supertonic-manifest-${{ matrix.voice }}-${{ matrix.level }}-p${{ matrix.shard }}
           path: manifest-artifact/*.json
+          if-no-files-found: error
           retention-days: 3
 
   finalize:
