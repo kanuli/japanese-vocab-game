@@ -9,6 +9,13 @@ const CORE_URLS=[
 ];
 const F=['Notetype','Deck','NoteID','VocabKanji','VocabPitch','VocabPoS','VocabFurigana','VocabDefSC','VocabDefTC','VocabPlus','VocabAudio','SentType1','SentKanji1','SentFurigana1','SentDefSC1','SentDefTC1','SentAudio1','SentType2','SentKanji2','SentFurigana2','SentDefSC2','SentDefTC2','SentAudio2','SentType3','SentKanji3','SentFurigana3','SentDefSC3','SentDefTC3','SentAudio3','SentType4','SentKanji4','SentFurigana4','SentDefSC4','SentDefTC4','SentAudio4','Sort','Alt1','Alt2','Tags'];
 const SHARDS=5;
+const ADVANCED_RUNTIME_FILES=[
+  'advanced_words_curated.js',
+  'data/advanced_vocab.js',
+  'data/coverage_deferred_manual.js',
+  'data/coverage_sourcecheck_manual.js',
+  'data/coverage_postreview_manual.js'
+];
 
 function decodeEntities(s){return String(s??'').replace(/&nbsp;/gi,' ').replace(/&amp;/gi,'&').replace(/&lt;/gi,'<').replace(/&gt;/gi,'>').replace(/&quot;/gi,'"').replace(/&#39;/gi,"'");}
 function strip(s){return decodeEntities(String(s??'').replace(/\[sound:[^\]]+\]/gi,' ').replace(/<br\s*\/?>/gi,'；').replace(/<[^>]*>/g,' ')).replace(/\s+/g,' ').trim();}
@@ -21,7 +28,7 @@ function normAdvanced(x){if(!x)return null;let r=String(x.reading||'').trim(),k=
 function keyOf(w){return `${w.reading}|${w.kanji||w.displayWord||w.reading}`;}
 function stableId(key){return crypto.createHash('sha1').update(key,'utf8').digest('hex').slice(0,16);}
 async function fetchCore(){let last=null;for(const u of CORE_URLS){try{const r=await fetch(u,{headers:{'user-agent':'word-voicevox-catalog'}});if(!r.ok)throw new Error(`HTTP ${r.status}`);const rows=core(parseCsv(await r.text()));if(rows.length<10000)throw new Error(`core too small: ${rows.length}`);return rows;}catch(e){last=e;}}throw last||new Error('core fetch failed');}
-function loadAdvanced(){globalThis.window=globalThis;globalThis.ADVANCED_WORDS=[];for(const p of ['advanced_words_curated.js','data/advanced_vocab.js']){const src=fs.readFileSync(p,'utf8');vm.runInThisContext(src,{filename:p});}return (globalThis.ADVANCED_WORDS||[]).map(normAdvanced).filter(Boolean);}
+function loadAdvanced(){globalThis.window=globalThis;globalThis.ADVANCED_WORDS=[];for(const p of ADVANCED_RUNTIME_FILES){if(!fs.existsSync(p))throw new Error(`Required runtime vocabulary layer missing: ${p}`);const src=fs.readFileSync(p,'utf8');vm.runInThisContext(src,{filename:p});}return (globalThis.ADVANCED_WORDS||[]).map(normAdvanced).filter(Boolean);}
 
 const coreRows=await fetchCore();
 const advRows=loadAdvanced();
@@ -34,7 +41,7 @@ if(ids.size!==words.length)throw new Error('Stable ID collision detected');
 if(words.length<22000)throw new Error(`Merged vocabulary unexpectedly small: ${words.length}`);
 const counts={N1:0,N2:0,N3:0,N4:0,N5:0};for(const w of words)counts[w.level]++;
 const shardCounts=Array.from({length:SHARDS},(_,s)=>words.filter(w=>w.shard===s).length);
-const out={version:1,generated:new Date().toISOString(),source:'wordaudio runtime-equivalent core + curated + prebuilt advanced vocabulary',wordCount:words.length,shardCount:SHARDS,coreCount:coreRows.length,advancedCount:advRows.length,countsByLevel:counts,shardCounts,words};
+const out={version:1,generated:new Date().toISOString(),source:'wordaudio runtime-equivalent core + curated + prebuilt advanced + reviewed strict-surface completion layers',wordCount:words.length,shardCount:SHARDS,coreCount:coreRows.length,advancedCount:advRows.length,countsByLevel:counts,shardCounts,words};
 fs.writeFileSync(process.env.CATALOG_OUT||'word-voicevox-catalog.json',JSON.stringify(out));
 console.log(`VOICEVOX vocabulary catalog: ${words.length} words; core=${coreRows.length}; advanced=${advRows.length}`);
 console.log('levels',counts,'shards',shardCounts);
