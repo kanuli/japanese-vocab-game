@@ -6,8 +6,10 @@ Default scope is the direct-add queue only:
 - ADD_DISTINCT_VARIANT
 
 Each written form + reading pair is independent. Traditional-Chinese meanings
-are mandatory. This fast path deliberately avoids the very large Kaikki scan;
-items without a reliable TC meaning are deferred rather than guessed.
+are mandatory. The materializer uses the same complete JA->ZH meaning pipeline
+as the main vocabulary builder: Japanese-Chinese thesaurus, Wikidict ja-zh,
+and Kaikki Chinese Wiktionary. Items still lacking a reliable TC meaning are
+deferred rather than guessed.
 """
 from __future__ import annotations
 
@@ -54,43 +56,6 @@ def load_runtime_entries() -> list[A.Entry]:
     curated = A.load_curated(ROOT / "advanced_words_curated.js")
     advanced = A.load_advanced_bundle(ROOT / "data" / "advanced_vocab.js")
     return A.dedupe_entries([*runtime_core, *curated, *advanced])
-
-
-def load_fast_exact_meanings(wanted: set[str], converter: OpenCC) -> tuple[dict[str, str], dict[str, int]]:
-    """Load exact-form meanings from the two smaller existing JA->ZH sources."""
-    meanings: dict[str, str] = {}
-    stats = {"thesaurus": 0, "wikidict": 0}
-
-    thesaurus = B.fetch_json(B.URLS["thesaurus"])
-    for jp, zh in (thesaurus or {}).items():
-        key = str(jp or "").strip()
-        if key not in wanted or key in meanings:
-            continue
-        value = B.clean_meaning(zh, converter)
-        if value:
-            meanings[key] = value
-            stats["thesaurus"] += 1
-
-    wiki = B.fetch_text(B.URLS["wikidict"])
-    for line in wiki.splitlines():
-        if not line or line.startswith("#") or "\t" not in line:
-            continue
-        jp, zh = line.split("\t", 1)
-        key = jp.strip()
-        candidates = [key]
-        paren = re.match(r"^(.+?)\s*[（(][^）)]{1,40}[）)]$", key)
-        if paren:
-            candidates.append(paren.group(1).strip())
-        for candidate in candidates:
-            if candidate not in wanted or candidate in meanings:
-                continue
-            value = B.clean_meaning(zh, converter)
-            if value:
-                meanings[candidate] = value
-                stats["wikidict"] += 1
-                break
-
-    return meanings, stats
 
 
 def pos_from_review(value: str) -> str:
@@ -157,7 +122,9 @@ def main() -> int:
         runtime_by_word[A.normalize_word(e.word)].append(e)
 
     wanted = {str(r.get("word") or "").strip() for r in rows if str(r.get("word") or "").strip()}
-    meanings, meaning_stats = load_fast_exact_meanings(wanted, converter)
+    # Use the full meaning loader shared with the main build pipeline. This scans
+    # thesaurus -> Wikidict -> Kaikki and only accepts cleaned CJK meanings.
+    meanings, meaning_stats = B.load_meanings(wanted, converter)
 
     additions = []
     deferred = []
@@ -205,7 +172,7 @@ def main() -> int:
                     break
 
         if not meaning:
-            deferred.append({**row, "defer_reason": "no-reliable-traditional-chinese-meaning"})
+            deferred.append({**row, "defer_reason": "no-reliable-traditional-chinese-meaning-after-full-source-scan"})
             continue
 
         level, level_source = choose_level(row)
@@ -236,7 +203,7 @@ def main() -> int:
     ))
 
     summary = {
-        "version": "coverage-additions-v2-direct-strict-surface",
+        "version": "coverage-additions-v3-full-meaning-scan",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "rule": "Every written form + reading is independent; same-reading/JMdict-related forms never suppress an addition.",
         "scope": "direct-add plus source-check" if args.include_source_check else "direct-add only",
