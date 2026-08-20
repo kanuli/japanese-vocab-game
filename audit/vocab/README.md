@@ -1,72 +1,85 @@
-# JLPT Vocabulary Coverage Audit
+# JLPT Vocabulary Coverage Audit — corrected strict surface-form method
 
-This audit checks whether the vocabulary that the website can actually load covers common JLPT N5–N1 reference vocabulary.
+This audit checks whether the vocabulary that the website can actually load covers JLPT N5–N1 reference vocabulary.
 
-## Why this exists
+## Critical coverage rule
 
-A large raw word count does not guarantee coverage. The site has multiple layers:
+**A vocabulary item is covered only when the final runtime database contains the same written form + reading.**
 
-1. remote JLPT core CSV,
-2. browser runtime parser,
-3. curated supplement,
-4. prebuilt advanced bundle.
+Different written forms remain separate learnable items even when:
 
-A word can exist upstream but still disappear if the browser parser rejects its row while the advanced build excludes it as an existing core word.
+- they have the same reading (`川 / 河`),
+- they are alternative orthographies (`温まる / 暖まる`, `気づく / 気付く`),
+- they belong to the same JMdict lexical entry,
+- one form is more common than another.
+
+JMdict identity is used only to annotate relationships and quality. It never removes a missing surface form.
+
+## Why this correction exists
+
+The earlier experimental refinement incorrectly treated a same-JMdict-entry form as sufficient coverage. That rule could hide valid missing forms. The old `missing_refined.csv`, `refined_summary.json`, `jmdict_related.csv`, and `README_REFINED.md` are therefore **legacy/deprecated outputs and must not be used for coverage decisions**.
+
+The authoritative corrected outputs are the strict surface-form audit and final quality review listed below.
 
 ## External reference families
 
-The audit deliberately avoids treating every mirror as an independent vote.
+The audit deliberately avoids double-counting mirrors as independent votes.
 
 - **Waller-derived family**
   - OpenJLPT (`evanclan/OpenJLPT`)
   - Jonathan Waller / Tanos data via `stephenmk/yomitan-jlpt-vocab`
 - **Independent community family**
   - `lratusa/wordmaster-wordlists`
+- **JMdict/Japanese Language Data**
+  - used for lexical validity, exact form/reading verification, common-form metadata, parts of speech, and variant relationships
+  - JMdict is not treated as a JLPT-level vote
 
-OpenJLPT and the Waller CSV are counted as one family for high-confidence missing detection because their vocabulary lineage overlaps.
+JLPT does not publish a fixed official vocabulary list for the current examination, so level disagreement is reported rather than auto-corrected.
 
-JLPT does not publish a fixed official vocabulary list for the current examination, so level disagreement is expected and is reported separately rather than auto-corrected.
-
-## Output files
-
-Running:
+## Authoritative workflow
 
 ```bash
 python tools/audit_vocab_coverage.py --out audit/vocab/results
+python tools/audit_vocab_surface_forms.py --results audit/vocab/results
+python tools/review_vocab_missing_quality.py --results audit/vocab/results
 ```
 
-produces:
+## Authoritative output files
 
-- `coverage_summary.json` — machine-readable totals and coverage by level
-- `README.md` — human-readable result summary
-- `missing_high_confidence.csv` — absent words supported by at least two independent reference families
-- `missing_single_source.csv` — lower-confidence gaps requiring manual review
-- `level_conflicts.csv` — words present on the site but assigned to a different JLPT level than the family-weighted external consensus
-- `variant_matches.csv` — conservative kana / prolonged-sound-mark variant matches
-- `runtime_missing.csv` — core rows rejected by the current browser parser, with a flag showing whether another vocabulary layer restores the word
-- `source_inventory.csv` — per-source/per-level counts and download errors
+### Strict coverage
 
-## Audit rules
+- `surface_form_summary.json` — strict exact-form totals
+- `SURFACE_FORM_AUDIT.md` — strict human-readable summary
+- `missing_surface_high_confidence.csv` — exact forms absent from runtime and supported by >=2 independent reference families
+- `missing_surface_single_source.csv` — exact forms absent from runtime but supported by only one reference family
+- `surface_form_relations.csv` — **all strict missing forms**, including annotations for same-reading/different-writing, same-writing/different-reading, and same-JMdict-entry relationships
 
-### High-confidence missing
+### Final quality review
 
-A word is marked high-confidence missing only when:
+- `quality_review_summary.json` — review totals and decision counts
+- `QUALITY_REVIEW.md` — human-readable review summary
+- `final_quality_review_all_missing.csv` — every strict missing form reviewed independently
+- `quality_review_recommended_add.csv` — ADD / ADD-after-source-check candidates
+- `quality_review_manual_or_low_priority.csv` — malformed-source, expression, archaic, rare/dialect, and other manual-review cases
 
-- it is absent from the website's final runtime vocabulary set, and
-- it is present in at least two independent reference families.
+### Runtime diagnostics
 
-### Runtime final hole
+- `runtime_missing.csv` — core rows rejected by the current browser parser, including whether another vocabulary layer restores them
+- `level_conflicts.csv` — level disagreements; review only, never auto-apply
+- `source_inventory.csv` — source counts and download errors
 
-A word is marked as a runtime final hole when:
+## Quality-review principles
 
-- the robust core parser can identify its word + reading,
-- the current `wordaudio-data.js` runtime acceptance rules reject it, and
-- neither curated nor advanced vocabulary restores the same exact word + reading key.
-
-### Level conflict
-
-Level conflicts are **review items**, not automatic errors. Modern JLPT has no official published fixed vocabulary list, and third-party sources regularly disagree.
+1. Exact written form + reading is the unit being audited.
+2. `河` is missing if `川` exists but `河` does not.
+3. `暖まる` is missing if `温まる` exists but `暖まる` does not.
+4. `気付く` is missing if `気づく` exists but `気付く` does not.
+5. The same rule is applied automatically to **every** reference item, not only these examples.
+6. High-confidence reference support plus an exact JMdict form is strong addition evidence.
+7. Fixed expressions/conjugated forms are separated from base-form vocabulary review.
+8. Archaic, obsolete, rare, dialectal, malformed, or unresolved source rows are not bulk-added.
+9. JLPT level conflicts are flagged for review rather than silently re-leveled.
 
 ## Safety
 
-The audit is read-only with respect to vocabulary data. It does not add, delete, rewrite, or re-level any word automatically.
+The audit and review are read-only with respect to the production vocabulary database. They do not add, delete, rewrite, or re-level vocabulary automatically.
