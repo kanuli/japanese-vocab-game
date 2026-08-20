@@ -1,4 +1,4 @@
-# Trigger revision 4: adjudicate and materialize the 378 source-check candidates.
+# Trigger revision 5: run latest 378 source-check policy and materialization.
 name: Process reviewed vocabulary coverage branch
 
 on:
