@@ -1,0 +1,33 @@
+{
+  "status": "INCOMPLETE_VOICE",
+  "completion_rule": "PASS only when reviewed vocabulary has zero actionable additions AND every browser-runtime exact reading|written key has hosted voice coverage after base+delta union.",
+  "vocabulary": {
+    "status": "PASS",
+    "actionable_additions_remaining": 0,
+    "direct_runtime_covered": 337,
+    "sourcecheck_runtime_covered": 375,
+    "residual_runtime_covered": 1
+  },
+  "hosted_voice": {
+    "desired_exact_words": 23046,
+    "base_hosted_exact_words": 22333,
+    "base_missing_exact_words": 713,
+    "effective_missing_exact_words": 713,
+    "invalid_readings": 0,
+    "coverage_complete": false,
+    "missing_set_rule": "The 713 missing exact voice keys must equal the 337 direct + 375 source-check-approved + 1 residual reviewed vocabulary additions."
+  },
+  "voice_delta": {
+    "status": "NOT_FINALIZED",
+    "exact_delta_words": 713,
+    "planned_hosted_recordings": {
+      "voicevox": 30659,
+      "supertonic3": 7130,
+      "aivis": 2852,
+      "total": 40641
+    },
+    "base_libraries_unchanged": true
+  },
+  "live_main_deployed": false,
+  "live_main_note": "Audit completion is separate from selective deployment to main/GitHub Pages."
+}
