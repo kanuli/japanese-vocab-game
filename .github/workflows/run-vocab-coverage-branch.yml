@@ -1,4 +1,4 @@
-# Trigger revision 3: full Traditional-Chinese meaning scan enabled.
+# Trigger revision 4: adjudicate and materialize the 378 source-check candidates.
 name: Process reviewed vocabulary coverage branch
 
 on:
@@ -19,7 +19,7 @@ concurrency:
 jobs:
   process:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - name: Checkout audit branch
         uses: actions/checkout@v4
@@ -35,57 +35,96 @@ jobs:
       - name: Install Traditional Chinese converter
         run: python -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
 
-      - name: Verify reviewed direct-add scope
+      - name: Verify source-check scope
         run: |
           python - <<'PY'
           import csv
           from pathlib import Path
           p=Path('audit/vocab/results/final_quality_review_all_missing.csv')
           rows=list(csv.DictReader(p.open(encoding='utf-8-sig', newline='')))
-          allowed={'ADD_HIGH_CONFIDENCE','ADD_DISTINCT_VARIANT'}
-          direct=[r for r in rows if r.get('quality_decision') in allowed]
-          counts={k:sum(r.get('quality_decision')==k for r in direct) for k in sorted(allowed)}
-          print({'direct_add_rows':len(direct),'decision_counts':counts})
-          if len(direct)!=337:
-              raise SystemExit(f'Expected 337 direct-add rows, got {len(direct)}')
+          allowed={'ADD_AFTER_SOURCE_CHECK','ADD_VARIANT_AFTER_SOURCE_CHECK'}
+          q=[r for r in rows if r.get('quality_decision') in allowed]
+          counts={k:sum(r.get('quality_decision')==k for r in q) for k in sorted(allowed)}
+          print({'source_check_rows':len(q),'decision_counts':counts})
+          if len(q)!=378:
+              raise SystemExit(f'Expected 378 source-check rows, got {len(q)}')
           PY
 
-      - name: Materialize direct-reviewed additions
-        run: python tools/materialize_coverage_additions.py --results audit/vocab/results --output data/coverage_additions.json
+      - name: Adjudicate all source-check candidates
+        run: python tools/adjudicate_source_check.py --input audit/vocab/results/final_quality_review_all_missing.csv --results audit/vocab/results
 
-      - name: Check materialization accounting
+      - name: Materialize approved source-check additions
+        run: python tools/materialize_coverage_additions.py --mode source-check --results audit/vocab/results --output data/coverage_sourcecheck_additions.json
+
+      - name: Check source-check accounting
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          s=json.loads(Path('audit/vocab/results/coverage_additions_summary.json').read_text(encoding='utf-8'))
-          print(s)
-          eligible=int(s.get('eligible_add_rows',-1))
-          materialized=int(s.get('materialized_count',-1))
-          deferred=int(s.get('deferred_count',-1))
-          if eligible!=337:
-              raise SystemExit(f'Expected eligible_add_rows=337, got {eligible}')
-          if materialized+deferred!=337:
-              raise SystemExit(f'Materialization accounting mismatch: {materialized}+{deferred} != 337')
+          a=json.loads(Path('audit/vocab/results/source_check_adjudication_summary.json').read_text(encoding='utf-8'))
+          m=json.loads(Path('audit/vocab/results/source_check_summary.json').read_text(encoding='utf-8'))
+          print({'adjudication':a,'materialization':m})
+          if int(a.get('input_source_check_candidates',-1))!=378:
+              raise SystemExit('Adjudication did not process exactly 378 rows')
+          if int(a.get('approved',-1))+int(a.get('held',-1))!=378:
+              raise SystemExit('Adjudication accounting mismatch')
+          if int(m.get('eligible_rows',-1))!=int(a.get('approved',-2)):
+              raise SystemExit('Materializer eligible count does not equal adjudicated approved count')
+          if int(m.get('materialized_count',-1))+int(m.get('deferred_count',-1))+int(m.get('already_present',-1))!=int(m.get('eligible_rows',-2)):
+              raise SystemExit('Materialization accounting mismatch')
           PY
 
-      - name: Apply exact written-form additions
-        run: python tools/apply_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json
+      - name: Apply source-check additions to advanced bundle
+        run: python tools/apply_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_sourcecheck_additions.json
 
       - name: Validate generated JavaScript
         run: node --check data/advanced_vocab.js
 
-      - name: Validate materialized additions
-        run: python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json --report audit/vocab/results/coverage_additions_validation.json
+      - name: Validate source-check additions survive in bundle
+        run: python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_sourcecheck_additions.json --report audit/vocab/results/source_check_validation.json
+
+      - name: Re-run strict exact-surface audit
+        run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
+
+      - name: Re-run quality review on remaining strict gaps
+        run: python tools/review_vocab_missing_quality.py --results audit/vocab/results
+
+      - name: Write source-check completion marker
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('audit/vocab/results/source_check_adjudication_summary.json').read_text(encoding='utf-8'))
+          m=json.loads(Path('audit/vocab/results/source_check_summary.json').read_text(encoding='utf-8'))
+          v=json.loads(Path('audit/vocab/results/source_check_validation.json').read_text(encoding='utf-8'))
+          s=json.loads(Path('audit/vocab/results/surface_form_summary.json').read_text(encoding='utf-8'))
+          out={
+            'status':'PASS' if v.get('status')=='passed' else 'FAIL',
+            'input_source_check_candidates':a.get('input_source_check_candidates'),
+            'approved':a.get('approved'),
+            'held':a.get('held'),
+            'materialized':m.get('materialized_count'),
+            'deferred_after_tc_lookup':m.get('deferred_count'),
+            'already_present':m.get('already_present'),
+            'validation':v,
+            'strict_missing_after_source_check':{
+              'high_confidence':s.get('exact_surface_missing_high_confidence'),
+              'single_source':s.get('exact_surface_missing_single_source'),
+              'all':s.get('exact_surface_missing_all')
+            }
+          }
+          Path('audit/vocab/results/source_check_completion.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
 
       - name: Commit processed results to audit branch
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/advanced_vocab.js data/coverage_additions.json audit/vocab/results/coverage_additions_summary.json audit/vocab/results/coverage_additions_deferred.csv audit/vocab/results/coverage_additions_validation.json
+          git add -- data/advanced_vocab.js data/coverage_sourcecheck_additions.json audit/vocab/results
           if git diff --cached --quiet; then
-            echo 'No vocabulary changes to commit.'
+            echo 'No source-check changes to commit.'
             exit 0
           fi
-          git commit -m 'Materialize reviewed JLPT coverage additions'
+          git commit -m 'Apply source-checked JLPT surface-form additions'
           git push origin HEAD:audit/vocab-coverage-20260821
