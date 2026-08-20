@@ -1,4 +1,4 @@
-# Trigger revision 6: deterministic finalization of reviewed vocabulary coverage.
+# Trigger revision 7: deterministic, idempotent finalization of reviewed vocabulary coverage.
 name: Finalize reviewed vocabulary coverage branch
 
 on:
@@ -43,22 +43,23 @@ jobs:
           s=json.loads(p('audit/vocab/results/source_check_summary.json').read_text(encoding='utf-8'))
           dm=json.loads(p('data/coverage_manual_meanings.json').read_text(encoding='utf-8'))
           sm=json.loads(p('data/coverage_sourcecheck_manual_meanings.json').read_text(encoding='utf-8'))
+          dm_count=len(dm.get('entries') or [])
           checks={
             'direct_eligible': int(d.get('eligible_add_rows',-1))==337,
             'direct_auto_plus_manual': int(d.get('materialized_count',-1))==152 and int(d.get('deferred_count',-1))==185,
             'sourcecheck_input': int(a.get('input_source_check_candidates',-1))==378,
             'sourcecheck_approved_held': int(a.get('approved',-1))==375 and int(a.get('held',-1))==3,
             'sourcecheck_auto_manual': int(s.get('materialized_count',-1))==309 and int(s.get('deferred_count',-1))==66,
-            'direct_manual_count': int(dm.get('count',-1))==185 and len(dm.get('entries') or [])==185,
+            'canonical_manual_state': dm_count in (185,251) and int(dm.get('count',dm_count))==dm_count,
             'sourcecheck_manual_count': int(sm.get('count',-1))==66 and len(sm.get('entries') or [])==66,
           }
-          print(checks)
+          print({**checks,'canonical_manual_count_before_merge':dm_count})
           bad=[k for k,v in checks.items() if not v]
           if bad:
             raise SystemExit('Review accounting failed: '+', '.join(bad))
           PY
 
-      - name: Merge canonical manual runtime ledger
+      - name: Merge canonical manual runtime ledger idempotently
         run: |
           python - <<'PY'
           import json
@@ -67,12 +68,18 @@ jobs:
           source_path=Path('data/coverage_sourcecheck_manual_meanings.json')
           direct=json.loads(direct_path.read_text(encoding='utf-8'))
           source=json.loads(source_path.read_text(encoding='utf-8'))
-          de=list(direct.get('entries') or [])
+          current=list(direct.get('entries') or [])
           se=list(source.get('entries') or [])
-          if len(de)!=185 or len(se)!=66:
-            raise SystemExit(f'Expected manual components 185 + 66, got {len(de)} + {len(se)}')
+          if len(current) not in (185,251) or len(se)!=66:
+            raise SystemExit(f'Expected canonical manual state 185 or 251 and source-check 66, got {len(current)} and {len(se)}')
+          de=current[:185]
           def key(row):
             return f'{str(row[1]).strip()}|{str(row[2] or row[1]).strip()}'
+          if len(current)==251:
+            current_tail={key(x) for x in current[185:]}
+            source_keys={key(x) for x in se}
+            if current_tail!=source_keys:
+              raise SystemExit('Existing canonical 251-entry ledger tail does not match the reviewed 66 source-check manual entries')
           seen=set(); merged=[]
           for row in [*de,*se]:
             if not isinstance(row,list) or len(row)<4:
@@ -139,6 +146,9 @@ jobs:
             with Path(path).open(encoding='utf-8-sig',newline='') as f:
               return list(csv.DictReader(f))
 
+          surf=json.loads(Path('audit/vocab/results/surface_form_summary.json').read_text(encoding='utf-8'))
+          if surf.get('source_errors'):
+            raise SystemExit(f'Strict audit source errors: {surf.get("source_errors")}')
           missing_rows=csv_rows('audit/vocab/results/missing_surface_high_confidence.csv')+csv_rows('audit/vocab/results/missing_surface_single_source.csv')
           missing={nk(r.get('reading'),r.get('word')) for r in missing_rows}
 
@@ -162,6 +172,7 @@ jobs:
             'direct_still_missing':len(direct_keys & missing),
             'sourcecheck_approved_still_missing':len(source_keys & missing),
             'held_still_missing':len(held_keys & missing),
+            'audit_source_errors':len(surf.get('source_errors') or []),
           }
           print(checks)
           if len(direct_keys)!=337:
@@ -195,7 +206,7 @@ jobs:
           sv=json.loads(P('audit/vocab/results/source_check_validation.json').read_text(encoding='utf-8'))
           rv=json.loads(P('audit/vocab/results/reviewed_runtime_validation.json').read_text(encoding='utf-8'))
           surf=json.loads(P('audit/vocab/results/surface_form_summary.json').read_text(encoding='utf-8'))
-          passed=bool(dv.get('passed')) and bool(sv.get('passed')) and rv.get('status')=='PASS'
+          passed=bool(dv.get('passed')) and bool(sv.get('passed')) and rv.get('status')=='PASS' and not surf.get('source_errors')
           source_out={
             'status':'PASS' if passed else 'FAIL',
             'input_source_check_candidates':a.get('input_source_check_candidates'),
@@ -219,6 +230,7 @@ jobs:
             },
             'sourcecheck_phase':source_out,
             'manual_runtime_ledger_count':251,
+            'audit_source_errors':surf.get('source_errors') or [],
             'remaining_strict_reference_gaps':{
               'high_confidence':surf.get('exact_surface_missing_high_confidence'),
               'single_source':surf.get('exact_surface_missing_single_source'),
