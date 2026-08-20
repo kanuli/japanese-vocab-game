@@ -2,6 +2,9 @@ name: Pronunciation Hosted Audio Recovery Watchdog
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Recover Pronunciation VOICEVOX — HF source-of-truth v4"]
+    types: [completed]
   schedule:
     - cron: '17 * * * *'
   push:
