@@ -1,0 +1,356 @@
+name: Generate reviewed vocabulary hosted-audio delta
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/vocab-coverage-20260821
+    paths:
+      - '.github/workflows/generate-word-audio-delta.yml'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  VV_TAG: voicevox-vocab-delta-20260821-v1
+  ST_TAG: word-supertonic3-delta-20260821-v1
+  AV_TAG: word-aivis-delta-20260821-v1
+  HF_BASE: word/delta/20260821-v1
+
+concurrency:
+  group: reviewed-vocab-audio-delta-20260821
+  cancel-in-progress: false
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+      - name: Rebuild desired runtime catalog and exact delta
+        env:
+          CATALOG_OUT: audit/vocab/results/desired_word_voice_catalog.json
+        run: |
+          node scripts/build_word_voicevox_catalog.mjs
+          python tools/audit_vocab_voice_coverage.py --results audit/vocab/results
+          python scripts/build_word_audio_delta_catalog.py
+      - name: Validate exact 713-key reviewed delta
+        run: |
+          python - <<'PY'
+          import json,re
+          d=json.load(open('word-audio-delta-catalog.json',encoding='utf-8'))
+          assert d['wordCount']==713 and d['deltaWordCount']==713 and d['shardCount']==1
+          assert len(d['items'])==713 and len(d['words'])==713
+          assert len({x['id'] for x in d['items']})==713
+          assert all(re.fullmatch(r'[ぁ-ゖァ-ヺー・ヽヾゝゞ]+',x['reading']) for x in d['items'])
+          print('Validated reviewed hosted-audio delta:',d['wordCount'])
+          PY
+          python -m py_compile scripts/build_word_audio_delta_catalog.py scripts/generate_word_voicevox_delta.py scripts/generate_word_supertonic_shard.py scripts/generate_word_aivis_shard.py scripts/build_word_audio_delta_indexes.py
+          node --check wordaudio-delta-voices.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-word-audio-delta-catalog
+          path: word-audio-delta-catalog.json
+          retention-days: 3
+
+  discover-voicevox:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      speakers: ${{ steps.matrix.outputs.speakers }}
+    steps:
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do curl -fsS http://127.0.0.1:50021/version >/dev/null && break; test "$i" != 120 || { docker logs voicevox-engine; exit 1; }; sleep 2; done
+      - id: matrix
+        name: Build canonical 43-speaker matrix
+        run: |
+          curl -fsS http://127.0.0.1:50021/speakers -o /tmp/speakers.json
+          python - <<'PY'
+          import json,os
+          speakers=json.load(open('/tmp/speakers.json',encoding='utf-8'));preferred=('ノーマル','Normal','NORMAL','通常');rows=[]
+          for sp in speakers:
+            name=str(sp.get('name','')).strip();styles=list(sp.get('styles') or [])
+            if not name or not styles:continue
+            style=next((x for x in styles if str(x.get('name','')).strip() in preferred),styles[0])
+            rows.append({'name':name,'style_id':int(style['id']),'style':str(style.get('name','')).strip()})
+          if len(rows)<43:raise SystemExit(f'Only {len(rows)} usable VOICEVOX speakers')
+          rows=rows[:43]
+          for i,r in enumerate(rows,1):r['key']=f's{i:02d}'
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:f.write('speakers='+json.dumps(rows,ensure_ascii=False,separators=(',',':'))+'\n')
+          print('VOICEVOX delta speakers:',len(rows))
+          PY
+      - if: always()
+        run: docker stop voicevox-engine || true
+
+  discover-aivis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Start AivisSpeech and audit model/styles
+        run: |
+          mkdir -p "$HOME/.local/share/AivisSpeech-Engine" && sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
+          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 300); do curl -fsS http://127.0.0.1:10101/speakers >/dev/null && break; test "$i" != 300 || { docker logs aivis-engine; exit 1; }; sleep 2; done
+          MAX_STYLES=4 OUT=aivis-model.json python scripts/discover_aivis_model.py
+          python - <<'PY'
+          import json
+          d=json.load(open('aivis-model.json'));assert len(d['styles'])==4,f"Expected 4 Aivis styles, got {len(d['styles'])}"
+          print('Aivis delta styles:',[(x['key'],x['speaker'],x['style']) for x in d['styles']])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-word-audio-aivis-model
+          path: aivis-model.json
+          retention-days: 3
+      - if: always()
+        run: docker stop aivis-engine || true
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$VV_TAG" >/dev/null 2>&1 || gh release create "$VV_TAG" --title 'VOICEVOX reviewed vocabulary delta' --notes 'Incremental hosted audio for the 713 exact vocabulary forms added by the 2026-08-21 strict coverage review. Base 22,333-word library is unchanged.'
+          gh release view "$ST_TAG" >/dev/null 2>&1 || gh release create "$ST_TAG" --title 'Supertonic 3 reviewed vocabulary delta' --notes 'Incremental hosted audio for the 713 exact vocabulary forms added by the 2026-08-21 strict coverage review. Base library is unchanged.'
+          gh release view "$AV_TAG" >/dev/null 2>&1 || gh release create "$AV_TAG" --title 'AivisSpeech reviewed vocabulary delta' --notes 'Incremental hosted audio for the 713 exact vocabulary forms added by the 2026-08-21 strict coverage review. Base library is unchanged.'
+
+  voicevox:
+    needs: [catalog,discover-voicevox,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        speaker: ${{ fromJSON(needs.discover-voicevox.outputs.speakers) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: reviewed-word-audio-delta-catalog
+          path: .
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do curl -fsS http://127.0.0.1:50021/version >/dev/null && break; test "$i" != 120 || { docker logs voicevox-engine; exit 1; }; sleep 2; done
+      - name: Generate one speaker delta
+        env:
+          CATALOG: word-audio-delta-catalog.json
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          STYLE_ID: ${{ matrix.speaker.style_id }}
+          STYLE_NAME: ${{ matrix.speaker.style }}
+          OUTPUT_DIR: word-voicevox-delta-out
+        run: python scripts/generate_word_voicevox_delta.py
+      - name: Publish VOICEVOX delta bundle
+        env:
+          K: ${{ matrix.speaker.key }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "word-voicevox-delta-out/$K-delta.tar" "$HF_BASE/voicevox/$K-delta.tar" --repo-type dataset --commit-message "VOICEVOX reviewed vocabulary delta $K"
+          gh release upload "$VV_TAG" "word-voicevox-delta-out/$K-delta.tar" --clobber
+          mkdir manifest && cp "word-voicevox-delta-out/$K-delta.json" manifest/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-vv-manifest-${{ matrix.speaker.key }}
+          path: manifest/*.json
+          retention-days: 3
+      - if: always()
+        run: docker stop voicevox-engine || true
+
+  supertonic:
+    needs: [catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        voice: [F1,F2,F3,F4,F5,M1,M2,M3,M4,M5]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: reviewed-word-audio-delta-catalog
+          path: .
+      - run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2' 'huggingface_hub>=1.19,<2'
+      - name: Generate one Supertonic voice delta
+        env:
+          VOICE: ${{ matrix.voice }}
+          SHARD: '0'
+          CATALOG: word-audio-delta-catalog.json
+          OUT_DIR: word-supertonic-delta-out
+        run: python scripts/generate_word_supertonic_shard.py
+      - name: Publish Supertonic delta bundle
+        env:
+          V: ${{ matrix.voice }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          hf upload "$HF_DATASET_REPO" "word-supertonic-delta-out/$V-shard0.tar" "$HF_BASE/supertonic3/$V-shard0.tar" --repo-type dataset --commit-message "Supertonic reviewed vocabulary delta $V"
+          gh release upload "$ST_TAG" "word-supertonic-delta-out/$V-shard0.tar" --clobber
+          mkdir manifest && cp "word-supertonic-delta-out/$V-shard0.json" manifest/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-st-manifest-${{ matrix.voice }}
+          path: manifest/*.json
+          retention-days: 3
+
+  aivis:
+    needs: [catalog,discover-aivis,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: reviewed-word-audio-delta-catalog
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          name: reviewed-word-audio-aivis-model
+          path: .
+      - run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Start official AivisSpeech
+        run: |
+          mkdir -p "$HOME/.local/share/AivisSpeech-Engine" && sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
+          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 300); do curl -fsS http://127.0.0.1:10101/speakers >/dev/null && break; test "$i" != 300 || { docker logs aivis-engine; exit 1; }; sleep 2; done
+      - name: Generate four Aivis style deltas
+        env:
+          SHARD: '0'
+          CATALOG: word-audio-delta-catalog.json
+          MODEL: aivis-model.json
+          OUT_DIR: word-aivis-delta-out
+        run: python scripts/generate_word_aivis_shard.py
+      - name: Publish Aivis delta bundles
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          for p in word-aivis-delta-out/a*-shard0.tar; do f=$(basename "$p"); hf upload "$HF_DATASET_REPO" "$p" "$HF_BASE/aivis/$f" --repo-type dataset --commit-message "Aivis reviewed vocabulary delta $f"; gh release upload "$AV_TAG" "$p" --clobber; done
+          mkdir manifest && cp word-aivis-delta-out/a*-shard0.json manifest/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reviewed-av-manifests
+          path: manifest/*.json
+          retention-days: 3
+      - if: always()
+        run: docker stop aivis-engine || true
+
+  finalize:
+    needs: [catalog,voicevox,supertonic,aivis]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: reviewed-word-audio-delta-catalog
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: reviewed-vv-manifest-*
+          path: manifests/vv
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: reviewed-st-manifest-*
+          path: manifests/st
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: reviewed-av-manifests
+          path: manifests/av
+      - name: Build ready delta catalogs and indexes
+        run: |
+          python scripts/build_word_audio_delta_indexes.py --engine voicevox --manifest-dir manifests/vv --out-dir publish/vv --tag "$VV_TAG" --hf-dir "$HF_BASE/voicevox"
+          python scripts/build_word_audio_delta_indexes.py --engine supertonic3 --manifest-dir manifests/st --out-dir publish/st --tag "$ST_TAG" --hf-dir "$HF_BASE/supertonic3"
+          python scripts/build_word_audio_delta_indexes.py --engine aivis --manifest-dir manifests/av --out-dir publish/av --tag "$AV_TAG" --hf-dir "$HF_BASE/aivis"
+      - name: Validate final recording counts
+        run: |
+          python - <<'PY'
+          import json
+          vv=json.load(open('publish/vv/word-voicevox-delta-catalog.json'));st=json.load(open('publish/st/word-supertonic3-delta-catalog.json'));av=json.load(open('publish/av/word-aivis-delta-catalog.json'))
+          assert vv['status']=='ready' and vv['wordCount']==713 and vv['speakerCount']==43 and vv['recordingCount']==713*43
+          assert st['status']=='ready' and st['wordCount']==713 and st['voiceCount']==10 and st['recordingCount']==713*10
+          assert av['status']=='ready' and av['wordCount']==713 and av['voiceCount']==4 and av['recordingCount']==713*4
+          print({'voicevox':vv['recordingCount'],'supertonic3':st['recordingCount'],'aivis':av['recordingCount'],'total':vv['recordingCount']+st['recordingCount']+av['recordingCount']})
+          PY
+      - name: Publish delta indexes to releases and Hugging Face
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          for p in publish/vv/*-index.json; do gh release upload "$VV_TAG" "$p" --clobber; done
+          for p in publish/st/*-index.json; do gh release upload "$ST_TAG" "$p" --clobber; done
+          for p in publish/av/*-index.json; do gh release upload "$AV_TAG" "$p" --clobber; done
+          hf upload "$HF_DATASET_REPO" publish/vv "$HF_BASE/voicevox/indexes" --repo-type dataset --commit-message 'VOICEVOX reviewed vocabulary delta indexes'
+          hf upload "$HF_DATASET_REPO" publish/st "$HF_BASE/supertonic3/indexes" --repo-type dataset --commit-message 'Supertonic reviewed vocabulary delta indexes'
+          hf upload "$HF_DATASET_REPO" publish/av "$HF_BASE/aivis/indexes" --repo-type dataset --commit-message 'Aivis reviewed vocabulary delta indexes'
+      - name: Write completion marker and commit lightweight delta catalogs
+        run: |
+          cp publish/vv/word-voicevox-delta-catalog.json .
+          cp publish/st/word-supertonic3-delta-catalog.json .
+          cp publish/av/word-aivis-delta-catalog.json .
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          vv=json.load(open('word-voicevox-delta-catalog.json'));st=json.load(open('word-supertonic3-delta-catalog.json'));av=json.load(open('word-aivis-delta-catalog.json'))
+          out={'status':'PASS','exact_delta_words':713,'invalid_readings':0,'engines':{'voicevox':{'voices':43,'recordings':vv['recordingCount']},'supertonic3':{'voices':10,'recordings':st['recordingCount']},'aivis':{'voices':4,'recordings':av['recordingCount']}},'total_new_hosted_recordings':vv['recordingCount']+st['recordingCount']+av['recordingCount'],'base_libraries_unchanged':True}
+          Path('audit/vocab/results/voice_delta_completion.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(out)
+          PY
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- word-voicevox-delta-catalog.json word-supertonic3-delta-catalog.json word-aivis-delta-catalog.json audit/vocab/results/voice_delta_completion.json
+          git commit -m 'Publish reviewed vocabulary hosted-audio delta'
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
