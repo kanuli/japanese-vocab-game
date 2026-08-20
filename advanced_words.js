@@ -9,6 +9,8 @@ document.write('<script src="./data/coverage_deferred_manual.js?v=20260821v1"><\
 // automated source scan. This is loaded synchronously so every vocabulary consumer
 // (quiz, word list, and word audio) sees the same completed runtime inventory.
 document.write('<script src="./data/coverage_sourcecheck_manual.js?v=20260821v1"><\/script>');
+// Final residual cleanup discovered by the post-completion strict audit.
+document.write('<script src="./data/coverage_postreview_manual.js?v=20260821v1"><\/script>');
 document.write('<script src="./large_vocab_loader.js?v=20260821v1"><\/script>');
 
 // Pronunciation fix: always speak the explicit kana reading shown in the answer sheet.
