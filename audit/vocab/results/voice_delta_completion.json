@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "exact_delta_words": 713,
+  "invalid_readings": 0,
+  "engines": {
+    "voicevox": {
+      "voices": 43,
+      "recordings": 30659
+    },
+    "supertonic3": {
+      "voices": 10,
+      "recordings": 7130
+    },
+    "aivis": {
+      "voices": 4,
+      "recordings": 2852
+    }
+  },
+  "total_new_hosted_recordings": 40641,
+  "base_libraries_unchanged": true
+}
