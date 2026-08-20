@@ -1,11 +1,19 @@
 {
-  "version": 1,
-  "status": "failure",
-  "checkedAt": "2026-08-20T05:26:48.915964Z",
-  "runId": "32335546447",
+  "version": 2,
+  "status": "success",
+  "checkedAt": "2026-08-20T05:39:19.967369Z",
+  "runId": "32336314011",
   "runAttempt": "1",
-  "headSha": "3060f7e7636cf899c8dc78d67ff26544a4038ab6",
+  "headSha": "583e52d74054d0bb568ad2e1c735ef60ba2d9c0a",
   "target": "https://kanuli.github.io/japanese-vocab-game/pronunciation.html",
+  "checks": [
+    "supertonic-old-3310",
+    "supertonic-original-6690",
+    "voicevox-old-3310-sprite",
+    "voicevox-original-6690-tar",
+    "mobile-hf-first",
+    "voice-selectors"
+  ],
   "expected": {
     "sentenceCount": 10000,
     "supertonicVoiceCount": 10,
