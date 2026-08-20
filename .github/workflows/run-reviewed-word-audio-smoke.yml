@@ -1,3 +1,4 @@
+# Trigger revision 2: workflow already exists on main, so this push must exercise the registered runner path.
 name: Reviewed vocabulary audio runner smoke
 
 on:
