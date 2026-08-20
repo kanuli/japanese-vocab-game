@@ -19,16 +19,25 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
           p=Path('pronunciation.html');s=p.read_text(encoding='utf-8')
-          s=s.replace('pronunciation-reference-audio.js?v=20260817v1','pronunciation-reference-audio.js?v=20260817v2')
+          s,n=re.subn(r'pronunciation-reference-audio\.js\?v=[A-Za-z0-9._-]+','pronunciation-reference-audio.js?v=20260820v4',s,count=1)
+          assert n==1, f'pronunciation reader script tag replacements={n}'
           p.write_text(s,encoding='utf-8')
           r=Path('pronunciation-reference-audio.js').read_text(encoding='utf-8')
-          for token in ['pronunciation-supertonic-original-index.json','pronunciation-voicevox-original-index.json','voicevox-full-index.json','listening-supertonic-index.json','bundleHit','fetchRange']:
+          for token in [
+              'pronunciation-supertonic-original-index.json',
+              'pronunciation-voicevox-original-index.json',
+              'voicevox-full-index.json',
+              'listening-supertonic-index.json',
+              'bundleHit','fetchRange','legacyVoicevoxHit','sprites','segments','playSharedUrl'
+          ]:
               assert token in r, token
-          assert 'pronunciation-reference-audio.js?v=20260817v2' in s
+          assert 'pronunciation-reference-audio.js?v=20260820v4' in s
+          print('Pronunciation reader cache key -> 20260820v4; legacy/new hosted adapters present.')
           PY
       - name: Commit
         run: |
           git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add pronunciation.html
-          if git diff --cached --quiet; then echo current; else git commit -m 'Refresh pronunciation hosted audio reader'; git pull --rebase origin main; git push origin main; fi
+          if git diff --cached --quiet; then echo current; else git commit -m 'Refresh pronunciation hosted audio reader v4'; git pull --rebase origin main; git push origin main; fi
