@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "status": "failure",
+  "checkedAt": "2026-08-20T05:26:48.915964Z",
+  "runId": "32335546447",
+  "runAttempt": "1",
+  "headSha": "3060f7e7636cf899c8dc78d67ff26544a4038ab6",
+  "target": "https://kanuli.github.io/japanese-vocab-game/pronunciation.html",
+  "expected": {
+    "sentenceCount": 10000,
+    "supertonicVoiceCount": 10,
+    "supertonicRecordingCount": 100000,
+    "voicevoxSpeakerCount": 43,
+    "voicevoxRecordingCount": 430000,
+    "mobileHostedFirst": true
+  }
+}
