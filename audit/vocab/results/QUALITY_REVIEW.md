@@ -2,17 +2,17 @@
 
 Every missing written-form + reading pair was reviewed independently. A related word with the same reading or JMdict entry does **not** remove it.
 
-- All missing forms reviewed: **896**
+- All missing forms reviewed: **830**
 - High-confidence (>=2 independent reference families): **76**
-- Single-source: **820**
-- Recommended ADD / ADD-after-check: **70**
+- Single-source: **754**
+- Recommended ADD / ADD-after-check: **4**
 - Manual / low-priority / expression review: **826**
 
 ## Decisions
 
 | Decision | Count |
 |---|---:|
-| ADD_AFTER_SOURCE_CHECK | 67 |
+| ADD_AFTER_SOURCE_CHECK | 1 |
 | ADD_VARIANT_AFTER_SOURCE_CHECK | 3 |
 | LOW_PRIORITY_ARCHAIC | 113 |
 | LOW_PRIORITY_RARE_VARIANT | 143 |
@@ -24,7 +24,7 @@ Every missing written-form + reading pair was reviewed independently. A related 
 
 | Priority | Count |
 |---|---:|
-| P2 | 96 |
+| P2 | 30 |
 | P3 | 72 |
 | P4 | 728 |
 

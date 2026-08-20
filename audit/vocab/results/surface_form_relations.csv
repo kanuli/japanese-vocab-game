@@ -277,15 +277,12 @@
 否,いいえ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,no; nay; yes,same-reading-different-writing|same-writing-different-reading,いいえ,いや,,,,,no
 イェス,イェス,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,是；耶稣,fully-absent,,,,,,,no
 いえ,いえ,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,kana/loanword,TODO same as いいえ?,same-reading-different-writing|same-jmdict-entry,家,,いいえ|家,いいえ|いえ,N5,いいえ|いえ|家,yes
-家主,いえぬし,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,landlord,same-writing-different-reading|same-jmdict-entry,,やぬし,家主,やぬし,N2,いえあるじ|いえぬし|やぬし|家主,yes
 雷,いかずち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,thunder,same-writing-different-reading,,かみなり,,,,,no
-域外,いきがい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,outside the area,same-reading-different-writing,生きがい|生き甲斐,,,,,,yes
 行き成り,いきなり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,suddenly,same-reading-different-writing|same-jmdict-entry,いきなり,,いきなり,いきなり,N2,いきなり|いっきなり|ゆきなり|行きなり|行き成|行き成り|行成|行成り,yes
 行く,いく; ゆく,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,去,same-writing-different-reading,,いく|ゆく,,,,,no
 幾～,いく～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,several ~,fully-absent,,,,,,,no
 軍,いくさ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,war; battle; campaign,same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,戦,ぐん,戦,いくさ,N1,いくさ|兵|戦|軍,yes
 いくら～ても,いくら～ても,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,无论多么～也,fully-absent,,,,,,,no
-碑,いしぶみ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,stone monument bearing an inscription,fully-absent,,,,,,,yes
 いただきます,いただきます,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,fixed-expression/conjugated,expression of gratitude before meals,fully-absent,,,,,,,yes
 戴きます,いただきます,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,fixed-expression/conjugated,expression of gratitude before meals,fully-absent,,,,,,,yes
 位地,いち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,place; situation; position,same-reading-different-writing|same-jmdict-entry,一|位置|市,,位置,いち,N4,いち|位地|位置,yes
@@ -293,22 +290,17 @@
 行っていらっしゃい,いっていらっしゃい,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,"have a nice day, see you",fully-absent,,,,,,,no
 いってきます,いってきます,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,fixed-expression/conjugated,"(Lit.) I'll go and come back, 'I'm going, see you later'",fully-absent,,,,,,,yes
 いってまいります,いってまいります,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,fixed-expression/conjugated,"(Lit.) I'll go and come back, 'I'm going, see you later'",fully-absent,,,,,,,yes
-いってらっしゃい,いってらっしゃい,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,kana/loanword,,fully-absent,,,,,,,yes
-行ってらっしゃい,いってらっしゃい,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,"have a nice day, see you",fully-absent,,,,,,,yes
 何時,いつ,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt|waller,waller-derived,1,lexical,when; how soon,same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,いつ|佚,なんじ,いつ,いつ,N5,いつ|何時,yes
 厭々,いやいや,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,unwillingly; grudgingly; shaking head in refusal (to children),same-reading-different-writing|same-jmdict-entry,いやいや|否々|嫌々,,いやいや|嫌々,いやいや,N1|N2,いやいや|イヤイヤ|厭々|厭厭|嫌々|嫌嫌,yes
 厭やらしい,いやらしい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,detestable; disagreeable,same-reading-different-writing,いやらしい|厭らしい|嫌らしい,,,,,,no
 愈々,いよいよ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,more and more; all the more; increasingly,same-reading-different-writing|same-jmdict-entry,いよいよ,,いよいよ,いよいよ,N2,いよいよ|弥々|弥弥|愈|愈々|愈愈,yes
 居る,いる,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to be; to have (used for people and animals),same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,いる|入る|射る|炒る|煎る|要る|鋳る,おる,いる,いる,N5,いる|居る,yes
-員,いん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,member,same-reading-different-writing,印|韻,,,,,,yes
 ウエートレス,ウエートレス,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,waitress,same-jmdict-entry,,,ウェートレス,ウェートレス,N1,ウェイトレス|ウェートレス|ウエイトレス|ウエートレス,yes
 浮ぶ,うかぶ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to float; to rise to surface; to come to mind,same-reading-different-writing|same-jmdict-entry,浮かぶ,,浮かぶ,うかぶ,N2,うかぶ|泛かぶ|泛ぶ|浮かぶ|浮ぶ,yes
 潮,うしお,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,tide,same-writing-different-reading,,しお,,,,,no
 うたた寝,うたたね,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"dozing, napping",same-reading-different-writing,転寝,,,,,,no
 打合せ,うちあわせ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,business meeting; previous arrangement; appointment,same-reading-different-writing|same-jmdict-entry,打ち合わせ,,打ち合わせ,うちあわせ,N2,うちあわせ|うち合わせ|打ちあわせ|打ち合せ|打ち合わせ|打合せ|打合わせ,yes
 饂飩,うどん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,noodles (Japanese),same-reading-different-writing|same-jmdict-entry,うどん,,うどん,うどん,N2,うどん|うんどん|饂飩,yes
-うぬぼれ,うぬぼれ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,"pretension, conceit, hubris",fully-absent,,,,,,,yes
-自惚れ,うぬぼれ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,pretension; conceit; hubris,fully-absent,,,,,,,yes
 末,うら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,top end; tip,same-reading-different-writing|same-writing-different-reading,裏,すえ|まつ,,,,,yes
 五月蝿い,うるさい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,noisy; loud; fussy,same-reading-different-writing|same-jmdict-entry,うるさい|煩い,,うるさい|煩い,うるさい,N5,うるさい|ウルサイ|五月蝿い|五月蠅い|煩い|煩さい,yes
 売行き,うれゆき,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,sales,same-reading-different-writing|same-jmdict-entry,売れ行き,,売れ行き,うれゆき,N2,うれゆき|売れゆき|売れ行き|売行|売行き,yes
@@ -318,10 +310,8 @@
 運動,うんどうする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,to exercise,same-writing-different-reading,,うんどう,,,,,no
 会,え,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,understanding,same-reading-different-writing|same-writing-different-reading,柄|江|絵,かい,,,,,yes
 重,え,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,-fold; -ply,same-reading-different-writing,柄|江|絵,,,,,,yes
-園,えん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,garden (esp. man-made),same-reading-different-writing|same-writing-different-reading,円|塩|燕|縁|艶,その,,,,,yes
 遠慮,えんりょする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,to be reserved; to be restrained,same-writing-different-reading,,えんりょ,,,,,no
-御,お,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,lexical,honourable,same-reading-different-writing,尾,,,,,,yes
-於,お,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,at; in; on,same-reading-different-writing,尾,,,,,,no
+於,お,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,at; in; on,same-reading-different-writing,尾|御,,,,,,no
 お～,お～,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,尊～,fully-absent,,,,,,,no
 於いて,おいて,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,at; in; on,same-reading-different-writing|same-jmdict-entry,おいて,,おいて,おいて,N3,おいて|於|於いて|於て,yes
 おおい (かん),おおい (かん),N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,hey,fully-absent,,,,,,,no
@@ -330,12 +320,10 @@
 おかけください,おかけください,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,fixed-expression/conjugated,请坐,fully-absent,,,,,,,yes
 お蔭,おかげ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,(your) backing; assistance,same-reading-different-writing|same-jmdict-entry,おかげ|お陰,,おかげ|お陰,おかげ,N3|N4,おかげ|お蔭|お陰|御蔭|御陰,yes
 お菜,おかず,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,side dish; accompaniment for rice dishes,same-reading-different-writing|same-jmdict-entry,おかず,,おかず,おかず,N2,おかず|お数|お菜|オカズ|御数|御菜,yes
-お金持ち,おかねもち,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",waller,waller-derived,1,lexical,rich man,fully-absent,,,,,,,yes
 おかまいなく,おかまいなく,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,kana/loanword,请别客气,fully-absent,,,,,,,no
 おごる (ゆうしょくを～),おごる (ゆうしょくを～),N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,请客（晚餐）,fully-absent,,,,,,,no
 傲る,おごる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,to be proud,same-reading-different-writing|same-jmdict-entry,おごる|奢る|驕る,,おごる|驕る,おごる,N1|N2,おごる|傲る|驕る,yes
 長,おさ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,chief; head,same-writing-different-reading,,ちょう|なが,,,,,yes
-おさきに,おさきに,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,kana/loanword,"before,ahead,previously",same-reading-different-writing|same-jmdict-entry,お先に,,お先に,おさきに,N2,おさきに|お先に,yes
 伯父/叔父,おじいさん,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt,waller-derived,1,lexical,grandfather; male senior citizen,same-reading-different-writing,おじいさん|お祖父さん,,,,,,no
 伯父; 叔父さん,おじさん,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,"uncle, middle-aged man",same-reading-different-writing,おじさん|伯父さん|叔父さん|小父さん,,,,,,no
 おじゃまします,おじゃまします,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,fixed-expression/conjugated,Excuse me for disturbing you,same-reading-different-writing|same-jmdict-entry,お邪魔します,,お邪魔します,おじゃまします,N2,おじゃまします|お邪魔します|御邪魔します,yes
@@ -359,7 +347,6 @@
 思いっ切り,おもいっきり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,lexical,狠狠地,fully-absent,,,,,,,yes
 重なる,おもなる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,main; principal; important,same-writing-different-reading,,かさなる,,,,,yes
 重役,おもやく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,heavy responsibilities; director,same-writing-different-reading|same-jmdict-entry,,じゅうやく,重役,じゅうやく,N2,おもやく|じゅうやく|重役,yes
-おやすみ,おやすみ,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,kana/loanword,"(1) holiday,absence,rest,(2) (exp) Good night",same-reading-different-writing|same-jmdict-entry,お休み,,お休み,おやすみ,N2,おやすみ|お休み|御休み,yes
 お八,おやつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,1.  (uk) between meal snack; afternoon refreshment; afternoon tea,same-reading-different-writing,おやつ,,,,,,no
 お八つ,おやつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,"1. (uk) between meal snack, afternoon refreshment, afternoon tea, 2. mid-day snack",same-reading-different-writing|same-jmdict-entry,おやつ,,おやつ,おやつ,N3,おやつ|お八つ|御八つ,yes
 泳ぎ方,およぎかた,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,lexical,way of swimming,fully-absent,,,,,,,yes
@@ -370,16 +357,12 @@
 おかげ,お陰,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,kana/loanword,thanks or owing to,same-writing-different-reading,,おかげ,,,,,no
 仮,か,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,tentative; provisional,same-reading-different-writing|same-writing-different-reading,可|科|箇|蚊|課,かり,,,,,no
 個,か,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,article counter,same-reading-different-writing|same-jmdict-entry,可|科|箇|蚊|課,,箇,か,N1,か|カ|ケ|ヶ|个|個|箇,yes
-書き取り,かきとり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,dictation,same-reading-different-writing|same-jmdict-entry,書取,,書取,かきとり,N2,かきとり|書き取り|書取,yes
 かく (はじを),かく (はじを),N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,to humiliate oneself,fully-absent,,,,,,,no
-佳句,かく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,beautiful passage of literature,same-reading-different-writing,掻く|描く|搔[か]く|書く|核|格|欠く|角,,,,,,yes
-画,かく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,stroke,same-reading-different-writing,掻く|描く|搔[か]く|書く|核|格|欠く|角,,,,,,yes
+佳句,かく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,beautiful passage of literature,same-reading-different-writing,掻く|描く|搔[か]く|書く|核|格|欠く|画|角,,,,,,yes
 各～,かく～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,"every ~, each ~",fully-absent,,,,,,,no
 掛～,かけ～,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,credit,fully-absent,,,,,,,no
 かける,かける,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,kana/loanword,"to dial/call (e.g., phone); to sit down",same-reading-different-writing|same-jmdict-entry,掛ける|架ける|欠ける|翔る|賭ける|駆ける,,掛ける|欠ける|翔る|賭ける|駆ける,かける,N1|N2|N3|N5,かける|懸ける|掛ける|欠ける|缺ける|翔ける|翔る|賭ける|闕ける|駆ける|駈ける,yes
 風車,かざぐるま,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,1.  windmill; 2.  pinwheel,same-writing-different-reading|same-jmdict-entry,,ふうしゃ,風車,ふうしゃ,N1,かざぐるま|ふうしゃ|カザグルマ|風ぐるま|風車,yes
-畏まりました,かしこまりました,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,certainly!,same-reading-different-writing|same-jmdict-entry,かしこまりました,,かしこまりました,かしこまりました,N2,かしこまりました|畏まりました,yes
-過多,かた,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,excess; superabundance,same-reading-different-writing,型|方|肩,,,,,,yes
 片～,かた～,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,single ~,fully-absent,,,,,,,no
 堅/硬/固い,かたい,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt,waller-derived,1,lexical,hard,same-reading-different-writing,固い|堅い|硬い|難い,,,,,,no
 堅; 硬; 固い,かたい,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,"solid, hard, firm",same-reading-different-writing,固い|堅い|硬い|難い,,,,,,no
@@ -395,8 +378,8 @@
 可成,かなり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,considerably; fairly; quite,same-reading-different-writing|same-jmdict-entry,かなり,,かなり,かなり,N3,かなり|可なり|可也|可成|可成り,yes
 金庫,かねぐら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,safe; vault; treasury,same-writing-different-reading,,きんこ,,,,,yes
 予言,かねごと,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,prediction; promise; prognostication,same-writing-different-reading,,よげん,,,,,yes
-お金持ち,かねもち/おかねもち,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt,waller-derived,1,lexical,rich man,fully-absent,,,,,,,no
-お金持ち,かねもち; おかねもち,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,有钱人,fully-absent,,,,,,,no
+お金持ち,かねもち/おかねもち,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt,waller-derived,1,lexical,rich man,same-writing-different-reading,,おかねもち,,,,,no
+お金持ち,かねもち; おかねもち,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,有钱人,same-writing-different-reading,,おかねもち,,,,,no
 下品,かひん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,inferior article,same-writing-different-reading,,げひん,,,,,no
 かび (～がはえる),かび (～がはえる),N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,霉菌,fully-absent,,,,,,,no
 構いません,かまいません,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,fixed-expression/conjugated,it's all right; one doesn’t mind,fully-absent,,,,,,,no
@@ -415,10 +398,7 @@
 我,が～,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,ego,same-writing-different-reading,,われ,,,,,no
 蓋,がい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,cover; lid; cap,same-reading-different-writing|same-writing-different-reading,ガイ|外|害|街,ふた,,,,,no
 外～,がい～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,外国～，外部～,fully-absent,,,,,,,no
-雅致,がち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,artistry; good taste; elegance,fully-absent,,,,,,,yes
-がる,がる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,kana/loanword,feel,fully-absent,,,,,,,yes
 兆,きざし,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,signs; omen; symptoms,same-reading-different-writing|same-writing-different-reading,兆し,ちょう,,,,,no
-奇数,きすう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,odd number,fully-absent,,,,,,,yes
 切っ掛け,きっかけ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,chance; start; cue,same-reading-different-writing|same-jmdict-entry,きっかけ,,きっかけ,きっかけ,N2,きっかけ|キッカケ|切かけ|切っかけ|切っ掛|切っ掛け|切掛|切掛け|切欠,yes
 屹度,きっと,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,1.  (uk) surely; undoubtedly; certainly,same-reading-different-writing|same-jmdict-entry,きっと|キット,,きっと,きっと,N4,きっと|キッと|屹度|急度,yes
 決る,きまる,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,lexical,to be decided,same-reading-different-writing|same-jmdict-entry,決まる,,決まる,きまる,N4,きまる|キマる|極る|決まる|決る,yes
@@ -426,14 +406,11 @@
 巨,きょ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,"big, large, great",fully-absent,,,,,,,no
 供,きょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,offer; present; submit,same-reading-different-writing|same-writing-different-reading,きょう|京|今日|卿|強|経|興,とも,,,,,no
 共,きょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,both; neither (neg); all,same-reading-different-writing|same-writing-different-reading,きょう|京|今日|卿|強|経|興,とも,,,,,no
-共産,きょうさん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,communism,fully-absent,,,,,,,yes
 共産～,きょうさん～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,communist ~,fully-absent,,,,,,,no
 キロ; キログラム,キロ; キログラム,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,(abbr.) kilo (kilogram),fully-absent,,,,,,,no
 キロ; キロメートル,キロ; キロメートル,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,(abbr.) kilo (kilometer),fully-absent,,,,,,,no
 僅,きん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,a little; small quantity,same-reading-different-writing,菌|金,,,,,,no
 僅々,きんきん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,"a little, small quantity",same-reading-different-writing,近々,,,,,,yes
-禁ずる,きんずる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,to forbid; to suppress,fully-absent,,,,,,,yes
-金曜,きんよう,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,lexical,(abbr) Friday,fully-absent,,,,,,,yes
 空～,くう～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,空～,fully-absent,,,,,,,no
 種々,くさぐさ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,variety,same-writing-different-reading,,しゅじゅ,,,,,no
 嚏,くしゃみ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,sneeze,same-reading-different-writing|same-jmdict-entry,くしゃみ,,くしゃみ,くしゃみ,N3,くさめ|くしゃみ|くっさめ|クシャミ|嚏|嚔,yes
@@ -444,7 +421,6 @@
 諄い,くどい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,verbose; importunate; heavy (taste),same-reading-different-writing|same-jmdict-entry,くどい,,くどい,くどい,N2,くどい|クドい|諄い,yes
 呉れ呉れも,くれぐれも,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,repeatedly; sincerely; earnestly,same-reading-different-writing|same-jmdict-entry,くれぐれも,,くれぐれも,くれぐれも,N1,くれぐれも|呉々も|呉れ呉れも|呉呉も,yes
 呉れる,くれる,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,lexical,to give; to let one have; to do for one,same-reading-different-writing|same-jmdict-entry,くれる|暮れる,,くれる,くれる,N5,くれる|呉れる,yes
-ぐらい,ぐらい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,kana/loanword,approximately,fully-absent,,,,,,,yes
 傾,けい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,lean; incline,same-reading-different-writing,刑|系|計,,,,,,no
 頃,けい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,time; about; toward,same-reading-different-writing|same-writing-different-reading,刑|系|計,ころ,,,,,yes
 計画,けいかくする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,to plan,same-writing-different-reading,,けいかく,,,,,no
@@ -452,11 +428,9 @@
 けがする,けがする,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,kana/loanword,"injury (to animate object), hurt",fully-absent,,,,,,,no
 吝嗇,けち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,stinginess; miser; miserliness,same-reading-different-writing|same-jmdict-entry,けち|ケチ,,けち|ケチ,けち|ケチ,N3,けち|ケチ|吝嗇,yes
 結婚,けっこん (する),N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,marriage (get married),same-writing-different-reading,,けっこん,,,,,no
-傑,けつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,excellence,fully-absent,,,,,,,yes
-決,けつ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"decision, vote",fully-absent,,,,,,,yes
+傑,けつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,excellence,same-reading-different-writing,決,,,,,,yes
 けれど; けれども,けれど; けれども,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,"but, although",fully-absent,,,,,,,no
 けんかする,けんかする,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,kana/loanword,quarrel,fully-absent,,,,,,,no
-月曜,げつよう,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,lexical,Monday,fully-absent,,,,,,,yes
 現～,げん～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,"present, incumbent",fully-absent,,,,,,,no
 元気でね,げんきでね,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,lexical,,fully-absent,,,,,,,yes
 児,こ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,child; the young of animals,same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,子|戸,じ,子,こ,N4,こ|児|子,yes
@@ -467,7 +441,6 @@
 斯う,こう,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",waller,waller-derived,1,lexical,this way,same-reading-different-writing|same-jmdict-entry,こう|乞う|侯|校|甲|稿|請う|高|黄,,こう,こう,N5,こう|斯う,yes
 溝,こう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,10^38; hundred undecillion (American); hundred sextillion (British),same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,こう|乞う|侯|校|甲|稿|請う|高|黄,どぶ|みぞ,こう,こう,N5,こう|溝,yes
 高～,こう～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,high (level) ~,fully-absent,,,,,,,no
-行員,こういん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,bank clerk,same-reading-different-writing,光陰|工員,,,,,,yes
 高校; 高等学校,こうこう; こうとうがっこう,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,high school; senior high school,fully-absent,,,,,,,no
 煌々と,こうこうと,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,brilliantly; brightly,fully-absent,,,,,,,no
 此処,ここ,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",waller,waller-derived,1,lexical,Here,same-reading-different-writing|same-jmdict-entry,ここ|個々|箇箇,,ここ,ここ,N5,ここ|是|此処|此所|爰|茲,yes
@@ -480,16 +453,13 @@
 言付け,ことづけ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,口信,same-reading-different-writing,ことづけ,,,,,,no
 此の,この,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt|waller,waller-derived,1,lexical,this,same-reading-different-writing|same-jmdict-entry,この,,この,この,N5,この|こん|斯の|此の,yes
 コピーする,コピーする,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,kana/loanword,to copy,fully-absent,,,,,,,no
-混む,こむ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,to be crowded,same-reading-different-writing,込む,,,,,,yes
 此れ,これ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,this,same-reading-different-writing|same-jmdict-entry,これ,,これ,これ,N5,これ|之|之れ|惟|是|是れ|此|此れ|維,yes
 此れ等,これら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,these,same-reading-different-writing|same-jmdict-entry,これら|これ等|コレラ,,これら|これ等,これら,N3,これら|これ等|之等|是等|此れ等|此等,yes
 今～,こん～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,"this, current",fully-absent,,,,,,,no
 コンタクト (レンズ),コンタクト (レンズ),N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,contact; contact lens,fully-absent,,,,,,,no
 コンピュータ; コンピューター,コンピュータ; コンピューター,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,computer,fully-absent,,,,,,,no
-御,ご,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,go-; honourable,same-reading-different-writing,五|後|碁|語,,,,,,yes
 御～,ご～,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,honorable ~,fully-absent,,,,,,,no
 強気,ごうぎ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,great; grand,same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,合議|豪儀,つよき,豪儀,ごうぎ,N1,ごうき|ごうぎ|強気|豪儀|豪気,yes
-ごくろうさま,ごくろうさま,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,kana/loanword,Thank you very much for your....,same-reading-different-writing|same-jmdict-entry,ご苦労様,,ご苦労様,ごくろうさま,N2,ごくろうさま|ごくろーさま|ご苦労さま|ご苦労様|御苦労さま|御苦労様,yes
 ございます (かん),ございます (かん),N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"to be (polite, to exist)",fully-absent,,,,,,,no
 ご座います,ございます,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,fixed-expression/conjugated,to be (polite); to exist,fully-absent,,,,,,,yes
 塵芥,ごみ,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt,waller-derived,1,lexical,trash; rubbish,same-reading-different-writing,ごみ|塵,,,,,,no
@@ -559,17 +529,13 @@
 重～,じゅう～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,heavy ~,fully-absent,,,,,,,no
 じゅうたん (カーペット),じゅうたん (カーペット),N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,carpet,fully-absent,,,,,,,no
 十,じゅう とお,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt,waller-derived,1,lexical,ten,same-writing-different-reading,,じゅう|とお,,,,,no
-準ずる,じゅんずる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,to apply correspondingly; to correspond to; to be proportionate to,fully-absent,,,,,,,yes
 準備,じゅんびする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,to prepare,same-writing-different-reading,,じゅんび,,,,,no
 助,じょ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,help; rescue; assistant,fully-absent,,,,,,,yes
 女～,じょ～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,things done by women,fully-absent,,,,,,,no
-尉,じょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,jailer; old man; rank,same-reading-different-writing,上|場|嬢|情|畳,,,,,,yes
-状,じょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,shape,same-reading-different-writing,上|場|嬢|情|畳,,,,,,yes
+尉,じょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,jailer; old man; rank,same-reading-different-writing,上|場|嬢|情|状|畳,,,,,,yes
 粋,すい,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,essence,same-writing-different-reading,,いき,,,,,no
-水曜,すいよう,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,lexical,Wednesday,fully-absent,,,,,,,yes
 すくう (みずを～),すくう (みずを～),N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,to scoop,fully-absent,,,,,,,no
 棄てる,すてる,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,lexical,,same-reading-different-writing|same-jmdict-entry,捨てる,,捨てる,すてる,N4,すてる|捨てる|棄てる,yes
-スト,スト,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,(abbr.) strike,fully-absent,,,,,,,yes
 角,すみ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,horn,same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,墨|済み|炭|隅,かく|かど|つの,隅,すみ,N1,すま|すみ|角|隅,yes
 すみません (かん),すみません (かん),N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,lexical,对不起,fully-absent,,,,,,,no
 済みません,すみません,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,fixed-expression/conjugated,sorry; excuse me,same-reading-different-writing|same-jmdict-entry,すみません,,すみません,すみません,N5,すみません|スミマセン|済みません,yes
@@ -597,7 +563,6 @@
 相談,そうだんする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,to discuss,same-writing-different-reading,,そうだん,,,,,no
 其処,そこ,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt|waller,waller-derived,1,lexical,that place; there,same-reading-different-writing|same-jmdict-entry,そこ|底,,そこ,そこ,N5,そこ|其処|其所,yes
 其処で,そこで,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,so (conj); accordingly; now,same-reading-different-writing|same-jmdict-entry,そこで,,そこで,そこで,N3,そこで|其処で,yes
-損う,そこなう,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"to harm, to hurt",same-reading-different-writing|same-jmdict-entry,損なう,,損なう,そこなう,N2,そこなう|害う|損う|損なう,yes
 其処ら,そこら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,everywhere; somewhere; approximately,same-reading-different-writing|same-jmdict-entry,そこら,,そこら,そこら,N2,そこら|其処ら,yes
 然して,そして,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,and,same-reading-different-writing|same-jmdict-entry,そして,,そして,そして,N5,しかして|そして|然して|而して,yes
 其方,そちら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,over there; the other,same-reading-different-writing|same-jmdict-entry,そちら,,そちら|そっち,そちら|そっち,N5,そちら|そっち|其方,yes
@@ -630,11 +595,9 @@
 歎,たん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,grief; sigh; lamentation,same-reading-different-writing,タン|単|反,,,,,,yes
 短～,たん～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,短~,fully-absent,,,,,,,no
 田ぼ,たんぼ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,paddy field; farm,same-reading-different-writing|same-jmdict-entry,田んぼ|田圃,,田んぼ|田圃,たんぼ,N1,たんぼ|でんぼ|でんぽ|田ぼ|田んぼ|田圃|田畝,yes
-第,だい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,ordinal,same-reading-different-writing,台|大|題,,,,,,yes
 第～,だい～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,~th,fully-absent,,,,,,,no
 だいいち (とりわけ),だいいち (とりわけ),N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,第一,fully-absent,,,,,,,no
 だと,だと,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,if it's the case,fully-absent,,,,,,,no
-だらけ,だらけ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,kana/loanword,implying (negatively) that something is full of e.g. mistakes,fully-absent,,,,,,,yes
 壇,だん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,1.  platform; podium; rostrum,same-reading-different-writing,段|談,,,,,,yes
 打,ダース,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,dozen,same-reading-different-writing|same-jmdict-entry,ダース,,ダース,ダース,N1,ダース|打,yes
 チェックする,チェックする,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,kana/loanword,check,fully-absent,,,,,,,no
@@ -644,13 +607,10 @@
 中っ腹,ちゅうっぱら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,"irritated, offended",fully-absent,,,,,,,yes
 中腹,ちゅうっぱら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,irritated; offended,same-writing-different-reading,,ちゅうふく,,,,,no
 著,ちょ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,"counter for suits of clothing, arriving at ..",fully-absent,,,,,,,yes
-長大,ちょうだい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,very long; great length,same-reading-different-writing|same-jmdict-entry,ちょうだい|頂戴,,ちょうだい,ちょうだい,N3,ちょうだい|長大,yes
 恰度,ちょうど,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,just; right; exactly,same-reading-different-writing|same-jmdict-entry,ちょうど|丁度,,ちょうど|丁度,ちょうど,N5,ちょうど|丁度|恰度,yes
-丁目,ちょうめ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,district of a town; city block (of irregular size),fully-absent,,,,,,,yes
 一寸,ちょっと,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,(ateji) (adv int) (uk) just a minute; a short time; a while,same-reading-different-writing|same-jmdict-entry,ちょっと,,ちょっと,ちょっと,N5,ちょいと|ちょっと|ちょと|チョッと|チョット|一寸|鳥渡,yes
 付合う,つきあう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to associate with; to keep company with; to get on with,same-reading-different-writing|same-jmdict-entry,付き合う,,付き合う,つきあう,N3,つきあう|つき合う|付きあう|付き合う|付合う,yes
 作る/造る,つくる,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt,waller-derived,1,lexical,to make; to create,same-reading-different-writing,作る|造る,,,,,,no
-点ける,つける,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,lexical,to turn on; to switch on; to light up,same-reading-different-writing|same-jmdict-entry,つける|付ける|就ける|浸ける|漬ける|点[つ]ける|着ける,,つける,つける,N5,つける|点ける,yes
 つじつま (はなしの～),つじつま (はなしの～),N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"coherence, consistency",fully-absent,,,,,,,no
 途中,つちゅう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,on the way; en route,same-writing-different-reading,,とちゅう,,,,,no
 突っ突く,つっつく,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,to prompt someone,fully-absent,,,,,,,no
@@ -662,16 +622,12 @@
 ティシュペーパー,ティシュペーパー,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,tissue,same-jmdict-entry,,,ティッシュペーパー,ティッシュペーパー,N1,ティシュペーパー|ティッシュペーパー|ティッシュ・ペーパー,yes
 低～,てい～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,low ~,fully-absent,,,,,,,no
 梯子,ていし,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,ladder; stairs,same-reading-different-writing|same-writing-different-reading,停止,はしご,,,,,no
-点火,てんか,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,ignition; lighting; set fire to,same-reading-different-writing,天下|添加|転化|転嫁,,,,,,yes
 転ずる,てんずる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"to turn, to shift",fully-absent,,,,,,,no
 等,とう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,et cetera; etc.; and the like,same-reading-different-writing|same-writing-different-reading,党|唐|問う|塔|島|当|棟|頭,など,,,,,yes
 当～,とう～,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"Our ~ (e.g., Hotel, plane, etc.)",fully-absent,,,,,,,no
-統治,とうじ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,rule; reign; government,same-reading-different-writing,冬至|当時|湯治,,,,,,yes
-統治,とうち,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"rule, reign, governing",fully-absent,,,,,,,yes
 到頭,とうとう,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",waller,waller-derived,1,lexical,"finally, after all",same-reading-different-writing|same-jmdict-entry,とうとう|丁々|等々,,とうとう,とうとう,N3,とうとう|到頭,yes
 とげ (をさす),とげ (をさす),N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,thorn,fully-absent,,,,,,,no
 疾っくに,とっくに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,long ago; already; a long time ago,same-reading-different-writing|same-jmdict-entry,とっくに,,とっくに,とっくに,N2,とっくに|疾っくに,yes
-とっさに,とっさに,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,at once,fully-absent,,,,,,,yes
 迚も,とても,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,very; awfully; exceedingly,same-reading-different-writing|same-jmdict-entry,とても,,とても,とても,N5,とっても|とても|迚も,yes
 兎に角,とにかく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,anyhow; at any rate; anyway,same-reading-different-writing|same-jmdict-entry,とにかく,,とにかく,とにかく,N3,とにかく|兎に角|左右,yes
 殿様,とのさま,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,feudal lord,fully-absent,,,,,,,yes
@@ -694,7 +650,6 @@
 何処か,どこか,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,somewhere; anywhere; in some respects,same-reading-different-writing|same-jmdict-entry,どこか,,どこか,どこか,N5,どこか|どっか|何処か,yes
 何方,どちら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,which; who,same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,どちら,どなた,どちら|どっち,どちら|どっち,N5,どちら|どっち|何方,yes
 何の,どの,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt|waller,waller-derived,1,lexical,which; what,same-reading-different-writing|same-jmdict-entry,どの|殿,,どの,どの,N5,どの|何の,yes
-土曜,どよう,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,lexical,Saturday,fully-absent,,,,,,,yes
 何れ,どれ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,"well, now, let me see, which (of three or more)",same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,どれ,いずれ,どれ,どれ,N5,どれ|何れ,yes
 何々,どれどれ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,which (emphatic),same-writing-different-reading,,なになに,,,,,no
 何れ何れ,どれどれ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,which (emphatic),fully-absent,,,,,,,yes
@@ -716,18 +671,15 @@
 何～,なん～,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,什么样的~,fully-absent,,,,,,,no
 なんなり,なんなり,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,"anything, whatever",fully-absent,,,,,,,yes
 何なり,なんなり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,any; anything; whatever,fully-absent,,,,,,,yes
-二階建て,にかいだて,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,lexical,two storied,fully-absent,,,,,,,yes
 面皰,にきび,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,pimple; acne,same-reading-different-writing|same-jmdict-entry,にきび,,にきび,にきび,N1,にきび|ニキビ|面皰,yes
 悪い,にくい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,hateful; abominable; poor-looking,same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,憎い,わるい,憎い,にくい,N2,にくい|ニクい|悪い|憎い,yes
 にせ物,にせもの,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,假货，赝品,same-reading-different-writing|same-jmdict-entry,偽物,,偽物|贋物,がんぶつ|にせもの,N1,がんぶつ|ぎぶつ|にせもの|にせもん|にせ物|ニセモノ|ニセ物|偽もの|偽物|贋物,yes
-日曜,にちよう,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,lexical,Sunday,fully-absent,,,,,,,yes
 日当,にっとう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,daily allowance,fully-absent,,,,,,,yes
 入院,にゅういんする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,to hospitalise,same-writing-different-reading,,にゅういん,,,,,no
 入学,にゅうがくする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,to enter school or university,same-writing-different-reading,,にゅうがく,,,,,no
 捻子,ねじ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,screw; helix; spiral,same-reading-different-writing|same-jmdict-entry,ねじ|ネジ,,ねじ|ネジ,ねじ|ネジ,N2,ねじ|ネジ|捩子|捻子|螺子|螺旋,yes
 ねじまわし,ねじまわし,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,screwdriver,fully-absent,,,,,,,yes
 ねじ回し,ねじまわし,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,screwdriver,fully-absent,,,,,,,yes
-乗り越し,のりこし,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,riding past (one's station),fully-absent,,,,,,,yes
 はあ (かん),はあ (かん),N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,lexical,唉 (叹气),fully-absent,,,,,,,no
 はい (かん),はい (かん),N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,yes,fully-absent,,,,,,,no
 ～敗,はい,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,lexical,"counter for loss, defeat",same-reading-different-writing,はい|敗|灰|肺,,,,,,no
@@ -748,14 +700,11 @@
 伐,ばつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,strike; attack; punish,same-reading-different-writing,罰|閥,,,,,,no
 発条,ばね,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,spring (e.g. coil  leaf),same-reading-different-writing|same-jmdict-entry,ばね,,ばね,ばね,N1,ぜんまい|ばね|バネ|弾機|撥条|発条,yes
 散蒔く,ばらまく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,to disseminate; to scatter; to give money freely,same-reading-different-writing|same-jmdict-entry,ばらまく|ばら撒く,,ばらまく|ばら撒く,ばらまく,N1,ばらまく|ばら撒く|ばら蒔く|バラまく|バラ撒く|バラ蒔く|散播く|散蒔く,yes
-番目,ばんめ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,cardinal number suffix,fully-absent,,,,,,,yes
 パート (タイム),パート (タイム),N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,兼职,fully-absent,,,,,,,no
-碑,ひ,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,lexical,stone monument bearing an inscription,same-reading-different-writing,妃|日|比|火|灯|費|非,,,,,,yes
 非～,ひ～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,"anti~, counter~, an~, non~",fully-absent,,,,,,,no
 匹,ひき,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,head; small animal counter; roll of cloth,fully-absent,,,,,,,yes
 引返す,ひきかえす,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,lexical,to repeat; to send back; to bring back,same-reading-different-writing|same-jmdict-entry,引き返す,,引き返す,ひきかえす,N2,ひきかえす|引きかえす|引き返す|引返す,yes
-引き下げる,ひきさげる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,to pull down; to lower; to reduce,fully-absent,,,,,,,yes
-引下げる,ひきさげる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"to pull down, to lower, to reduce, to withdraw",fully-absent,,,,,,,yes
+引下げる,ひきさげる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"to pull down, to lower, to reduce, to withdraw",same-reading-different-writing|same-jmdict-entry,引き下げる,,引き下げる,ひきさげる,N1,ひきさげる|引き下げる|引下げる,yes
 引取る,ひきとる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,to take back; to adopt; to leave,same-reading-different-writing|same-jmdict-entry,引き取る,,引き取る,ひきとる,N2,ひきとる|引きとる|引き取る|引取る,yes
 陽射,ひざし,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,sunlight; rays of the sun,same-reading-different-writing|same-jmdict-entry,日差し,,日差し,ひざし,N2,ひざし|日ざし|日射し|日差|日差し|陽ざし|陽射|陽射し|陽差し,yes
 一向,ひたすら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,earnestly,same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,ひたすら,いっこう,ひたすら,ひたすら,N2,ひたすら|一向|只管|頓,yes
@@ -795,8 +744,6 @@
 ほんの～,ほんの～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,"mere, just",fully-absent,,,,,,,no
 卯,ぼう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,fourth sign of Chinese zodiac (The Hare  5am-7am  east  February),same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,棒,う,卯,う,N1,う|ぼう|卯,yes
 防～,ぼう～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,~ prevention,fully-absent,,,,,,,no
-膨張,ぼうちょう,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"expansion, swelling, increase",fully-absent,,,,,,,yes
-膨脹,ぼうちょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,expansion; swelling; increase,fully-absent,,,,,,,yes
 藍褸,ぼろ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,rag; scrap; tattered clothes,same-reading-different-writing,ぼろ|襤褸,,,,,,no
 マイ～,マイ～,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"my ~, one's own ~",fully-absent,,,,,,,no
 毎～,まい～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,every ~,fully-absent,,,,,,,no
@@ -816,8 +763,6 @@
 円,まる,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,lexical,"circle,money",same-reading-different-writing|same-writing-different-reading|same-jmdict-entry,丸,えん,丸,まる,N2,まる|マル|丸|円,yes
 丸い/円い,まるい,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt,waller-derived,1,lexical,round; circular,same-reading-different-writing,丸い|円い,,,,,,no
 丸い; 円い,まるい,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,"round, circular",same-reading-different-writing,丸い|円い,,,,,,no
-まるっきり,まるっきり,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,"completely, perfectly, just as if",fully-absent,,,,,,,yes
-丸っきり,まるっきり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,completely; perfectly; just as if,fully-absent,,,,,,,yes
 丸で,まるで,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,quite; entirely; completely,same-reading-different-writing|same-jmdict-entry,まるで,,まるで,まるで,N3,まるで|丸で,yes
 回る、回す,まわる、まわす,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,转动，旋转,fully-absent,,,,,,,no
 真中,まんなか,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,middle,same-reading-different-writing,真ん中,,,,,,no
@@ -831,17 +776,13 @@
 ミリ (メートル),ミリ (メートル),N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,milli-,fully-absent,,,,,,,no
 見る 観る,みる,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt,waller-derived,1,lexical,to see; to watch,same-reading-different-writing,見る|観る|診る,,,,,,no
 民主～,みんしゅ～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,democratic,fully-absent,,,,,,,no
-向け,むけ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,for ~; oriented towards ~,fully-absent,,,,,,,yes
 名～,めい～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,famous ~,fully-absent,,,,,,,no
 藻掻く,もがく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,to struggle; to wriggle; to be impatient,same-reading-different-writing|same-jmdict-entry,もがく,,もがく,もがく,N1,もがく|藻掻く|藻搔く|踠く,yes
-木曜,もくよう,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,lexical,Thursday,fully-absent,,,,,,,yes
 齎らす,もたらす,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,to bring; to take; to bring about,same-reading-different-writing|same-jmdict-entry,もたらす,,もたらす,もたらす,N2,もたらす|もらたす|持たらす|齎す|齎らす,yes
 物体ない,もったいない,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,too good; more than one deserves; wasteful,same-reading-different-writing|same-jmdict-entry,もったいない|勿体ない|勿体無い,,もったいない|勿体ない|勿体無い,もったいない,N1|N2|N3,もったいない|勿体ない|勿体無い|物体ない|物体無い,yes
 諸に,もろに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,"completely, all the way",same-reading-different-writing|same-jmdict-entry,もろに,,もろに,もろに,N1,もろに|モロに|諸に,yes
-問,もん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,problem; question,same-reading-different-writing,紋|門,,,,,,yes
 哉,や,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,lexical,question mark,same-reading-different-writing,や|矢,,,,,,no
 軈て,やがて,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,before long; soon; at length,same-reading-different-writing|same-jmdict-entry,やがて,,やがて,やがて,N2,やがて|漸て|軈て|頓て,yes
-夜行,やぎょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,walking around at night; night train; night travel,same-writing-different-reading|same-jmdict-entry,,やこう,夜行,やこう,N2,やぎょう|やこう|夜行,yes
 優,やさ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,gentle; affectionate,fully-absent,,,,,,,yes
 矢鱈,やたら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,lexical,"randomly, recklessly, blindly",same-reading-different-writing|same-jmdict-entry,やたら,,やたら,やたら,N1,やたら|矢鱈,yes
 やたらに,やたらに,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,kana/loanword,"randomly, recklessly, blindly",fully-absent,,,,,,,no
@@ -869,25 +810,18 @@
 慶び,よろこび,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,lexical,(n) (a) joy; (a) delight; rapture,same-reading-different-writing|same-jmdict-entry,喜び,,喜び,よろこび,N2,よろこび|喜び|悦び|慶び|歓び,yes
 慶ぶ,よろこぶ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,lexical,"to be delighted, to be glad",same-reading-different-writing|same-jmdict-entry,喜ぶ,,喜ぶ,よろこぶ,N4,よろこぶ|喜ぶ|悦ぶ|慶ぶ|欣ぶ|歓ぶ,yes
 よろしく (かん),よろしく (かん),N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,lexical,"best regards, please remember me",fully-absent,,,,,,,no
-来,らい,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,lexical,for (10 days); next (year),fully-absent,,,,,,,yes
-来,らい～,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,lexical,next ~,fully-absent,,,,,,,no
+来,らい～,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,lexical,next ~,same-writing-different-reading,,らい,,,,,no
 ラジオカセ,ラジオカセ,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,kana/loanword,radio cassette player,fully-absent,,,,,,,no
 立方,りっぽう,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,cube,same-reading-different-writing|same-writing-different-reading,立法,たちかた,,,,,no
-流,りゅう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,styleof; method of; manner of,same-reading-different-writing,劉|竜,,,,,,yes
-了,りょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,finish; completion; understanding,same-reading-different-writing,両|寮|量,,,,,,yes
-料,りょう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,material; charge; rate,same-reading-different-writing,両|寮|量,,,,,,yes
 両～,りょう～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,both ~,fully-absent,,,,,,,no
 レポート; リポート,レポート; リポート,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,lexical,report,fully-absent,,,,,,,no
 練習,れんしゅう (する),N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,lexical,练习,same-writing-different-reading,,れんしゅう,,,,,no
 練習,れんしゅうする,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt,waller-derived,1,lexical,to practice,same-writing-different-reading,,れんしゅう,,,,,no
-ろくな,ろくな,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,kana/loanword,"satisfactory, decent",fully-absent,,,,,,,yes
-碌な,ろくな,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,satisfactory; decent,fully-absent,,,,,,,yes
 和～,わ～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,Japanese style,fully-absent,,,,,,,no
 我～,わが～,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,lexical,our ~,fully-absent,,,,,,,no
 我がまま,わがまま,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,selfishness; egoism; wilfulness,same-reading-different-writing|same-jmdict-entry,わがまま|我儘,,わがまま|我儘,わがまま,N2|N3,わがまま|我がまま|我が侭|我が儘|我侭|我儘,yes
 態と,わざと,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,on purpose,same-reading-different-writing|same-jmdict-entry,わざと,,わざと,わざと,N2,わざと|態と,yes
 態々,わざわざ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,lexical,expressly; specially; doing something especially rather than incidentally,same-reading-different-writing|same-jmdict-entry,わざわざ,,わざわざ,わざわざ,N2,わざわざ|態々|態態,yes
-わりあいに,わりあいに,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,kana/loanword,comparatively,same-reading-different-writing|same-jmdict-entry,割合に,,割合に,わりあいに,N2,わりあいに|割合に,yes
 割込む,わりこむ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,lexical,"to cut in, to disturb",same-reading-different-writing|same-jmdict-entry,割り込む,,割り込む,わりこむ,N2,わりこむ|わり込む|割りこむ|割り込む|割込む,yes
 いっぱい,一杯,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,kana/loanword,"full, to the utmost",same-writing-different-reading,,いっぱい,,,,,no
 うそ,嘘,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,kana/loanword,谎言,same-writing-different-reading,,うそ,,,,,no

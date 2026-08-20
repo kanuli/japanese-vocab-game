@@ -1,13 +1,13 @@
 {
   "review_rule": "Every exact written-form + reading pair reviewed independently; related forms never count as coverage.",
   "jmdict_source": "https://raw.githubusercontent.com/jkindrix/japanese-language-data/main/data/core/words.json",
-  "reviewed_all_missing": 896,
+  "reviewed_all_missing": 830,
   "reviewed_high_confidence": 76,
-  "reviewed_single_source": 820,
-  "recommended_add_or_add_after_check": 70,
+  "reviewed_single_source": 754,
+  "recommended_add_or_add_after_check": 4,
   "manual_or_low_priority": 826,
   "decision_counts": {
-    "ADD_AFTER_SOURCE_CHECK": 67,
+    "ADD_AFTER_SOURCE_CHECK": 1,
     "ADD_VARIANT_AFTER_SOURCE_CHECK": 3,
     "LOW_PRIORITY_ARCHAIC": 113,
     "LOW_PRIORITY_RARE_VARIANT": 143,
@@ -16,15 +16,15 @@
     "SEPARATE_EXPRESSION_REVIEW": 15
   },
   "priority_counts": {
-    "P2": 96,
+    "P2": 30,
     "P3": 72,
     "P4": 728
   },
   "reviewed_by_level": {
     "N5": 96,
-    "N4": 96,
-    "N3": 62,
-    "N2": 236,
-    "N1": 406
+    "N4": 94,
+    "N3": 54,
+    "N2": 227,
+    "N1": 359
   }
 }

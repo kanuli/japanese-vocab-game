@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "coverage_rule": "exact normalized written form + exact normalized reading",
+  "direct_review_phase": {
+    "eligible": 337,
+    "automatic": 152,
+    "manual_tc": 185,
+    "runtime_covered": 337
+  },
+  "sourcecheck_phase": {
+    "status": "PASS",
+    "input_source_check_candidates": 378,
+    "approved": 375,
+    "held": 3,
+    "materialized_automatic": 309,
+    "manual_tc_completion": 66,
+    "approved_runtime_covered": 375,
+    "held_remaining_unpublished": 3,
+    "validation": {
+      "materialized_additions": 309,
+      "unique_addition_keys": 309,
+      "bundle_unique_keys": 12198,
+      "missing_from_bundle": [],
+      "invalid_traditional_chinese_meanings": [],
+      "invalid_levels": [],
+      "duplicate_addition_keys": [],
+      "passed": true
+    }
+  },
+  "manual_runtime_ledger_count": 251,
+  "remaining_strict_reference_gaps": {
+    "high_confidence": 76,
+    "single_source": 754,
+    "all": 830
+  },
+  "remaining_gaps_note": "Remaining gaps are outside the 337 direct-approved + 375 source-check-approved scope or are explicitly held/manual/low-priority; they are not silently treated as covered.",
+  "runtime_validation": {
+    "direct_reviewed_exact_keys": 337,
+    "sourcecheck_approved_exact_keys": 375,
+    "held_exact_keys": 3,
+    "direct_still_missing": 0,
+    "sourcecheck_approved_still_missing": 0,
+    "held_still_missing": 3,
+    "status": "PASS"
+  }
+}
