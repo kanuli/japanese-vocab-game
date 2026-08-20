@@ -1,5 +1,5 @@
 # Temporary registered-runner entry for reviewed vocabulary hosted-audio completion.
-# Trigger revision 8: finalize already-generated 713-key Release assets; do not synthesize again.
+# Trigger revision 9: browser delta script is now loaded after the base multivoice player.
 name: Finalize reviewed vocabulary hosted-audio delta
 
 on:
