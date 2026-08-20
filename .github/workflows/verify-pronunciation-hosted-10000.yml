@@ -1,34 +1,28 @@
-name: Verify Pronunciation Hosted Audio — 10,000 coverage gate
+name: Verify Pronunciation Hosted Audio — 10,000 coverage (manual read-only)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'pronunciation-supertonic-original-index.json'
-      - 'pronunciation-voicevox-original-index.json'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: pronunciation-hosted-10000-gate
+  group: pronunciation-hosted-10000-readonly
   cancel-in-progress: true
 
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
 
       - name: Verify combined hosted coverage
-        id: coverage
         run: |
           python - <<'PY'
-          import json, os
+          import json
           from pathlib import Path
 
           def load(p):
@@ -40,59 +34,29 @@ jobs:
           new_vv=load('pronunciation-voicevox-original-index.json')
           old_st=load('listening-supertonic-index.json')
           old_vv=load('voicevox-full-index.json')
+          status=load('pronunciation-hosted-status.json')
 
-          both_ready=new_st.get('status')=='ready' and new_vv.get('status')=='ready'
-          if not both_ready:
-              print('Waiting for both new indexes:',new_st.get('status'),new_vv.get('status'))
-              with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('ready=false\n')
-              raise SystemExit(0)
-
+          assert new_st.get('status')=='ready'
           assert (new_st.get('questionCount'),new_st.get('voiceCount'),new_st.get('recordingCount'))==(6690,10,66900)
           assert set(new_st.get('voices') or {})=={'F1','F2','F3','F4','F5','M1','M2','M3','M4','M5'}
           assert {int(v.get('questionCount',0)) for v in new_st['voices'].values()}=={6690}
 
+          assert new_vv.get('status')=='ready'
           assert (new_vv.get('questionCount'),new_vv.get('speakerCount'),new_vv.get('recordingCount'))==(6690,43,287670)
           assert len(new_vv.get('speakers') or {})==43
           assert {int(v.get('questionCount',0)) for v in new_vv['speakers'].values()}=={6690}
 
-          st_total=qcount(old_st)+qcount(new_st)
-          vv_total=qcount(old_vv)+qcount(new_vv)
-          assert st_total==10000, f'Supertonic combined coverage {st_total}/10000'
-          assert vv_total==10000, f'VOICEVOX combined coverage {vv_total}/10000'
-
-          print('READY Supertonic hosted:',st_total,'/ 10000; new recordings',new_st['recordingCount'])
-          print('READY VOICEVOX hosted:',vv_total,'/ 10000; new recordings',new_vv['recordingCount'])
-          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('ready=true\n')
+          assert qcount(old_st)+qcount(new_st)==10000
+          assert qcount(old_vv)+qcount(new_vv)==10000
+          assert status.get('status')=='ready' and status.get('sentenceCount')==10000
+          assert status.get('supertonic',{}).get('recordingCount')==100000
+          assert status.get('voicevox',{}).get('recordingCount')==430000
+          print('PASS: hosted pronunciation coverage is complete and read-only.')
           PY
 
       - name: Validate pronunciation playback client
-        if: steps.coverage.outputs.ready == 'true'
         run: |
           node --check pronunciation-reference-audio.js
           grep -q "pronunciation-supertonic-original-index.json" pronunciation-reference-audio.js
           grep -q "pronunciation-voicevox-original-index.json" pronunciation-reference-audio.js
           grep -q "10,000" pronunciation.html
-
-      - name: Publish completion status
-        if: steps.coverage.outputs.ready == 'true'
-        run: |
-          python - <<'PY'
-          import json,datetime
-          d={
-            'version':1,
-            'status':'ready',
-            'checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
-            'supertonic':{'questions':10000,'voices':10,'newQuestions':6690,'newRecordings':66900},
-            'voicevox':{'questions':10000,'speakers':43,'newQuestions':6690,'newRecordings':287670},
-            'page':'pronunciation.html'
-          }
-          open('pronunciation-hosted-status.json','w',encoding='utf-8').write(json.dumps(d,ensure_ascii=False,indent=2)+'\n')
-          print(json.dumps(d,ensure_ascii=False))
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add pronunciation-hosted-status.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Confirm pronunciation hosted audio 10,000 coverage'
-          git pull --rebase origin main
-          git push origin main
