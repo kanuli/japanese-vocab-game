@@ -7,33 +7,49 @@
   "engines": {
     "voicevox": {
       "status": "ready",
-      "hosted_word_count": 22333,
+      "base_hosted_word_count": 22333,
+      "delta_status": "not-generated",
+      "delta_hosted_word_count": 0,
+      "combined_hosted_exact_keys": 22333,
       "desired_word_count": 23046,
+      "base_missing_hosted_exact_keys": 713,
       "missing_hosted_exact_keys": 713,
       "extra_hosted_exact_keys": 0,
       "voice_count": 43,
-      "recording_count": 960319
+      "base_recording_count": 960319,
+      "delta_recording_count": 0
     },
     "supertonic3": {
       "status": "ready",
-      "hosted_word_count": 22333,
+      "base_hosted_word_count": 22333,
+      "delta_status": "not-generated",
+      "delta_hosted_word_count": 0,
+      "combined_hosted_exact_keys": 22333,
       "desired_word_count": 23046,
+      "base_missing_hosted_exact_keys": 713,
       "missing_hosted_exact_keys": 713,
       "extra_hosted_exact_keys": 0,
       "voice_count": 10,
-      "recording_count": 223330
+      "base_recording_count": 223330,
+      "delta_recording_count": 0
     },
     "aivis": {
       "status": "ready",
-      "hosted_word_count": 22333,
+      "base_hosted_word_count": 22333,
+      "delta_status": "not-generated",
+      "delta_hosted_word_count": 0,
+      "combined_hosted_exact_keys": 22333,
       "desired_word_count": 23046,
+      "base_missing_hosted_exact_keys": 713,
       "missing_hosted_exact_keys": 713,
       "extra_hosted_exact_keys": 0,
       "voice_count": 4,
-      "recording_count": 89332
+      "base_recording_count": 89332,
+      "delta_recording_count": 0
     }
   },
+  "base_missing_union_count": 713,
   "missing_union_count": 713,
   "hosted_voice_coverage_complete": false,
-  "fallback_note": "Browser/device synthesis may still speak hosted misses, but hosted coverage is not considered complete until missing_hosted_exact_keys is zero."
+  "fallback_note": "Browser/device synthesis may speak hosted misses, but completion requires combined base+delta hosted coverage for every exact key."
 }
