@@ -1,5 +1,5 @@
 # Temporary registered-runner entry for reviewed vocabulary hosted-audio completion.
-# Trigger revision 3: run the full five-part preflight after the runner probe passed.
+# Trigger revision 4: every preflight station writes an independent marker immediately.
 name: Reviewed vocabulary audio preflight — registered runner
 
 on:
@@ -14,22 +14,45 @@ permissions:
   contents: write
   id-token: write
 
+concurrency:
+  group: reviewed-vocabulary-audio-preflight-registered
+  cancel-in-progress: true
+
 jobs:
   preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
           ref: audit/vocab-coverage-20260821
           fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      - name: Record preflight start
+        run: |
+          python - <<'PY'
+          import json,datetime,os
+          from pathlib import Path
+          Path('audit/vocab/results/voice_delta_preflight_started.json').write_text(json.dumps({
+            'status':'STARTED','run_id':os.environ.get('GITHUB_RUN_ID'),'run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
+            'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()
+          },ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- audit/vocab/results/voice_delta_preflight_started.json
+          git commit -m 'Record reviewed audio preflight start'
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
+
       - id: catalog
-        name: Validate exact 713-word delta source
+        name: 1/5 Validate exact 713-word delta source
         continue-on-error: true
+        timeout-minutes: 8
         env:
           CATALOG_OUT: audit/vocab/results/desired_word_voice_catalog.json
         run: |
@@ -44,9 +67,29 @@ jobs:
           print('sample',d['items'][0]['key'])
           PY
 
+      - name: Record 1/5 Catalog outcome
+        if: always()
+        env:
+          OUTCOME: ${{ steps.catalog.outcome }}
+        run: |
+          OUTCOME="$OUTCOME" NAME=catalog python - <<'PY'
+          import json,datetime,os
+          from pathlib import Path
+          out={'check':os.environ['NAME'],'outcome':os.environ['OUTCOME'],'run_id':os.environ.get('GITHUB_RUN_ID'),'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+          try:
+            d=json.load(open('word-audio-delta-catalog.json',encoding='utf-8'));out['delta_word_count']=d.get('wordCount');out['sample_key']=(d.get('items') or [{}])[0].get('key')
+          except Exception as e:out['detail']=str(e)
+          Path('audit/vocab/results/voice_delta_check_catalog.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+          git add -- audit/vocab/results/voice_delta_check_catalog.json
+          git commit -m 'Record reviewed audio catalog check' || true
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
+
       - id: permission
-        name: Verify GitHub write and release permission
+        name: 2/5 Verify GitHub write and release permission
         continue-on-error: true
+        timeout-minutes: 3
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -54,9 +97,26 @@ jobs:
           gh release list --limit 1 >/dev/null
           echo 'GitHub write/release permission OK'
 
+      - name: Record 2/5 Permission outcome
+        if: always()
+        env:
+          OUTCOME: ${{ steps.permission.outcome }}
+        run: |
+          OUTCOME="$OUTCOME" NAME=permission python - <<'PY'
+          import json,datetime,os
+          from pathlib import Path
+          Path('audit/vocab/results/voice_delta_check_permission.json').write_text(json.dumps({'check':os.environ['NAME'],'outcome':os.environ['OUTCOME'],'run_id':os.environ.get('GITHUB_RUN_ID'),'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()},ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+          git add -- audit/vocab/results/voice_delta_check_permission.json
+          git commit -m 'Record reviewed audio permission check' || true
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
+
       - id: voicevox
-        name: Synthesize one reviewed word with VOICEVOX
+        name: 3/5 Synthesize one reviewed word with VOICEVOX
+        if: steps.catalog.outcome == 'success'
         continue-on-error: true
+        timeout-minutes: 10
         run: |
           docker pull voicevox/voicevox_engine:cpu-latest
           docker run --rm -d --name voicevox-preflight -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
@@ -67,18 +127,36 @@ jobs:
           curl -fsS -X POST -H 'Content-Type: application/json' --data-binary @/tmp/vv-query.json "http://127.0.0.1:50021/synthesis?speaker=$STYLE" -o /tmp/vv.wav
           test "$(stat -c%s /tmp/vv.wav)" -gt 1000
           echo "VOICEVOX sample OK: $READING"
+
       - if: always()
         run: docker stop voicevox-preflight >/dev/null 2>&1 || true
 
+      - name: Record 3/5 VOICEVOX outcome
+        if: always()
+        env:
+          OUTCOME: ${{ steps.voicevox.outcome }}
+        run: |
+          OUTCOME="$OUTCOME" NAME=voicevox python - <<'PY'
+          import json,datetime,os
+          from pathlib import Path
+          Path('audit/vocab/results/voice_delta_check_voicevox.json').write_text(json.dumps({'check':os.environ['NAME'],'outcome':os.environ['OUTCOME'],'run_id':os.environ.get('GITHUB_RUN_ID'),'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()},ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+          git add -- audit/vocab/results/voice_delta_check_voicevox.json
+          git commit -m 'Record reviewed audio VOICEVOX check' || true
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
+
       - id: supertonic
-        name: Synthesize one reviewed word with Supertonic 3
+        name: 4/5 Synthesize one reviewed word with Supertonic 3
+        if: steps.catalog.outcome == 'success'
         continue-on-error: true
+        timeout-minutes: 10
         run: |
           python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
           python - <<'PY'
           import json
           from supertonic import TTS
-          d=json.load(open('word-audio-delta-catalog.json'));reading=d['items'][0]['reading']
+          reading=json.load(open('word-audio-delta-catalog.json'))['items'][0]['reading']
           t=TTS(auto_download=True);style=t.get_voice_style(voice_name='F3')
           wav,_=t.synthesize(text=reading,voice_style=style,total_steps=8,speed=1.0,max_chunk_length=100,silence_duration=.08,lang='ja',verbose=False)
           size=getattr(wav,'size',0)
@@ -86,9 +164,26 @@ jobs:
           print('Supertonic sample OK:',reading,size)
           PY
 
+      - name: Record 4/5 Supertonic outcome
+        if: always()
+        env:
+          OUTCOME: ${{ steps.supertonic.outcome }}
+        run: |
+          OUTCOME="$OUTCOME" NAME=supertonic python - <<'PY'
+          import json,datetime,os
+          from pathlib import Path
+          Path('audit/vocab/results/voice_delta_check_supertonic.json').write_text(json.dumps({'check':os.environ['NAME'],'outcome':os.environ['OUTCOME'],'run_id':os.environ.get('GITHUB_RUN_ID'),'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()},ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+          git add -- audit/vocab/results/voice_delta_check_supertonic.json
+          git commit -m 'Record reviewed audio Supertonic check' || true
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
+
       - id: aivis
-        name: Discover four Aivis styles and synthesize one reviewed word
+        name: 5/5 Discover four Aivis styles and synthesize one reviewed word
+        if: steps.catalog.outcome == 'success'
         continue-on-error: true
+        timeout-minutes: 12
         run: |
           mkdir -p "$HOME/.local/share/AivisSpeech-Engine" && sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
           docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
@@ -106,8 +201,24 @@ jobs:
           assert len(wav)>1000,len(wav)
           print('Aivis sample OK:',reading,'styles',len(model['styles']))
           PY
+
       - if: always()
         run: docker stop aivis-preflight >/dev/null 2>&1 || true
+
+      - name: Record 5/5 Aivis outcome
+        if: always()
+        env:
+          OUTCOME: ${{ steps.aivis.outcome }}
+        run: |
+          OUTCOME="$OUTCOME" NAME=aivis python - <<'PY'
+          import json,datetime,os
+          from pathlib import Path
+          Path('audit/vocab/results/voice_delta_check_aivis.json').write_text(json.dumps({'check':os.environ['NAME'],'outcome':os.environ['OUTCOME'],'run_id':os.environ.get('GITHUB_RUN_ID'),'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()},ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+          git add -- audit/vocab/results/voice_delta_check_aivis.json
+          git commit -m 'Record reviewed audio Aivis check' || true
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
 
       - name: Record all preflight outcomes
         if: always()
@@ -122,16 +233,15 @@ jobs:
           import json,os,datetime
           from pathlib import Path
           checks={k:os.environ[k] for k in ('CATALOG','PERMISSION','VOICEVOX','SUPERTONIC','AIVIS')}
-          out={'status':'PASS' if all(v=='success' for v in checks.values()) else 'FAIL','checks':checks,'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+          out={'status':'PASS' if all(v=='success' for v in checks.values()) else 'FAIL','checks':checks,'run_id':os.environ.get('GITHUB_RUN_ID'),'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
           try:
-            d=json.load(open('word-audio-delta-catalog.json'));out['delta_word_count']=d.get('wordCount');out['sample_key']=d.get('items',[{}])[0].get('key')
+            d=json.load(open('word-audio-delta-catalog.json'));out['delta_word_count']=d.get('wordCount');out['sample_key']=(d.get('items') or [{}])[0].get('key')
           except Exception as e:out['catalog_read_error']=str(e)
           Path('audit/vocab/results/voice_delta_preflight.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
           print(out)
           PY
-          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- audit/vocab/results/voice_delta_preflight.json
-          git commit -m 'Record reviewed vocabulary audio delta preflight'
+          git commit -m 'Record reviewed vocabulary audio delta preflight' || true
           git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
 
