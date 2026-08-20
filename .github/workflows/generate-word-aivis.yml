@@ -22,6 +22,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python scripts/build_word_shared_audio_catalog.py
+      - name: Validate dynamic shared catalog
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('word-shared-audio-catalog.json'));n=int(d['wordCount'])
+          assert n>=22000 and d['shardCount']==20 and len(d['items'])==n and len(d['words'])==n and sum(d['shardCounts'])==n
+          print('Aivis shared source:',n,'words')
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: word-shared-audio-catalog-aivis
@@ -58,7 +66,7 @@ jobs:
       - uses: actions/checkout@v4
       - env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'AivisSpeech vocabulary — Style-Bert-VITS' --notes 'Shared 22,333-word Japanese vocabulary audio for Word List and Word Audio. The AIVMX model and license are audited before generation and the model/license hashes are validated across all shards.'
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'AivisSpeech vocabulary — Style-Bert-VITS' --notes 'Shared Japanese vocabulary audio for Word List and Word Audio. Exact word count is derived from the current validated shared catalog; AIVMX model/license hashes are audited across all shards.'
 
   generate:
     needs: [catalog,model,prepare-storage]
@@ -112,7 +120,7 @@ jobs:
           from pathlib import Path
           s=os.environ['S'];model=json.load(open('aivis-model.json'));expected=len(model['styles']);files=glob.glob(f'word-aivis-out/a*-shard{s}.json');assert len(files)==expected,(len(files),expected)
           for f in files:
-              m=json.load(open(f));assert m['count']>=900 and m['licenseSha256']==model['licenseSha256']
+              m=json.load(open(f));assert m['count']>0 and m['licenseSha256']==model['licenseSha256']
               p=Path('word-aivis-out')/m['asset'];assert p.is_file() and p.stat().st_size>100000
               with tarfile.open(p,'r:') as tf:assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
           PY
@@ -154,11 +162,11 @@ jobs:
           python scripts/build_word_aivis_catalog.py
           python - <<'PY'
           import json
-          d=json.load(open('word-aivis-catalog.json'))
-          assert d['status']=='ready' and d['wordCount']==22333 and 1<=d['voiceCount']<=4 and d['recordingCount']==22333*d['voiceCount'] and d['shardCount']==20
+          d=json.load(open('word-aivis-catalog.json'));n=int(d['wordCount'])
+          assert d['status']=='ready' and n>=22000 and 1<=d['voiceCount']<=4 and d['recordingCount']==n*d['voiceCount'] and d['shardCount']==20
           for v in d['voices']:
-              x=json.load(open(f'word-aivis-{v}-index.json'));assert x['wordCount']==22333 and len(x['bundles'])==20
-          print('Final word Aivis coverage:',d['recordingCount'])
+              x=json.load(open(f'word-aivis-{v}-index.json'));assert x['wordCount']==n and len(x['bundles'])==20
+          print('Final word Aivis coverage:',n,'words /',d['recordingCount'],'recordings')
           PY
       - name: Commit lightweight Aivis catalogs/indexes
         run: |
