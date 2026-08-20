@@ -1,3 +1,5 @@
-refresh=2026-08-17T21:01:00+08:00
-reader=v2
+refresh=2026-08-20T13:20:00+08:00
+reader=v4
 supports=3310+6690
+legacy_voicevox_sprite_adapter=true
+mobile_hf_first=true
