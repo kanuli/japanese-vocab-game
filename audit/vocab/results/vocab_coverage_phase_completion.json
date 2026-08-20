@@ -28,6 +28,7 @@
     }
   },
   "manual_runtime_ledger_count": 251,
+  "audit_source_errors": [],
   "remaining_strict_reference_gaps": {
     "high_confidence": 76,
     "single_source": 754,
@@ -41,6 +42,7 @@
     "direct_still_missing": 0,
     "sourcecheck_approved_still_missing": 0,
     "held_still_missing": 3,
+    "audit_source_errors": 0,
     "status": "PASS"
   }
 }
