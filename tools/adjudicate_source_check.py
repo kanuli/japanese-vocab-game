@@ -3,8 +3,9 @@
 
 Coverage remains strict: exact written-form + reading is the unit. A JLPT level
 conflict does not suppress a valid surface form; the selected level is retained
-as an estimated, source-backed learning band. Rows are held only when the exact
-form is not JMdict-verified or when the source sense is materially ambiguous.
+as an estimated, source-backed learning band. Rows are held when exact JMdict
+verification is missing or when the source sense materially conflicts with the
+verified lexical sense and cannot be pinned safely.
 """
 from __future__ import annotations
 
@@ -23,6 +24,8 @@ EXPECTED = 378
 # separate vocabulary items; the override only pins the intended learning sense.
 SENSE_OVERRIDES = {
     "せっけん|せっけん": "肥皂",
+    "たて|たて": "縱向；高度；長度",
+    "つける|つける": "打開；開啟（燈、電器等）",
     "しいん|しいん": "寂靜無聲；鴉雀無聲",
     "おおい|おおい": "喂！；喂喂！（呼喊用）",
     "たれ|たれ": "～鬼；～傢伙（帶貶義的人稱後綴）",
@@ -30,12 +33,23 @@ SENSE_OVERRIDES = {
     "ちょうだい|ちょうだい": "給我；請給我",
     "さい|歳": "歲（年齡計數詞）",
     "かげつ|ヶ月": "個月（月數計數詞）",
+    "あざ|あざ": "痣；胎記；瘀傷",
+    "あんまり|余り": "不太；不怎麼；不多",
+    "うまい|甘い": "好吃；美味",
+    "おてあらい|御手洗": "洗手間；廁所",
+    "ごう|濠": "護城河；壕溝",
+    "すぎ|過ぎ": "超過；過後；……之後",
+    "じゅうほう|重宝": "珍貴；便利；有用",
 }
 
-# The source itself is unresolved here (the review row literally carries a TODO
-# that conflicts with another lexical sense), so it must not be published.
+# These rows are deliberately not published. They are valid-looking surface
+# forms in at least one source, but the supplied source sense conflicts with the
+# exact lexical evidence enough that automatically assigning a learning meaning
+# would be unsafe.
 HOLD = {
     "いえ|いえ": "source-sense-unresolved: source says TODO/same-as-いいえ while the exact form also represents house/no senses",
+    "ド|ド": "source-sense-conflict: JLPT source gloss says child/servant/foolishness, while exact JMdict ド is the emphatic prefix 'extreme/ultra/very'",
+    "あくび|悪日": "source-sense-risk: unusual reading/form collides with the common 欠伸（あくび） reading; require independent dictionary/source confirmation before publishing",
 }
 
 BAD_SOURCE_MARKERS = ("todo", "#name?", "same as ?")
@@ -70,6 +84,7 @@ def main() -> int:
 
     reviewed = []
     counts = Counter()
+    override_used = 0
     for r in rows:
         k = key(r)
         exact = (r.get("jmdict_exact_form_reading") or "").lower() == "yes"
@@ -81,6 +96,8 @@ def main() -> int:
         decision = "APPROVE_SOURCE_CHECK"
         reason = "exact JMdict form+reading verified; external JLPT family supports listing; level retained as estimated source-backed band"
         pinned_tc = SENSE_OVERRIDES.get(k, "")
+        if pinned_tc:
+            override_used += 1
 
         if k in HOLD:
             decision = "HOLD_AMBIGUOUS_SOURCE_SENSE"
@@ -97,6 +114,8 @@ def main() -> int:
         elif (r.get("quality_decision") or "") == "ADD_VARIANT_AFTER_SOURCE_CHECK":
             decision = "APPROVE_DISTINCT_VARIANT_SOURCE_CHECK"
             reason = "exact JMdict variant verified; one external family supports the JLPT listing; keep as independent learnable surface form"
+        if pinned_tc and decision.startswith("APPROVE"):
+            reason += "; intended Traditional-Chinese learning sense explicitly pinned after source/JMdict comparison"
 
         reviewed.append({
             **r,
@@ -120,9 +139,12 @@ def main() -> int:
         "input_source_check_candidates": len(rows),
         "approved": len(approved),
         "held": len(held),
+        "pinned_sense_overrides_used": override_used,
+        "configured_pinned_sense_overrides": len(SENSE_OVERRIDES),
+        "configured_explicit_holds": len(HOLD),
         "decision_counts": dict(sorted(counts.items())),
         "level_policy": "source consensus retained as estimated; level conflict is annotated, not used to suppress a valid exact form",
-        "sense_policy": "source meaning + exact JMdict sense; known homograph/homophone ambiguities are pinned or held explicitly",
+        "sense_policy": "source meaning + exact JMdict sense; broad/homonymous entries are pinned when the intended sense is clear; unresolved conflicts are held",
     }
     (out / "source_check_adjudication_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=2))
