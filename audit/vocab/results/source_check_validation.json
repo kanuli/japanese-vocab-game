@@ -1,0 +1,10 @@
+{
+  "materialized_additions": 309,
+  "unique_addition_keys": 309,
+  "bundle_unique_keys": 12198,
+  "missing_from_bundle": [],
+  "invalid_traditional_chinese_meanings": [],
+  "invalid_levels": [],
+  "duplicate_addition_keys": [],
+  "passed": true
+}

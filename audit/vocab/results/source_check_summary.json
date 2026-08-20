@@ -1,0 +1,32 @@
+{
+  "version": "coverage-materializer-v4",
+  "generated_at_utc": "2026-08-20T18:38:31.206583+00:00",
+  "mode": "source-check",
+  "rule": "Every written form + reading is independent; related forms never suppress an addition.",
+  "eligible_rows": 375,
+  "already_present": 0,
+  "materialized_count": 309,
+  "deferred_count": 66,
+  "meaning_source_counts": {
+    "existing-related-runtime-tc": 185,
+    "open-ja-zh-exact-form": 96,
+    "review-source-cjk": 11,
+    "source-check-pinned-sense": 17
+  },
+  "decision_counts": {
+    "APPROVE_DISTINCT_VARIANT_SOURCE_CHECK": 55,
+    "APPROVE_SOURCE_CHECK": 254
+  },
+  "level_counts": {
+    "N5": 16,
+    "N4": 17,
+    "N3": 18,
+    "N2": 43,
+    "N1": 215
+  },
+  "meaning_lookup_stats": {
+    "thesaurus": 71,
+    "wikidict": 7,
+    "kaikki": 25
+  }
+}

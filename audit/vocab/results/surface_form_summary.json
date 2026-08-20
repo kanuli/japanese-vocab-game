@@ -2,61 +2,61 @@
   "coverage_rule": "ONLY exact normalized written-form + reading counts as covered; different kanji/kana spellings remain separate items",
   "jmdict_role": "annotation only; same JMdict entry never suppresses a missing surface form",
   "jmdict_source": "https://raw.githubusercontent.com/jkindrix/japanese-language-data/main/data/core/words.json",
-  "runtime_unique": 22319,
+  "runtime_unique": 22965,
   "reference_exact_groups": 9280,
-  "exact_surface_missing_high_confidence": 413,
-  "exact_surface_missing_single_source": 1129,
-  "exact_surface_missing_all": 1542,
+  "exact_surface_missing_high_confidence": 76,
+  "exact_surface_missing_single_source": 820,
+  "exact_surface_missing_all": 896,
   "high_confidence_by_level": {
-    "N5": 16,
-    "N4": 35,
-    "N3": 83,
-    "N2": 145,
-    "N1": 134
+    "N5": 4,
+    "N4": 26,
+    "N3": 13,
+    "N2": 22,
+    "N1": 11
   },
   "single_source_by_level": {
-    "N5": 108,
-    "N4": 87,
-    "N3": 67,
-    "N2": 257,
-    "N1": 610
+    "N5": 92,
+    "N4": 70,
+    "N3": 49,
+    "N2": 214,
+    "N1": 395
   },
   "relation_counts": {
-    "fully-absent": 559,
-    "same-jmdict-entry": 690,
-    "same-reading-different-writing": 801,
-    "same-writing-different-reading": 274
+    "fully-absent": 422,
+    "same-jmdict-entry": 246,
+    "same-reading-different-writing": 359,
+    "same-writing-different-reading": 170
   },
   "consensus_level_summary": {
     "N5": {
       "consensus_reference_unique": 627,
-      "exact_surface_missing": 16,
-      "exact_surface_covered": 611,
-      "exact_surface_coverage_pct": 97.45
+      "exact_surface_missing": 4,
+      "exact_surface_covered": 623,
+      "exact_surface_coverage_pct": 99.36
     },
     "N4": {
       "consensus_reference_unique": 601,
-      "exact_surface_missing": 35,
-      "exact_surface_covered": 566,
-      "exact_surface_coverage_pct": 94.18
+      "exact_surface_missing": 26,
+      "exact_surface_covered": 575,
+      "exact_surface_coverage_pct": 95.67
     },
     "N3": {
       "consensus_reference_unique": 2029,
-      "exact_surface_missing": 83,
-      "exact_surface_covered": 1946,
-      "exact_surface_coverage_pct": 95.91
+      "exact_surface_missing": 13,
+      "exact_surface_covered": 2016,
+      "exact_surface_coverage_pct": 99.36
     },
     "N2": {
       "consensus_reference_unique": 1497,
-      "exact_surface_missing": 145,
-      "exact_surface_covered": 1352,
-      "exact_surface_coverage_pct": 90.31
+      "exact_surface_missing": 22,
+      "exact_surface_covered": 1475,
+      "exact_surface_coverage_pct": 98.53
     },
     "N1": {
       "consensus_reference_unique": 2292,
-      "exact_surface_missing": 134,
-      "exact_surface_covered": 2158,
-      "exact_surface_coverage_pct": 94.15
+      "exact_surface_missing": 11,
+      "exact_surface_covered": 2281,
+      "exact_surface_coverage_pct": 99.52
     }
   },
   "source_inventory": {
@@ -82,5 +82,11 @@
       "N1": 2931
     }
   },
-  "source_errors": {}
+  "source_errors": {},
+  "runtime_sources": {
+    "core": "upstream core CSV accepted by runtime parser",
+    "curated": "advanced_words_curated.js",
+    "advanced": "data/advanced_vocab.js",
+    "manual_reviewed_completion": "data/coverage_manual_meanings.json"
+  }
 }

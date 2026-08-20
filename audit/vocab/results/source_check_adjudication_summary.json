@@ -1,0 +1,17 @@
+{
+  "generated_at_utc": "2026-08-20T18:38:23.035363+00:00",
+  "coverage_rule": "exact written-form + reading only",
+  "input_source_check_candidates": 378,
+  "approved": 375,
+  "held": 3,
+  "pinned_sense_overrides_used": 17,
+  "configured_pinned_sense_overrides": 17,
+  "configured_explicit_holds": 3,
+  "decision_counts": {
+    "APPROVE_DISTINCT_VARIANT_SOURCE_CHECK": 55,
+    "APPROVE_SOURCE_CHECK": 320,
+    "HOLD_AMBIGUOUS_SOURCE_SENSE": 3
+  },
+  "level_policy": "source consensus retained as estimated; level conflict is annotated, not used to suppress a valid exact form",
+  "sense_policy": "source meaning + exact JMdict sense; broad/homonymous entries are pinned when the intended sense is clear; unresolved conflicts are held"
+}

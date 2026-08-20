@@ -1,0 +1,24 @@
+{
+  "status": "FAIL",
+  "input_source_check_candidates": 378,
+  "approved": 375,
+  "held": 3,
+  "materialized": 309,
+  "deferred_after_tc_lookup": 66,
+  "already_present": 0,
+  "validation": {
+    "materialized_additions": 309,
+    "unique_addition_keys": 309,
+    "bundle_unique_keys": 12198,
+    "missing_from_bundle": [],
+    "invalid_traditional_chinese_meanings": [],
+    "invalid_levels": [],
+    "duplicate_addition_keys": [],
+    "passed": true
+  },
+  "strict_missing_after_source_check": {
+    "high_confidence": 76,
+    "single_source": 820,
+    "all": 896
+  }
+}
