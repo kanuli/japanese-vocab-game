@@ -1,3 +1,4 @@
-build=prebuilt-20260814-v3
-requested=2026-08-14
-rerun=publish-fix
+build=strict-surface-coverage-v4
+requested=2026-08-21
+scope=direct-reviewed-additions
+branch=audit/vocab-coverage-20260821
