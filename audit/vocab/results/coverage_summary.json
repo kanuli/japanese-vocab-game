@@ -1,0 +1,87 @@
+{
+  "generated_at_utc": "2026-08-20T16:45:52.440053+00:00",
+  "core_source_url": "https://raw.githubusercontent.com/5mdld/anki-jlpt-decks/main/deck-source/notes.csv",
+  "source_inventory": {
+    "openjlpt": {
+      "N5": 499,
+      "N4": 491,
+      "N3": 1567,
+      "N2": 1498,
+      "N1": 3183
+    },
+    "waller": {
+      "N5": 684,
+      "N4": 640,
+      "N3": 1730,
+      "N2": 1812,
+      "N1": 3427
+    },
+    "wordmaster": {
+      "N5": 710,
+      "N4": 676,
+      "N3": 2246,
+      "N2": 3636,
+      "N1": 2931
+    }
+  },
+  "source_errors": {},
+  "current": {
+    "core_source_unique": 10511,
+    "runtime_core_unique": 10511,
+    "curated_unique": 140,
+    "advanced_bundle_unique": 11737,
+    "runtime_merged_unique": 22319
+  },
+  "audit": {
+    "high_confidence_missing": 411,
+    "single_source_gaps": 1126,
+    "level_conflicts": 3046,
+    "variant_matches": 5,
+    "runtime_parser_gaps": 0,
+    "runtime_final_holes": 0
+  },
+  "level_summary": {
+    "N5": {
+      "reference_unique": 822,
+      "exact_covered": 698,
+      "variant_covered": 0,
+      "missing": 124,
+      "coverage_pct": 84.91
+    },
+    "N4": {
+      "reference_unique": 780,
+      "exact_covered": 655,
+      "variant_covered": 0,
+      "missing": 125,
+      "coverage_pct": 83.97
+    },
+    "N3": {
+      "reference_unique": 2448,
+      "exact_covered": 2275,
+      "variant_covered": 1,
+      "missing": 172,
+      "coverage_pct": 92.97
+    },
+    "N2": {
+      "reference_unique": 3761,
+      "exact_covered": 3267,
+      "variant_covered": 1,
+      "missing": 493,
+      "coverage_pct": 86.89
+    },
+    "N1": {
+      "reference_unique": 3955,
+      "exact_covered": 3163,
+      "variant_covered": 4,
+      "missing": 788,
+      "coverage_pct": 80.08
+    }
+  },
+  "method": {
+    "high_confidence_missing": "Absent from current runtime set and present in >=2 independent reference families; OpenJLPT and Waller are intentionally counted as one derivative family.",
+    "single_source_gap": "Absent from current runtime set but present in only one external reference family.",
+    "level_conflict": "Word is present, but external family-weighted consensus level is not among current site levels.",
+    "runtime_final_hole": "Core source has word+reading; current runtime core parser rejects it; curated/advanced do not restore it.",
+    "variant_match": "No exact written-form key, but conservative normalized kana/prolonged-mark form matches."
+  }
+}
