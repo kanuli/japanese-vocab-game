@@ -4,6 +4,11 @@ document.write('<script src="./data/advanced_vocab.js?v=20260821v1"><\/script>')
 // Strict surface-form completion layer: the 185 direct-reviewed forms that were
 // previously deferred only because the automatic sources had no reliable TC meaning.
 document.write('<script src="./data/coverage_deferred_manual.js?v=20260821v1"><\/script>');
+// Source-check completion layer: 66 additional approved exact written-form + reading
+// pairs whose Traditional-Chinese meanings were manually resolved after the full
+// automated source scan. This is loaded synchronously so every vocabulary consumer
+// (quiz, word list, and word audio) sees the same completed runtime inventory.
+document.write('<script src="./data/coverage_sourcecheck_manual.js?v=20260821v1"><\/script>');
 document.write('<script src="./large_vocab_loader.js?v=20260821v1"><\/script>');
 
 // Pronunciation fix: always speak the explicit kana reading shown in the answer sheet.
