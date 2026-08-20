@@ -1,3 +1,4 @@
+# Trigger revision 2: use the corrected reusable preflight from the audit branch.
 name: Run reviewed vocabulary audio preflight
 
 on:
