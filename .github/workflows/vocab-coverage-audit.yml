@@ -7,6 +7,7 @@ on:
       - audit/vocab-coverage-20260821
     paths:
       - scripts/build_word_voicevox_catalog.mjs
+      - scripts/build_word_audio_delta_catalog.py
       - scripts/build_word_shared_audio_catalog.py
       - scripts/build_word_supertonic_catalog.py
       - scripts/build_word_aivis_catalog.py
@@ -56,11 +57,38 @@ jobs:
           if len({r.get('key') for r in rows})!=len(rows): raise SystemExit('duplicate desired exact keys')
           bad=[r.get('key') for r in rows if not re.fullmatch(r'[ぁ-ゖァ-ヺー・ヽヾゝゞ]+',str(r.get('reading') or ''))]
           if bad: raise SystemExit(f'invalid voice readings: {len(bad)}')
-          print({'desired_word_count':len(rows),'invalid_readings':len(bad)})
+          print({'desired_word_count':len(rows),'invalid_readings':len(bad),'core_count':d.get('coreCount'),'advanced_count':d.get('advancedCount')})
           PY
 
       - name: Compare all hosted voice catalogs
         run: python tools/audit_vocab_voice_coverage.py --results audit/vocab/results
+
+      - name: Build exact missing-audio delta source
+        run: python scripts/build_word_audio_delta_catalog.py
+
+      - name: Gate voice delta against newly reviewed vocabulary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          phase=json.loads(Path('audit/vocab/results/vocab_coverage_phase_completion.json').read_text(encoding='utf-8'))
+          voice=json.loads(Path('audit/vocab/results/voice_coverage_summary.json').read_text(encoding='utf-8'))
+          delta=json.loads(Path('word-audio-delta-catalog.json').read_text(encoding='utf-8'))
+          newly_reviewed=int(phase['direct_review_phase']['runtime_covered'])+int(phase['sourcecheck_phase']['approved_runtime_covered'])+int(phase['residual_cleanup_phase']['runtime_covered'])
+          checks={
+            'newly_reviewed_exact_keys':newly_reviewed,
+            'missing_voice_union':int(voice.get('missing_union_count',-1)),
+            'delta_word_count':int(delta.get('wordCount',-1)),
+            'desired_word_count':int(voice.get('desired_word_count',-1)),
+            'invalid_readings':int(voice.get('invalid_reading_count',-1)),
+          }
+          print(checks)
+          if checks['newly_reviewed_exact_keys']!=713: raise SystemExit('Reviewed vocabulary count drift')
+          if checks['missing_voice_union']!=713 or checks['delta_word_count']!=713: raise SystemExit('Missing hosted voices do not exactly match the 713 reviewed additions')
+          if checks['invalid_readings']!=0: raise SystemExit('One or more new voice readings are invalid')
+          for name,x in voice['engines'].items():
+            if int(x.get('missing_hosted_exact_keys',-1))!=713: raise SystemExit(f'{name} missing voice count mismatch')
+          PY
 
       - name: Publish audit summary
         run: |
@@ -77,17 +105,18 @@ jobs:
             audit/vocab/results/voice_coverage_summary.json
             audit/vocab/results/voice_missing_*.csv
             audit/vocab/results/desired_word_voice_catalog.json
+            word-audio-delta-catalog.json
           retention-days: 30
 
       - name: Commit audit results to audit branch
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- audit/vocab/results/voice_coverage_summary.json audit/vocab/results/voice_missing_*.csv audit/vocab/results/desired_word_voice_catalog.json
+          git add -- audit/vocab/results/voice_coverage_summary.json audit/vocab/results/voice_missing_*.csv audit/vocab/results/desired_word_voice_catalog.json word-audio-delta-catalog.json
           if git diff --cached --quiet; then
             echo 'Voice coverage audit already current.'
             exit 0
           fi
-          git commit -m 'Audit hosted voice coverage for reviewed vocabulary'
+          git commit -m 'Audit hosted voice coverage and build exact delta'
           git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
