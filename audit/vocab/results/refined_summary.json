@@ -1,0 +1,54 @@
+{
+  "jmdict_source": "https://raw.githubusercontent.com/jkindrix/japanese-language-data/main/data/core/words.json",
+  "input_high_confidence_missing": 292,
+  "same_jmdict_entry_relations": 100,
+  "refined_missing": 192,
+  "jmdict_unresolved_candidates": 1,
+  "refined_missing_by_level": {
+    "N5": 2,
+    "N4": 0,
+    "N3": 34,
+    "N2": 61,
+    "N1": 95
+  },
+  "jmdict_related_by_level": {
+    "N5": 4,
+    "N4": 3,
+    "N3": 32,
+    "N2": 43,
+    "N1": 18
+  },
+  "refined_missing_by_type": {
+    "fixed-expression/conjugated": 3,
+    "kana/loanword": 21,
+    "lexical": 168
+  },
+  "refined_level_summary": {
+    "N5": {
+      "consensus_reference_unique": 627,
+      "refined_missing": 2,
+      "refined_lexical_coverage_pct": 99.68
+    },
+    "N4": {
+      "consensus_reference_unique": 601,
+      "refined_missing": 0,
+      "refined_lexical_coverage_pct": 100.0
+    },
+    "N3": {
+      "consensus_reference_unique": 2029,
+      "refined_missing": 34,
+      "refined_lexical_coverage_pct": 98.32
+    },
+    "N2": {
+      "consensus_reference_unique": 1497,
+      "refined_missing": 61,
+      "refined_lexical_coverage_pct": 95.93
+    },
+    "N1": {
+      "consensus_reference_unique": 2292,
+      "refined_missing": 95,
+      "refined_lexical_coverage_pct": 95.86
+    }
+  },
+  "interpretation": "refined_missing excludes candidates whose exact surface form is absent but whose word/reading resolves to a JMdict lexical entry already represented by the current runtime vocabulary."
+}

@@ -1,0 +1,193 @@
+﻿word,reading,consensus_level,level_votes,family_level_votes,reference_sources,reference_families,support_count,candidate_type,example_meaning
+アワー,アワー,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,hour
+いけない,いけない,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,"must not do,bad,wrong,not good"
+いただきます,いただきます,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,fixed-expression/conjugated,expression of gratitude before meals
+一斉,いっせい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,simultaneous; all at once
+いってまいります,いってまいります,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,fixed-expression/conjugated,"(Lit.) I'll go and come back, 'I'm going, see you later'"
+いらっしゃい,いらっしゃい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,welcome
+売り出し,うりだし,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,(bargain) sale
+うんと,うんと,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,"a great deal,very much"
+運輸,うんゆ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,transportation
+英和,えいわ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,English-Japanese (e.g. dictionary)
+演ずる,えんずる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to perform; to play
+王女,おうじょ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,princess
+応ずる,おうずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to answer; to respond; to meet
+おかけください,おかけください,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,fixed-expression/conjugated,请坐
+お先に,おさきに,N2,"{""N1"": 1, ""N2"": 1}","{""community-independent"": ""N2"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,before; ahead; previously
+治める,おさめる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,(1) to govern; to manage; (2) to subdue
+お産,おさん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,(giving) birth
+お互い,おたがい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,mutual; reciprocal; each other
+おまちどおさま,おまちどおさま,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,Sorry to have kept you waiting
+お宮,おみや,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,Shinto shrine
+思いっ切り,おもいっきり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,lexical,狠狠地
+お休み,おやすみ,N2,"{""N1"": 1, ""N2"": 1}","{""community-independent"": ""N2"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,holiday; absence; rest
+泳ぎ,およぎ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,swimming
+街道,かいどう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,highway
+書取,かきとり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,dictation
+化合,かごう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,chemical combination
+かしこまりました,かしこまりました,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,certainly!
+化繊,かせん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,synthetic fibres
+課程,かてい,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,course; curriculum
+観衆,かんしゅう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,spectators; onlookers; members of the audience
+感ずる,かんずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to feel; to sense
+間接,かんせつ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,indirection; indirectness
+幹線,かんせん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,main line; trunk line
+カー,カー,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,car
+ガレージ,ガレージ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,garage (at house)
+眼科,がんか,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,ophthalmology
+眼球,がんきゅう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,eyeball
+季刊,きかん,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,quarterly (e.g. magazine)
+汽船,きせん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,steamship
+気風,きふう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,character; traits; ethos
+客観,きゃっかん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,objective
+休学,きゅうがく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,temporary absence from school; suspension
+休戦,きゅうせん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,truce; armistice
+旧知,きゅうち,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,old friend; old friendship
+共学,きょうがく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,coeducation
+局,きょく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,court lady; lady in waiting
+局限,きょくげん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,limit; localize
+議事堂,ぎじどう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,Diet building
+訓,くん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,native Japanese reading of a Chinese character
+刑,けい,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,penalty; sentence; punishment
+形容詞,けいようし,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,true adjective
+原書,げんしょ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,original document
+言論,げんろん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,discussion
+航海,こうかい,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,sail; voyage
+煌々と,こうこうと,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|wordmaster,community-independent|waller-derived,2,lexical,brilliantly; brightly
+高尚,こうしょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,high; noble; refined
+行進,こうしん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,march; parade
+公然,こうぜん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,open (e.g. secret); public; official
+抗争,こうそう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,dispute; resistance
+後退,こうたい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,retreat; backspace (BS)
+耕地,こうち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,arable land
+購読,こうどく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,subscription (e.g. magazine)
+公用,こうよう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,government business; public use; public expense
+国防,こくぼう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,national defence
+故人,こじん,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,the deceased; old friend
+こちらこそ,こちらこそ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,it is I who should say so
+こないだ,こないだ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,"the other day,lately,recently"
+合議,ごうぎ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,consultation; conference
+ご苦労様,ごくろうさま,N2,"{""N1"": 1, ""N2"": 1}","{""community-independent"": ""N2"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,Thank you very much for your....
+作,さく,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,a work; a harvest
+昨,さく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,last (year); yesterday
+射す,さす,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to shine; to strike
+注す,さす,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to pour (drink); to serve (drinks)
+産休,さんきゅう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,maternity leave
+サンキュー,サンキュー,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,thank you
+産後,さんご,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,postpartum; after childbirth
+産婦人科,さんふじんか,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,maternity and gynecology department
+財源,ざいげん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,source of funds; resources; finances
+子息,しそく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,son
+死亡,しぼう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,death; mortality
+しゃぶる,しゃぶる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,"to suck,to chew"
+主体,しゅたい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,subject; main constituent
+守備,しゅび,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,defense
+私有,しゆう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,private ownership
+小,しょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,lexical,小
+生ずる,しょうずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to cause; to arise; to be generated
+庶務,しょむ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,general affairs
+使用人,しようにん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,employee; servant
+新婚,しんこん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,newly-wed
+信ずる,しんずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to believe; to believe in; to place trust in
+寝台,しんだい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,bed; couch
+進度,しんど,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,progress
+信任,しんにん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,trust; confidence; credence
+針路,しんろ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,course; direction; compass bearing
+自首,じしゅ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,surrender; give oneself up
+辞職,じしょく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,resignation
+住,じゅう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,dwelling; living
+十字路,じゅうじろ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,crossroads
+準急,じゅんきゅう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,local express (train  slower than an express)
+助教授,じょきょうじゅ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,assistant professor
+女史,じょし,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,Ms.
+水洗,すいせん,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,flushing
+水田,すいでん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,(water-filled) paddy field
+崇拝,すうはい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,worship; adoration; admiration
+すぐに,すぐに,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,Instantly
+ずらっと,ずらっと,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,"in a line, in a row"
+生長,せいちょう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,growth; increment
+製鉄,せいてつ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,iron manufacture
+世辞,せじ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,flattery; compliment
+宣教,せんきょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,religious mission
+戦災,せんさい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,war damage
+専制,せんせい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,despotism; autocracy
+船舶,せんぱく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,ship
+税,ぜい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,lexical,tax
+税務署,ぜいむしょ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,tax office
+ゼミ,ゼミ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,(n) seminar
+膳,ぜん,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,(small) table; tray; meal
+全集,ぜんしゅう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,complete works
+それと,それと,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,还有
+蔵相,ぞうしょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,Minister of Finance
+草履,ぞうり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,zoori (Japanese footwear); sandals
+他,た,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,other (esp. places and things)
+宅,たく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,house; home; husband
+ダイヤグラム,ダイヤグラム,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,diagram
+地点,ちてん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,site; point on a map
+抽象,ちゅうしょう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,abstract
+長短,ちょうたん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,length; long and short; +-
+沈没,ちんぼつ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,sinking; foundering
+通ずる,つうずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,lexical,"to lead, to run, to open"
+天災,てんさい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,natural calamity; disaster
+転任,てんにん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,change of post
+棟,とう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,place; section; building
+灯油,とうゆ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,lamp oil; kerosene
+特派,とくは,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,send specially; special envoy
+殿様,とのさま,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,feudal lord
+共稼ぎ,ともかせぎ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,working together; (husband and wife) earning a living together
+取り替え,とりかえ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,swap; exchange
+どうぞよろしく,どうぞよろしく,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,pleased to meet you
+何々,なになに,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,such and such; What?
+南米,なんべい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,South America
+ニュー,ニュー,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,new
+ネガ,ネガ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,(photographic) negative
+初めに,はじめに,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,lexical,"to begin with, first of all"
+始めに,はじめに,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to begin with; first of all
+斜,はす,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,lexical,diagonal
+話中,はなしちゅう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,while talking; the line is busy
+腹立ち,はらだち,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,anger
+原っぱ,はらっぱ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,open field; empty lot; plain
+判事,はんじ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,judge; judiciary
+倍率,ばいりつ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,diameter; magnification
+一月,ひとつき,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,one month
+日の入り,ひのいり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,sunset
+火花,ひばな,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,spark
+ビルディング,ビルディング,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,kana/loanword,building
+不,ふ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,un; non; negative prefix
+副詞,ふくし,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,adverb
+符号,ふごう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,sign; mark; symbol
+不振,ふしん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,dullness; depression; slump
+襖,ふすま,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,sliding screen
+不通,ふつう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,suspension; interruption; stoppage
+付録,ふろく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,appendix; supplement
+噴出,ふんしゅつ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,spewing; gushing; spouting
+無沙汰,ぶさた,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,neglecting to stay in contact
+分母,ぶんぼ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,denominator
+分離,ぶんり,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,separation; detachment; segregation
+平方,へいほう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,square (e.g. metre); square
+穂,ほ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,ear (of plant); head (of plant)
+放射能,ほうしゃのう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,radioactivity
+保健,ほけん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,health preservation; hygiene; sanitation
+防火,ぼうか,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,fire prevention; fire fighting; fire proof
+母校,ぼこう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,alma mater
+真ん前,まんまえ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,right in front; under the nose
+微塵,みじん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,particle; atom
+店屋,みせや,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,store; shop
+民俗,みんぞく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,people; race; nation
+婿,むこ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,son-in-law
+無闇に,むやみに,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,unreasonably; absurdly; recklessly
+命ずる,めいずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to command; to appoint
+面目,めんぼく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,face; honour; reputation
+夜行,やこう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,walking around at night; night train; night travel
+家主,やぬし,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,landlord
+有機,ゆうき,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,organic
+弓,ゆみ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,bow (and arrow)
+幼稚,ようち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,infancy; childish; infantile
+洋品店,ようひんてん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,shop which handles Western-style apparel and accessories
+羊毛,ようもう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,wool
+酔っ払い,よっぱらい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,drunkard
+論議,ろんぎ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,discussion
+論ずる,ろんずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,to argue; to discuss; to debate
+和英,わえい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,Japanese-English
+和文,わぶん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,Japanese text; sentence in Japanese
+割合に,わりあいに,N2,"{""N1"": 1, ""N2"": 1}","{""community-independent"": ""N2"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,lexical,comparatively
