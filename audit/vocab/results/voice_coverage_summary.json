@@ -8,48 +8,48 @@
     "voicevox": {
       "status": "ready",
       "base_hosted_word_count": 22333,
-      "delta_status": "not-generated",
-      "delta_hosted_word_count": 0,
-      "combined_hosted_exact_keys": 22333,
+      "delta_status": "ready",
+      "delta_hosted_word_count": 713,
+      "combined_hosted_exact_keys": 23046,
       "desired_word_count": 23046,
       "base_missing_hosted_exact_keys": 713,
-      "missing_hosted_exact_keys": 713,
+      "missing_hosted_exact_keys": 0,
       "extra_hosted_exact_keys": 0,
       "voice_count": 43,
       "base_recording_count": 960319,
-      "delta_recording_count": 0
+      "delta_recording_count": 30659
     },
     "supertonic3": {
       "status": "ready",
       "base_hosted_word_count": 22333,
-      "delta_status": "not-generated",
-      "delta_hosted_word_count": 0,
-      "combined_hosted_exact_keys": 22333,
+      "delta_status": "ready",
+      "delta_hosted_word_count": 713,
+      "combined_hosted_exact_keys": 23046,
       "desired_word_count": 23046,
       "base_missing_hosted_exact_keys": 713,
-      "missing_hosted_exact_keys": 713,
+      "missing_hosted_exact_keys": 0,
       "extra_hosted_exact_keys": 0,
       "voice_count": 10,
       "base_recording_count": 223330,
-      "delta_recording_count": 0
+      "delta_recording_count": 7130
     },
     "aivis": {
       "status": "ready",
       "base_hosted_word_count": 22333,
-      "delta_status": "not-generated",
-      "delta_hosted_word_count": 0,
-      "combined_hosted_exact_keys": 22333,
+      "delta_status": "ready",
+      "delta_hosted_word_count": 713,
+      "combined_hosted_exact_keys": 23046,
       "desired_word_count": 23046,
       "base_missing_hosted_exact_keys": 713,
-      "missing_hosted_exact_keys": 713,
+      "missing_hosted_exact_keys": 0,
       "extra_hosted_exact_keys": 0,
       "voice_count": 4,
       "base_recording_count": 89332,
-      "delta_recording_count": 0
+      "delta_recording_count": 2852
     }
   },
   "base_missing_union_count": 713,
-  "missing_union_count": 713,
-  "hosted_voice_coverage_complete": false,
+  "missing_union_count": 0,
+  "hosted_voice_coverage_complete": true,
   "fallback_note": "Browser/device synthesis may speak hosted misses, but completion requires combined base+delta hosted coverage for every exact key."
 }
