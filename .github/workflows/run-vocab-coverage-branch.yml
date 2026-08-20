@@ -1,0 +1,79 @@
+name: Process reviewed vocabulary coverage branch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/run-vocab-coverage-branch.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: process-reviewed-vocab-coverage-branch
+  cancel-in-progress: true
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Traditional Chinese converter
+        run: python -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
+
+      - name: Refresh strict audit
+        run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
+
+      - name: Refresh final quality review
+        run: python tools/final_quality_review.py --results audit/vocab/results
+
+      - name: Preserve pre-addition snapshot
+        run: |
+          rm -rf audit/vocab/results/pre_implementation
+          mkdir -p audit/vocab/results/pre_implementation
+          cp audit/vocab/results/surface_form_summary.json audit/vocab/results/pre_implementation/surface_form_summary.json
+          cp audit/vocab/results/quality_review_summary.json audit/vocab/results/pre_implementation/quality_review_summary.json
+          cp audit/vocab/results/final_quality_review_all_missing.csv audit/vocab/results/pre_implementation/final_quality_review_all_missing.csv
+
+      - name: Materialize 337 direct-reviewed additions
+        run: python tools/materialize_coverage_additions.py --results audit/vocab/results --output data/coverage_additions.json
+
+      - name: Apply exact written-form additions
+        run: python tools/apply_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json
+
+      - name: Validate generated JavaScript
+        run: node --check data/advanced_vocab.js
+
+      - name: Validate additions
+        run: python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json --report audit/vocab/results/coverage_additions_validation.json
+
+      - name: Re-audit after additions
+        run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
+
+      - name: Re-review remaining gaps
+        run: python tools/final_quality_review.py --results audit/vocab/results
+
+      - name: Commit processed results to audit branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- data/advanced_vocab.js data/coverage_additions.json audit/vocab/results
+          if git diff --cached --quiet; then
+            echo 'No vocabulary changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Apply reviewed JLPT surface-form coverage additions'
+          git push origin HEAD:audit/vocab-coverage-20260821
