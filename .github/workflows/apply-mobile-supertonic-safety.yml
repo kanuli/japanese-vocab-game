@@ -1,19 +1,36 @@
-name: Apply mobile Supertonic safety (legacy manual)
+# Temporary registered-runner probe for the reviewed vocabulary audio completion path.
+name: Reviewed vocabulary audio registered runner probe
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/apply-mobile-supertonic-safety.yml'
 
 permissions:
   contents: write
 
 jobs:
-  patch:
+  probe:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
-      - name: Legacy notice
+          ref: audit/vocab-coverage-20260821
+          fetch-depth: 0
+      - name: Record registered runner probe
         run: |
-          echo 'The one-time mobile Supertonic safety migration has already been applied.'
-          echo 'Use the mobile hosted playback workflow for current mobile audio fixes.'
+          python - <<'PY'
+          import json,datetime
+          from pathlib import Path
+          Path('audit/vocab/results/voice_delta_registered_runner_probe.json').write_text(json.dumps({'status':'PASS','utc':datetime.datetime.now(datetime.timezone.utc).isoformat()},indent=2),encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- audit/vocab/results/voice_delta_registered_runner_probe.json
+          git commit -m 'Record reviewed audio registered runner probe'
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
