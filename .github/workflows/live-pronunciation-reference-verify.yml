@@ -8,7 +8,7 @@ on:
       - '.live-pronunciation-reference-trigger'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   verify:
@@ -59,3 +59,39 @@ jobs:
           echo 'LIVE PRONUNCIATION REFERENCE AUDIO PASSED'
           echo 'Supertonic 10 voices: live mobile playback + acoustic scoring reference verified.'
           echo 'VOICEVOX 43 voices: live mobile playback + Supertonic acoustic scoring reference verified.'
+      - name: Publish observable live verification status
+        if: always()
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os
+          from datetime import datetime,timezone
+          from pathlib import Path
+          out={
+            'version':1,
+            'status':os.environ.get('RESULT','unknown'),
+            'checkedAt':datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),
+            'runId':os.environ.get('GITHUB_RUN_ID'),
+            'runAttempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
+            'headSha':os.environ.get('GITHUB_SHA'),
+            'target':'https://kanuli.github.io/japanese-vocab-game/pronunciation.html',
+            'expected':{
+              'sentenceCount':10000,
+              'supertonicVoiceCount':10,
+              'supertonicRecordingCount':100000,
+              'voicevoxSpeakerCount':43,
+              'voicevoxRecordingCount':430000,
+              'mobileHostedFirst':True
+            }
+          }
+          Path('live-pronunciation-reference-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add live-pronunciation-reference-status.json
+          git commit -m 'Update live pronunciation verification status' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
