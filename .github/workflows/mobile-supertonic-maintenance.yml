@@ -8,17 +8,25 @@ on:
     branches: [main]
     paths:
       - 'mobile-supertonic-guard.js'
+      - 'generic-voice-test.js'
+      - 'site-health.js'
+      - 'page-voice-audition.js'
       - 'wordaudio-multivoice.js'
       - 'wordlist-voicevox.js'
       - 'listening-supertonic-hosted.js'
       - 'conversation-hosted-audio.js'
       - 'translator-hosted-voice.js'
+      - 'index.html'
+      - 'grammar.html'
       - 'wordaudio.html'
       - 'wordlist.html'
       - 'listening.html'
       - 'conversation.html'
       - 'pronunciation.html'
       - 'translator.html'
+      - 'vocab-plus-game.html'
+      - 'vocabulary-plus.html'
+      - 'mocktest.html'
       - '.github/mobile-hosted-audio-test.cjs'
       - '.mobile-hosted-playback-trigger'
       - '.mobile-supertonic-safety-trigger'
@@ -42,6 +50,9 @@ jobs:
       - name: Static hosted-audio validation
         run: |
           node --check mobile-supertonic-guard.js
+          node --check generic-voice-test.js
+          node --check page-voice-audition.js
+          node --check site-health.js
           node --check wordaudio-multivoice.js
           node --check wordlist-voicevox.js
           node --check listening-supertonic-hosted.js
@@ -51,11 +62,16 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          pages=['wordaudio.html','wordlist.html','listening.html','conversation.html','pronunciation.html','translator.html']
-          for p in pages:
+          guarded=['index.html','grammar.html','wordaudio.html','wordlist.html','listening.html','conversation.html','pronunciation.html','translator.html','vocab-plus-game.html','vocabulary-plus.html']
+          for p in guarded:
               s=Path(p).read_text(encoding='utf-8')
               assert s.count('mobile-supertonic-guard.js')==1, (p,'mobile guard')
               assert 'mobile-supertonic-guard.js?v=20260817v4' in s, (p,'stale mobile guard cache key')
+          sh=Path('site-health.js').read_text(encoding='utf-8')
+          for p in ['index.html','grammar.html','wordaudio.html','vocab-plus-game.html','vocabulary-plus.html']:
+              assert p in sh, (p,'generic voice loader missing')
+          assert 'mocktest.html' not in sh.split('function loadGenericVoiceTest',1)[1].split('function loadResultHistory',1)[0], 'mocktest must be excluded from generic voice test'
+          assert Path('wordaudio.html').read_text(encoding='utf-8').count('wordaudio-multivoice.js?v=20260817v4')==1
           vv=json.load(open('word-voicevox-catalog.json',encoding='utf-8'))
           st=json.load(open('word-supertonic3-catalog.json',encoding='utf-8'))
           assert vv['status']=='ready' and vv['speakerCount']==43 and vv['wordCount']>22000 and vv['recordingCount']>900000
@@ -63,7 +79,7 @@ jobs:
           guard=Path('mobile-supertonic-guard.js').read_text(encoding='utf-8')
           for token in ['unlockHostedAudio','playHostedBytes','playSharedUrl','AudioContext']:
               assert token in guard, token
-          for f in ['wordaudio-multivoice.js','listening-supertonic-hosted.js','conversation-hosted-audio.js','translator-hosted-voice.js']:
+          for f in ['generic-voice-test.js','wordaudio-multivoice.js','listening-supertonic-hosted.js','conversation-hosted-audio.js','translator-hosted-voice.js']:
               assert 'playHostedBytes' in Path(f).read_text(encoding='utf-8'), f
           assert 'playSharedUrl' in Path('listening.html').read_text(encoding='utf-8')
           print('Static hosted-audio validation PASS')
@@ -92,4 +108,6 @@ jobs:
           echo 'iPhone/WebKit: real button tap unlock verified'
           echo 'VOICEVOX: real catalog -> index -> Range bytes -> shared player verified'
           echo 'Supertonic: real catalog -> index -> Range bytes -> shared player verified'
+          echo 'Generic Voice Test: every non-mock page group covered; real playback verified'
+          echo 'Mock Test: generic Voice Test exclusion verified'
           echo 'Local 400 MB Supertonic remains disabled only on mobile'
