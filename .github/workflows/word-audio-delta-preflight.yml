@@ -63,7 +63,7 @@ jobs:
           READING=$(python -c "import json;print(json.load(open('word-audio-delta-catalog.json'))['items'][0]['reading'])")
           STYLE=$(curl -fsS http://127.0.0.1:50021/speakers | python -c "import json,sys;d=json.load(sys.stdin);print(d[0]['styles'][0]['id'])")
           curl -fsS -X POST --get --data-urlencode "text=$READING" --data-urlencode "speaker=$STYLE" http://127.0.0.1:50021/audio_query -o /tmp/vv-query.json
-          curl -fsS -X POST -H 'Content-Type: application/json' --data-binary @/tmp/vv-query.json --get --data-urlencode "speaker=$STYLE" http://127.0.0.1:50021/synthesis -o /tmp/vv.wav
+          curl -fsS -X POST -H 'Content-Type: application/json' --data-binary @/tmp/vv-query.json "http://127.0.0.1:50021/synthesis?speaker=$STYLE" -o /tmp/vv.wav
           test "$(stat -c%s /tmp/vv.wav)" -gt 1000
           docker stop voicevox-preflight
           echo "VOICEVOX sample OK: $READING"
