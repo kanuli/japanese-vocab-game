@@ -1,9 +1,11 @@
 {
   "direct_reviewed_exact_keys": 337,
   "sourcecheck_approved_exact_keys": 375,
+  "postreview_residual_exact_keys": 1,
   "held_exact_keys": 3,
   "direct_still_missing": 0,
   "sourcecheck_approved_still_missing": 0,
+  "postreview_residual_still_missing": 0,
   "held_still_missing": 3,
   "audit_source_errors": 0,
   "status": "PASS"

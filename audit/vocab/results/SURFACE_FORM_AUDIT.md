@@ -2,10 +2,10 @@
 
 **Rule:** only the same written form + reading counts as covered. Same reading or same JMdict entry is not coverage.
 
-- Runtime unique exact items: **23,031**
+- Runtime unique exact items: **23,032**
 - High-confidence exact-form missing: **76**
-- Single-source exact-form missing: **754**
-- All exact-form missing candidates: **830**
+- Single-source exact-form missing: **753**
+- All exact-form missing candidates: **829**
 
 ## Consensus exact-surface coverage
 
@@ -20,8 +20,8 @@
 ## Relation counts among missing forms
 
 - fully-absent: **380**
-- same-jmdict-entry: **236**
-- same-reading-different-writing: **334**
+- same-jmdict-entry: **235**
+- same-reading-different-writing: **333**
 - same-writing-different-reading: **170**
 
 `surface_form_relations.csv` lists every missing surface form and any current same-reading / same-JMdict related form. Those relations are annotations only.

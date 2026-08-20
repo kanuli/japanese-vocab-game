@@ -27,20 +27,50 @@
       "passed": true
     }
   },
-  "manual_runtime_ledger_count": 251,
-  "audit_source_errors": [],
+  "residual_cleanup_phase": {
+    "reviewed_safe_additions": 1,
+    "runtime_covered": 1,
+    "entry": "どうぞ宜しく（どうぞよろしく）"
+  },
+  "manual_runtime_ledger_count": 252,
+  "audit_source_errors": {},
+  "actionable_recommended_additions_remaining": 0,
+  "explicit_holds_remaining": 3,
   "remaining_strict_reference_gaps": {
     "high_confidence": 76,
-    "single_source": 754,
-    "all": 830
+    "single_source": 753,
+    "all": 829
   },
-  "remaining_gaps_note": "Remaining gaps are outside the 337 direct-approved + 375 source-check-approved scope or are explicitly held/manual/low-priority; they are not silently treated as covered.",
+  "remaining_high_confidence_review": {
+    "remaining_reviewed": 829,
+    "remaining_strict_gap_count": 829,
+    "actionable_recommended": 0,
+    "explicit_holds_reclassified": 3,
+    "remaining_high_confidence": 76,
+    "remaining_high_confidence_add_recommendations": 0,
+    "remaining_high_confidence_decisions": {
+      "LOW_PRIORITY_ARCHAIC": 23,
+      "LOW_PRIORITY_RARE_VARIANT": 21,
+      "MANUAL_VERIFY_SOURCE": 29,
+      "SEPARATE_EXPRESSION_REVIEW": 3
+    }
+  },
+  "remaining_gap_decisions": {
+    "LOW_PRIORITY_ARCHAIC": 113,
+    "LOW_PRIORITY_RARE_VARIANT": 143,
+    "MANUAL_LEVEL_AND_USAGE_REVIEW": 33,
+    "MANUAL_VERIFY_SOURCE": 525,
+    "SEPARATE_EXPRESSION_REVIEW": 15
+  },
+  "remaining_gaps_note": "No reviewed actionable ADD recommendation remains. Remaining strict gaps are explicit HOLD, source-unverified, archaic/rare, expression-review, or manual level/usage cases and are deliberately not silently published.",
   "runtime_validation": {
     "direct_reviewed_exact_keys": 337,
     "sourcecheck_approved_exact_keys": 375,
+    "postreview_residual_exact_keys": 1,
     "held_exact_keys": 3,
     "direct_still_missing": 0,
     "sourcecheck_approved_still_missing": 0,
+    "postreview_residual_still_missing": 0,
     "held_still_missing": 3,
     "audit_source_errors": 0,
     "status": "PASS"

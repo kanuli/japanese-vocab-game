@@ -1,0 +1,14 @@
+{
+  "remaining_reviewed": 829,
+  "remaining_strict_gap_count": 829,
+  "actionable_recommended": 0,
+  "explicit_holds_reclassified": 3,
+  "remaining_high_confidence": 76,
+  "remaining_high_confidence_add_recommendations": 0,
+  "remaining_high_confidence_decisions": {
+    "LOW_PRIORITY_ARCHAIC": 23,
+    "LOW_PRIORITY_RARE_VARIANT": 21,
+    "MANUAL_VERIFY_SOURCE": 29,
+    "SEPARATE_EXPRESSION_REVIEW": 3
+  }
+}

@@ -2,11 +2,11 @@
   "coverage_rule": "ONLY exact normalized written-form + reading counts as covered; different kanji/kana spellings remain separate items",
   "jmdict_role": "annotation only; same JMdict entry never suppresses a missing surface form",
   "jmdict_source": "https://raw.githubusercontent.com/jkindrix/japanese-language-data/main/data/core/words.json",
-  "runtime_unique": 23031,
+  "runtime_unique": 23032,
   "reference_exact_groups": 9280,
   "exact_surface_missing_high_confidence": 76,
-  "exact_surface_missing_single_source": 754,
-  "exact_surface_missing_all": 830,
+  "exact_surface_missing_single_source": 753,
+  "exact_surface_missing_all": 829,
   "high_confidence_by_level": {
     "N5": 4,
     "N4": 26,
@@ -19,12 +19,12 @@
     "N4": 68,
     "N3": 41,
     "N2": 205,
-    "N1": 348
+    "N1": 347
   },
   "relation_counts": {
     "fully-absent": 380,
-    "same-jmdict-entry": 236,
-    "same-reading-different-writing": 334,
+    "same-jmdict-entry": 235,
+    "same-reading-different-writing": 333,
     "same-writing-different-reading": 170
   },
   "consensus_level_summary": {
