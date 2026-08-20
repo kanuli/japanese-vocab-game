@@ -1,23 +1,23 @@
 {
   "version": 1,
-  "checkedAt": "2026-08-20T04:56:11.055986Z",
+  "checkedAt": "2026-08-20T05:15:00Z",
   "voicevoxIndex": {
     "status": "ready",
     "questionCount": 6690,
     "speakerCount": 43,
     "recordingCount": 287670
   },
-  "activeRunCount": 1,
+  "activeRunCount": 0,
   "recentRuns": [
     {
       "id": 32330848350,
       "runNumber": 16,
       "attempt": 1,
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "event": "push",
       "createdAt": "2026-08-20T04:09:50Z",
-      "updatedAt": "2026-08-20T04:55:58Z",
+      "updatedAt": "2026-08-20T04:59:09Z",
       "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32330848350",
       "headSha": "420205fce0094097537770278074cec139c9c2fa"
     },
@@ -67,66 +67,6 @@
       "createdAt": "2026-08-19T23:40:48Z",
       "updatedAt": "2026-08-19T23:48:07Z",
       "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32314262262",
-      "headSha": "1632530f80b2715b3c644b7ef1737edc32f07985"
-    },
-    {
-      "id": 32310217529,
-      "runNumber": 11,
-      "attempt": 1,
-      "status": "completed",
-      "conclusion": "failure",
-      "event": "workflow_dispatch",
-      "createdAt": "2026-08-19T22:44:48Z",
-      "updatedAt": "2026-08-19T22:49:16Z",
-      "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32310217529",
-      "headSha": "1632530f80b2715b3c644b7ef1737edc32f07985"
-    },
-    {
-      "id": 32305336692,
-      "runNumber": 10,
-      "attempt": 1,
-      "status": "completed",
-      "conclusion": "failure",
-      "event": "workflow_dispatch",
-      "createdAt": "2026-08-19T21:43:34Z",
-      "updatedAt": "2026-08-19T21:57:15Z",
-      "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32305336692",
-      "headSha": "1632530f80b2715b3c644b7ef1737edc32f07985"
-    },
-    {
-      "id": 32300519500,
-      "runNumber": 9,
-      "attempt": 1,
-      "status": "completed",
-      "conclusion": "failure",
-      "event": "workflow_dispatch",
-      "createdAt": "2026-08-19T20:48:16Z",
-      "updatedAt": "2026-08-19T20:55:31Z",
-      "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32300519500",
-      "headSha": "1632530f80b2715b3c644b7ef1737edc32f07985"
-    },
-    {
-      "id": 32294501316,
-      "runNumber": 8,
-      "attempt": 1,
-      "status": "completed",
-      "conclusion": "failure",
-      "event": "workflow_dispatch",
-      "createdAt": "2026-08-19T19:42:27Z",
-      "updatedAt": "2026-08-19T19:43:03Z",
-      "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32294501316",
-      "headSha": "1632530f80b2715b3c644b7ef1737edc32f07985"
-    },
-    {
-      "id": 32290196037,
-      "runNumber": 7,
-      "attempt": 1,
-      "status": "completed",
-      "conclusion": "failure",
-      "event": "workflow_dispatch",
-      "createdAt": "2026-08-19T18:56:22Z",
-      "updatedAt": "2026-08-19T19:08:25Z",
-      "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32290196037",
       "headSha": "1632530f80b2715b3c644b7ef1737edc32f07985"
     }
   ]
