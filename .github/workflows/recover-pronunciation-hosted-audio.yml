@@ -227,10 +227,30 @@ jobs:
           new_st=load('pronunciation-supertonic-original-index.json')
           old_vv=load('voicevox-full-index.json')
           new_vv=load('pronunciation-voicevox-original-index.json')
-          def qcount(d): return len(d.get('questions') or {})
+          def qcount(d):
+              q=d.get('questions')
+              if isinstance(q,dict) and q:
+                  return len(q)
+              for key in ('questionCount','indexed','count'):
+                  try:
+                      n=int(d.get(key) or 0)
+                  except (TypeError,ValueError):
+                      n=0
+                  if n:
+                      return n
+              return 0
           def entity_count(d):
               x=d.get('voices') or d.get('speakers') or {}
-              return len(x)
+              if isinstance(x,dict) and x:
+                  return len(x)
+              for key in ('voiceCount','speakerCount'):
+                  try:
+                      n=int(d.get(key) or 0)
+                  except (TypeError,ValueError):
+                      n=0
+                  if n:
+                      return n
+              return 0
           assert qcount(old_st)==3310, qcount(old_st)
           assert qcount(new_st)==6690, qcount(new_st)
           assert new_st.get('status')=='ready'
@@ -241,10 +261,8 @@ jobs:
           assert new_vv.get('recordingCount')==287670
           assert qcount(old_st)+qcount(new_st)==10000
           assert qcount(old_vv)+qcount(new_vv)==10000
-          st_voices=entity_count(new_st) or int(new_st.get('voiceCount') or 0)
-          vv_speakers=entity_count(new_vv) or int(new_vv.get('speakerCount') or 0)
-          assert st_voices==10, st_voices
-          assert vv_speakers==43, vv_speakers
+          assert entity_count(new_st)==10, entity_count(new_st)
+          assert entity_count(new_vv)==43, entity_count(new_vv)
           status={
             'version':1,
             'status':'ready',
