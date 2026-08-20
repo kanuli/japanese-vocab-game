@@ -22,12 +22,31 @@ import refine_vocab_audit_jmdict as J
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def load_manual_coverage(path: Path) -> list[A.Entry]:
+    """Load the reviewed deferred completion layer used by the browser runtime."""
+    if not path.exists():
+        return []
+    data = json.loads(path.read_text(encoding="utf-8"))
+    out = []
+    for i, row in enumerate(data.get("entries") or []):
+        if not isinstance(row, list) or len(row) < 4:
+            continue
+        level, reading, word, meaning = row[:4]
+        word = str(word or reading or "").strip()
+        reading = str(reading or "").strip()
+        meaning = str(meaning or "").strip()
+        if word and reading and level in A.LEVELS and meaning:
+            out.append(A.Entry("coverage-manual", str(level), word, reading, meaning, f"manual-{i}"))
+    return A.dedupe_entries(out)
+
+
 def load_runtime() -> list[A.Entry]:
     core_text, _ = A.first_text(A.CORE_URLS)
     _, runtime_core, _ = A.parse_core(core_text)
     curated = A.load_curated(ROOT / "advanced_words_curated.js")
     advanced = A.load_advanced_bundle(ROOT / "data" / "advanced_vocab.js")
-    return A.dedupe_entries([*runtime_core, *curated, *advanced])
+    manual = load_manual_coverage(ROOT / "data" / "coverage_manual_meanings.json")
+    return A.dedupe_entries([*runtime_core, *curated, *advanced, *manual])
 
 
 def csv_write(path: Path, rows: list[dict], cols: list[str]) -> None:
@@ -188,6 +207,12 @@ def main() -> int:
         "consensus_level_summary": consensus_summary,
         "source_inventory": inventory,
         "source_errors": errors,
+        "runtime_sources": {
+            "core": "upstream core CSV accepted by runtime parser",
+            "curated": "advanced_words_curated.js",
+            "advanced": "data/advanced_vocab.js",
+            "manual_reviewed_completion": "data/coverage_manual_meanings.json",
+        },
     }
     (out / "surface_form_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
