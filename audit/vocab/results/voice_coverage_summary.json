@@ -1,7 +1,7 @@
 {
   "coverage_rule": "exact reading|written-form",
   "desired_word_count": 23046,
-  "desired_source": "wordaudio runtime-equivalent core + curated + prebuilt advanced + reviewed strict-surface completion layers",
+  "desired_source": "wordaudio runtime-equivalent core + curated + prebuilt advanced + reviewed strict-surface completion layers; entries without Traditional Chinese meaning excluded exactly like runtime",
   "invalid_or_non_kana_readings": [],
   "invalid_reading_count": 0,
   "engines": {
