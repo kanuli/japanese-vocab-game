@@ -1,0 +1,489 @@
+{
+  "checked_at_utc": "2026-08-20T20:49:25.725015+00:00",
+  "git_write_path": "PASS_DRY_RUN",
+  "releases": {
+    "voicevox": {
+      "tag": "voicevox-vocab-delta-20260821-v1",
+      "exists": true,
+      "release_name": "VOICEVOX reviewed vocabulary delta",
+      "asset_count": 86,
+      "asset_total_bytes": 182732227,
+      "assets": [
+        {
+          "name": "s01-delta.tar",
+          "size": 3973120
+        },
+        {
+          "name": "s02-delta.tar",
+          "size": 4597760
+        },
+        {
+          "name": "s03-delta.tar",
+          "size": 4044800
+        },
+        {
+          "name": "s04-delta.tar",
+          "size": 4290560
+        },
+        {
+          "name": "s05-delta.tar",
+          "size": 4034560
+        },
+        {
+          "name": "s06-delta.tar",
+          "size": 3737600
+        },
+        {
+          "name": "s07-delta.tar",
+          "size": 4116480
+        },
+        {
+          "name": "s08-delta.tar",
+          "size": 4136960
+        },
+        {
+          "name": "s09-delta.tar",
+          "size": 3952640
+        },
+        {
+          "name": "s10-delta.tar",
+          "size": 4618240
+        },
+        {
+          "name": "s11-delta.tar",
+          "size": 4218880
+        },
+        {
+          "name": "s12-delta.tar",
+          "size": 3973120
+        },
+        {
+          "name": "s13-delta.tar",
+          "size": 4188160
+        },
+        {
+          "name": "s14-delta.tar",
+          "size": 4567040
+        },
+        {
+          "name": "s15-delta.tar",
+          "size": 3962880
+        },
+        {
+          "name": "s16-delta.tar",
+          "size": 4546560
+        },
+        {
+          "name": "s17-delta.tar",
+          "size": 4618240
+        },
+        {
+          "name": "s18-delta.tar",
+          "size": 4608000
+        },
+        {
+          "name": "s19-delta.tar",
+          "size": 4290560
+        },
+        {
+          "name": "s20-delta.tar",
+          "size": 3973120
+        },
+        {
+          "name": "s21-delta.tar",
+          "size": 4259840
+        },
+        {
+          "name": "s22-delta.tar",
+          "size": 4106240
+        },
+        {
+          "name": "s23-delta.tar",
+          "size": 4433920
+        },
+        {
+          "name": "s24-delta.tar",
+          "size": 4106240
+        },
+        {
+          "name": "s25-delta.tar",
+          "size": 4444160
+        },
+        {
+          "name": "s26-delta.tar",
+          "size": 4515840
+        },
+        {
+          "name": "s27-delta.tar",
+          "size": 4075520
+        },
+        {
+          "name": "s28-delta.tar",
+          "size": 4157440
+        },
+        {
+          "name": "s29-delta.tar",
+          "size": 4034560
+        },
+        {
+          "name": "s30-delta.tar",
+          "size": 4014080
+        },
+        {
+          "name": "s31-delta.tar",
+          "size": 4044800
+        },
+        {
+          "name": "s32-delta.tar",
+          "size": 4444160
+        },
+        {
+          "name": "s33-delta.tar",
+          "size": 4136960
+        },
+        {
+          "name": "s34-delta.tar",
+          "size": 4198400
+        },
+        {
+          "name": "s35-delta.tar",
+          "size": 4751360
+        },
+        {
+          "name": "s36-delta.tar",
+          "size": 4495360
+        },
+        {
+          "name": "s37-delta.tar",
+          "size": 4280320
+        },
+        {
+          "name": "s38-delta.tar",
+          "size": 4055040
+        },
+        {
+          "name": "s39-delta.tar",
+          "size": 4352000
+        },
+        {
+          "name": "s40-delta.tar",
+          "size": 4044800
+        },
+        {
+          "name": "s41-delta.tar",
+          "size": 4259840
+        },
+        {
+          "name": "s42-delta.tar",
+          "size": 4300800
+        },
+        {
+          "name": "s43-delta.tar",
+          "size": 3717120
+        },
+        {
+          "name": "word-voicevox-delta-s01-index.json",
+          "size": 24506
+        },
+        {
+          "name": "word-voicevox-delta-s02-index.json",
+          "size": 24531
+        },
+        {
+          "name": "word-voicevox-delta-s03-index.json",
+          "size": 24510
+        },
+        {
+          "name": "word-voicevox-delta-s04-index.json",
+          "size": 24518
+        },
+        {
+          "name": "word-voicevox-delta-s05-index.json",
+          "size": 24504
+        },
+        {
+          "name": "word-voicevox-delta-s06-index.json",
+          "size": 24490
+        },
+        {
+          "name": "word-voicevox-delta-s07-index.json",
+          "size": 24511
+        },
+        {
+          "name": "word-voicevox-delta-s08-index.json",
+          "size": 24507
+        },
+        {
+          "name": "word-voicevox-delta-s09-index.json",
+          "size": 24503
+        },
+        {
+          "name": "word-voicevox-delta-s10-index.json",
+          "size": 24531
+        },
+        {
+          "name": "word-voicevox-delta-s11-index.json",
+          "size": 24518
+        },
+        {
+          "name": "word-voicevox-delta-s12-index.json",
+          "size": 24501
+        },
+        {
+          "name": "word-voicevox-delta-s13-index.json",
+          "size": 24508
+        },
+        {
+          "name": "word-voicevox-delta-s14-index.json",
+          "size": 24521
+        },
+        {
+          "name": "word-voicevox-delta-s15-index.json",
+          "size": 24494
+        },
+        {
+          "name": "word-voicevox-delta-s16-index.json",
+          "size": 24534
+        },
+        {
+          "name": "word-voicevox-delta-s17-index.json",
+          "size": 24528
+        },
+        {
+          "name": "word-voicevox-delta-s18-index.json",
+          "size": 24526
+        },
+        {
+          "name": "word-voicevox-delta-s19-index.json",
+          "size": 24538
+        },
+        {
+          "name": "word-voicevox-delta-s20-index.json",
+          "size": 24508
+        },
+        {
+          "name": "word-voicevox-delta-s21-index.json",
+          "size": 24514
+        },
+        {
+          "name": "word-voicevox-delta-s22-index.json",
+          "size": 24510
+        },
+        {
+          "name": "word-voicevox-delta-s23-index.json",
+          "size": 24526
+        },
+        {
+          "name": "word-voicevox-delta-s24-index.json",
+          "size": 24508
+        },
+        {
+          "name": "word-voicevox-delta-s25-index.json",
+          "size": 24527
+        },
+        {
+          "name": "word-voicevox-delta-s26-index.json",
+          "size": 24529
+        },
+        {
+          "name": "word-voicevox-delta-s27-index.json",
+          "size": 24510
+        },
+        {
+          "name": "word-voicevox-delta-s28-index.json",
+          "size": 24518
+        },
+        {
+          "name": "word-voicevox-delta-s29-index.json",
+          "size": 24505
+        },
+        {
+          "name": "word-voicevox-delta-s30-index.json",
+          "size": 24506
+        },
+        {
+          "name": "word-voicevox-delta-s31-index.json",
+          "size": 24501
+        },
+        {
+          "name": "word-voicevox-delta-s32-index.json",
+          "size": 24519
+        },
+        {
+          "name": "word-voicevox-delta-s33-index.json",
+          "size": 24513
+        },
+        {
+          "name": "word-voicevox-delta-s34-index.json",
+          "size": 24506
+        },
+        {
+          "name": "word-voicevox-delta-s35-index.json",
+          "size": 24536
+        },
+        {
+          "name": "word-voicevox-delta-s36-index.json",
+          "size": 24536
+        },
+        {
+          "name": "word-voicevox-delta-s37-index.json",
+          "size": 24521
+        },
+        {
+          "name": "word-voicevox-delta-s38-index.json",
+          "size": 24513
+        },
+        {
+          "name": "word-voicevox-delta-s39-index.json",
+          "size": 24523
+        },
+        {
+          "name": "word-voicevox-delta-s40-index.json",
+          "size": 24511
+        },
+        {
+          "name": "word-voicevox-delta-s41-index.json",
+          "size": 24518
+        },
+        {
+          "name": "word-voicevox-delta-s42-index.json",
+          "size": 24523
+        },
+        {
+          "name": "word-voicevox-delta-s43-index.json",
+          "size": 24487
+        }
+      ]
+    },
+    "supertonic3": {
+      "tag": "word-supertonic3-delta-20260821-v1",
+      "exists": true,
+      "release_name": "Supertonic 3 reviewed vocabulary delta",
+      "asset_count": 20,
+      "asset_total_bytes": 90160305,
+      "assets": [
+        {
+          "name": "F1-shard0.tar",
+          "size": 9195520
+        },
+        {
+          "name": "F2-shard0.tar",
+          "size": 8888320
+        },
+        {
+          "name": "F3-shard0.tar",
+          "size": 9461760
+        },
+        {
+          "name": "F4-shard0.tar",
+          "size": 8663040
+        },
+        {
+          "name": "F5-shard0.tar",
+          "size": 8960000
+        },
+        {
+          "name": "M1-shard0.tar",
+          "size": 9175040
+        },
+        {
+          "name": "M2-shard0.tar",
+          "size": 9031680
+        },
+        {
+          "name": "M3-shard0.tar",
+          "size": 8529920
+        },
+        {
+          "name": "M4-shard0.tar",
+          "size": 8847360
+        },
+        {
+          "name": "M5-shard0.tar",
+          "size": 9154560
+        },
+        {
+          "name": "word-supertonic3-delta-F1-index.json",
+          "size": 25312
+        },
+        {
+          "name": "word-supertonic3-delta-F2-index.json",
+          "size": 25310
+        },
+        {
+          "name": "word-supertonic3-delta-F3-index.json",
+          "size": 25318
+        },
+        {
+          "name": "word-supertonic3-delta-F4-index.json",
+          "size": 25306
+        },
+        {
+          "name": "word-supertonic3-delta-F5-index.json",
+          "size": 25310
+        },
+        {
+          "name": "word-supertonic3-delta-M1-index.json",
+          "size": 25311
+        },
+        {
+          "name": "word-supertonic3-delta-M2-index.json",
+          "size": 25311
+        },
+        {
+          "name": "word-supertonic3-delta-M3-index.json",
+          "size": 25305
+        },
+        {
+          "name": "word-supertonic3-delta-M4-index.json",
+          "size": 25310
+        },
+        {
+          "name": "word-supertonic3-delta-M5-index.json",
+          "size": 25312
+        }
+      ]
+    },
+    "aivis": {
+      "tag": "word-aivis-delta-20260821-v1",
+      "exists": true,
+      "release_name": "AivisSpeech reviewed vocabulary delta",
+      "asset_count": 8,
+      "asset_total_bytes": 28945677,
+      "assets": [
+        {
+          "name": "a01-shard0.tar",
+          "size": 7188480
+        },
+        {
+          "name": "a02-shard0.tar",
+          "size": 7208960
+        },
+        {
+          "name": "a03-shard0.tar",
+          "size": 7188480
+        },
+        {
+          "name": "a04-shard0.tar",
+          "size": 7219200
+        },
+        {
+          "name": "word-aivis-delta-a01-index.json",
+          "size": 35138
+        },
+        {
+          "name": "word-aivis-delta-a02-index.json",
+          "size": 35138
+        },
+        {
+          "name": "word-aivis-delta-a03-index.json",
+          "size": 35136
+        },
+        {
+          "name": "word-aivis-delta-a04-index.json",
+          "size": 35145
+        }
+      ]
+    }
+  }
+}

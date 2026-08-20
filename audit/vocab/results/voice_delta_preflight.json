@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "checks": {
+    "catalog": "success",
+    "git_write_path": "success",
+    "release_storage_read": "success",
+    "voicevox": "success",
+    "supertonic3": "success",
+    "aivis": "success"
+  },
+  "engine_evidence_run_id": "32415483725",
+  "note": "VOICEVOX, Supertonic 3 and Aivis sample synthesis all succeeded in Actions run 32415483725. The prior permissions.push field check was not a valid GITHUB_TOKEN capability test; actual audit-branch pushes plus dry-run establish repository write access.",
+  "delta_word_count": 713,
+  "checked_at_utc": "2026-08-20T20:49:27.543360+00:00"
+}
