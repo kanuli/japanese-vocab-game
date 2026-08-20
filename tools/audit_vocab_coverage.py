@@ -21,7 +21,7 @@ import sys
 import unicodedata
 import urllib.request
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
@@ -32,11 +32,7 @@ CORE_URLS = [
     "https://raw.githubusercontent.com/5mdld/anki-jlpt-decks/main/deck-source/notes.csv",
     "https://cdn.jsdelivr.net/gh/5mdld/anki-jlpt-decks@main/deck-source/notes.csv",
 ]
-SOURCE_FAMILY = {
-    "openjlpt": "waller-derived",
-    "waller": "waller-derived",
-    "wordmaster": "community-independent",
-}
+SOURCE_FAMILY = {"openjlpt": "waller-derived", "waller": "waller-derived", "wordmaster": "community-independent"}
 REFERENCE_URLS = {
     "openjlpt": {
         level: f"https://raw.githubusercontent.com/evanclan/OpenJLPT/main/data/json/vocab/{level.lower()}.json"
@@ -60,9 +56,16 @@ FIELDS = [
     "SentFurigana4","SentDefSC4","SentDefTC4","SentAudio4","Sort","Alt1","Alt2","Tags",
 ]
 KANA_RE = re.compile(r"^[ぁ-ゖァ-ヺー・ヽヾゝゞ]+$")
+KANJI_RE = re.compile(r"[\u3400-\u4DBF\u4E00-\u9FFF々〆ヵヶ]")
 LEVEL_RE = re.compile(r"(?:^|[^A-Za-z0-9])N([1-5])(?=$|[^0-9])", re.I)
 TAG_RE = re.compile(r"<[^>]+>")
 SOUND_RE = re.compile(r"\[sound:[^\]]+\]", re.I)
+SMALL_KANA_TRANS = str.maketrans({
+    "ぁ":"あ","ぃ":"い","ぅ":"う","ぇ":"え","ぉ":"お",
+    "ゃ":"や","ゅ":"ゆ","ょ":"よ","っ":"つ","ゎ":"わ",
+    "ァ":"ア","ィ":"イ","ゥ":"ウ","ェ":"エ","ォ":"オ",
+    "ャ":"ヤ","ュ":"ユ","ョ":"ヨ","ッ":"ツ","ヮ":"ワ",
+})
 
 
 @dataclass(frozen=True)
@@ -94,7 +97,7 @@ def first_text(urls: Iterable[str]) -> tuple[str, str]:
     for url in urls:
         try:
             return http_text(url), url
-        except Exception as exc:
+        except Exception as exc:  # network variability is expected in CI
             errors.append(f"{url}: {exc}")
     raise RuntimeError("all source mirrors failed: " + " | ".join(errors))
 
@@ -130,9 +133,23 @@ def normalize_word(value: str) -> str:
     return nfkc(value).replace(" ", "").replace("・", "")
 
 
+def loose_kana(value: str) -> str:
+    return kata_to_hira(nfkc(value)).translate(SMALL_KANA_TRANS).replace(" ", "").replace("・", "").replace("ー", "")
+
+
 def loose_word(value: str) -> str:
-    # Conservative orthographic fallback. It never counts as an exact match.
-    return kata_to_hira(normalize_word(value)).replace("ー", "")
+    # Conservative kana normalization for spelling variants.
+    return loose_kana(normalize_word(value))
+
+
+def kanji_skeleton(value: str) -> str:
+    """Keep CJK characters only; useful for okurigana variants such as 打合せ/打ち合わせ."""
+    return "".join(ch for ch in nfkc(value) if "\u3400" <= ch <= "\u9fff" or ch in "々〆ヵヶ")
+
+
+def loose_kanji_skeleton(value: str) -> str:
+    # 御 is frequently written as お/ご in everyday orthography (御飯/ご飯).
+    return kanji_skeleton(value).replace("御", "")
 
 
 def exact_key(word: str, reading: str) -> str:
@@ -140,7 +157,30 @@ def exact_key(word: str, reading: str) -> str:
 
 
 def variant_key(word: str, reading: str) -> str:
-    return f"{normalize_reading(reading).replace('ー','')}|{loose_word(word)}"
+    return f"{loose_kana(reading)}|{loose_word(word)}"
+
+
+def reading_aliases(word: str, reading: str) -> list[str]:
+    """Return conservative reading aliases used only for coverage matching."""
+    base = loose_kana(reading)
+    aliases = [base] if base else []
+    # Some JLPT datasets encode verbalized nouns as 案内 / あんないする.
+    # Do not strip する when the written form itself is 愛する-like.
+    surface = normalize_word(word)
+    if base.endswith("する") and not surface.endswith("する"):
+        aliases.append(base[:-2])
+    return list(dict.fromkeys(x for x in aliases if x))
+
+
+def candidate_type(word: str, reading: str) -> str:
+    r = normalize_reading(reading)
+    if any(r.endswith(x) for x in ("ください", "なさい", "ません", "ましょう", "ございます", "でした")):
+        return "fixed-expression/conjugated"
+    if r.endswith("ます") and len(r) > 4:
+        return "fixed-expression/conjugated"
+    if is_kana(word):
+        return "kana/loanword"
+    return "lexical"
 
 
 def is_kana(value: str) -> bool:
@@ -367,7 +407,10 @@ def load_references() -> tuple[list[Entry], dict[str, dict], dict[str, str]]:
                 inventory[source][level] = 0
                 errors[key] = str(exc)
 
-    working_sources = {source for source in REFERENCE_URLS if sum(inventory[source].values()) >= 500}
+    working_sources = {
+        source for source in REFERENCE_URLS
+        if sum(inventory[source].values()) >= 500
+    }
     working_families = {SOURCE_FAMILY.get(source, source) for source in working_sources}
     if len(working_families) < 2:
         raise RuntimeError(
@@ -379,13 +422,62 @@ def load_references() -> tuple[list[Entry], dict[str, dict], dict[str, str]]:
 def build_indexes(entries: Iterable[Entry]):
     by_exact: dict[str, list[Entry]] = defaultdict(list)
     by_variant: dict[str, list[Entry]] = defaultdict(list)
+    by_skeleton: dict[str, list[Entry]] = defaultdict(list)
+    by_reading: dict[str, list[Entry]] = defaultdict(list)
     for entry in entries:
         by_exact[entry.exact_key].append(entry)
         by_variant[entry.variant_key].append(entry)
-    return by_exact, by_variant
+        for rd in reading_aliases(entry.word, entry.reading):
+            sk = loose_kanji_skeleton(entry.word)
+            if sk:
+                by_skeleton[f"{rd}|{sk}"].append(entry)
+        by_reading[loose_kana(entry.reading)].append(entry)
+    return {
+        "exact": by_exact,
+        "variant": by_variant,
+        "skeleton": by_skeleton,
+        "reading": by_reading,
+    }
+
+
+def match_entry(ref: Entry, indexes: dict[str, dict[str, list[Entry]]]) -> tuple[str, list[Entry]]:
+    exact = indexes["exact"].get(ref.exact_key, [])
+    if exact:
+        return "exact", exact
+
+    loose = indexes["variant"].get(ref.variant_key, [])
+    if loose:
+        return "kana/long-mark", loose
+
+    sk = loose_kanji_skeleton(ref.word)
+    if sk:
+        for rd in reading_aliases(ref.word, ref.reading):
+            matches = indexes["skeleton"].get(f"{rd}|{sk}", [])
+            if matches:
+                normal_ref = loose_kana(ref.reading)
+                normal_cur = {loose_kana(x.reading) for x in matches}
+                kind = "okurigana/orthography"
+                if normal_ref not in normal_cur:
+                    kind = "suru-reading-alias"
+                return kind, matches
+
+    # Weak but pedagogically useful fallback: a kanji spelling can be represented
+    # by an all-kana dictionary headword with the same reading. Keep it out of
+    # "missing" but label it clearly for manual review.
+    rd = loose_kana(ref.reading)
+    if rd:
+        weak = [
+            e for e in indexes["reading"].get(rd, [])
+            if is_kana(e.word) and loose_word(e.word) == rd
+        ]
+        if weak:
+            return "kana-spelling-weak", weak
+
+    return "", []
 
 
 def reference_groups(references: Iterable[Entry]) -> dict[str, list[Entry]]:
+    # Exact written form + reading is the primary group. This avoids merging homophones.
     groups: dict[str, list[Entry]] = defaultdict(list)
     for entry in references:
         groups[entry.exact_key].append(entry)
@@ -430,10 +522,11 @@ def audit(out_dir: Path) -> dict:
 
     refs, source_inventory, source_errors = load_references()
 
-    runtime_exact, runtime_variant = build_indexes(runtime_all)
-    adv_exact, _ = build_indexes([*curated, *advanced])
-    source_core_exact, _ = build_indexes(source_core)
-    runtime_core_exact, _ = build_indexes(runtime_core)
+    runtime_idx = build_indexes(runtime_all)
+    adv_idx = build_indexes([*curated, *advanced])
+    source_core_idx = build_indexes(source_core)
+    runtime_core_idx = build_indexes(runtime_core)
+    runtime_exact = runtime_idx["exact"]
 
     missing_high: list[dict] = []
     missing_single: list[dict] = []
@@ -446,8 +539,7 @@ def audit(out_dir: Path) -> dict:
         families = sorted({SOURCE_FAMILY.get(e.source, e.source) for e in group})
         consensus_level, level_votes, family_level_votes = mode_level(group)
         example = group[0]
-        exact_matches = runtime_exact.get(key, [])
-        variant_matches_current = [] if exact_matches else runtime_variant.get(example.variant_key, [])
+        match_type, current_matches = match_entry(example, runtime_idx)
 
         common = {
             "word": example.word,
@@ -460,46 +552,51 @@ def audit(out_dir: Path) -> dict:
             "support_count": len(families),
         }
 
-        current_matches = exact_matches or variant_matches_current
         if current_matches:
             current_levels = sorted({e.level for e in current_matches if e.level})
             current_sources = sorted({e.source for e in current_matches})
-            if variant_matches_current and not exact_matches:
+            if match_type != "exact":
                 variant_matches.append({
                     **common,
                     "current_forms": "|".join(sorted({e.word for e in current_matches})),
                     "current_readings": "|".join(sorted({e.reading for e in current_matches})),
                     "current_levels": "|".join(current_levels),
                     "current_sources": "|".join(current_sources),
-                    "match_type": "loose-kana/long-mark",
+                    "match_type": match_type,
                 })
             if consensus_level and current_levels and consensus_level not in current_levels:
                 level_conflicts.append({
                     **common,
                     "current_levels": "|".join(current_levels),
                     "current_sources": "|".join(current_sources),
-                    "match_type": "exact" if exact_matches else "variant",
+                    "match_type": match_type,
                 })
             continue
 
         target = missing_high if len(families) >= 2 else missing_single
         target.append({
             **common,
+            "candidate_type": candidate_type(example.word, example.reading),
             "example_meaning": next((e.meaning for e in group if e.meaning), ""),
         })
 
+    # Runtime gaps that can become true final holes because the build considers them core
+    # and therefore may exclude them from the advanced bundle.
     runtime_missing: list[dict] = []
     for gap in raw_runtime_gaps:
         key = exact_key(gap["word"], gap["reading"])
-        if key not in source_core_exact or key in runtime_core_exact:
+        if key not in source_core_idx["exact"]:
             continue
-        covered_by_supplement = key in adv_exact
+        if key in runtime_core_idx["exact"]:
+            continue
+        covered_by_supplement = key in adv_idx["exact"]
         runtime_missing.append({
             **gap,
             "covered_by_curated_or_advanced": "yes" if covered_by_supplement else "no",
             "final_runtime_hole": "no" if covered_by_supplement else "yes",
         })
 
+    # Broad per-level coverage across the union of all external source entries.
     level_summary = {}
     for level in LEVELS:
         level_refs = [e for e in refs if e.level == level]
@@ -508,15 +605,48 @@ def audit(out_dir: Path) -> dict:
         variant_count = 0
         missing_count = 0
         for e in unique_ref.values():
-            if e.exact_key in runtime_exact:
+            match_type, matches = match_entry(e, runtime_idx)
+            if match_type == "exact":
                 exact_count += 1
-            elif e.variant_key in runtime_variant:
+            elif matches:
                 variant_count += 1
             else:
                 missing_count += 1
         denominator = len(unique_ref)
         level_summary[level] = {
             "reference_unique": denominator,
+            "exact_covered": exact_count,
+            "variant_covered": variant_count,
+            "missing": missing_count,
+            "coverage_pct": round((exact_count + variant_count) * 100 / denominator, 2) if denominator else None,
+        }
+
+    # Consensus coverage is the more decision-useful metric: only groups supported
+    # by both independent reference families are included.
+    consensus_level_summary = {}
+    for level in LEVELS:
+        rows = []
+        for group in ref_groups.values():
+            families = {SOURCE_FAMILY.get(e.source, e.source) for e in group}
+            if len(families) < 2:
+                continue
+            consensus_level, _, _ = mode_level(group)
+            if consensus_level == level:
+                rows.append(group[0])
+        exact_count = 0
+        variant_count = 0
+        missing_count = 0
+        for e in rows:
+            match_type, matches = match_entry(e, runtime_idx)
+            if match_type == "exact":
+                exact_count += 1
+            elif matches:
+                variant_count += 1
+            else:
+                missing_count += 1
+        denominator = len(rows)
+        consensus_level_summary[level] = {
+            "consensus_reference_unique": denominator,
             "exact_covered": exact_count,
             "variant_covered": variant_count,
             "missing": missing_count,
@@ -545,24 +675,23 @@ def audit(out_dir: Path) -> dict:
             "runtime_final_holes": len(final_holes),
         },
         "level_summary": level_summary,
+        "consensus_level_summary": consensus_level_summary,
         "method": {
             "high_confidence_missing": "Absent from current runtime set and present in >=2 independent reference families; OpenJLPT and Waller are intentionally counted as one derivative family.",
             "single_source_gap": "Absent from current runtime set but present in only one external reference family.",
-            "level_conflict": "Word is present, but external family-weighted consensus level is not among current site levels.",
+            "level_conflict": "Word is present, but external consensus level is not among current site levels.",
             "runtime_final_hole": "Core source has word+reading; current runtime core parser rejects it; curated/advanced do not restore it.",
-            "variant_match": "No exact written-form key, but conservative normalized kana/prolonged-mark form matches.",
+            "variant_match": "No exact key, but a conservative kana, okurigana/orthography, suru-reading, or kana-spelling relation matches.",
         },
     }
 
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "coverage_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    common_missing_cols = [
-        "word","reading","consensus_level","level_votes","family_level_votes",
-        "reference_sources","reference_families","support_count","example_meaning",
-    ]
-    write_csv(out_dir / "missing_high_confidence.csv", missing_high, common_missing_cols)
-    write_csv(out_dir / "missing_single_source.csv", missing_single, common_missing_cols)
+    write_csv(out_dir / "missing_high_confidence.csv", missing_high,
+              ["word","reading","consensus_level","level_votes","family_level_votes","reference_sources","reference_families","support_count","candidate_type","example_meaning"])
+    write_csv(out_dir / "missing_single_source.csv", missing_single,
+              ["word","reading","consensus_level","level_votes","family_level_votes","reference_sources","reference_families","support_count","candidate_type","example_meaning"])
     write_csv(out_dir / "level_conflicts.csv", level_conflicts,
               ["word","reading","consensus_level","level_votes","family_level_votes","reference_sources","reference_families","support_count","current_levels","current_sources","match_type"])
     write_csv(out_dir / "variant_matches.csv", variant_matches,
@@ -627,13 +756,27 @@ def render_readme(summary: dict, missing_examples: list[dict], runtime_examples:
             f"{row['variant_covered']:,} | {row['missing']:,} | {row['coverage_pct']}% |"
         )
 
+    lines += [
+        "",
+        "## Consensus coverage (recommended metric)",
+        "",
+        "| Level | Consensus entries | Exact | Variant/related | Missing | Coverage |",
+        "|---|---:|---:|---:|---:|---:|",
+    ]
+    for level in LEVELS:
+        row = summary["consensus_level_summary"][level]
+        lines.append(
+            f"| {level} | {row['consensus_reference_unique']:,} | {row['exact_covered']:,} | "
+            f"{row['variant_covered']:,} | {row['missing']:,} | {row['coverage_pct']}% |"
+        )
+
     a = summary["audit"]
     lines += [
         "",
         "## Findings",
         "",
         f"- High-confidence missing (supported by >=2 independent external families): **{a['high_confidence_missing']:,}**",
-        f"- Single-family gaps requiring review: **{a['single_source_gaps']:,}**",
+        f"- Single-source gaps requiring review: **{a['single_source_gaps']:,}**",
         f"- Level conflicts: **{a['level_conflicts']:,}**",
         f"- Conservative variant matches: **{a['variant_matches']:,}**",
         f"- Core rows rejected by current runtime parser: **{a['runtime_parser_gaps']:,}**",
@@ -645,10 +788,7 @@ def render_readme(summary: dict, missing_examples: list[dict], runtime_examples:
         "|---|---|---|---|",
     ]
     for row in missing_examples:
-        lines.append(
-            f"| {row['word']} | {row['reading']} | {row['consensus_level']} | "
-            f"{row['reference_families']} ({row['reference_sources']}) |"
-        )
+        lines.append(f"| {row['word']} | {row['reading']} | {row['consensus_level']} | {row['reference_families']} ({row['reference_sources']}) |")
     if not missing_examples:
         lines.append("| — | — | — | — |")
 
