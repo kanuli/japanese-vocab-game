@@ -1,0 +1,39 @@
+{
+  "coverage_rule": "exact reading|written-form",
+  "desired_word_count": 23046,
+  "desired_source": "wordaudio runtime-equivalent core + curated + prebuilt advanced + reviewed strict-surface completion layers",
+  "invalid_or_non_kana_readings": [],
+  "invalid_reading_count": 0,
+  "engines": {
+    "voicevox": {
+      "status": "ready",
+      "hosted_word_count": 22333,
+      "desired_word_count": 23046,
+      "missing_hosted_exact_keys": 713,
+      "extra_hosted_exact_keys": 0,
+      "voice_count": 43,
+      "recording_count": 960319
+    },
+    "supertonic3": {
+      "status": "ready",
+      "hosted_word_count": 22333,
+      "desired_word_count": 23046,
+      "missing_hosted_exact_keys": 713,
+      "extra_hosted_exact_keys": 0,
+      "voice_count": 10,
+      "recording_count": 223330
+    },
+    "aivis": {
+      "status": "ready",
+      "hosted_word_count": 22333,
+      "desired_word_count": 23046,
+      "missing_hosted_exact_keys": 713,
+      "extra_hosted_exact_keys": 0,
+      "voice_count": 4,
+      "recording_count": 89332
+    }
+  },
+  "missing_union_count": 713,
+  "hosted_voice_coverage_complete": false,
+  "fallback_note": "Browser/device synthesis may still speak hosted misses, but hosted coverage is not considered complete until missing_hosted_exact_keys is zero."
+}
