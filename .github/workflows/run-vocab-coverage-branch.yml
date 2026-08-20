@@ -1,3 +1,4 @@
+# Dispatcher trigger revision 2 — checks out and writes only the audit branch.
 name: Process reviewed vocabulary coverage branch
 
 on:
