@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
-"""Materialize reviewed strict-coverage additions for the vocabulary bundle.
+"""Materialize reviewed strict-surface vocabulary additions.
 
-Only quality-review rows whose decision starts with ADD are eligible. Each
-written-form + reading pair remains independent. Traditional-Chinese meanings
-are required before an item is emitted.
+Default scope is the direct-add queue only:
+- ADD_HIGH_CONFIDENCE
+- ADD_DISTINCT_VARIANT
 
-Meaning priority:
-1. exact Japanese form from the existing open JA->ZH sources used by the main builder,
-2. Traditional-Chinese meaning already present on a JMdict-related runtime form,
-3. CJK meaning already present in the reviewed source row.
-
-Rows without a reliable Traditional-Chinese meaning are deferred rather than
-falling back to English.
+Each written form + reading pair is independent. Traditional-Chinese meanings
+are mandatory. This fast path deliberately avoids the very large Kaikki scan;
+items without a reliable TC meaning are deferred rather than guessed.
 """
 from __future__ import annotations
 
@@ -31,6 +27,8 @@ import build_vocab_bundle as B
 ROOT = Path(__file__).resolve().parents[1]
 LEVELS = set(A.LEVELS)
 CJK_RE = re.compile(r"[\u3400-\u9fff]")
+DIRECT_DECISIONS = {"ADD_HIGH_CONFIDENCE", "ADD_DISTINCT_VARIANT"}
+SOURCE_CHECK_DECISIONS = {"ADD_AFTER_SOURCE_CHECK", "ADD_VARIANT_AFTER_SOURCE_CHECK"}
 
 
 def read_csv(path: Path) -> list[dict]:
@@ -58,6 +56,43 @@ def load_runtime_entries() -> list[A.Entry]:
     return A.dedupe_entries([*runtime_core, *curated, *advanced])
 
 
+def load_fast_exact_meanings(wanted: set[str], converter: OpenCC) -> tuple[dict[str, str], dict[str, int]]:
+    """Load exact-form meanings from the two smaller existing JA->ZH sources."""
+    meanings: dict[str, str] = {}
+    stats = {"thesaurus": 0, "wikidict": 0}
+
+    thesaurus = B.fetch_json(B.URLS["thesaurus"])
+    for jp, zh in (thesaurus or {}).items():
+        key = str(jp or "").strip()
+        if key not in wanted or key in meanings:
+            continue
+        value = B.clean_meaning(zh, converter)
+        if value:
+            meanings[key] = value
+            stats["thesaurus"] += 1
+
+    wiki = B.fetch_text(B.URLS["wikidict"])
+    for line in wiki.splitlines():
+        if not line or line.startswith("#") or "\t" not in line:
+            continue
+        jp, zh = line.split("\t", 1)
+        key = jp.strip()
+        candidates = [key]
+        paren = re.match(r"^(.+?)\s*[（(][^）)]{1,40}[）)]$", key)
+        if paren:
+            candidates.append(paren.group(1).strip())
+        for candidate in candidates:
+            if candidate not in wanted or candidate in meanings:
+                continue
+            value = B.clean_meaning(zh, converter)
+            if value:
+                meanings[candidate] = value
+                stats["wikidict"] += 1
+                break
+
+    return meanings, stats
+
+
 def pos_from_review(value: str) -> str:
     text = str(value or "")
     if re.search(r"(?:^|\|)v(?:\d|s|i|t|1|5)|verb", text, re.I):
@@ -76,15 +111,13 @@ def pos_from_review(value: str) -> str:
 
 
 def choose_level(row: dict) -> tuple[str, str]:
-    confidence = row.get("evidence_confidence") or ""
     consensus = (row.get("consensus_level") or "").upper()
     waller = [x for x in split_pipe(row.get("jmdict_waller_levels") or "") if x in LEVELS]
     conflict = (row.get("level_conflict_with_jmdict_waller") or "").lower() == "yes"
+    confidence = row.get("evidence_confidence") or ""
 
-    # Two independent reference families take precedence for the audit target.
     if confidence == "HIGH" and consensus in LEVELS:
         return consensus, "independent-reference-consensus" + (";waller-conflict" if conflict else "")
-    # Single-source additions are safer when anchored to JMdict/Waller enrichment.
     if len(set(waller)) == 1:
         return waller[0], "jmdict-waller"
     if consensus in LEVELS:
@@ -96,6 +129,7 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--results", default="audit/vocab/results")
     p.add_argument("--output", default="data/coverage_additions.json")
+    p.add_argument("--include-source-check", action="store_true", help="also include ADD_*_AFTER_SOURCE_CHECK rows")
     args = p.parse_args()
 
     results = Path(args.results)
@@ -109,22 +143,21 @@ def main() -> int:
     if not review_path.exists():
         raise SystemExit(f"missing review input: {review_path}")
 
-    rows = [r for r in read_csv(review_path) if str(r.get("quality_decision") or "").startswith("ADD")]
+    allowed = set(DIRECT_DECISIONS)
+    if args.include_source_check:
+        allowed |= SOURCE_CHECK_DECISIONS
+    all_review = read_csv(review_path)
+    rows = [r for r in all_review if str(r.get("quality_decision") or "") in allowed]
+
     converter = OpenCC("s2hk")
     runtime = load_runtime_entries()
-
-    runtime_by_word: dict[str, list[A.Entry]] = defaultdict(list)
     runtime_exact = {e.exact_key for e in runtime}
+    runtime_by_word: dict[str, list[A.Entry]] = defaultdict(list)
     for e in runtime:
         runtime_by_word[A.normalize_word(e.word)].append(e)
 
     wanted = {str(r.get("word") or "").strip() for r in rows if str(r.get("word") or "").strip()}
-    # Related JMdict forms can supply an already-curated TC meaning, but only after
-    # exact-form dictionary lookup has been attempted.
-    for r in rows:
-        wanted.update(split_pipe(r.get("jmdict_current_forms") or ""))
-
-    meanings, meaning_stats = B.load_meanings(wanted, converter)
+    meanings, meaning_stats = load_fast_exact_meanings(wanted, converter)
 
     additions = []
     deferred = []
@@ -140,10 +173,7 @@ def main() -> int:
             deferred.append({**row, "defer_reason": "missing-word-or-reading"})
             continue
         key = A.exact_key(word, reading)
-        if key in runtime_exact:
-            # Defensive: post-review changes may already have filled the item.
-            continue
-        if key in seen:
+        if key in runtime_exact or key in seen:
             continue
 
         meaning = ""
@@ -155,34 +185,36 @@ def main() -> int:
             meaning_source = "open-ja-zh-exact-form"
 
         if not meaning:
+            raw = str(row.get("example_meaning") or "").strip()
+            if raw and CJK_RE.search(raw):
+                value = B.clean_meaning(raw, converter)
+                if value:
+                    meaning = value
+                    meaning_source = "review-source-cjk"
+
+        if not meaning and "same-jmdict-entry" in str(row.get("relation_type") or ""):
             for form in split_pipe(row.get("jmdict_current_forms") or ""):
                 for entry in runtime_by_word.get(A.normalize_word(form), []):
                     if entry.meaning and CJK_RE.search(entry.meaning):
-                        meaning = converter.convert(entry.meaning).strip()
-                        meaning_source = "existing-jmdict-related-runtime"
-                        break
+                        value = B.clean_meaning(entry.meaning, converter)
+                        if value:
+                            meaning = value
+                            meaning_source = "existing-related-runtime-tc"
+                            break
                 if meaning:
                     break
-
-        if not meaning:
-            raw = str(row.get("example_meaning") or "").strip()
-            if raw and CJK_RE.search(raw):
-                meaning = B.clean_meaning(raw, converter)
-                if meaning:
-                    meaning_source = "review-source-cjk"
 
         if not meaning:
             deferred.append({**row, "defer_reason": "no-reliable-traditional-chinese-meaning"})
             continue
 
         level, level_source = choose_level(row)
-        pos = pos_from_review(row.get("jmdict_pos") or "")
         item = {
             "level": level,
             "reading": reading,
             "word": word,
             "meaning": meaning,
-            "pos": pos,
+            "pos": pos_from_review(row.get("jmdict_pos") or ""),
             "decision": row.get("quality_decision") or "",
             "priority": row.get("priority") or "",
             "evidence_confidence": row.get("evidence_confidence") or "",
@@ -198,12 +230,16 @@ def main() -> int:
         decision_counts[item["decision"]] += 1
         level_counts[level] += 1
 
-    additions.sort(key=lambda x: (A.LEVELS.index(x["level"]) if x["level"] in A.LEVELS else 99, A.normalize_reading(x["reading"]), A.normalize_word(x["word"])))
+    additions.sort(key=lambda x: (
+        A.LEVELS.index(x["level"]) if x["level"] in A.LEVELS else 99,
+        A.normalize_reading(x["reading"]), A.normalize_word(x["word"])
+    ))
 
-    payload = {
-        "version": "coverage-additions-v1-strict-surface-form",
+    summary = {
+        "version": "coverage-additions-v2-direct-strict-surface",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "rule": "Every written form + reading is independent; same-reading/JMdict-related forms never suppress an addition.",
+        "scope": "direct-add plus source-check" if args.include_source_check else "direct-add only",
         "source_review": str(review_path.relative_to(ROOT)),
         "eligible_add_rows": len(rows),
         "materialized_count": len(additions),
@@ -211,17 +247,17 @@ def main() -> int:
         "meaning_source_counts": dict(sorted(source_counts.items())),
         "decision_counts": dict(sorted(decision_counts.items())),
         "level_counts": {lv: level_counts.get(lv, 0) for lv in A.LEVELS},
-        "builder_meaning_source_stats": meaning_stats,
-        "additions": additions,
+        "meaning_lookup_stats": meaning_stats,
     }
+    payload = {**summary, "additions": additions}
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     defer_cols = list(rows[0].keys()) + ["defer_reason"] if rows else ["defer_reason"]
     write_csv(results / "coverage_additions_deferred.csv", deferred, defer_cols)
-    (results / "coverage_additions_summary.json").write_text(json.dumps({k: v for k, v in payload.items() if k != "additions"}, ensure_ascii=False, indent=2), encoding="utf-8")
+    (results / "coverage_additions_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    print(json.dumps({k: v for k, v in payload.items() if k != "additions"}, ensure_ascii=False, indent=2))
+    print(json.dumps(summary, ensure_ascii=False, indent=2))
     return 0
 
 
