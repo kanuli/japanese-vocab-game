@@ -10,6 +10,9 @@ on:
       - 'conversation-supertonic-index.json'
       - '.site-maintenance-trigger'
       - 'site-health.js'
+      - 'generic-voice-test.js'
+      - 'page-voice-audition.js'
+      - 'result-history.js'
 
 permissions:
   contents: write
@@ -78,14 +81,16 @@ jobs:
                   try: target.relative_to(root)
                   except ValueError: failures.append(f'{page}: reference escapes repo {raw}'); continue
                   if not target.exists(): failures.append(f'{page}: missing local reference {raw}')
-          required=['site-health.js','maintenance-playwright-version.txt','conversation.js','conversation-hosted-audio.js','mocktest.js','wordaudio-ai.js','wordaudio-controller.js','wordaudio-data.js','wordaudio-init.js','wordaudio-multivoice.js','wordaudio-player.js','wordaudio-voice.js','wordlist-audio.js','wordlist-voicevox.js','wordlist.js','translator-hosted-voice.js','pronunciation-furigana.js']
+          required=['site-health.js','generic-voice-test.js','page-voice-audition.js','result-history.js','maintenance-playwright-version.txt','conversation.js','conversation-hosted-audio.js','mocktest.js','wordaudio-ai.js','wordaudio-controller.js','wordaudio-data.js','wordaudio-init.js','wordaudio-multivoice.js','wordaudio-player.js','wordaudio-voice.js','wordlist-audio.js','wordlist-voicevox.js','wordlist.js','translator-hosted-voice.js','pronunciation-furigana.js']
           missing=[x for x in required if not Path(x).is_file()]
           if missing: failures.append('Missing core file: '+', '.join(missing))
+          if Path('wordaudio.html').read_text(encoding='utf-8').count('wordaudio-multivoice.js?v=20260817v4')!=1:
+              failures.append('wordaudio.html: wordaudio-multivoice.js must load exactly once')
           if failures:
               print('\n'.join('FAIL '+x for x in failures),file=sys.stderr); raise SystemExit(1)
           print(f'Static maintenance OK: {len(pages)} pages; resources, IDs and health integration clean.')
           PY
-          for f in site-health.js conversation.js conversation-hosted-audio.js mocktest.js wordaudio-ai.js wordaudio-controller.js wordaudio-data.js wordaudio-init.js wordaudio-list.js wordaudio-multivoice.js wordaudio-player.js wordaudio-voice.js wordlist-audio.js wordlist-voicevox.js wordlist.js translator-hosted-voice.js pronunciation-furigana.js; do node --check "$f"; done
+          for f in site-health.js generic-voice-test.js page-voice-audition.js result-history.js conversation.js conversation-hosted-audio.js mocktest.js wordaudio-ai.js wordaudio-controller.js wordaudio-data.js wordaudio-init.js wordaudio-list.js wordaudio-multivoice.js wordaudio-player.js wordaudio-voice.js wordlist-audio.js wordlist-voicevox.js wordlist.js translator-hosted-voice.js pronunciation-furigana.js; do node --check "$f"; done
 
       - name: Validate full learning databases and hosted conversation audio
         id: data
@@ -129,8 +134,8 @@ jobs:
           trap 'kill $(cat /tmp/site-http.pid) 2>/dev/null || true' EXIT
           for i in {1..30}; do curl -fsS http://127.0.0.1:4173/index.html >/dev/null && break; sleep 1; done
           cat >/tmp/maintenance-smoke.cjs <<'NODE'
-          const {chromium}=require(process.cwd()+'/node_modules/playwright'),fs=require('fs');const pages=fs.readFileSync('/tmp/site-pages.txt','utf8').trim().split(/\r?\n/).filter(Boolean);
-          (async()=>{const browser=await chromium.launch({headless:true});const context=await browser.newContext({serviceWorkers:'block'});let failed=false;for(const p of pages){const page=await context.newPage(),errors=[],bad=[];page.on('pageerror',e=>errors.push(String(e)));page.on('response',r=>{if(r.url().startsWith('http://127.0.0.1:4173/')&&r.status()>=400)bad.push(`${r.status()} ${r.url()}`)});try{const res=await page.goto('http://127.0.0.1:4173/'+p+'?maintenance='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});if(!res||res.status()>=400)throw Error('HTTP '+(res?.status()||'none'));await page.waitForTimeout(2200);const s=await page.evaluate(()=>({title:document.title.trim(),text:(document.body?.innerText||'').trim().length,health:!!document.querySelector('#siteHealthBadge')}));if(!s.title||s.text<20||!s.health)throw Error('invalid DOM/health '+JSON.stringify(s));if(errors.length)throw Error(errors.join(' | '));if(bad.length)throw Error(bad.join(' | '));console.log('PASS',p,s.title);}catch(e){failed=true;console.error('FAIL',p,e.message);}await page.close();}await browser.close();if(failed)process.exit(1);})();
+          const {chromium}=require(process.cwd()+'/node_modules/playwright'),fs=require('fs');const pages=fs.readFileSync('/tmp/site-pages.txt','utf8').trim().split(/\r?\n/).filter(Boolean);const historyPages=new Set(['index.html','grammar.html','listening.html','mocktest.html']);
+          (async()=>{const browser=await chromium.launch({headless:true});const context=await browser.newContext({serviceWorkers:'block'});let failed=false;for(const p of pages){const page=await context.newPage(),errors=[],bad=[];page.on('pageerror',e=>errors.push(String(e)));page.on('response',r=>{if(r.url().startsWith('http://127.0.0.1:4173/')&&r.status()>=400)bad.push(`${r.status()} ${r.url()}`)});try{const res=await page.goto('http://127.0.0.1:4173/'+p+'?maintenance='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});if(!res||res.status()>=400)throw Error('HTTP '+(res?.status()||'none'));await page.waitForTimeout(2600);const s=await page.evaluate(()=>({title:document.title.trim(),text:(document.body?.innerText||'').trim().length,health:!!document.querySelector('#siteHealthBadge'),voiceTest:!!document.querySelector('#genericVoiceTest,#pageSampleVoice,#sampleVoice'),history:!!document.querySelector('#resultHistoryPanel')}));if(!s.title||s.text<20||!s.health)throw Error('invalid DOM/health '+JSON.stringify(s));if(p==='mocktest.html'&&s.voiceTest)throw Error('mocktest must not expose generic voice test');if(p!=='mocktest.html'&&!s.voiceTest)throw Error('missing voice test '+JSON.stringify(s));if(historyPages.has(p)!==s.history)throw Error('result history coverage mismatch '+JSON.stringify(s));if(errors.length)throw Error(errors.join(' | '));if(bad.length)throw Error(bad.join(' | '));console.log('PASS',p,s.title,'voice='+s.voiceTest,'history='+s.history);}catch(e){failed=true;console.error('FAIL',p,e.message);}await page.close();}await browser.close();if(failed)process.exit(1);})();
           NODE
           node /tmp/maintenance-smoke.cjs
 
@@ -157,6 +162,8 @@ jobs:
           echo 'Furigana: 2,677 / 2,677'
           echo 'VOICEVOX: 43 × 2,677 = 115,111'
           echo 'Supertonic: 10 × 2,677 = 26,770'
+          echo 'Voice Test: all 10 non-mock pages covered; mock excluded'
+          echo 'Result history: vocab / grammar / listening / mock test covered'
           echo 'HTML pages tested: ${{ steps.inventory.outputs.count }}'
 
       - name: Publish machine-readable maintenance status
