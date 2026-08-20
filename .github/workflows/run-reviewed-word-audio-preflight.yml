@@ -1,0 +1,25 @@
+name: Run reviewed vocabulary audio preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/run-reviewed-word-audio-preflight.yml'
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: run-reviewed-word-audio-preflight
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    permissions:
+      contents: write
+      id-token: write
+    uses: kanuli/japanese-vocab-game/.github/workflows/word-audio-delta-preflight.yml@audit/vocab-coverage-20260821
+    secrets: inherit
