@@ -2,6 +2,22 @@
 
 This audit checks whether the vocabulary that the website can actually load covers JLPT N5–N1 reference vocabulary.
 
+## Current implementation status — 2026-08-21
+
+The **337 direct-reviewed additions are complete on branch `audit/vocab-coverage-20260821`**.
+
+- Direct-reviewed candidates: **337**
+- Automatically materialized into `data/advanced_vocab.js`: **152**
+- Reviewed Traditional-Chinese completion layer: **185**
+- Combined direct-reviewed coverage: **337 / 337**
+- Remaining unresolved direct-reviewed additions: **0**
+
+Authoritative implementation evidence: `results/direct_coverage_completion.json`.
+
+`coverage_additions_deferred.csv` is retained only as the historical list of 185 rows for which the automatic JA→ZH lookup did not find a reliable Traditional-Chinese meaning. Those 185 rows are now implemented through `data/coverage_deferred_manual.js` with canonical data in `data/coverage_manual_meanings.json`; they are **not outstanding work**.
+
+The runtime loader `advanced_words.js` loads the completion layer after `data/advanced_vocab.js`. The strict surface-form audit also includes `data/coverage_manual_meanings.json` in its runtime inventory.
+
 ## Critical coverage rule
 
 **A vocabulary item is covered only when the final runtime database contains the same written form + reading.**
@@ -19,7 +35,7 @@ JMdict identity is used only to annotate relationships and quality. It never rem
 
 The earlier experimental refinement incorrectly treated a same-JMdict-entry form as sufficient coverage. That rule could hide valid missing forms. The old `missing_refined.csv`, `refined_summary.json`, `jmdict_related.csv`, and `README_REFINED.md` are therefore **legacy/deprecated outputs and must not be used for coverage decisions**.
 
-The authoritative corrected outputs are the strict surface-form audit and final quality review listed below.
+The authoritative corrected outputs are the strict surface-form audit, final quality review, and direct-coverage completion report listed below.
 
 ## External reference families
 
@@ -45,6 +61,14 @@ python tools/review_vocab_missing_quality.py --results audit/vocab/results
 ```
 
 ## Authoritative output files
+
+### Implementation completion
+
+- `direct_coverage_completion.json` — **337/337 direct-reviewed completion status and validation evidence**
+- `../../data/coverage_additions.json` — 152 automatically materialized additions
+- `../../data/coverage_deferred_manual.js` — 185 reviewed runtime additions
+- `../../data/coverage_manual_meanings.json` — canonical Traditional-Chinese meanings for those 185 additions
+- `coverage_additions_validation.json` — validation for the 152 additions merged into the generated bundle
 
 ### Strict coverage
 
@@ -80,6 +104,6 @@ python tools/review_vocab_missing_quality.py --results audit/vocab/results
 8. Archaic, obsolete, rare, dialectal, malformed, or unresolved source rows are not bulk-added.
 9. JLPT level conflicts are flagged for review rather than silently re-leveled.
 
-## Safety
+## Safety and implementation separation
 
-The audit and review are read-only with respect to the production vocabulary database. They do not add, delete, rewrite, or re-level vocabulary automatically.
+The audit/review scripts themselves are analytical and do not silently rewrite the production vocabulary database. Reviewed implementation is stored explicitly in the generated bundle and the separate completion layer described above. The production `main` branch is not changed by this audit branch unless it is deliberately merged/published.
