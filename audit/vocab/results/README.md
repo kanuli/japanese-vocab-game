@@ -1,6 +1,6 @@
 # JLPT Vocabulary Coverage Audit
 
-Generated: `2026-08-20T17:10:33.906593+00:00`
+Generated: `2026-08-20T17:12:16.910547+00:00`
 
 This is an **audit-only** report. It does not automatically add, delete, or re-level vocabulary.
 
