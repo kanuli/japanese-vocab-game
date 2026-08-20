@@ -1,0 +1,86 @@
+{
+  "coverage_rule": "ONLY exact normalized written-form + reading counts as covered; different kanji/kana spellings remain separate items",
+  "jmdict_role": "annotation only; same JMdict entry never suppresses a missing surface form",
+  "jmdict_source": "https://raw.githubusercontent.com/jkindrix/japanese-language-data/main/data/core/words.json",
+  "runtime_unique": 22319,
+  "reference_exact_groups": 9280,
+  "exact_surface_missing_high_confidence": 413,
+  "exact_surface_missing_single_source": 1129,
+  "exact_surface_missing_all": 1542,
+  "high_confidence_by_level": {
+    "N5": 16,
+    "N4": 35,
+    "N3": 83,
+    "N2": 145,
+    "N1": 134
+  },
+  "single_source_by_level": {
+    "N5": 108,
+    "N4": 87,
+    "N3": 67,
+    "N2": 257,
+    "N1": 610
+  },
+  "relation_counts": {
+    "fully-absent": 559,
+    "same-jmdict-entry": 690,
+    "same-reading-different-writing": 801,
+    "same-writing-different-reading": 274
+  },
+  "consensus_level_summary": {
+    "N5": {
+      "consensus_reference_unique": 627,
+      "exact_surface_missing": 16,
+      "exact_surface_covered": 611,
+      "exact_surface_coverage_pct": 97.45
+    },
+    "N4": {
+      "consensus_reference_unique": 601,
+      "exact_surface_missing": 35,
+      "exact_surface_covered": 566,
+      "exact_surface_coverage_pct": 94.18
+    },
+    "N3": {
+      "consensus_reference_unique": 2029,
+      "exact_surface_missing": 83,
+      "exact_surface_covered": 1946,
+      "exact_surface_coverage_pct": 95.91
+    },
+    "N2": {
+      "consensus_reference_unique": 1497,
+      "exact_surface_missing": 145,
+      "exact_surface_covered": 1352,
+      "exact_surface_coverage_pct": 90.31
+    },
+    "N1": {
+      "consensus_reference_unique": 2292,
+      "exact_surface_missing": 134,
+      "exact_surface_covered": 2158,
+      "exact_surface_coverage_pct": 94.15
+    }
+  },
+  "source_inventory": {
+    "openjlpt": {
+      "N5": 499,
+      "N4": 491,
+      "N3": 1567,
+      "N2": 1498,
+      "N1": 3183
+    },
+    "waller": {
+      "N5": 684,
+      "N4": 640,
+      "N3": 1730,
+      "N2": 1812,
+      "N1": 3427
+    },
+    "wordmaster": {
+      "N5": 710,
+      "N4": 676,
+      "N3": 2246,
+      "N2": 3636,
+      "N1": 2931
+    }
+  },
+  "source_errors": {}
+}
