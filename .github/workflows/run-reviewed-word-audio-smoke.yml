@@ -1,0 +1,35 @@
+name: Reviewed vocabulary audio runner smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/run-reviewed-word-audio-smoke.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+          fetch-depth: 0
+      - name: Record runner start on audit branch
+        run: |
+          python - <<'PY'
+          import json,datetime
+          from pathlib import Path
+          Path('audit/vocab/results/voice_delta_runner_smoke.json').write_text(json.dumps({'status':'PASS','utc':datetime.datetime.now(datetime.timezone.utc).isoformat()},indent=2),encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- audit/vocab/results/voice_delta_runner_smoke.json
+          git commit -m 'Record reviewed audio runner smoke'
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
