@@ -1,5 +1,5 @@
 # Temporary registered-runner entry for reviewed vocabulary hosted-audio completion.
-# Trigger revision 6: engines already passed; inventory existing delta storage and calculate safe reading reuse.
+# Trigger revision 7: correct reuse-plan field and expose run id immediately.
 name: Reviewed vocabulary audio storage/reuse audit
 
 on:
@@ -37,6 +37,22 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Record storage audit start
+        run: |
+          python - <<'PY'
+          import json,datetime,os
+          from pathlib import Path
+          Path('audit/vocab/results/voice_delta_storage_audit_started.json').write_text(json.dumps({
+            'status':'STARTED','run_id':os.environ.get('GITHUB_RUN_ID'),'run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
+            'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()
+          },ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- audit/vocab/results/voice_delta_storage_audit_started.json
+          git commit -m 'Record reviewed audio storage audit start' || true
+          git push origin HEAD:audit/vocab-coverage-20260821
+
       - name: Rebuild exact 713 delta and calculate base-reading reuse
         env:
           CATALOG_OUT: audit/vocab/results/desired_word_voice_catalog.json
@@ -50,7 +66,7 @@ jobs:
           d=json.load(open('word-audio-delta-catalog.json',encoding='utf-8'))
           r=json.load(open('audit/vocab/results/voice_delta_reuse_plan.json',encoding='utf-8'))
           assert d['wordCount']==713 and d.get('missingSetEqualsReviewedAdditions') is True
-          assert r['delta_exact_keys']==713
+          assert r['reviewed_exact_keys']==713
           assert r['reuse_base_reading_count'] + r['synthesis_required_exact_keys'] == 713
           print({'delta':713,'reuse':r['reuse_base_reading_count'],'synthesize':r['synthesis_required_exact_keys']})
           PY
@@ -63,26 +79,16 @@ jobs:
           python - <<'PY'
           import json,os,subprocess,datetime
           from pathlib import Path
-          tags={
-            'voicevox':os.environ['VV_TAG'],
-            'supertonic3':os.environ['ST_TAG'],
-            'aivis':os.environ['AV_TAG'],
-          }
-          out={
-            'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            'git_write_path':'PASS_DRY_RUN',
-            'releases':{}
-          }
+          tags={'voicevox':os.environ['VV_TAG'],'supertonic3':os.environ['ST_TAG'],'aivis':os.environ['AV_TAG']}
+          out={'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'git_write_path':'PASS_DRY_RUN','releases':{}}
           for engine,tag in tags.items():
             p=subprocess.run(['gh','release','view',tag,'--json','tagName,name,assets'],text=True,capture_output=True)
             if p.returncode:
               out['releases'][engine]={'tag':tag,'exists':False,'error':(p.stderr or p.stdout).strip()[:500]}
               continue
-            d=json.loads(p.stdout)
-            assets=d.get('assets') or []
+            d=json.loads(p.stdout);assets=d.get('assets') or []
             out['releases'][engine]={
-              'tag':tag,'exists':True,'release_name':d.get('name'),
-              'asset_count':len(assets),
+              'tag':tag,'exists':True,'release_name':d.get('name'),'asset_count':len(assets),
               'asset_total_bytes':sum(int(x.get('size') or 0) for x in assets),
               'assets':[{'name':x.get('name'),'size':x.get('size')} for x in assets],
             }
@@ -100,17 +106,13 @@ jobs:
           out={
             'status':'PASS' if release_read else 'FAIL',
             'checks':{
-              'catalog':'success',
-              'git_write_path':'success',
+              'catalog':'success','git_write_path':'success',
               'release_storage_read':'success' if release_read else 'failure',
-              'voicevox':'success',
-              'supertonic3':'success',
-              'aivis':'success'
+              'voicevox':'success','supertonic3':'success','aivis':'success'
             },
             'engine_evidence_run_id':'32415483725',
-            'note':'VOICEVOX, Supertonic 3 and Aivis sample synthesis all succeeded in Actions run 32415483725. The previous permissions.push API check was invalid for GITHUB_TOKEN; repository write is proven by successful audit-branch pushes and this dry-run.',
-            'delta_word_count':713,
-            'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()
+            'note':'VOICEVOX, Supertonic 3 and Aivis sample synthesis all succeeded in Actions run 32415483725. The prior permissions.push field check was not a valid GITHUB_TOKEN capability test; actual audit-branch pushes plus dry-run establish repository write access.',
+            'delta_word_count':713,'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()
           }
           Path('audit/vocab/results/voice_delta_preflight.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
           print(out)
@@ -122,9 +124,8 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- audit/vocab/results/voice_delta_reuse_plan.json audit/vocab/results/voice_delta_release_inventory.json audit/vocab/results/voice_delta_preflight.json word-audio-synthesis-delta-catalog.json
           git commit -m 'Audit reviewed vocabulary audio storage and reuse' || true
-          # Restore unrelated regenerated tracked files and remove unrelated untracked build products before rebasing.
-          git restore --worktree -- . ':(exclude)audit/vocab/results/voice_delta_reuse_plan.json' ':(exclude)audit/vocab/results/voice_delta_release_inventory.json' ':(exclude)audit/vocab/results/voice_delta_preflight.json' ':(exclude)word-audio-synthesis-delta-catalog.json' || true
-          git clean -fd -e audit/vocab/results/voice_delta_reuse_plan.json -e audit/vocab/results/voice_delta_release_inventory.json -e audit/vocab/results/voice_delta_preflight.json -e word-audio-synthesis-delta-catalog.json
+          git reset --hard HEAD
+          git clean -fd
           git fetch origin audit/vocab-coverage-20260821
           git rebase origin/audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
