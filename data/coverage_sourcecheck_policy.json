@@ -1,0 +1,38 @@
+{
+  "version": "20260821-v1",
+  "scope": "378 ADD_AFTER_SOURCE_CHECK / ADD_VARIANT_AFTER_SOURCE_CHECK candidates",
+  "coverage_rule": "exact normalized written form + exact normalized reading",
+  "level_policy": "retain external consensus as an estimated learning band; annotate conflicts; do not suppress a valid exact surface form because of level disagreement",
+  "meaning_policy": "Traditional Chinese only; exact source/JMdict sense first; pin broad homographs when intended sense is clear; hold unresolved source-sense conflicts",
+  "pinned_tc_meanings": {
+    "せっけん|せっけん": "肥皂",
+    "たて|たて": "縱向；高度；長度",
+    "つける|つける": "打開；開啟（燈、電器等）",
+    "しいん|しいん": "寂靜無聲；鴉雀無聲",
+    "おおい|おおい": "喂！；喂喂！（呼喊用）",
+    "たれ|たれ": "～鬼；～傢伙（帶貶義的人稱後綴）",
+    "やかん|やかん": "水壺；燒水壺",
+    "ちょうだい|ちょうだい": "給我；請給我",
+    "さい|歳": "歲（年齡計數詞）",
+    "かげつ|ヶ月": "個月（月數計數詞）",
+    "あざ|あざ": "痣；胎記；瘀傷",
+    "あんまり|余り": "不太；不怎麼；不多",
+    "うまい|甘い": "好吃；美味",
+    "おてあらい|御手洗": "洗手間；廁所",
+    "ごう|濠": "護城河；壕溝",
+    "すぎ|過ぎ": "超過；過後；……之後",
+    "じゅうほう|重宝": "珍貴；便利；有用"
+  },
+  "explicit_holds": {
+    "いえ|いえ": "source says TODO/same-as-いいえ while the exact form also represents house/no senses; source intent is unresolved",
+    "ド|ド": "source gloss says child/servant/foolishness but exact JMdict ド is the emphatic prefix extreme/ultra/very; material source-sense conflict",
+    "あくび|悪日": "unusual reading/form collides with common 欠伸（あくび）; require independent dictionary/source confirmation before publishing"
+  },
+  "known_malformed_source_rows_resolved": {
+    "かげつ|ヶ月": "source placeholder #NAME? replaced by verified counter-for-months sense",
+    "さい|歳": "source placeholder #NAME? replaced by verified age-counter sense"
+  },
+  "known_malformed_source_rows_held": {
+    "いえ|いえ": "TODO source meaning remains unresolved"
+  }
+}
