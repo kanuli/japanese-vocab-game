@@ -1,0 +1,30 @@
+{
+  "version": "coverage-additions-v2-direct-strict-surface",
+  "generated_at_utc": "2026-08-20T17:51:52.041423+00:00",
+  "rule": "Every written form + reading is independent; same-reading/JMdict-related forms never suppress an addition.",
+  "scope": "direct-add only",
+  "source_review": "audit/vocab/results/final_quality_review_all_missing.csv",
+  "eligible_add_rows": 337,
+  "materialized_count": 152,
+  "deferred_count": 185,
+  "meaning_source_counts": {
+    "existing-related-runtime-tc": 124,
+    "open-ja-zh-exact-form": 25,
+    "review-source-cjk": 3
+  },
+  "decision_counts": {
+    "ADD_DISTINCT_VARIANT": 18,
+    "ADD_HIGH_CONFIDENCE": 134
+  },
+  "level_counts": {
+    "N5": 10,
+    "N4": 8,
+    "N3": 40,
+    "N2": 65,
+    "N1": 29
+  },
+  "meaning_lookup_stats": {
+    "thesaurus": 16,
+    "wikidict": 9
+  }
+}
