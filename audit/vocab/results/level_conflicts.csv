@@ -1,4 +1,5 @@
 ﻿word,reading,consensus_level,level_votes,family_level_votes,reference_sources,reference_families,support_count,current_levels,current_sources,match_type
+嗚呼,ああ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 愛,あい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 挨拶,あいさつ,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 愛情,あいじょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -7,12 +8,15 @@
 相手,あいて,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 アイデア,アイデア,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,N4,runtime-core,exact
 あいにく,あいにく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+愛憎,あいにく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N2,runtime-core,kana-spelling-weak
 合間,あいま,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 アイロン,アイロン,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N2,runtime-core,exact
 遭う,あう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 アウト,アウト,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+敢えて,あえて,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,kana-spelling-weak
 赤ちゃん,あかちゃん,N4,"{""N1"": 1, ""N4"": 1}","{""community-independent"": ""N4"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 上がる,あがる,N4,"{""N1"": 1, ""N4"": 1}","{""community-independent"": ""N4"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+上る,あがる,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N5,runtime-core,okurigana/orthography
 明らか,あきらか,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 諦め,あきらめ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 あきれる,あきれる,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,N1,advanced-bundle,exact
@@ -22,6 +26,7 @@
 アクセサリー,アクセサリー,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 アクセル,アクセル,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 あくび,あくび,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N3,runtime-core,exact
+悪日,あくび,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 あげる,あげる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 挙げる,あげる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 揚げる,あげる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -37,6 +42,7 @@
 味わい,あじわい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 明日,あす,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 焦る,あせる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+彼処,あそこ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 暖かい,あたたかい,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 温かい,あたたかい,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N4,runtime-core,exact
 温まる,あたたまる,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N2,advanced-bundle,exact
@@ -45,7 +51,10 @@
 辺り,あたり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 当たり前,あたりまえ,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 当たる,あたる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+彼方此方,あちこち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
+彼方,あちら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 あちらこちら,あちらこちら,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+彼方此方,あちらこちら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 あっ,あっ,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N4,advanced-bundle,exact
 悪化,あっか,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 圧縮,あっしゅく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -57,6 +66,8 @@
 当てる,あてる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 跡,あと,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 後回し,あとまわし,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+貴女,あなた,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+彼の,あの,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 アフリカ,アフリカ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 あふれる,あふれる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 溢れる,あふれる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
@@ -66,6 +77,7 @@
 アマチュア,アマチュア,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 余る,あまる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 編み物,あみもの,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N1,runtime-core,exact
+編物,あみもの,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N1,runtime-core,okurigana/orthography
 編む,あむ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 アメリカ,アメリカ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 危うい,あやうい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -82,20 +94,30 @@
 争う,あらそう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 新た,あらた,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 改まる,あらたまる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+凡ゆる,あらゆる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 現す,あらわす,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 著す,あらわす,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
+現われ,あらわれ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,okurigana/orthography
+現われる,あらわれる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,okurigana/orthography
 ありがとう,ありがとう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 有難う,ありがとう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 ありのまま,ありのまま,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+有りのまま,ありのまま,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
+在る; 有る,ある,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N5,runtime-core,kana-spelling-weak
 あるいは,あるいは,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 或いは,あるいは,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 あれこれ,あれこれ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+彼此,あれこれ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 合わせ,あわせ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 合わせる,あわせる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 あわただしい,あわただしい,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,N1,advanced-bundle,exact
 安定,あんてい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 あんな,あんな,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 案の定,あんのじょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+余り,あんまり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
+伊井,いい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N5,runtime-core,kana-spelling-weak
+良い,いい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N5,runtime-core,kana-spelling-weak
+否,いいえ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N5,runtime-core,kana-spelling-weak
 いい加減,いいかげん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 言い付ける,いいつける,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 言い訳,いいわけ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -110,6 +132,7 @@
 息,いき,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 粋,いき,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 経緯,いきさつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
+行き成り,いきなり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 育成,いくせい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 幾つ,いくつ,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,exact
 幾ら,いくら,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,exact
@@ -191,15 +214,19 @@
 違反,いはん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 意味,いみ,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 嫌,いや,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+厭々,いやいや,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 嫌がる,いやがる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+愈々,いよいよ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 意欲,いよく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 以来,いらい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 依頼,いらい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 いらいら,いらいら,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 苛々,いらいら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 いらっしゃる,いらっしゃる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+入口,いりぐち,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,okurigana/orthography
 医療,いりょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 衣料,いりょう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+煎る,いる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,kana-spelling-weak
 衣類,いるい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 入れ物,いれもの,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 祝う,いわう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -213,9 +240,11 @@
 植木,うえき,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 植える,うえる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 飢える,うえる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+ウエートレス,ウエートレス,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,kana/long-mark
 伺う,うかがう,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 浮かぶ,うかぶ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 受かる,うかる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+含嗽,うがい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 嗽,うがい,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N1,advanced-bundle,exact
 浮く,うく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 受け入れ,うけいれ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -223,10 +252,13 @@
 受け付ける,うけつける,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 受け止める,うけとめる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 受け取り,うけとり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+受取,うけとり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
+受持ち,うけもち,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,advanced-bundle,okurigana/orthography
 動かす,うごかす,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 動き,うごき,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 牛,うし,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 失う,うしなう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+後,うしろ,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,runtime-core,okurigana/orthography
 渦,うず,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 内,うち,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 打ち明ける,うちあける,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
@@ -240,9 +272,12 @@
 うつむく,うつむく,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
 映る,うつる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 移る,うつる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+空ろ,うつろ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,kana-spelling-weak
 雨天,うてん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+饂飩,うどん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 促す,うながす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 唸る,うなる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
+甘い,うまい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 埋まる,うまる,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N2,runtime-core,exact
 生まれつき,うまれつき,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 有無,うむ,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -250,9 +285,11 @@
 裏切る,うらぎる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 裏口,うらぐち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 恨む,うらむ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+売上,うりあげ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 売り切れ,うりきれ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 売り切れる,うりきれる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 売り出す,うりだす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+五月蝿い,うるさい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 うれしい,うれしい,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",waller,waller-derived,1,N5,runtime-core,exact
 嬉しい,うれしい,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
 売れ行き,うれゆき,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
@@ -299,7 +336,9 @@
 追い込む,おいこむ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 追い出す,おいだす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 追い付く,おいつく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
+於いて,おいて,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,kana-spelling-weak
 おいでになる,おいでになる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+お出でになる,おいでになる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 王,おう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 負う,おう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 応じる,おうじる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -318,8 +357,10 @@
 大通り,おおどおり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 大幅,おおはば,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 おかげ,おかげ,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",waller,waller-derived,1,N3,runtime-core,exact
+お蔭,おかげ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 おかげさまで,おかげさまで,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 可笑しい,おかしい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
+お菜,おかず,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 沖,おき,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 億,おく,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 奥,おく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -331,6 +372,7 @@
 怠る,おこたる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 行い,おこない,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 起こる,おこる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+傲る,おごる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 押さえる,おさえる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 幼い,おさない,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 収まる,おさまる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -343,9 +385,13 @@
 惜しむ,おしむ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 おしゃべり,おしゃべり,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N4,runtime-core,exact
 お洒落,おしゃれ,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
+伯父,おじ,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N5,runtime-core,kana-spelling-weak
 叔父,おじ,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N1,advanced-bundle,exact
 お祖父さん,おじいさん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,exact
+御辞儀,おじぎ,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N3,runtime-core,okurigana/orthography
 伯父さん,おじさん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,advanced-bundle,exact
+叔父さん,おじさん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,kana-spelling-weak
+小父さん,おじさん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,kana-spelling-weak
 押す,おす,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 汚染,おせん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 襲う,おそう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -358,10 +404,15 @@
 おだてる,おだてる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
 穏やか,おだやか,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 落ち込む,おちこむ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+落着く,おちつく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 落ち葉,おちば,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
+落葉,おちば,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 落ちる,おちる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 おっしゃる,おっしゃる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+仰っしゃる,おっしゃる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 夫,おっと,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+御手洗,おてあらい,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt,waller-derived,1,N5,advanced-bundle,okurigana/orthography
+御手洗い,おてあらい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,okurigana/orthography
 落とす,おとす,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 訪れる,おとずれる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 おととい,おととい,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,N5,runtime-core,exact
@@ -373,15 +424,22 @@
 踊る,おどる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 驚かす,おどろかす,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 おはよう,おはよう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+お早う,おはよう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+伯母,おば,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N3|N5,runtime-core,kana-spelling-weak
 叔母,おば,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N5,advanced-bundle,exact
+お祖母さん,おばあさん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+叔母さん,おばさん,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+小母さん,おばさん,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N5,runtime-core,kana-spelling-weak
 お昼,おひる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 オフィス,オフィス,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 おまえ,おまえ,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N1,advanced-bundle,exact
 お前,おまえ,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N2,runtime-core,exact
 お巡りさん,おまわりさん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,exact
 おむつ,おむつ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N3,runtime-core,exact
+お襁褓,おむつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 おめでたい,おめでたい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 おめでとう,おめでとう,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N5,runtime-core,exact
+お目出度う,おめでとう,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 思い付き,おもいつき,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,advanced-bundle,exact
 思い付く,おもいつく,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 思い出,おもいで,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -392,6 +450,8 @@
 思わず,おもわず,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 親,おや,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 おやつ,おやつ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+お八,おやつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N3,runtime-core,kana-spelling-weak
+お八つ,おやつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 親指,おやゆび,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 およそ,およそ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 凡そ,およそ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
@@ -399,12 +459,14 @@
 及ぼす,およぼす,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 オリエンテーション,オリエンテーション,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 下りる,おりる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+居る,おる,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N1|N4,advanced-bundle|runtime-core,kana-spelling-weak
 折る,おる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 織る,おる,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 俺,おれ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 折れる,おれる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 オレンジ,オレンジ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N3,runtime-core,exact
 卸す,おろす,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
+終,おわり,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,runtime-core,okurigana/orthography
 終わり,おわり,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 終わる,おわる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,exact
 温泉,おんせん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -445,6 +507,7 @@
 家屋,かおく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 抱える,かかえる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 係,かかり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+係り,かかり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,okurigana/orthography
 化学,かがく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 科学,かがく,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 鏡,かがみ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -485,6 +548,7 @@
 家事,かじ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 火事,かじ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 かじる,かじる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+噛る,かじる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 数,かず,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 下線,かせん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 数える,かぞえる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -512,11 +576,14 @@
 家庭,かてい,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 過程,かてい,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 角,かど,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+門,かど,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4|N5,curated-supplement|runtime-core,kana-spelling-weak
 仮名,かな,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 家内,かない,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+可成,かなり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 かなわない,かなわない,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
 金,かね,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 鐘,かね,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
+兼ねて,かねて,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 金持ち,かねもち,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 可能,かのう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 彼女,かのじょ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
@@ -540,6 +607,7 @@
 通う,かよう,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 殻,から,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 空,から,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+揶揄う,からかう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,kana-spelling-weak
 空っぽ,からっぽ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 絡む,からむ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 借り,かり,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
@@ -554,10 +622,13 @@
 可哀想,かわいそう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 乾く,かわく,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 渇く,かわく,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+交す,かわす,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 交わす,かわす,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 為替,かわせ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 代わり,かわり,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+代る,かわる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,okurigana/orthography
 代わる,かわる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
+～観,かん,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 勘,かん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 管,かん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,advanced-bundle,exact
 缶,かん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -656,6 +727,7 @@
 鍛える,きたえる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 基地,きち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 貴重,きちょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+切っ掛け,きっかけ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 きっぱり,きっぱり,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 規定,きてい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 気に入る,きにいる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -714,6 +786,7 @@
 切り,きり,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 霧,きり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 切り替える,きりかえる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+奇麗,きれい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 切れる,きれる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 キロ,キロ,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",waller,waller-derived,1,N3,runtime-core,exact
 キログラム,キログラム,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",waller,waller-derived,1,N3,runtime-core,exact
@@ -754,6 +827,8 @@
 空中,くうちゅう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 区切り,くぎり,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 くしゃみ,くしゃみ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+嚏,くしゃみ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
+旧事,くじ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 薬指,くすりゆび,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 くたびれる,くたびれる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 草臥れる,くたびれる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
@@ -769,6 +844,7 @@
 くっ付く,くっつく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
 くっつける,くっつける,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 くっ付ける,くっつける,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
+諄い,くどい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 配る,くばる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 工夫,くふう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 組,くみ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -780,6 +856,7 @@
 汲む,くむ,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 組む,くむ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 酌む,くむ,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
+曇,くもり,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,runtime-core,okurigana/orthography
 位,くらい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 暮らす,くらす,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 クラブ,クラブ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N4,runtime-core,exact
@@ -792,6 +869,7 @@
 暮れ,くれ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 くれぐれも,くれぐれも,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 くれる,くれる,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,N5,runtime-core,exact
+呉れる,くれる,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 暮れる,くれる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 玄人,くろうと,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 詳しい,くわしい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -826,6 +904,7 @@
 契約,けいやく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 消しゴム,けしゴム,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 削る,けずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+吝嗇,けち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle|runtime-core,kana-spelling-weak
 結果,けっか,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 欠陥,けっかん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 血管,けっかん,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
@@ -880,6 +959,9 @@
 恋しい,こいしい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 恋人,こいびと,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 こう,こう,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,N5,runtime-core,exact
+斯う,こう,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+溝,こう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+請う,こう,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 行為,こうい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 幸運,こううん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 公演,こうえん,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -943,6 +1025,7 @@
 国立,こくりつ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 焦げる,こげる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 個々,ここ,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+箇箇,ここ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 心地,ここち,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 心得る,こころえる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 心強い,こころづよい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -951,9 +1034,11 @@
 腰,こし,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 故障,こしょう,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 胡椒,こしょう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
+故障,こしょうする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,N3,runtime-core,suru-reading-alias
 拵える,こしらえる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
 超す,こす,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 個性,こせい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+答,こたえ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,okurigana/orthography
 答え,こたえ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,exact
 こだわる,こだわる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
 国家,こっか,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -984,6 +1069,7 @@
 小指,こゆび,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 暦,こよみ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 凝る,こる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+此れ,これ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 これから,これから,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 転がる,ころがる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 殺す,ころす,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -1000,6 +1086,7 @@
 こんにちは,こんにちは,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 今日は,こんにちは,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 こんばんは,こんばんは,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+今晩は,こんばんは,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 根本,こんぽん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 混乱,こんらん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 コース,コース,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -1014,8 +1101,10 @@
 ご存じ,ごぞんじ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 ごちそう,ごちそう,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 ご馳走,ごちそう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
+御馳走,ごちそう,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,okurigana/orthography
 ご無沙汰,ごぶさた,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
 御無沙汰,ごぶさた,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+塵芥,ごみ,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt,waller-derived,1,N4,runtime-core,kana-spelling-weak
 ゴム,ゴム,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 ごめんください,ごめんください,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 ごめんなさい,ごめんなさい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
@@ -1049,6 +1138,7 @@
 捜す,さがす,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 下がる,さがる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 さきおととい,さきおととい,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,N1,advanced-bundle,exact
+一昨昨日,さきおととい,N2,"{""N1"": 1, ""N2"": 1}","{""community-independent"": ""N2"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,kana-spelling-weak
 先に,さきに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 先程,さきほど,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 作業,さぎょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1079,19 +1169,24 @@
 定める,さだめる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 錯覚,さっかく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 さっき,さっき,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,N3,runtime-core,exact
+先,さっき,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 早急,さっきゅう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 作曲,さっきょく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 察する,さっする,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 早速,さっそく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 さっと,さっと,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+颯っと,さっと,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 さっぱり,さっぱり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 さて,さて,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+偖,さて,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 裁く,さばく,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+錆び,さび,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle|runtime-core,okurigana/orthography
 差別,さべつ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 作法,さほう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 寒気,さむけ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N3,advanced-bundle,exact
 作用,さよう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 さようなら,さようなら,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+左様なら,さようなら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 皿,さら,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 再来月,さらいげつ,N4,"{""N2"": 1, ""N4"": 1}","{""community-independent"": ""N4"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 さ来週,さらいしゅう,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N1,advanced-bundle,exact
@@ -1125,6 +1220,7 @@
 仕上げる,しあげる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 しあさって,しあさって,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,N1,advanced-bundle,exact
 明々後日,しあさって,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
+明明後日,しあさって,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N1,advanced-bundle,kana-spelling-weak
 幸せ,しあわせ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 飼育,しいく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 塩辛い,しおからい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -1133,16 +1229,20 @@
 資格,しかく,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 四角い,しかくい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 しかしながら,しかしながら,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+然しながら,しかしながら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 仕方がない,しかたがない,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N1,advanced-bundle,exact
 しかも,しかも,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+而も,しかも,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 叱る,しかる,N4,"{""N3"": 1, ""N4"": 1}","{""community-independent"": ""N4"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 式,しき,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 指揮,しき,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 しきたり,しきたり,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+為来り,しきたり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 敷地,しきち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 至急,しきゅう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 しきりに,しきりに,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 頻りに,しきりに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
+仕組,しくみ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 仕組み,しくみ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 試験,しけん,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 刺激,しげき,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1161,8 +1261,10 @@
 下着,したぎ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 親しむ,したしむ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 下町,したまち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+確り,しっかり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 質素,しっそ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 執筆,しっぴつ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+室,しつ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 質,しつ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 失業,しつぎょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 しつこい,しつこい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -1178,6 +1280,7 @@
 芝,しば,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 芝居,しばい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 しばしば,しばしば,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+屡,しばしば,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 しばらく,しばらく,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 暫く,しばらく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
 縛る,しばる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -1188,12 +1291,16 @@
 脂肪,しぼう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 萎む,しぼむ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
 絞る,しぼる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+仕舞,しまい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,okurigana/orthography
 姉妹,しまい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+仕舞う,しまう,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 閉まる,しまる,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+泌み泌み,しみじみ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N2,advanced-bundle,kana-spelling-weak
 染みる,しみる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 使命,しめい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 氏名,しめい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 締め切り,しめきり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+締切,しめきり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 占める,しめる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 湿る,しめる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 締める,しめる,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -1203,6 +1310,7 @@
 社会科学,しゃかいかがく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 車庫,しゃこ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 しゃっくり,しゃっくり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+吃逆,しゃっくり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 しゃべる,しゃべる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 喋る,しゃべる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 視野,しや,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1235,6 +1343,7 @@
 出生,しゅっしょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 出世,しゅっせ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 出席,しゅっせき,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+出席,しゅっせきする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,N3,runtime-core,suru-reading-alias
 出張,しゅっちょう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 出版,しゅっぱん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 出演,しゅつえん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1281,6 +1390,7 @@
 職員,しょくいん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 職業,しょくぎょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 食事,しょくじ,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N5,runtime-core,exact
+食事,しょくじする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,N5,runtime-core,suru-reading-alias
 食卓,しょくたく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 職人,しょくにん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 植物,しょくぶつ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1382,6 +1492,7 @@
 弱,じゃく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ジャズ,ジャズ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 邪魔,じゃま,N4,"{""N3"": 1, ""N4"": 1}","{""community-independent"": ""N4"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+じゃん拳,じゃんけん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,kana-spelling-weak
 ジャンル,ジャンル,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ジャーナリスト,ジャーナリスト,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 住居,じゅうきょ,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N1,runtime-core,exact
@@ -1494,6 +1605,7 @@
 墨,すみ,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 隅,すみ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 すみません,すみません,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N5,runtime-core,exact
+済みません,すみません,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 済む,すむ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 澄む,すむ,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 スライド,スライド,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -1512,10 +1624,14 @@
 頭脳,ずのう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 図表,ずひょう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 ずらり,ずらり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+狡い,ずるい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,kana-spelling-weak
 ずれる,ずれる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 背,せ,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
+制,せい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 姓,せい,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
+所為,せい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,kana-spelling-weak
 背,せい,N5,"{""N3"": 1, ""N5"": 1}","{""community-independent"": ""N5"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,advanced-bundle,exact
+製,せい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 成果,せいか,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 正解,せいかい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 性格,せいかく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -1604,6 +1720,8 @@
 僧,そう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 沿う,そう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 添う,そう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
+然う,そう,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+相,そう,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N5,runtime-core,kana-spelling-weak
 総,そう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 そういえば,そういえば,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 騒音,そうおん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1613,6 +1731,7 @@
 捜査,そうさ,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 操作,そうさ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 葬式,そうしき,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+然うして,そうして,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,kana-spelling-weak
 操縦,そうじゅう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 創造,そうぞう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 相対,そうたい,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
@@ -1621,12 +1740,17 @@
 創立,そうりつ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 添える,そえる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 側面,そくめん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+其処で,そこで,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
+損う,そこなう,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 損なう,そこなう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 そこら,そこら,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+其処ら,そこら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 素材,そざい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 組織,そしき,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+然して,そして,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 祖先,そせん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 育ち,そだち,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+其方,そちら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 率直,そっちょく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 備え付ける,そなえつける,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 備える,そなえる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1636,7 +1760,9 @@
 その内,そのうち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 そのころ,そのころ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 そのため,そのため,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+その為,そのため,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 そのほか,そのほか,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,N3,runtime-core,exact
+その外,そのほか,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 そのまま,そのまま,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 其の儘,そのまま,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 蕎麦,そば,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
@@ -1648,14 +1774,25 @@
 染まる,そまる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 染める,そめる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 そらす,そらす,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+其れ,それ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+其れから,それから,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 それぞれ,それぞれ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+各々,それぞれ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N4,runtime-core,kana-spelling-weak
+其れで,それで,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
+其れでは,それでは,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N5,runtime-core,kana-spelling-weak
+其れでも,それでも,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 それとも,それとも,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+其れとも,それとも,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
+其れ共,それとも,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N4,runtime-core,kana-spelling-weak
 それなのに,それなのに,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 それなら,それなら,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N4,runtime-core,exact
+其れに,それに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 それほど,それほど,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+其れ程,それほど,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 揃う,そろう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 揃える,そろえる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 そろそろ,そろそろ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+徐々,そろそろ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N5,runtime-core,kana-spelling-weak
 損,そん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 損害,そんがい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 存在,そんざい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1667,10 +1804,13 @@
 象,ぞう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 雑巾,ぞうきん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 存じる,ぞんじる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+存ずる,ぞんずる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,okurigana/orthography
 田,た,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 対,たい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+隊,たい,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N1,advanced-bundle,kana-spelling-weak
 体育,たいいく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 退院,たいいん,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+退院,たいいんする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,N3,runtime-core,suru-reading-alias
 対応,たいおう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 体温,たいおん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 大家,たいか,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N4,advanced-bundle,exact
@@ -1727,6 +1867,7 @@
 戦う,たたかう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 畳,たたみ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 ただ,ただ,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N5,runtime-core,exact
+唯,ただ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,kana-spelling-weak
 正しい,ただしい,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 立ち上がる,たちあがる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 立場,たちば,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1750,6 +1891,7 @@
 足袋,たび,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 度々,たびたび,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 弾,たま,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
+偶々,たまたま,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,kana-spelling-weak
 たまに,たまに,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 偶に,たまに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
 たまらない,たまらない,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1772,6 +1914,7 @@
 単調,たんちょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 単なる,たんなる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 短編,たんぺん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+田ぼ,たんぼ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,okurigana/orthography
 台,だい,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 大,だい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 題,だい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1828,6 +1971,7 @@
 知事,ちじ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 父親,ちちおや,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 ちっとも,ちっとも,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+些とも,ちっとも,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 チップ,チップ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 秩序,ちつじょ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 知的,ちてき,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1860,6 +2004,7 @@
 頂上,ちょうじょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 挑戦,ちょうせん,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 頂戴,ちょうだい,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N1,runtime-core,exact
+恰度,ちょうど,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 長編,ちょうへん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 調味料,ちょうみりょう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 調理,ちょうり,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1870,6 +2015,7 @@
 直前,ちょくぜん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 著者,ちょしゃ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 貯蔵,ちょぞう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+一寸,ちょっと,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 散らす,ちらす,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 地理,ちり,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 治療,ちりょう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -1893,6 +2039,7 @@
 尽きる,つきる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 付く,つく,N4,"{""N3"": 1, ""N4"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 就く,つく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+点く,つく,N4,"{""N2"": 1, ""N4"": 1}","{""community-independent"": ""N4"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 突く,つく,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 尽くす,つくす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 つくづく,つくづく,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
@@ -1902,6 +2049,7 @@
 継ぐ,つぐ,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 付け加える,つけくわえる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 漬ける,つける,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+点ける,つける,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N3,runtime-core,okurigana/orthography
 着ける,つける,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 土,つち,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 突っ込む,つっこむ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -1990,6 +2138,7 @@
 出会う,であう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 出入り,でいり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 出入り口,でいりぐち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+出入口,でいりぐち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 出かける,でかける,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 出来上がり,できあがり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 出来事,できごと,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2025,6 +2174,7 @@
 到底,とうてい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 尊い,とうとい,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
 とうとう,とうとう,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,N3,runtime-core,exact
+到頭,とうとう,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 当番,とうばん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 投票,とうひょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 逃亡,とうぼう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2051,18 +2201,25 @@
 綴じる,とじる,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 閉じる,とじる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 途端,とたん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+疾っくに,とっくに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 取っ手,とって,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 トップ,トップ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+迚も,とても,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 整える,ととのえる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 届く,とどく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+届,とどけ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N3,runtime-core,okurigana/orthography
 届け,とどけ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 止まる,とどまる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
+留まる,とどまる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,kana-spelling-weak
+止める,とどめる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,kana-spelling-weak
+兎に角,とにかく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 扉,とびら,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 跳ぶ,とぶ,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 徒歩,とほ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 乏しい,とぼしい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 留める,とめる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 共,とも,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N3,runtime-core,exact
+兎も角,ともかく,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 伴う,ともなう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 共に,ともに,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 共働き,ともばたらき,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2071,6 +2228,7 @@
 トラブル,トラブル,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 とりあえず,とりあえず,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
 取り扱い,とりあつかい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
+取扱,とりあつかい,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 取り扱う,とりあつかう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 取り替える,とりかえる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 取り組む,とりくむ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2082,12 +2240,15 @@
 取り巻く,とりまく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 取り戻す,とりもどす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 取り寄せる,とりよせる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+副,とりわけ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|wordmaster,community-independent|waller-derived,2,N2,runtime-core,kana-spelling-weak
+捕る,とる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,kana-spelling-weak
 採る,とる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 撮る,とる,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 取れる,とれる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 とんでもない,とんでもない,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 トンネル,トンネル,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 度,ど,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N4,runtime-core,exact
+働,どう,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 銅,どう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 同意,どうい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 同一,どういつ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2098,8 +2259,11 @@
 動作,どうさ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 同士,どうし,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 同志,どうし,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+如何して,どうして,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
+如何しても,どうしても,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 同情,どうじょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 どうせ,どうせ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+何卒,どうぞ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt,waller-derived,1,N5,runtime-core,kana-spelling-weak
 動的,どうてき,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 同等,どうとう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 道徳,どうとく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2118,13 +2282,17 @@
 独特,どくとく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 何処,どこ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,exact
 どこか,どこか,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+何処か,どこか,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 土台,どだい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+何方,どちら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 どっと,どっと,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+何方,どなた,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 怒鳴る,どなる,N2,"{""N1"": 1, ""N2"": 1}","{""community-independent"": ""N2"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 殿,どの,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N1,advanced-bundle,exact
 土俵,どひょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ドライブ,ドライブ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 努力,どりょく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+何れ,どれ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 ドレス,ドレス,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 泥棒,どろぼう,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 鈍感,どんかん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2150,11 +2318,14 @@
 慰める,なぐさめる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 嘆く,なげく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 和やか,なごやか,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+為さる,なさる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 無し,なし,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 何故,なぜ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,exact
 何故なら,なぜなら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
+謎謎,なぞなぞ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,kana-spelling-weak
 懐かしい,なつかしい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 名付ける,なづける,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+等,など,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 斜め,ななめ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 何か,なにか,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 何しろ,なにしろ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
@@ -2167,12 +2338,14 @@
 並み,なみ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 涙,なみだ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 滑らか,なめらか,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+嘗める,なめる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,kana-spelling-weak
 悩ます,なやます,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 悩み,なやみ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 慣らす,ならす,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 馴らす,ならす,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 成り立つ,なりたつ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 なる,なる,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+為る,なる,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 生る,なる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 鳴る,なる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 なるべく,なるべく,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -2202,11 +2375,13 @@
 にっこり,にっこり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 日程,にってい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 日本,にほん,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N5,runtime-core,exact
+にも拘らず,にもかかわらず,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 入社,にゅうしゃ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 入手,にゅうしゅ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 入賞,にゅうしょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 入場,にゅうじょう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 女房,にょうぼう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+俄か,にわか,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,okurigana/orthography
 人気,にんき,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 人形,にんぎょう,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 人間,にんげん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -2217,6 +2392,7 @@
 濡らす,ぬらす,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
 塗る,ぬる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 ネクタイ,ネクタイ,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+捻子,ねじ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle|runtime-core,kana-spelling-weak
 ネックレス,ネックレス,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 熱帯,ねったい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 熱中,ねっちゅう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2254,15 +2430,18 @@
 昇る,のぼる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 登る,のぼる,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 乗り換え,のりかえ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+乗換,のりかえ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 乗り物,のりもの,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 のんびり,のんびり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 葉,は,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 把握,はあく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+～敗,はい,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 肺,はい,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 俳句,はいく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 拝啓,はいけい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 背景,はいけい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 拝見,はいけん,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+拝見,はいけんする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,N3,runtime-core,suru-reading-alias
 廃止,はいし,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 配布,はいふ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 俳優,はいゆう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2283,9 +2462,12 @@
 柱,はしら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 恥,はじ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 始まり,はじまり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+初め/始め,はじめ,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt,waller-derived,1,N1,advanced-bundle,kana-spelling-weak
+初め; 始め,はじめ,N5,"{""N5"": 1}","{""community-independent"": ""N5""}",wordmaster,community-independent,1,N1,advanced-bundle,kana-spelling-weak
 始め,はじめ,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 始める,はじめる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 はず,はず,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,N3,runtime-core,exact
+筈,はず,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 外す,はずす,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 外れる,はずれる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 旗,はた,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2308,6 +2490,7 @@
 発売,はつばい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 発明,はつめい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 話し合い,はなしあい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+話合い,はなしあい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 話し掛ける,はなしかける,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 放す,はなす,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 甚だしい,はなはだしい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -2321,6 +2504,8 @@
 省く,はぶく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 浜,はま,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 はまる,はまる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+填まる,はまる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
+歯磨,はみがき,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,okurigana/orthography
 歯磨き,はみがき,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 はめる,はめる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 生やす,はやす,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -2357,6 +2542,7 @@
 ばね,ばね,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 場面,ばめん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 バランス,バランス,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+判,ばん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",waller,waller-derived,1,N3,advanced-bundle,kana-spelling-weak
 番,ばん,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N4,runtime-core,exact
 番組,ばんぐみ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 番地,ばんち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -2377,8 +2563,11 @@
 被害,ひがい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 日帰り,ひがえり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 引き受ける,ひきうける,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+引受る,ひきうける,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 引き出す,ひきだす,N4,"{""N2"": 1, ""N4"": 1}","{""community-independent"": ""N2"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+引出す,ひきだす,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N3,runtime-core,okurigana/orthography
 引き取る,ひきとる,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
+引取る,ひきとる,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 引き分け,ひきわけ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
 引く,ひく,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 弾く,ひく,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -2391,10 +2580,12 @@
 肘,ひじ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 浸す,ひたす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ひたすら,ひたすら,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+一向,ひたすら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 左利き,ひだりきき,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 引っ掛かる,ひっかかる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 引っ掛ける,ひっかける,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 引っ繰り返る,ひっくりかえる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
+引越し,ひっこし,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,okurigana/orthography
 引っ越す,ひっこす,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 必死,ひっし,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 筆者,ひっしゃ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -2405,9 +2596,11 @@
 人柄,ひとがら,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 一言,ひとこと,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 人込み,ひとごみ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
+人差指,ひとさしゆび,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 等しい,ひとしい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ひとまず,ひとまず,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 独り,ひとり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
+一人でに,ひとりでに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 酷い,ひどい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
 避難,ひなん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 非難,ひなん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2443,6 +2636,7 @@
 ビジネス,ビジネス,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 美術,びじゅつ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 ビタミン,ビタミン,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+吃驚,びっくり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 びっしょり,びっしょり,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ビデオ,ビデオ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 病気,びょうき,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -2513,6 +2707,7 @@
 降り出す,ふりだす,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 不良,ふりょう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 震える,ふるえる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+古里,ふるさと,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N3,runtime-core,kana-spelling-weak
 故郷,ふるさと,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N1,advanced-bundle,exact
 風呂敷,ふろしき,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 フロント,フロント,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -2532,6 +2727,7 @@
 物資,ぶっし,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 物質,ぶっしつ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 物体,ぶったい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+打付ける,ぶつける,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 物理,ぶつり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ぶどう,ぶどう,N4,"{""N4"": 1}","{""community-independent"": ""N4""}",wordmaster,community-independent,1,N2,runtime-core,exact
 部品,ぶひん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -2582,6 +2778,7 @@
 方,ほう,N5,"{""N3"": 1, ""N5"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 方角,ほうがく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 法学,ほうがく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+宝器,ほうき,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 放棄,ほうき,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 方言,ほうげん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 方向,ほうこう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -2589,6 +2786,7 @@
 宝石,ほうせき,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 包装,ほうそう,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 放送,ほうそう,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+放送,ほうそうする,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,N3,runtime-core,suru-reading-alias
 包丁,ほうちょう,N2,"{""N2"": 1}","{""community-independent"": ""N2""}",wordmaster,community-independent,1,N3,runtime-core,exact
 報道,ほうどう,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 豊富,ほうふ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2598,6 +2796,7 @@
 放る,ほうる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 頬,ほお,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N4,runtime-core,exact
 他,ほか,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N5,advanced-bundle,exact
+外,ほか,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,kana-spelling-weak
 朗らか,ほがらか,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 保険,ほけん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 誇り,ほこり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2614,6 +2813,8 @@
 程,ほど,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 施す,ほどこす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ほぼ,ほぼ,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N2,runtime-core,exact
+保母,ほぼ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
+略,ほぼ,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 褒める,ほめる,N4,"{""N3"": 1, ""N4"": 1}","{""community-independent"": ""N4"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 彫る,ほる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 掘る,ほる,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -2638,6 +2839,7 @@
 牧畜,ぼくちく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 募集,ぼしゅう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 ボタン,ボタン,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+坊っちゃん,ぼっちゃん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,okurigana/orthography
 盆,ぼん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 ぼんやり,ぼんやり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 ボーナス,ボーナス,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -2650,6 +2852,7 @@
 まあまあ,まあまあ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 マイナス,マイナス,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 参る,まいる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+前売,まえうり,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 前売り,まえうり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 前もって,まえもって,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 任す,まかす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2669,6 +2872,7 @@
 正に,まさに,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
 混ざる,まざる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 まして,まして,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N3,runtime-core,exact
+況して,まして,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 混じる,まじる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 増す,ます,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 マスコミ,マスコミ,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2694,6 +2898,7 @@
 真っ直ぐ,まっすぐ,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,advanced-bundle,exact
 全く,まったく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 マッチ,マッチ,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+祭,まつり,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,okurigana/orthography
 まとまる,まとまる,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N1,runtime-core,exact
 纏める,まとめる,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N1,advanced-bundle,exact
 窓口,まどぐち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -2706,11 +2911,13 @@
 迷う,まよう,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N4,runtime-core,exact
 マラソン,マラソン,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 丸,まる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+丸で,まるで,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 丸める,まるめる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 満員,まんいん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 マンション,マンション,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 満点,まんてん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 真ん中,まんなか,N4,"{""N4"": 1}","{""waller-derived"": ""N4""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+真中,まんなか,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 マーク,マーク,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 マーケット,マーケット,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 身,み,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
@@ -2734,6 +2941,7 @@
 みっともない,みっともない,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 見付ける,みつける,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N1,advanced-bundle,exact
 見積もり,みつもり,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+見積り,みつもり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,okurigana/orthography
 見通し,みとおし,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 認める,みとめる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 皆,みな,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
@@ -2742,12 +2950,15 @@
 身の回り,みのまわり,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
 身振り,みぶり,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 見本,みほん,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+見舞,みまい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,okurigana/orthography
 見舞い,みまい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 脈,みゃく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 土産,みやげ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 名字,みょうじ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 ミリ,ミリ,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",waller,waller-derived,1,N3,runtime-core,exact
 魅力,みりょく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+見る 観る,みる,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",openjlpt,waller-derived,1,N1,advanced-bundle,kana-spelling-weak
+観る,みる,N5,"{""N5"": 1}","{""waller-derived"": ""N5""}",waller,waller-derived,1,N1,advanced-bundle,kana-spelling-weak
 診る,みる,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 ミルク,ミルク,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 見渡す,みわたす,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2756,6 +2967,7 @@
 民族,みんぞく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 皆,みんな,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N1,advanced-bundle,exact
 無,む,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
+向う,むかう,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N3,runtime-core,okurigana/orthography
 向かう,むかう,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 向き,むき,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 剥く,むく,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,advanced-bundle,exact
@@ -2781,6 +2993,7 @@
 目上,めうえ,N3,"{""N2"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 捲る,めくる,N3,"{""N3"": 1}","{""community-independent"": ""N3""}",wordmaster,community-independent,1,N1,advanced-bundle,exact
 恵み,めぐみ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+目覚し,めざまし,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,okurigana/orthography
 目覚める,めざめる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 召し上がる,めしあがる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 めちゃくちゃ,めちゃくちゃ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
@@ -2788,6 +3001,7 @@
 めっきり,めっきり,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 メディア,メディア,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 めでたい,めでたい,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+愛でたい,めでたい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 メニュー,メニュー,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 メモ,メモ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 目安,めやす,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -2797,12 +3011,14 @@
 設ける,もうける,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 申し上げる,もうしあげる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 申し込み,もうしこみ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
+申込,もうしこみ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N3,runtime-core,okurigana/orthography
 申し出る,もうしでる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 申し訳ない,もうしわけない,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 もうすぐ,もうすぐ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 目次,もくじ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 模型,もけい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 模索,もさく,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+若し,もし,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 もしかしたら,もしかしたら,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 若しかしたら,もしかしたら,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
 もしかして,もしかして,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N3,runtime-core,exact
@@ -2811,12 +3027,14 @@
 もしも,もしも,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 若しも,もしも,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,advanced-bundle,exact
 もたらす,もたらす,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+齎らす,もたらす,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 モダン,モダン,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 持ち,もち,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,exact
 餅,もち,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 持ち上げる,もちあげる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 用いる,もちいる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 勿論,もちろん,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
+物体ない,もったいない,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,kana-spelling-weak
 尤も,もっとも,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 最も,もっとも,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 持て成す,もてなす,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
@@ -2845,6 +3063,7 @@
 喧しい,やかましい,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
 野外,やがい,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 やがて,やがて,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+軈て,やがて,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 役,やく,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 役者,やくしゃ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 役所,やくしょ,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -2864,6 +3083,7 @@
 薬局,やっきょく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 やっつける,やっつける,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",waller|wordmaster,community-independent|waller-derived,2,N1,advanced-bundle,exact
 やっと,やっと,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+矢っ張り,やっぱり,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,kana-spelling-weak
 野党,やとう,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 雇う,やとう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 宿,やど,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -2871,6 +3091,7 @@
 止む,やむ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 辞める,やめる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 やや,やや,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+稍,やや,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 柔らかい,やわらかい,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 唯一,ゆいいつ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 憂鬱,ゆううつ,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2920,6 +3141,7 @@
 要点,ようてん,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 用品,ようひん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 曜日,ようび,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
+漸く,ようやく,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,kana-spelling-weak
 要領,ようりょう,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 予感,よかん,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 予期,よき,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
@@ -2941,8 +3163,10 @@
 読み上げる,よみあげる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 余裕,よゆう,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 寄り掛かる,よりかかる,N1,"{""N1"": 2}","{""community-independent"": ""N1"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+因る,よる,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,kana-spelling-weak
 喜び,よろこび,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 宜しい,よろしい,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N4,advanced-bundle,exact
+宜しく,よろしく,N3,"{""N3"": 1}","{""waller-derived"": ""N3""}",openjlpt|waller,waller-derived,1,N5,runtime-core,kana-spelling-weak
 弱い,よわい,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 弱まる,よわまる,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 弱める,よわめる,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
@@ -3022,7 +3246,9 @@
 和,わ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N4,runtime-core,exact
 輪,わ,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
 沸かす,わかす,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N1,runtime-core,exact
+分る,わかる,N2,"{""N2"": 1}","{""waller-derived"": ""N2""}",openjlpt|waller,waller-derived,1,N5,runtime-core,okurigana/orthography
 わがまま,わがまま,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+我がまま,わがまま,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 脇,わき,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 枠,わく,N3,"{""N1"": 1, ""N3"": 1}","{""community-independent"": ""N3"", ""waller-derived"": ""N1""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 沸く,わく,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
@@ -3030,14 +3256,18 @@
 訳,わけ,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 分ける,わける,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 わざと,わざと,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
+態と,わざと,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 わざわざ,わざわざ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,exact
+態々,わざわざ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,kana-spelling-weak
 私,わたくし,N5,"{""N2"": 1, ""N5"": 1}","{""community-independent"": ""N2"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 話題,わだい,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 笑う,わらう,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N5,runtime-core,exact
 割合,わりあい,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
 割り込む,わりこむ,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,runtime-core,exact
+割込む,わりこむ,N1,"{""N1"": 1}","{""community-independent"": ""N1""}",wordmaster,community-independent,1,N2,runtime-core,okurigana/orthography
 割り算,わりざん,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N2,advanced-bundle,exact
 割引,わりびき,N2,"{""N2"": 2}","{""community-independent"": ""N2"", ""waller-derived"": ""N2""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact
+割引き,わりびき,N1,"{""N1"": 1}","{""waller-derived"": ""N1""}",openjlpt|waller,waller-derived,1,N3,runtime-core,okurigana/orthography
 悪い,わるい,N5,"{""N5"": 2}","{""community-independent"": ""N5"", ""waller-derived"": ""N5""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N4,runtime-core,exact
 悪口,わるくち,N3,"{""N3"": 2}","{""community-independent"": ""N3"", ""waller-derived"": ""N3""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N2,runtime-core,exact
 割れる,われる,N4,"{""N4"": 2}","{""community-independent"": ""N4"", ""waller-derived"": ""N4""}",openjlpt|waller|wordmaster,community-independent|waller-derived,2,N3,runtime-core,exact

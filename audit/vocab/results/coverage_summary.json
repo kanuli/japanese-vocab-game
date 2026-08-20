@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-08-20T16:46:38.668813+00:00",
+  "generated_at_utc": "2026-08-20T16:51:12.082698+00:00",
   "core_source_url": "https://raw.githubusercontent.com/5mdld/anki-jlpt-decks/main/deck-source/notes.csv",
   "source_inventory": {
     "openjlpt": {
@@ -33,10 +33,10 @@
     "runtime_merged_unique": 22319
   },
   "audit": {
-    "high_confidence_missing": 411,
-    "single_source_gaps": 1126,
-    "level_conflicts": 3046,
-    "variant_matches": 5,
+    "high_confidence_missing": 292,
+    "single_source_gaps": 814,
+    "level_conflicts": 3276,
+    "variant_matches": 436,
     "runtime_parser_gaps": 0,
     "runtime_final_holes": 0
   },
@@ -44,44 +44,81 @@
     "N5": {
       "reference_unique": 822,
       "exact_covered": 698,
-      "variant_covered": 0,
-      "missing": 124,
-      "coverage_pct": 84.91
+      "variant_covered": 34,
+      "missing": 90,
+      "coverage_pct": 89.05
     },
     "N4": {
       "reference_unique": 780,
       "exact_covered": 655,
-      "variant_covered": 0,
-      "missing": 125,
-      "coverage_pct": 83.97
+      "variant_covered": 44,
+      "missing": 81,
+      "coverage_pct": 89.62
     },
     "N3": {
       "reference_unique": 2448,
       "exact_covered": 2275,
-      "variant_covered": 1,
-      "missing": 172,
-      "coverage_pct": 92.97
+      "variant_covered": 43,
+      "missing": 130,
+      "coverage_pct": 94.69
     },
     "N2": {
       "reference_unique": 3761,
       "exact_covered": 3267,
-      "variant_covered": 1,
-      "missing": 493,
-      "coverage_pct": 86.89
+      "variant_covered": 82,
+      "missing": 412,
+      "coverage_pct": 89.05
     },
     "N1": {
       "reference_unique": 3955,
       "exact_covered": 3163,
-      "variant_covered": 4,
-      "missing": 788,
-      "coverage_pct": 80.08
+      "variant_covered": 279,
+      "missing": 513,
+      "coverage_pct": 87.03
+    }
+  },
+  "consensus_level_summary": {
+    "N5": {
+      "consensus_reference_unique": 627,
+      "exact_covered": 611,
+      "variant_covered": 10,
+      "missing": 6,
+      "coverage_pct": 99.04
+    },
+    "N4": {
+      "consensus_reference_unique": 601,
+      "exact_covered": 566,
+      "variant_covered": 32,
+      "missing": 3,
+      "coverage_pct": 99.5
+    },
+    "N3": {
+      "consensus_reference_unique": 2029,
+      "exact_covered": 1946,
+      "variant_covered": 17,
+      "missing": 66,
+      "coverage_pct": 96.75
+    },
+    "N2": {
+      "consensus_reference_unique": 1497,
+      "exact_covered": 1352,
+      "variant_covered": 41,
+      "missing": 104,
+      "coverage_pct": 93.05
+    },
+    "N1": {
+      "consensus_reference_unique": 2292,
+      "exact_covered": 2158,
+      "variant_covered": 21,
+      "missing": 113,
+      "coverage_pct": 95.07
     }
   },
   "method": {
     "high_confidence_missing": "Absent from current runtime set and present in >=2 independent reference families; OpenJLPT and Waller are intentionally counted as one derivative family.",
     "single_source_gap": "Absent from current runtime set but present in only one external reference family.",
-    "level_conflict": "Word is present, but external family-weighted consensus level is not among current site levels.",
+    "level_conflict": "Word is present, but external consensus level is not among current site levels.",
     "runtime_final_hole": "Core source has word+reading; current runtime core parser rejects it; curated/advanced do not restore it.",
-    "variant_match": "No exact written-form key, but conservative normalized kana/prolonged-mark form matches."
+    "variant_match": "No exact key, but a conservative kana, okurigana/orthography, suru-reading, or kana-spelling relation matches."
   }
 }
