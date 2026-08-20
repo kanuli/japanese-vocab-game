@@ -1,5 +1,5 @@
 # Temporary registered-runner entry for reviewed vocabulary hosted-audio completion.
-# Trigger revision 4: every preflight station writes an independent marker immediately.
+# Trigger revision 5: marker commits do not rebase over generated unstaged audit files.
 name: Reviewed vocabulary audio preflight — registered runner
 
 on:
@@ -45,8 +45,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- audit/vocab/results/voice_delta_preflight_started.json
-          git commit -m 'Record reviewed audio preflight start'
-          git pull --rebase origin audit/vocab-coverage-20260821
+          git commit -m 'Record reviewed audio preflight start' || true
           git push origin HEAD:audit/vocab-coverage-20260821
 
       - id: catalog
@@ -83,11 +82,11 @@ jobs:
           PY
           git add -- audit/vocab/results/voice_delta_check_catalog.json
           git commit -m 'Record reviewed audio catalog check' || true
-          git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
 
       - id: permission
         name: 2/5 Verify GitHub write and release permission
+        if: always()
         continue-on-error: true
         timeout-minutes: 3
         env:
@@ -109,12 +108,11 @@ jobs:
           PY
           git add -- audit/vocab/results/voice_delta_check_permission.json
           git commit -m 'Record reviewed audio permission check' || true
-          git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
 
       - id: voicevox
         name: 3/5 Synthesize one reviewed word with VOICEVOX
-        if: steps.catalog.outcome == 'success'
+        if: always() && steps.catalog.outcome == 'success'
         continue-on-error: true
         timeout-minutes: 10
         run: |
@@ -143,12 +141,11 @@ jobs:
           PY
           git add -- audit/vocab/results/voice_delta_check_voicevox.json
           git commit -m 'Record reviewed audio VOICEVOX check' || true
-          git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
 
       - id: supertonic
         name: 4/5 Synthesize one reviewed word with Supertonic 3
-        if: steps.catalog.outcome == 'success'
+        if: always() && steps.catalog.outcome == 'success'
         continue-on-error: true
         timeout-minutes: 10
         run: |
@@ -176,12 +173,11 @@ jobs:
           PY
           git add -- audit/vocab/results/voice_delta_check_supertonic.json
           git commit -m 'Record reviewed audio Supertonic check' || true
-          git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
 
       - id: aivis
         name: 5/5 Discover four Aivis styles and synthesize one reviewed word
-        if: steps.catalog.outcome == 'success'
+        if: always() && steps.catalog.outcome == 'success'
         continue-on-error: true
         timeout-minutes: 12
         run: |
@@ -217,7 +213,6 @@ jobs:
           PY
           git add -- audit/vocab/results/voice_delta_check_aivis.json
           git commit -m 'Record reviewed audio Aivis check' || true
-          git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
 
       - name: Record all preflight outcomes
@@ -242,7 +237,6 @@ jobs:
           PY
           git add -- audit/vocab/results/voice_delta_preflight.json
           git commit -m 'Record reviewed vocabulary audio delta preflight' || true
-          git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
 
       - name: Enforce all five checks
