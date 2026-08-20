@@ -2,10 +2,9 @@
 """Adjudicate the 378 single-family source-check vocabulary candidates.
 
 Coverage remains strict: exact written-form + reading is the unit. A JLPT level
-conflict does not suppress a valid surface form; the selected level is retained
-as an estimated, source-backed learning band. Rows are held when exact JMdict
-verification is missing or when the source sense materially conflicts with the
-verified lexical sense and cannot be pinned safely.
+conflict does not suppress a valid surface form. Traditional-Chinese sense pins
+and explicit holds live in data/coverage_sourcecheck_policy.json so the policy
+is inspectable and reusable by every build path.
 """
 from __future__ import annotations
 
@@ -19,39 +18,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_DECISIONS = {"ADD_AFTER_SOURCE_CHECK", "ADD_VARIANT_AFTER_SOURCE_CHECK"}
 EXPECTED = 378
-
-# These are sense disambiguations, not coverage aliases. The exact forms remain
-# separate vocabulary items; the override only pins the intended learning sense.
-SENSE_OVERRIDES = {
-    "せっけん|せっけん": "肥皂",
-    "たて|たて": "縱向；高度；長度",
-    "つける|つける": "打開；開啟（燈、電器等）",
-    "しいん|しいん": "寂靜無聲；鴉雀無聲",
-    "おおい|おおい": "喂！；喂喂！（呼喊用）",
-    "たれ|たれ": "～鬼；～傢伙（帶貶義的人稱後綴）",
-    "やかん|やかん": "水壺；燒水壺",
-    "ちょうだい|ちょうだい": "給我；請給我",
-    "さい|歳": "歲（年齡計數詞）",
-    "かげつ|ヶ月": "個月（月數計數詞）",
-    "あざ|あざ": "痣；胎記；瘀傷",
-    "あんまり|余り": "不太；不怎麼；不多",
-    "うまい|甘い": "好吃；美味",
-    "おてあらい|御手洗": "洗手間；廁所",
-    "ごう|濠": "護城河；壕溝",
-    "すぎ|過ぎ": "超過；過後；……之後",
-    "じゅうほう|重宝": "珍貴；便利；有用",
-}
-
-# These rows are deliberately not published. They are valid-looking surface
-# forms in at least one source, but the supplied source sense conflicts with the
-# exact lexical evidence enough that automatically assigning a learning meaning
-# would be unsafe.
-HOLD = {
-    "いえ|いえ": "source-sense-unresolved: source says TODO/same-as-いいえ while the exact form also represents house/no senses",
-    "ド|ド": "source-sense-conflict: JLPT source gloss says child/servant/foolishness, while exact JMdict ド is the emphatic prefix 'extreme/ultra/very'",
-    "あくび|悪日": "source-sense-risk: unusual reading/form collides with the common 欠伸（あくび） reading; require independent dictionary/source confirmation before publishing",
-}
-
 BAD_SOURCE_MARKERS = ("todo", "#name?", "same as ?")
 
 
@@ -71,13 +37,24 @@ def key(row: dict) -> str:
     return f"{str(row.get('reading') or '').strip()}|{str(row.get('word') or '').strip()}"
 
 
+def load_policy(path: Path) -> tuple[dict[str, str], dict[str, str], dict]:
+    data = json.loads(path.read_text(encoding="utf-8"))
+    pins = {str(k): str(v) for k, v in (data.get("pinned_tc_meanings") or {}).items() if str(k) and str(v)}
+    holds = {str(k): str(v) for k, v in (data.get("explicit_holds") or {}).items() if str(k) and str(v)}
+    return pins, holds, data
+
+
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--input", default="audit/vocab/results/final_quality_review_all_missing.csv")
     p.add_argument("--results", default="audit/vocab/results")
+    p.add_argument("--policy", default="data/coverage_sourcecheck_policy.json")
     args = p.parse_args()
     src = ROOT / args.input
     out = ROOT / args.results
+    policy_path = ROOT / args.policy
+    pins, holds, policy = load_policy(policy_path)
+
     rows = [r for r in read_rows(src) if (r.get("quality_decision") or "") in SOURCE_DECISIONS]
     if len(rows) != EXPECTED:
         raise SystemExit(f"source-check queue drift: expected {EXPECTED}, found {len(rows)}")
@@ -95,13 +72,13 @@ def main() -> int:
 
         decision = "APPROVE_SOURCE_CHECK"
         reason = "exact JMdict form+reading verified; external JLPT family supports listing; level retained as estimated source-backed band"
-        pinned_tc = SENSE_OVERRIDES.get(k, "")
+        pinned_tc = pins.get(k, "")
         if pinned_tc:
             override_used += 1
 
-        if k in HOLD:
+        if k in holds:
             decision = "HOLD_AMBIGUOUS_SOURCE_SENSE"
-            reason = HOLD[k]
+            reason = holds[k]
         elif not exact or not resolved:
             decision = "HOLD_EXACT_FORM_NOT_VERIFIED"
             reason = "exact written-form + reading is not fully JMdict-verified"
@@ -136,15 +113,17 @@ def main() -> int:
     summary = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "coverage_rule": "exact written-form + reading only",
+        "policy_file": str(policy_path.relative_to(ROOT)),
+        "policy_version": policy.get("version"),
         "input_source_check_candidates": len(rows),
         "approved": len(approved),
         "held": len(held),
         "pinned_sense_overrides_used": override_used,
-        "configured_pinned_sense_overrides": len(SENSE_OVERRIDES),
-        "configured_explicit_holds": len(HOLD),
+        "configured_pinned_sense_overrides": len(pins),
+        "configured_explicit_holds": len(holds),
         "decision_counts": dict(sorted(counts.items())),
-        "level_policy": "source consensus retained as estimated; level conflict is annotated, not used to suppress a valid exact form",
-        "sense_policy": "source meaning + exact JMdict sense; broad/homonymous entries are pinned when the intended sense is clear; unresolved conflicts are held",
+        "level_policy": policy.get("level_policy"),
+        "sense_policy": policy.get("meaning_policy"),
     }
     (out / "source_check_adjudication_summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=2))
