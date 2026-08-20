@@ -1,0 +1,135 @@
+name: Reviewed vocabulary audio delta preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/vocab-coverage-20260821
+    paths:
+      - '.github/workflows/word-audio-delta-preflight.yml'
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/vocab-coverage-20260821
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - id: catalog
+        name: Validate 713-word delta source
+        continue-on-error: true
+        env:
+          CATALOG_OUT: audit/vocab/results/desired_word_voice_catalog.json
+        run: |
+          node scripts/build_word_voicevox_catalog.mjs
+          python tools/audit_vocab_voice_coverage.py --results audit/vocab/results
+          python scripts/build_word_audio_delta_catalog.py
+          python - <<'PY'
+          import json
+          d=json.load(open('word-audio-delta-catalog.json'));assert d['wordCount']==713 and len(d['items'])==713
+          print('sample',d['items'][0]['reading'],d['items'][0]['written'])
+          PY
+
+      - id: permission
+        name: Verify GitHub write/release permission
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(gh api repos/$GITHUB_REPOSITORY --jq '.permissions.push')" = true
+          gh release list --limit 1 >/dev/null
+          echo 'GitHub write/release permission OK'
+
+      - id: voicevox
+        name: Synthesize one new word with VOICEVOX
+        continue-on-error: true
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-preflight -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do curl -fsS http://127.0.0.1:50021/version >/dev/null && break; test "$i" != 120 || { docker logs voicevox-preflight; exit 1; }; sleep 2; done
+          READING=$(python -c "import json;print(json.load(open('word-audio-delta-catalog.json'))['items'][0]['reading'])")
+          STYLE=$(curl -fsS http://127.0.0.1:50021/speakers | python -c "import json,sys;d=json.load(sys.stdin);print(d[0]['styles'][0]['id'])")
+          curl -fsS -X POST --get --data-urlencode "text=$READING" --data-urlencode "speaker=$STYLE" http://127.0.0.1:50021/audio_query -o /tmp/vv-query.json
+          curl -fsS -X POST -H 'Content-Type: application/json' --data-binary @/tmp/vv-query.json --get --data-urlencode "speaker=$STYLE" http://127.0.0.1:50021/synthesis -o /tmp/vv.wav
+          test "$(stat -c%s /tmp/vv.wav)" -gt 1000
+          docker stop voicevox-preflight
+          echo "VOICEVOX sample OK: $READING"
+
+      - if: always()
+        run: docker stop voicevox-preflight >/dev/null 2>&1 || true
+
+      - id: supertonic
+        name: Synthesize one new word with Supertonic 3
+        continue-on-error: true
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+          python - <<'PY'
+          import json
+          from supertonic import TTS
+          d=json.load(open('word-audio-delta-catalog.json'));reading=d['items'][0]['reading']
+          t=TTS(auto_download=True);style=t.get_voice_style(voice_name='F3');wav,_=t.synthesize(text=reading,voice_style=style,total_steps=8,speed=1.0,max_chunk_length=100,silence_duration=.08,lang='ja',verbose=False)
+          if wav is None or getattr(wav,'size',0)<=0:raise SystemExit('empty Supertonic output')
+          print('Supertonic sample OK:',reading)
+          PY
+
+      - id: aivis
+        name: Discover four Aivis styles and synthesize one new word
+        continue-on-error: true
+        run: |
+          mkdir -p "$HOME/.local/share/AivisSpeech-Engine" && sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
+          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          docker run --rm -d --name aivis-preflight -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 300); do curl -fsS http://127.0.0.1:10101/speakers >/dev/null && break; test "$i" != 300 || { docker logs aivis-preflight; exit 1; }; sleep 2; done
+          MAX_STYLES=4 OUT=/tmp/aivis-model.json python scripts/discover_aivis_model.py
+          python - <<'PY'
+          import json,urllib.parse,urllib.request
+          model=json.load(open('/tmp/aivis-model.json'));assert len(model['styles'])==4,len(model['styles'])
+          reading=json.load(open('word-audio-delta-catalog.json'))['items'][0]['reading'];sid=model['styles'][0]['styleId']
+          q=urllib.parse.urlencode({'text':reading,'speaker':sid})
+          with urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:10101/audio_query?'+q,data=b'',method='POST'),timeout=240) as r:query=json.loads(r.read().decode())
+          body=json.dumps(query,ensure_ascii=False).encode();url='http://127.0.0.1:10101/synthesis?'+urllib.parse.urlencode({'speaker':sid})
+          with urllib.request.urlopen(urllib.request.Request(url,data=body,method='POST',headers={'Content-Type':'application/json'}),timeout=300) as r:wav=r.read()
+          assert len(wav)>1000,len(wav);print('Aivis sample OK:',reading,'styles',len(model['styles']))
+          PY
+          docker stop aivis-preflight
+
+      - if: always()
+        run: docker stop aivis-preflight >/dev/null 2>&1 || true
+
+      - name: Write and commit preflight marker
+        if: always()
+        env:
+          CATALOG: ${{ steps.catalog.outcome }}
+          PERMISSION: ${{ steps.permission.outcome }}
+          VOICEVOX: ${{ steps.voicevox.outcome }}
+          SUPERTONIC: ${{ steps.supertonic.outcome }}
+          AIVIS: ${{ steps.aivis.outcome }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          checks={k:os.environ[k] for k in ('CATALOG','PERMISSION','VOICEVOX','SUPERTONIC','AIVIS')}
+          out={'status':'PASS' if all(v=='success' for v in checks.values()) else 'FAIL','checks':checks}
+          try:
+            d=json.load(open('word-audio-delta-catalog.json'));out['delta_word_count']=d.get('wordCount');out['sample_key']=d.get('items',[{}])[0].get('key')
+          except Exception as e:out['catalog_read_error']=str(e)
+          Path('audit/vocab/results/voice_delta_preflight.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(out)
+          PY
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- audit/vocab/results/voice_delta_preflight.json
+          git commit -m 'Record reviewed vocabulary audio delta preflight' || exit 0
+          git pull --rebase origin audit/vocab-coverage-20260821
+          git push origin HEAD:audit/vocab-coverage-20260821
