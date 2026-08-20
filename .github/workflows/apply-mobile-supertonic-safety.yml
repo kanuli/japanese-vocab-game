@@ -1,166 +1,19 @@
-# Temporary registered-runner entry for reviewed vocabulary hosted-audio completion.
-# Trigger revision 9: browser delta script is now loaded after the base multivoice player.
-name: Finalize reviewed vocabulary hosted-audio delta
+name: Apply mobile Supertonic safety (legacy manual)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/apply-mobile-supertonic-safety.yml'
 
 permissions:
   contents: write
 
-env:
-  VV_TAG: voicevox-vocab-delta-20260821-v1
-  ST_TAG: word-supertonic3-delta-20260821-v1
-  AV_TAG: word-aivis-delta-20260821-v1
-
-concurrency:
-  group: finalize-reviewed-vocabulary-audio-delta
-  cancel-in-progress: true
-
 jobs:
-  finalize:
+  patch:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: audit/vocab-coverage-20260821
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Record finalizer start
+          ref: main
+      - name: Legacy notice
         run: |
-          python - <<'PY'
-          import json,datetime,os
-          from pathlib import Path
-          Path('audit/vocab/results/voice_delta_finalizer_started.json').write_text(json.dumps({
-            'status':'STARTED','run_id':os.environ.get('GITHUB_RUN_ID'),'run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
-            'started_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()
-          },ensure_ascii=False,indent=2),encoding='utf-8')
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- audit/vocab/results/voice_delta_finalizer_started.json
-          git commit -m 'Record reviewed audio finalizer start' || true
-          git push origin HEAD:audit/vocab-coverage-20260821
-
-      - name: Rebuild authoritative desired and exact 713-key delta source
-        env:
-          CATALOG_OUT: audit/vocab/results/desired_word_voice_catalog.json
-        run: |
-          node scripts/build_word_voicevox_catalog.mjs
-          python tools/audit_vocab_voice_coverage.py --results audit/vocab/results
-          python scripts/build_word_audio_delta_catalog.py
-          python - <<'PY'
-          import json
-          d=json.load(open('word-audio-delta-catalog.json',encoding='utf-8'))
-          assert d['wordCount']==713 and len(d['items'])==713 and d.get('missingSetEqualsReviewedAdditions') is True
-          print('Exact reviewed delta source:',d['wordCount'])
-          PY
-
-      - name: Download all existing Release indexes only
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p /tmp/vv /tmp/st /tmp/av
-          gh release download "$VV_TAG" --pattern 'word-voicevox-delta-*-index.json' --dir /tmp/vv
-          gh release download "$ST_TAG" --pattern 'word-supertonic3-delta-*-index.json' --dir /tmp/st
-          gh release download "$AV_TAG" --pattern 'word-aivis-delta-*-index.json' --dir /tmp/av
-          test "$(find /tmp/vv -type f | wc -l)" -eq 43
-          test "$(find /tmp/st -type f | wc -l)" -eq 10
-          test "$(find /tmp/av -type f | wc -l)" -eq 4
-          echo 'Release indexes: VOICEVOX=43 Supertonic=10 Aivis=4'
-
-      - name: Validate all 57 indexes and rebuild ready delta catalogs
-        run: |
-          python scripts/finalize_word_audio_delta_from_release_indexes.py \
-            --vv-dir /tmp/vv --st-dir /tmp/st --av-dir /tmp/av \
-            --vv-tag "$VV_TAG" --st-tag "$ST_TAG" --av-tag "$AV_TAG"
-          python - <<'PY'
-          import json
-          for p,n,v in [
-            ('word-voicevox-delta-catalog.json',713,43),
-            ('word-supertonic3-delta-catalog.json',713,10),
-            ('word-aivis-delta-catalog.json',713,4),
-          ]:
-            d=json.load(open(p,encoding='utf-8'))
-            assert d['status']=='ready' and d['wordCount']==n and d['recordingCount']==n*v,(p,d.get('status'),d.get('wordCount'),d.get('recordingCount'))
-          print('All three ready delta catalogs validated.')
-          PY
-
-      - name: Verify representative hosted byte ranges from each engine
-        run: |
-          python - <<'PY'
-          import json,urllib.request
-          from pathlib import Path
-          dirs=[Path('/tmp/vv'),Path('/tmp/st'),Path('/tmp/av')]
-          for d in dirs:
-            p=sorted(d.glob('*.json'))[0]
-            idx=json.load(open(p,encoding='utf-8'));b=(idx.get('bundles') or {}).get('0');members=b.get('members') or {}
-            ident,(off,size)=next(iter(members.items()));off=int(off);size=int(size)
-            url=b.get('githubUrl') or b.get('hfUrl') or b.get('url')
-            req=urllib.request.Request(url,headers={'Range':f'bytes={off}-{off+size-1}','User-Agent':'reviewed-vocab-audio-finalizer'})
-            with urllib.request.urlopen(req,timeout=60) as r:
-              body=r.read();status=getattr(r,'status',None)
-            if len(body)!=size:raise SystemExit(f'{p.name}: hosted range size {len(body)} != {size}, HTTP={status}')
-            print(p.name,'sample member',ident,'bytes',size,'OK')
-          PY
-
-      - name: Re-run exact hosted voice coverage audit
-        run: |
-          python tools/audit_vocab_voice_coverage.py --results audit/vocab/results
-          python - <<'PY'
-          import json
-          d=json.load(open('audit/vocab/results/voice_coverage_summary.json',encoding='utf-8'))
-          assert d['desired_word_count']==23046
-          assert d['invalid_reading_count']==0
-          assert d['missing_union_count']==0
-          assert d['hosted_voice_coverage_complete'] is True
-          expected={'voicevox':43,'supertonic3':10,'aivis':4}
-          for e,voices in expected.items():
-            x=d['engines'][e]
-            assert x['delta_status']=='ready' and x['delta_hosted_word_count']==713
-            assert x['combined_hosted_exact_keys']==23046 and x['missing_hosted_exact_keys']==0
-            assert x['voice_count']==voices
-          print('Hosted voice exact coverage: 23046/23046; missing=0; invalid=0')
-          PY
-
-      - name: Validate browser delta integration and write authoritative completion
-        run: |
-          node --check wordaudio-delta-voices.js
-          grep -q 'wordaudio-delta-voices.js' wordaudio.html
-          python tools/write_vocab_voice_completion.py
-          python - <<'PY'
-          import json
-          d=json.load(open('audit/vocab/results/overall_vocab_voice_completion.json',encoding='utf-8'))
-          assert d['status']=='PASS',d
-          assert d['hosted_voice']['effective_missing_exact_words']==0
-          assert d['hosted_voice']['coverage_complete'] is True
-          assert d['voice_delta']['status']=='PASS' and d['voice_delta']['exact_delta_words']==713
-          print('OVERALL COMPLETION PASS')
-          PY
-
-      - name: Commit only finalized catalogs and validation evidence
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- \
-            word-voicevox-delta-catalog.json word-supertonic3-delta-catalog.json word-aivis-delta-catalog.json \
-            audit/vocab/results/voice_coverage_summary.json audit/vocab/results/voice_missing_voicevox.csv \
-            audit/vocab/results/voice_missing_supertonic3.csv audit/vocab/results/voice_missing_aivis.csv \
-            audit/vocab/results/voice_missing_union.csv audit/vocab/results/voice_delta_completion.json \
-            audit/vocab/results/overall_vocab_voice_completion.json
-          git commit -m 'Complete reviewed vocabulary hosted audio coverage' || true
-          git reset --hard HEAD
-          git clean -fd
-          git fetch origin audit/vocab-coverage-20260821
-          git rebase origin/audit/vocab-coverage-20260821
-          git push origin HEAD:audit/vocab-coverage-20260821
+          echo 'The one-time mobile Supertonic safety migration has already been applied.'
+          echo 'Use the mobile hosted playback workflow for current mobile audio fixes.'
