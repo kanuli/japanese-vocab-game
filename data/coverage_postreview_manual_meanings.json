@@ -1,0 +1,9 @@
+{
+  "version": "20260821-v1",
+  "rule": "exact-written-form+reading",
+  "scope": "safe residual exact-surface cleanup discovered after reviewed direct/source-check completion",
+  "count": 1,
+  "entries": [
+    ["N1", "どうぞよろしく", "どうぞ宜しく", "請多多指教；請多關照；初次見面請多指教"]
+  ]
+}
