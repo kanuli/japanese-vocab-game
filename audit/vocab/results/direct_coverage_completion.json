@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "completed_at": "2026-08-21",
+  "scope": "Direct-reviewed strict surface-form vocabulary additions",
+  "coverage_rule": "Only the exact normalized written form + reading counts. Same-reading, different-writing, and same-JMdict-entry forms remain independent learning items.",
+  "direct_reviewed_candidates": 337,
+  "automatic_bundle_layer": {
+    "count": 152,
+    "source": "data/coverage_additions.json -> data/advanced_vocab.js",
+    "validation_report": "audit/vocab/results/coverage_additions_validation.json",
+    "validation_passed": true,
+    "missing_from_bundle": 0,
+    "invalid_traditional_chinese_meanings": 0,
+    "invalid_levels": 0,
+    "duplicate_addition_keys": 0
+  },
+  "manual_completion_layer": {
+    "count": 185,
+    "runtime_file": "data/coverage_deferred_manual.js",
+    "canonical_meaning_file": "data/coverage_manual_meanings.json",
+    "node_syntax_check": "passed",
+    "executed_entry_count": 185,
+    "unique_exact_keys": 185,
+    "invalid_traditional_chinese_meanings": 0,
+    "invalid_levels": 0,
+    "duplicate_exact_keys": 0
+  },
+  "combined_direct_coverage": {
+    "automatic": 152,
+    "manual": 185,
+    "total": 337,
+    "remaining_direct_reviewed_deferred": 0,
+    "complete": true
+  },
+  "runtime_loading": {
+    "loader": "advanced_words.js",
+    "order": [
+      "advanced_words_curated.js",
+      "data/advanced_vocab.js",
+      "data/coverage_deferred_manual.js",
+      "large_vocab_loader.js"
+    ]
+  },
+  "audit_integration": {
+    "strict_audit": "tools/audit_vocab_surface_forms.py",
+    "manual_completion_source_included": true,
+    "manual_source": "data/coverage_manual_meanings.json"
+  },
+  "note": "coverage_additions_deferred.csv remains the historical automatic-meaning lookup failure list. Those 185 rows are now completed by the reviewed manual TC layer and are no longer unresolved direct-add items."
+}
