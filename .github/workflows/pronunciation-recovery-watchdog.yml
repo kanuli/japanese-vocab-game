@@ -4,9 +4,13 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '17 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.pronunciation-recovery-controller-trigger'
 
 permissions:
-  contents: read
+  contents: write
   actions: write
 
 jobs:
@@ -18,47 +22,89 @@ jobs:
         with:
           ref: main
 
-      - name: Check completion state
-        id: state
+      - name: Inspect completion and active recovery runs
+        id: inspect
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           python - <<'PY'
-          import json, os
+          import json,os
           from pathlib import Path
           def load(path):
-              try:
-                  return json.loads(Path(path).read_text(encoding='utf-8'))
-              except Exception:
-                  return {}
+              try:return json.loads(Path(path).read_text(encoding='utf-8'))
+              except Exception:return {}
           st=load('pronunciation-supertonic-original-index.json')
           vv=load('pronunciation-voicevox-original-index.json')
           st_ready=(st.get('status')=='ready' and st.get('questionCount')==6690 and st.get('voiceCount')==10 and st.get('recordingCount')==66900)
           vv_ready=(vv.get('status')=='ready' and vv.get('questionCount')==6690 and vv.get('speakerCount')==43 and vv.get('recordingCount')==287670)
           complete=st_ready and vv_ready
-          print(f'Supertonic ready={st_ready}; VOICEVOX ready={vv_ready}; complete={complete}')
           with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
               f.write('complete='+('true' if complete else 'false')+'\n')
+          print('completion',{'supertonic':st_ready,'voicevox':vv_ready,'complete':complete})
+          PY
+          gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/recover-pronunciation-hosted-audio.yml/runs?per_page=20" > /tmp/runs-before.json
+          python - <<'PY'
+          import json,os
+          d=json.load(open('/tmp/runs-before.json',encoding='utf-8'))
+          active={'queued','in_progress','waiting','requested','pending'}
+          runs=d.get('workflow_runs') or []
+          a=[r for r in runs if r.get('status') in active]
+          print('active recovery runs before dispatch:',[(r.get('id'),r.get('status')) for r in a])
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:f.write('active='+str(len(a))+'\n')
           PY
 
-      - name: Check whether recovery is already active
-        if: steps.state.outputs.complete != 'true'
-        id: active
+      - name: Dispatch recovery when incomplete and inactive
+        if: steps.inspect.outputs.complete != 'true' && steps.inspect.outputs.active == '0'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          IN_PROGRESS=$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/recover-pronunciation-hosted-audio.yml/runs?status=in_progress&per_page=10" --jq '.total_count')
-          QUEUED=$(gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/recover-pronunciation-hosted-audio.yml/runs?status=queued&per_page=10" --jq '.total_count')
-          TOTAL=$((IN_PROGRESS + QUEUED))
-          echo "Active recovery runs: in_progress=$IN_PROGRESS queued=$QUEUED total=$TOTAL"
-          echo "total=$TOTAL" >> "$GITHUB_OUTPUT"
-
-      - name: Dispatch targeted recovery if needed
-        if: steps.state.outputs.complete != 'true' && steps.active.outputs.total == '0'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
+          set -euo pipefail
           gh workflow run recover-pronunciation-hosted-audio.yml --ref main
-          echo 'Dispatched targeted pronunciation hosted-audio recovery.'
+          echo 'Dispatched HF source-of-truth pronunciation recovery.'
+          sleep 10
 
-      - name: No action needed
-        if: steps.state.outputs.complete == 'true'
-        run: echo 'Pronunciation hosted audio is already fully ready; watchdog will not dispatch recovery.'
+      - name: Write observable controller status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "/repos/$GITHUB_REPOSITORY/actions/workflows/recover-pronunciation-hosted-audio.yml/runs?per_page=20" > /tmp/runs-after.json
+          python - <<'PY'
+          import json
+          from datetime import datetime,timezone
+          from pathlib import Path
+          try:
+              vv=json.loads(Path('pronunciation-voicevox-original-index.json').read_text(encoding='utf-8'))
+          except Exception: vv={}
+          d=json.load(open('/tmp/runs-after.json',encoding='utf-8'))
+          active_states={'queued','in_progress','waiting','requested','pending'}
+          rows=[]
+          for r in (d.get('workflow_runs') or [])[:10]:
+              rows.append({
+                'id':r.get('id'),'runNumber':r.get('run_number'),'attempt':r.get('run_attempt'),
+                'status':r.get('status'),'conclusion':r.get('conclusion'),
+                'event':r.get('event'),'createdAt':r.get('created_at'),'updatedAt':r.get('updated_at'),
+                'url':r.get('html_url'),'headSha':r.get('head_sha')
+              })
+          out={
+            'version':1,
+            'checkedAt':datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),
+            'voicevoxIndex':{
+              'status':vv.get('status'),'questionCount':vv.get('questionCount',0),
+              'speakerCount':vv.get('speakerCount',0),'recordingCount':vv.get('recordingCount',0)
+            },
+            'activeRunCount':sum(1 for r in rows if r.get('status') in active_states),
+            'recentRuns':rows
+          }
+          Path('pronunciation-recovery-controller-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pronunciation-recovery-controller-status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Update pronunciation recovery controller status'
+          git pull --rebase origin main
+          git push origin main
