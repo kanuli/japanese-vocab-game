@@ -7,6 +7,12 @@ function loadPageVoiceAudition(){
   if(!allowed.has(page)||document.querySelector('script[data-page-voice-audition]'))return;
   const s=document.createElement('script');s.src=BASE+'page-voice-audition.js?v=20260817v5';s.defer=true;s.dataset.pageVoiceAudition='1';(document.head||document.documentElement).appendChild(s);
 }
+function loadGenericVoiceTest(){
+  const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+  const allowed=new Set(['index.html','grammar.html','wordaudio.html','vocab-plus-game.html','vocabulary-plus.html']);
+  if(!allowed.has(page)||document.querySelector('script[data-generic-voice-test]'))return;
+  const s=document.createElement('script');s.src=BASE+'generic-voice-test.js?v=20260820v1';s.defer=true;s.dataset.genericVoiceTest='1';(document.head||document.documentElement).appendChild(s);
+}
 function loadResultHistory(){
   const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
   const allowed=new Set(['index.html','grammar.html','listening.html','mocktest.html']);
@@ -46,7 +52,8 @@ async function run(){
   }catch(e){paint(el,'bad','⚠ 無法讀取健康狀態','健康檢查失敗：'+(e?.message||e));}
 }
 loadPageVoiceAudition();
+loadGenericVoiceTest();
 loadResultHistory();
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
-window.JapaneseSiteHealth={run,loadPageVoiceAudition,loadResultHistory};
+window.JapaneseSiteHealth={run,loadPageVoiceAudition,loadGenericVoiceTest,loadResultHistory};
 })();
