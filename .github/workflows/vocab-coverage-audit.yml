@@ -6,14 +6,11 @@ on:
     branches:
       - audit/vocab-coverage-20260821
     paths:
-      - tools/audit_vocab_coverage.py
       - tools/audit_vocab_surface_forms.py
       - tools/final_quality_review.py
       - tools/materialize_coverage_additions.py
       - tools/apply_coverage_additions.py
       - tools/validate_coverage_additions.py
-      - tools/build_vocab_bundle.py
-      - audit/vocab/README.md
       - audit/vocab/.run
       - .github/workflows/vocab-coverage-audit.yml
       - advanced_words_curated.js
@@ -22,10 +19,14 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: jlpt-vocab-coverage-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,11 +38,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install vocabulary build dependency
-        run: python -m pip install --disable-pip-version-check opencc-python-reimplemented
-
-      - name: Run baseline N1-N5 vocabulary coverage audit
-        run: python tools/audit_vocab_coverage.py --out audit/vocab/results
+      - name: Install Traditional Chinese converter
+        run: python -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
 
       - name: Run strict written-form + reading audit
         run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
@@ -51,26 +49,24 @@ jobs:
 
       - name: Preserve pre-implementation review snapshot
         run: |
+          rm -rf audit/vocab/results/pre_implementation
           mkdir -p audit/vocab/results/pre_implementation
           cp audit/vocab/results/surface_form_summary.json audit/vocab/results/pre_implementation/surface_form_summary.json
           cp audit/vocab/results/quality_review_summary.json audit/vocab/results/pre_implementation/quality_review_summary.json
           cp audit/vocab/results/final_quality_review_all_missing.csv audit/vocab/results/pre_implementation/final_quality_review_all_missing.csv
           cp audit/vocab/results/quality_review_recommended_add.csv audit/vocab/results/pre_implementation/quality_review_recommended_add.csv
 
-      - name: Materialize reviewed additions with Traditional Chinese meanings
+      - name: Materialize direct reviewed additions with Traditional Chinese meanings
         run: python tools/materialize_coverage_additions.py --results audit/vocab/results --output data/coverage_additions.json
 
-      - name: Rebuild broad advanced vocabulary bundle
-        run: python tools/build_vocab_bundle.py
-
-      - name: Preserve approved exact-form additions in generated bundle
+      - name: Add approved exact surface forms to existing advanced bundle
         run: python tools/apply_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json
 
-      - name: Validate materialized additions survive in bundle
-        run: python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json --report audit/vocab/results/coverage_additions_validation.json
+      - name: Validate generated JavaScript
+        run: node --check data/advanced_vocab.js
 
-      - name: Re-run coverage audit after additions
-        run: python tools/audit_vocab_coverage.py --out audit/vocab/results
+      - name: Validate every materialized addition survives in bundle
+        run: python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json --report audit/vocab/results/coverage_additions_validation.json
 
       - name: Re-run strict surface-form audit after additions
         run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
@@ -110,7 +106,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-      - name: Commit reports and rebuilt vocabulary to audit branch
+      - name: Commit reports and additive vocabulary to audit branch
         if: success()
         run: |
           git config user.name "github-actions[bot]"
@@ -121,4 +117,5 @@ jobs:
             exit 0
           fi
           git commit -m "Apply reviewed JLPT surface-form coverage additions"
+          git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
