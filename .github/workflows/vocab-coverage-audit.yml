@@ -12,6 +12,7 @@ on:
       - scripts/build_word_supertonic_catalog.py
       - scripts/build_word_aivis_catalog.py
       - tools/audit_vocab_voice_coverage.py
+      - tools/write_vocab_voice_completion.py
       - data/advanced_vocab.js
       - data/coverage_deferred_manual.js
       - data/coverage_sourcecheck_manual.js
@@ -19,6 +20,7 @@ on:
       - word-voicevox-delta-catalog.json
       - word-supertonic3-delta-catalog.json
       - word-aivis-delta-catalog.json
+      - audit/vocab/results/voice_delta_completion.json
       - .github/workflows/vocab-coverage-audit.yml
 
 permissions:
@@ -47,7 +49,7 @@ jobs:
         run: |
           node --check scripts/build_word_voicevox_catalog.mjs
           node --check wordaudio-delta-voices.js
-          python -m py_compile tools/audit_vocab_voice_coverage.py scripts/build_word_audio_delta_catalog.py scripts/generate_word_voicevox_delta.py scripts/generate_word_supertonic_shard.py scripts/generate_word_aivis_shard.py scripts/build_word_audio_delta_indexes.py scripts/build_word_shared_audio_catalog.py scripts/build_word_supertonic_catalog.py scripts/build_word_aivis_catalog.py
+          python -m py_compile tools/audit_vocab_voice_coverage.py tools/write_vocab_voice_completion.py scripts/build_word_audio_delta_catalog.py scripts/generate_word_voicevox_delta.py scripts/generate_word_supertonic_shard.py scripts/generate_word_aivis_shard.py scripts/build_word_audio_delta_indexes.py scripts/build_word_shared_audio_catalog.py scripts/build_word_supertonic_catalog.py scripts/build_word_aivis_catalog.py
 
       - name: Build desired exact runtime voice catalog
         env:
@@ -82,10 +84,11 @@ jobs:
           voice=json.loads(Path('audit/vocab/results/voice_coverage_summary.json').read_text(encoding='utf-8'))
           delta=json.loads(Path('word-audio-delta-catalog.json').read_text(encoding='utf-8'))
           newly_reviewed=int(phase['direct_review_phase']['runtime_covered'])+int(phase['sourcecheck_phase']['approved_runtime_covered'])+int(phase['residual_cleanup_phase']['runtime_covered'])
-          checks={'newly_reviewed_exact_keys':newly_reviewed,'base_missing_voice_union':int(voice.get('base_missing_union_count',-1)),'effective_missing_voice_union':int(voice.get('missing_union_count',-1)),'delta_word_count':int(delta.get('wordCount',-1)),'desired_word_count':int(voice.get('desired_word_count',-1)),'invalid_readings':int(voice.get('invalid_reading_count',-1))}
+          checks={'newly_reviewed_exact_keys':newly_reviewed,'base_missing_voice_union':int(voice.get('base_missing_union_count',-1)),'effective_missing_voice_union':int(voice.get('missing_union_count',-1)),'delta_word_count':int(delta.get('wordCount',-1)),'desired_word_count':int(voice.get('desired_word_count',-1)),'invalid_readings':int(voice.get('invalid_reading_count',-1)),'delta_set_equals_reviewed':bool(delta.get('missingSetEqualsReviewedAdditions'))}
           print(checks)
           if checks['newly_reviewed_exact_keys']!=713: raise SystemExit('Reviewed vocabulary count drift')
           if checks['base_missing_voice_union']!=713 or checks['delta_word_count']!=713: raise SystemExit('Base hosted missing set does not exactly match the 713 reviewed additions')
+          if not checks['delta_set_equals_reviewed'] or int(delta.get('reviewedExactKeyCount',-1))!=713: raise SystemExit('Exact missing voice set is not identical to reviewed additions')
           if checks['invalid_readings']!=0: raise SystemExit('One or more voice readings are invalid')
           delta_ready=[]
           for name,x in voice['engines'].items():
@@ -98,11 +101,14 @@ jobs:
             if checks['effective_missing_voice_union']!=713: raise SystemExit('Pre-delta effective missing count should be 713')
           PY
 
+      - name: Write authoritative combined completion marker
+        run: python tools/write_vocab_voice_completion.py
+
       - name: Publish audit summary
         run: |
-          cat audit/vocab/results/voice_coverage_summary.json
-          printf '\n## Hosted vocabulary voice coverage\n\n```json\n' >> "$GITHUB_STEP_SUMMARY"
-          cat audit/vocab/results/voice_coverage_summary.json >> "$GITHUB_STEP_SUMMARY"
+          cat audit/vocab/results/overall_vocab_voice_completion.json
+          printf '\n## Vocabulary + hosted voice completion\n\n```json\n' >> "$GITHUB_STEP_SUMMARY"
+          cat audit/vocab/results/overall_vocab_voice_completion.json >> "$GITHUB_STEP_SUMMARY"
           printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload precise voice reports
@@ -113,6 +119,7 @@ jobs:
             audit/vocab/results/voice_coverage_summary.json
             audit/vocab/results/voice_missing_*.csv
             audit/vocab/results/desired_word_voice_catalog.json
+            audit/vocab/results/overall_vocab_voice_completion.json
             word-audio-delta-catalog.json
           retention-days: 30
 
@@ -120,8 +127,8 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- audit/vocab/results/voice_coverage_summary.json audit/vocab/results/voice_missing_*.csv audit/vocab/results/desired_word_voice_catalog.json word-audio-delta-catalog.json
+          git add -- audit/vocab/results/voice_coverage_summary.json audit/vocab/results/voice_missing_*.csv audit/vocab/results/desired_word_voice_catalog.json audit/vocab/results/overall_vocab_voice_completion.json word-audio-delta-catalog.json
           if git diff --cached --quiet; then echo 'Voice coverage audit already current.'; exit 0; fi
-          git commit -m 'Audit combined hosted voice coverage and exact delta'
+          git commit -m 'Audit authoritative vocabulary and hosted voice completion'
           git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
