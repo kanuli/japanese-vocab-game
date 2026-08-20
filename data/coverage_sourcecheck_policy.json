@@ -1,5 +1,5 @@
 {
-  "version": "20260821-v1",
+  "version": "20260821-v2",
   "scope": "378 ADD_AFTER_SOURCE_CHECK / ADD_VARIANT_AFTER_SOURCE_CHECK candidates",
   "coverage_rule": "exact normalized written form + exact normalized reading",
   "level_policy": "retain external consensus as an estimated learning band; annotate conflicts; do not suppress a valid exact surface form because of level disagreement",
@@ -18,8 +18,10 @@
     "あざ|あざ": "痣；胎記；瘀傷",
     "あんまり|余り": "不太；不怎麼；不多",
     "うまい|甘い": "好吃；美味",
+    "うしろ|後": "後面；背後；後方",
     "おてあらい|御手洗": "洗手間；廁所",
     "ごう|濠": "護城河；壕溝",
+    "ごちそうさま|ご馳走さま": "多謝款待；承蒙招待",
     "すぎ|過ぎ": "超過；過後；……之後",
     "じゅうほう|重宝": "珍貴；便利；有用"
   },
