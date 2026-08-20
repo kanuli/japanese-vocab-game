@@ -1,5 +1,5 @@
-# Trigger revision 5: run latest 378 source-check policy and materialization.
-name: Process reviewed vocabulary coverage branch
+# Trigger revision 6: deterministic finalization of reviewed vocabulary coverage.
+name: Finalize reviewed vocabulary coverage branch
 
 on:
   push:
@@ -13,11 +13,11 @@ permissions:
   contents: write
 
 concurrency:
-  group: process-reviewed-vocab-coverage-branch
+  group: finalize-reviewed-vocab-coverage-branch
   cancel-in-progress: true
 
 jobs:
-  process:
+  finalize:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -32,99 +32,215 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Traditional Chinese converter
-        run: python -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
-
-      - name: Verify source-check scope
-        run: |
-          python - <<'PY'
-          import csv
-          from pathlib import Path
-          p=Path('audit/vocab/results/final_quality_review_all_missing.csv')
-          rows=list(csv.DictReader(p.open(encoding='utf-8-sig', newline='')))
-          allowed={'ADD_AFTER_SOURCE_CHECK','ADD_VARIANT_AFTER_SOURCE_CHECK'}
-          q=[r for r in rows if r.get('quality_decision') in allowed]
-          counts={k:sum(r.get('quality_decision')==k for r in q) for k in sorted(allowed)}
-          print({'source_check_rows':len(q),'decision_counts':counts})
-          if len(q)!=378:
-              raise SystemExit(f'Expected 378 source-check rows, got {len(q)}')
-          PY
-
-      - name: Adjudicate all source-check candidates
-        run: python tools/adjudicate_source_check.py --input audit/vocab/results/final_quality_review_all_missing.csv --results audit/vocab/results
-
-      - name: Materialize approved source-check additions
-        run: python tools/materialize_coverage_additions.py --mode source-check --results audit/vocab/results --output data/coverage_sourcecheck_additions.json
-
-      - name: Check source-check accounting
+      - name: Verify completed review accounting
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          a=json.loads(Path('audit/vocab/results/source_check_adjudication_summary.json').read_text(encoding='utf-8'))
-          m=json.loads(Path('audit/vocab/results/source_check_summary.json').read_text(encoding='utf-8'))
-          print({'adjudication':a,'materialization':m})
-          if int(a.get('input_source_check_candidates',-1))!=378:
-              raise SystemExit('Adjudication did not process exactly 378 rows')
-          if int(a.get('approved',-1))+int(a.get('held',-1))!=378:
-              raise SystemExit('Adjudication accounting mismatch')
-          if int(m.get('eligible_rows',-1))!=int(a.get('approved',-2)):
-              raise SystemExit('Materializer eligible count does not equal adjudicated approved count')
-          if int(m.get('materialized_count',-1))+int(m.get('deferred_count',-1))+int(m.get('already_present',-1))!=int(m.get('eligible_rows',-2)):
-              raise SystemExit('Materialization accounting mismatch')
+          p=Path
+          d=json.loads(p('audit/vocab/results/coverage_additions_summary.json').read_text(encoding='utf-8'))
+          a=json.loads(p('audit/vocab/results/source_check_adjudication_summary.json').read_text(encoding='utf-8'))
+          s=json.loads(p('audit/vocab/results/source_check_summary.json').read_text(encoding='utf-8'))
+          dm=json.loads(p('data/coverage_manual_meanings.json').read_text(encoding='utf-8'))
+          sm=json.loads(p('data/coverage_sourcecheck_manual_meanings.json').read_text(encoding='utf-8'))
+          checks={
+            'direct_eligible': int(d.get('eligible_add_rows',-1))==337,
+            'direct_auto_plus_manual': int(d.get('materialized_count',-1))==152 and int(d.get('deferred_count',-1))==185,
+            'sourcecheck_input': int(a.get('input_source_check_candidates',-1))==378,
+            'sourcecheck_approved_held': int(a.get('approved',-1))==375 and int(a.get('held',-1))==3,
+            'sourcecheck_auto_manual': int(s.get('materialized_count',-1))==309 and int(s.get('deferred_count',-1))==66,
+            'direct_manual_count': int(dm.get('count',-1))==185 and len(dm.get('entries') or [])==185,
+            'sourcecheck_manual_count': int(sm.get('count',-1))==66 and len(sm.get('entries') or [])==66,
+          }
+          print(checks)
+          bad=[k for k,v in checks.items() if not v]
+          if bad:
+            raise SystemExit('Review accounting failed: '+', '.join(bad))
           PY
 
-      - name: Apply source-check additions to advanced bundle
-        run: python tools/apply_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_sourcecheck_additions.json
+      - name: Merge canonical manual runtime ledger
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          direct_path=Path('data/coverage_manual_meanings.json')
+          source_path=Path('data/coverage_sourcecheck_manual_meanings.json')
+          direct=json.loads(direct_path.read_text(encoding='utf-8'))
+          source=json.loads(source_path.read_text(encoding='utf-8'))
+          de=list(direct.get('entries') or [])
+          se=list(source.get('entries') or [])
+          if len(de)!=185 or len(se)!=66:
+            raise SystemExit(f'Expected manual components 185 + 66, got {len(de)} + {len(se)}')
+          def key(row):
+            return f'{str(row[1]).strip()}|{str(row[2] or row[1]).strip()}'
+          seen=set(); merged=[]
+          for row in [*de,*se]:
+            if not isinstance(row,list) or len(row)<4:
+              raise SystemExit('Malformed manual coverage entry')
+            k=key(row)
+            if k in seen:
+              raise SystemExit(f'Duplicate exact manual key: {k}')
+            seen.add(k); merged.append(row[:4])
+          if len(merged)!=251:
+            raise SystemExit(f'Expected 251 unique manual runtime entries, got {len(merged)}')
+          out={
+            'version':'20260821-v2-complete-reviewed-manual',
+            'rule':'exact-written-form+reading',
+            'scope':'canonical manual runtime ledger: 185 direct-review + 66 source-check-review entries',
+            'count':len(merged),
+            'components':{'direct_reviewed_manual':185,'sourcecheck_reviewed_manual':66},
+            'entries':merged,
+          }
+          direct_path.write_text(json.dumps(out,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+          print({'canonical_manual_count':len(merged)})
+          PY
 
-      - name: Validate generated JavaScript
-        run: node --check data/advanced_vocab.js
+      - name: Validate browser manual layers
+        run: |
+          node --check advanced_words.js
+          node --check data/coverage_deferred_manual.js
+          node --check data/coverage_sourcecheck_manual.js
+          node - <<'JS'
+          global.window={ADVANCED_WORDS:[]};
+          require('./data/coverage_deferred_manual.js');
+          const direct=window.ADVANCED_WORDS.length;
+          require('./data/coverage_sourcecheck_manual.js');
+          const total=window.ADVANCED_WORDS.length;
+          const keys=window.ADVANCED_WORDS.map(x=>`${x.reading}|${x.kanji||x.displayWord||x.reading}`);
+          const unique=new Set(keys);
+          const badMeaning=window.ADVANCED_WORDS.filter(x=>!/[\u3400-\u9fff々]/u.test(String(x.meaning||'')));
+          console.log({direct,total,unique:unique.size,badTraditionalChineseShape:badMeaning.length});
+          if(direct!==185) throw Error(`direct browser layer expected 185, got ${direct}`);
+          if(total!==251) throw Error(`combined browser manual layers expected 251, got ${total}`);
+          if(unique.size!==251) throw Error(`combined browser manual exact keys not unique: ${unique.size}`);
+          if(badMeaning.length) throw Error(`manual meanings missing Chinese characters: ${badMeaning.length}`);
+          JS
 
-      - name: Validate source-check additions survive in bundle
-        run: python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_sourcecheck_additions.json --report audit/vocab/results/source_check_validation.json
+      - name: Validate bundle addition artifacts
+        run: |
+          python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json --report audit/vocab/results/coverage_additions_validation.json
+          python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_sourcecheck_additions.json --report audit/vocab/results/source_check_validation.json
+          node --check data/advanced_vocab.js
 
-      - name: Re-run strict exact-surface audit
+      - name: Re-run strict exact-surface audit with complete runtime
         run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
+
+      - name: Validate reviewed exact-key coverage and HOLD isolation
+        run: |
+          python - <<'PY'
+          import csv, json, sys
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          import audit_vocab_coverage as A
+
+          def nk(reading,word):
+            return f'{A.normalize_reading(str(reading or ""))}|{A.normalize_word(str(word or reading or ""))}'
+          def csv_rows(path):
+            with Path(path).open(encoding='utf-8-sig',newline='') as f:
+              return list(csv.DictReader(f))
+
+          missing_rows=csv_rows('audit/vocab/results/missing_surface_high_confidence.csv')+csv_rows('audit/vocab/results/missing_surface_single_source.csv')
+          missing={nk(r.get('reading'),r.get('word')) for r in missing_rows}
+
+          direct_auto=json.loads(Path('data/coverage_additions.json').read_text(encoding='utf-8')).get('additions') or []
+          manual=json.loads(Path('data/coverage_manual_meanings.json').read_text(encoding='utf-8')).get('entries') or []
+          direct_manual=manual[:185]
+          source_manual=json.loads(Path('data/coverage_sourcecheck_manual_meanings.json').read_text(encoding='utf-8')).get('entries') or []
+          source_auto=json.loads(Path('data/coverage_sourcecheck_additions.json').read_text(encoding='utf-8')).get('additions') or []
+          held=csv_rows('audit/vocab/results/source_check_held.csv')
+
+          direct_keys={nk(x.get('reading'),x.get('word')) for x in direct_auto}
+          direct_keys.update(nk(x[1],x[2]) for x in direct_manual)
+          source_keys={nk(x.get('reading'),x.get('word')) for x in source_auto}
+          source_keys.update(nk(x[1],x[2]) for x in source_manual)
+          held_keys={nk(x.get('reading'),x.get('word')) for x in held}
+
+          checks={
+            'direct_reviewed_exact_keys':len(direct_keys),
+            'sourcecheck_approved_exact_keys':len(source_keys),
+            'held_exact_keys':len(held_keys),
+            'direct_still_missing':len(direct_keys & missing),
+            'sourcecheck_approved_still_missing':len(source_keys & missing),
+            'held_still_missing':len(held_keys & missing),
+          }
+          print(checks)
+          if len(direct_keys)!=337:
+            raise SystemExit(f'Direct reviewed key count drift: {len(direct_keys)} != 337')
+          if len(source_keys)!=375:
+            raise SystemExit(f'Source-check approved key count drift: {len(source_keys)} != 375')
+          if len(held_keys)!=3:
+            raise SystemExit(f'HOLD key count drift: {len(held_keys)} != 3')
+          if direct_keys & missing:
+            raise SystemExit(f'{len(direct_keys & missing)} direct-reviewed exact keys remain missing')
+          if source_keys & missing:
+            raise SystemExit(f'{len(source_keys & missing)} source-check approved exact keys remain missing')
+          if len(held_keys & missing)!=3:
+            raise SystemExit('One or more HOLD exact keys were accidentally published or disappeared from the reference gap set')
+          Path('audit/vocab/results/reviewed_runtime_validation.json').write_text(json.dumps({**checks,'status':'PASS'},ensure_ascii=False,indent=2),encoding='utf-8')
+          PY
 
       - name: Re-run quality review on remaining strict gaps
         run: python tools/review_vocab_missing_quality.py --results audit/vocab/results
 
-      - name: Write source-check completion marker
+      - name: Write corrected completion markers
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          a=json.loads(Path('audit/vocab/results/source_check_adjudication_summary.json').read_text(encoding='utf-8'))
-          m=json.loads(Path('audit/vocab/results/source_check_summary.json').read_text(encoding='utf-8'))
-          v=json.loads(Path('audit/vocab/results/source_check_validation.json').read_text(encoding='utf-8'))
-          s=json.loads(Path('audit/vocab/results/surface_form_summary.json').read_text(encoding='utf-8'))
-          out={
-            'status':'PASS' if v.get('status')=='passed' else 'FAIL',
+          P=Path
+          d=json.loads(P('audit/vocab/results/coverage_additions_summary.json').read_text(encoding='utf-8'))
+          a=json.loads(P('audit/vocab/results/source_check_adjudication_summary.json').read_text(encoding='utf-8'))
+          s=json.loads(P('audit/vocab/results/source_check_summary.json').read_text(encoding='utf-8'))
+          dv=json.loads(P('audit/vocab/results/coverage_additions_validation.json').read_text(encoding='utf-8'))
+          sv=json.loads(P('audit/vocab/results/source_check_validation.json').read_text(encoding='utf-8'))
+          rv=json.loads(P('audit/vocab/results/reviewed_runtime_validation.json').read_text(encoding='utf-8'))
+          surf=json.loads(P('audit/vocab/results/surface_form_summary.json').read_text(encoding='utf-8'))
+          passed=bool(dv.get('passed')) and bool(sv.get('passed')) and rv.get('status')=='PASS'
+          source_out={
+            'status':'PASS' if passed else 'FAIL',
             'input_source_check_candidates':a.get('input_source_check_candidates'),
             'approved':a.get('approved'),
             'held':a.get('held'),
-            'materialized':m.get('materialized_count'),
-            'deferred_after_tc_lookup':m.get('deferred_count'),
-            'already_present':m.get('already_present'),
-            'validation':v,
-            'strict_missing_after_source_check':{
-              'high_confidence':s.get('exact_surface_missing_high_confidence'),
-              'single_source':s.get('exact_surface_missing_single_source'),
-              'all':s.get('exact_surface_missing_all')
-            }
+            'materialized_automatic':s.get('materialized_count'),
+            'manual_tc_completion':66,
+            'approved_runtime_covered':375 if rv.get('sourcecheck_approved_still_missing')==0 else 375-rv.get('sourcecheck_approved_still_missing',0),
+            'held_remaining_unpublished':rv.get('held_still_missing'),
+            'validation':sv,
           }
-          Path('audit/vocab/results/source_check_completion.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
-          print(json.dumps(out,ensure_ascii=False,indent=2))
+          P('audit/vocab/results/source_check_completion.json').write_text(json.dumps(source_out,ensure_ascii=False,indent=2),encoding='utf-8')
+          final={
+            'status':'PASS' if passed else 'FAIL',
+            'coverage_rule':'exact normalized written form + exact normalized reading',
+            'direct_review_phase':{
+              'eligible':337,
+              'automatic':d.get('materialized_count'),
+              'manual_tc':185,
+              'runtime_covered':337 if rv.get('direct_still_missing')==0 else 337-rv.get('direct_still_missing',0),
+            },
+            'sourcecheck_phase':source_out,
+            'manual_runtime_ledger_count':251,
+            'remaining_strict_reference_gaps':{
+              'high_confidence':surf.get('exact_surface_missing_high_confidence'),
+              'single_source':surf.get('exact_surface_missing_single_source'),
+              'all':surf.get('exact_surface_missing_all'),
+            },
+            'remaining_gaps_note':'Remaining gaps are outside the 337 direct-approved + 375 source-check-approved scope or are explicitly held/manual/low-priority; they are not silently treated as covered.',
+            'runtime_validation':rv,
+          }
+          P('audit/vocab/results/vocab_coverage_phase_completion.json').write_text(json.dumps(final,ensure_ascii=False,indent=2),encoding='utf-8')
+          print(json.dumps(final,ensure_ascii=False,indent=2))
+          if not passed:
+            raise SystemExit('Final reviewed vocabulary coverage validation failed')
           PY
 
-      - name: Commit processed results to audit branch
+      - name: Commit finalized results to audit branch
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/advanced_vocab.js data/coverage_sourcecheck_additions.json audit/vocab/results
+          git add -- data/coverage_manual_meanings.json audit/vocab/results
           if git diff --cached --quiet; then
-            echo 'No source-check changes to commit.'
+            echo 'No finalization changes to commit.'
             exit 0
           fi
-          git commit -m 'Apply source-checked JLPT surface-form additions'
+          git commit -m 'Finalize reviewed JLPT vocabulary coverage validation'
           git push origin HEAD:audit/vocab-coverage-20260821
