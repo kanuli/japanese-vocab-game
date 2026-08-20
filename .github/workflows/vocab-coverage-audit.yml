@@ -40,6 +40,12 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Validate voice maintenance code syntax
+        run: |
+          node --check scripts/build_word_voicevox_catalog.mjs
+          node --check wordaudio-delta-voices.js
+          python -m py_compile tools/audit_vocab_voice_coverage.py scripts/build_word_audio_delta_catalog.py scripts/generate_word_voicevox_delta.py scripts/generate_word_supertonic_shard.py scripts/generate_word_aivis_shard.py scripts/build_word_audio_delta_indexes.py scripts/build_word_shared_audio_catalog.py scripts/build_word_supertonic_catalog.py scripts/build_word_aivis_catalog.py
+
       - name: Build desired exact runtime voice catalog
         env:
           CATALOG_OUT: audit/vocab/results/desired_word_voice_catalog.json
@@ -50,9 +56,7 @@ jobs:
           python - <<'PY'
           import json,re
           from pathlib import Path
-          p=Path('audit/vocab/results/desired_word_voice_catalog.json')
-          d=json.loads(p.read_text(encoding='utf-8'))
-          rows=d.get('words') or []
+          d=json.loads(Path('audit/vocab/results/desired_word_voice_catalog.json').read_text(encoding='utf-8'));rows=d.get('words') or []
           if int(d.get('wordCount',-1))!=len(rows): raise SystemExit('desired wordCount mismatch')
           if len({r.get('key') for r in rows})!=len(rows): raise SystemExit('duplicate desired exact keys')
           bad=[r.get('key') for r in rows if not re.fullmatch(r'[ぁ-ゖァ-ヺー・ヽヾゝゞ]+',str(r.get('reading') or ''))]
@@ -60,10 +64,10 @@ jobs:
           print({'desired_word_count':len(rows),'invalid_readings':len(bad),'core_count':d.get('coreCount'),'advanced_count':d.get('advancedCount')})
           PY
 
-      - name: Compare all hosted voice catalogs
+      - name: Compare base plus optional delta hosted catalogs
         run: python tools/audit_vocab_voice_coverage.py --results audit/vocab/results
 
-      - name: Build exact missing-audio delta source
+      - name: Build exact base-missing audio delta source
         run: python scripts/build_word_audio_delta_catalog.py
 
       - name: Gate voice delta against newly reviewed vocabulary
@@ -75,19 +79,20 @@ jobs:
           voice=json.loads(Path('audit/vocab/results/voice_coverage_summary.json').read_text(encoding='utf-8'))
           delta=json.loads(Path('word-audio-delta-catalog.json').read_text(encoding='utf-8'))
           newly_reviewed=int(phase['direct_review_phase']['runtime_covered'])+int(phase['sourcecheck_phase']['approved_runtime_covered'])+int(phase['residual_cleanup_phase']['runtime_covered'])
-          checks={
-            'newly_reviewed_exact_keys':newly_reviewed,
-            'missing_voice_union':int(voice.get('missing_union_count',-1)),
-            'delta_word_count':int(delta.get('wordCount',-1)),
-            'desired_word_count':int(voice.get('desired_word_count',-1)),
-            'invalid_readings':int(voice.get('invalid_reading_count',-1)),
-          }
+          checks={'newly_reviewed_exact_keys':newly_reviewed,'base_missing_voice_union':int(voice.get('base_missing_union_count',-1)),'effective_missing_voice_union':int(voice.get('missing_union_count',-1)),'delta_word_count':int(delta.get('wordCount',-1)),'desired_word_count':int(voice.get('desired_word_count',-1)),'invalid_readings':int(voice.get('invalid_reading_count',-1))}
           print(checks)
           if checks['newly_reviewed_exact_keys']!=713: raise SystemExit('Reviewed vocabulary count drift')
-          if checks['missing_voice_union']!=713 or checks['delta_word_count']!=713: raise SystemExit('Missing hosted voices do not exactly match the 713 reviewed additions')
-          if checks['invalid_readings']!=0: raise SystemExit('One or more new voice readings are invalid')
+          if checks['base_missing_voice_union']!=713 or checks['delta_word_count']!=713: raise SystemExit('Base hosted missing set does not exactly match the 713 reviewed additions')
+          if checks['invalid_readings']!=0: raise SystemExit('One or more voice readings are invalid')
+          delta_ready=[]
           for name,x in voice['engines'].items():
-            if int(x.get('missing_hosted_exact_keys',-1))!=713: raise SystemExit(f'{name} missing voice count mismatch')
+            if int(x.get('base_missing_hosted_exact_keys',-1))!=713: raise SystemExit(f'{name} base missing voice count mismatch')
+            delta_ready.append(x.get('delta_status')=='ready')
+          if any(delta_ready) and not all(delta_ready): raise SystemExit('Only some hosted audio delta catalogs are ready')
+          if all(delta_ready):
+            if checks['effective_missing_voice_union']!=0 or not voice.get('hosted_voice_coverage_complete'): raise SystemExit('Delta catalogs exist but combined hosted voice coverage is not complete')
+          else:
+            if checks['effective_missing_voice_union']!=713: raise SystemExit('Pre-delta effective missing count should be 713')
           PY
 
       - name: Publish audit summary
@@ -97,7 +102,7 @@ jobs:
           cat audit/vocab/results/voice_coverage_summary.json >> "$GITHUB_STEP_SUMMARY"
           printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Upload precise missing-voice reports
+      - name: Upload precise voice reports
         uses: actions/upload-artifact@v4
         with:
           name: vocabulary-hosted-voice-coverage
@@ -113,10 +118,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- audit/vocab/results/voice_coverage_summary.json audit/vocab/results/voice_missing_*.csv audit/vocab/results/desired_word_voice_catalog.json word-audio-delta-catalog.json
-          if git diff --cached --quiet; then
-            echo 'Voice coverage audit already current.'
-            exit 0
-          fi
-          git commit -m 'Audit hosted voice coverage and build exact delta'
+          if git diff --cached --quiet; then echo 'Voice coverage audit already current.'; exit 0; fi
+          git commit -m 'Audit combined hosted voice coverage and exact delta'
           git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
