@@ -16,6 +16,9 @@ on:
       - data/coverage_deferred_manual.js
       - data/coverage_sourcecheck_manual.js
       - data/coverage_postreview_manual.js
+      - word-voicevox-delta-catalog.json
+      - word-supertonic3-delta-catalog.json
+      - word-aivis-delta-catalog.json
       - .github/workflows/vocab-coverage-audit.yml
 
 permissions:
