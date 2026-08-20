@@ -1,6 +1,7 @@
 name: Generate reviewed vocabulary hosted-audio delta
 
 on:
+  workflow_call:
   workflow_dispatch:
   push:
     branches:
