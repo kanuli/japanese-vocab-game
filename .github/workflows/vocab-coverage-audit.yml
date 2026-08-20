@@ -8,6 +8,7 @@ on:
     paths:
       - tools/audit_vocab_coverage.py
       - audit/vocab/README.md
+      - audit/vocab/.run
       - .github/workflows/vocab-coverage-audit.yml
       - data/advanced_vocab.js
       - advanced_words_curated.js
