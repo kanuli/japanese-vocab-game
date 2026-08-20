@@ -77,6 +77,42 @@ async function probeHosted(page,catalogName,groupName,label){
   },{catalogName,groupName,label});
 }
 
+async function checkGenericVoiceTest(context,path,playRealAudio=false){
+  const page=await context.newPage(),errors=[];
+  page.on('pageerror',e=>errors.push(String(e)));
+  try{
+    const r=await page.goto('http://127.0.0.1:4173/'+path+'?genericVoiceTest='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+    if(!r||r.status()>=400)throw new Error(path+' HTTP '+(r?.status()||'none'));
+    await page.locator('#genericVoiceTest').waitFor({state:'visible',timeout:12000});
+    await installTapTarget(page);
+    await page.selectOption('#genericVoiceEngine','voicevox');
+    await page.waitForFunction(()=>{
+      const s=document.querySelector('#genericVoiceChoice');
+      return !!s&&s.options.length>=44&&!/載入中|失敗/.test(s.textContent||'');
+    },null,{timeout:15000});
+    const state=await page.evaluate(()=>({
+      card:!!document.querySelector('#genericVoiceTest'),
+      engine:document.querySelector('#genericVoiceEngine')?.value,
+      voiceCount:document.querySelector('#genericVoiceChoice')?.options.length||0,
+      mode:document.documentElement.dataset.mobileSupertonic,
+      local:window.MobileSupertonicGuard?.localAllowed,
+      version:window.MobileSupertonicGuard?.version
+    }));
+    if(!state.card||state.engine!=='voicevox'||state.voiceCount<44||state.mode!=='hosted-only'||state.local!==false||state.version<4){
+      throw new Error(path+' generic voice setup '+JSON.stringify(state));
+    }
+    if(playRealAudio){
+      await page.selectOption('#genericVoiceChoice',{index:1});
+      await page.locator('#genericVoicePlay').tap({timeout:5000});
+      await page.waitForFunction(()=>/^✅/.test(document.querySelector('#genericVoiceStatus')?.textContent||''),null,{timeout:30000});
+    }
+    if(errors.length)throw new Error(errors.join(' | '));
+    console.log('GENERIC VOICE TEST PASS',path,JSON.stringify({...state,realPlayback:playRealAudio}));
+  }finally{
+    await page.close();
+  }
+}
+
 (async()=>{
   const browser=await webkit.launch({headless:true});
   const context=await browser.newContext({
@@ -133,6 +169,21 @@ async function probeHosted(page,catalogName,groupName,label){
       console.log('MOBILE PAGE PASS',p,JSON.stringify(s));
       await q.close();
     }
+
+    await checkGenericVoiceTest(context,'index.html',true);
+    await checkGenericVoiceTest(context,'grammar.html',false);
+    await checkGenericVoiceTest(context,'wordaudio.html',false);
+    await checkGenericVoiceTest(context,'vocab-plus-game.html',false);
+    await checkGenericVoiceTest(context,'vocabulary-plus.html',false);
+
+    const mock=await context.newPage();
+    const mr=await mock.goto('http://127.0.0.1:4173/mocktest.html?voiceExclusion='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+    if(!mr||mr.status()>=400)throw new Error('mocktest HTTP '+(mr?.status()||'none'));
+    await mock.waitForTimeout(1200);
+    const excluded=await mock.evaluate(()=>!document.querySelector('#genericVoiceTest')&&!document.querySelector('#pageSampleVoice'));
+    if(!excluded)throw new Error('mocktest must remain excluded from generic voice test');
+    console.log('MOCKTEST VOICE EXCLUSION PASS');
+    await mock.close();
   }finally{
     await browser.close();
   }
