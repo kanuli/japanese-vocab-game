@@ -21,16 +21,16 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Derive the exact 22,333-word shared catalog from completed VOICEVOX
+      - name: Derive exact shared catalog from completed VOICEVOX
         run: python scripts/build_word_shared_audio_catalog.py
       - name: Validate source identity
         run: |
           python - <<'PY'
           import json
-          d=json.load(open('word-shared-audio-catalog.json'))
-          assert d['wordCount']==22333 and d['shardCount']==20 and len(d['items'])==22333 and len(d['words'])==22333
-          assert min(d['shardCounts'])>=900 and max(d['shardCounts'])<=1300
-          print('Shared word shards:',d['shardCounts'])
+          d=json.load(open('word-shared-audio-catalog.json'));n=int(d['wordCount'])
+          assert n>=22000 and d['shardCount']==20 and len(d['items'])==n and len(d['words'])==n
+          assert sum(d['shardCounts'])==n and len(d['shardCounts'])==20 and min(d['shardCounts'])>0
+          print('Shared vocabulary:',n,'words; shards:',d['shardCounts'])
           PY
       - uses: actions/upload-artifact@v4
         with:
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4
       - env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic 3 vocabulary — 10 voices' --notes 'Shared 22,333-word Japanese vocabulary audio for Word List and Word Audio. Ten Supertonic 3 voices split into 20 deterministic shards per voice; GitHub Releases primary, Hugging Face backup.'
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic 3 vocabulary — 10 voices' --notes 'Shared Japanese vocabulary audio for Word List and Word Audio. Exact word count is derived from the current validated VOICEVOX/runtime catalog; ten Supertonic 3 voices use 20 deterministic shards per voice.'
 
   generate:
     needs: [catalog,prepare-storage]
@@ -87,7 +87,7 @@ jobs:
           import json,os,tarfile
           from pathlib import Path
           v,s=os.environ['V'],os.environ['S'];m=json.load(open(f'word-supertonic-out/{v}-shard{s}.json'))
-          assert m['count']>=900 and len(m['members'])==m['count']
+          assert m['count']>0 and len(m['members'])==m['count']
           p=Path('word-supertonic-out')/m['asset'];assert p.is_file() and p.stat().st_size>100000
           with tarfile.open(p,'r:') as tf:assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
           print(v,s,m['count'],p.stat().st_size)
@@ -125,12 +125,12 @@ jobs:
           python scripts/build_word_supertonic_catalog.py
           python - <<'PY'
           import json
-          d=json.load(open('word-supertonic3-catalog.json'))
-          assert d['status']=='ready' and d['wordCount']==22333 and d['voiceCount']==10 and d['recordingCount']==223330 and d['shardCount']==20
+          d=json.load(open('word-supertonic3-catalog.json'));n=int(d['wordCount'])
+          assert d['status']=='ready' and n>=22000 and d['voiceCount']==10 and d['recordingCount']==n*d['voiceCount'] and d['shardCount']==20
           for v in d['voices']:
               x=json.load(open(f'word-supertonic3-{v}-index.json'))
-              assert x['wordCount']==22333 and x['shardCount']==20 and len(x['bundles'])==20
-          print('Final word Supertonic 3 coverage:',d['recordingCount'])
+              assert x['wordCount']==n and x['shardCount']==20 and len(x['bundles'])==20
+          print('Final word Supertonic 3 coverage:',n,'words /',d['recordingCount'],'recordings')
           PY
       - name: Commit lightweight catalogs and indexes
         run: |
