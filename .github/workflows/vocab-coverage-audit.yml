@@ -1,0 +1,51 @@
+name: JLPT vocabulary coverage audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - audit/vocab-coverage-20260821
+    paths:
+      - tools/audit_vocab_coverage.py
+      - audit/vocab/README.md
+      - .github/workflows/vocab-coverage-audit.yml
+      - data/advanced_vocab.js
+      - advanced_words_curated.js
+      - wordaudio-data.js
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run N1-N5 vocabulary coverage audit
+        run: python tools/audit_vocab_coverage.py --out audit/vocab/results
+
+      - name: Publish summary to workflow page
+        if: always()
+        run: |
+          if [ -f audit/vocab/results/README.md ]; then
+            cat audit/vocab/results/README.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## Vocabulary coverage audit failed before report generation" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jlpt-vocabulary-coverage-audit
+          path: audit/vocab/results/
+          if-no-files-found: warn
+          retention-days: 30
