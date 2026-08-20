@@ -13,7 +13,7 @@ def write(path,obj):path.write_text(json.dumps(obj,ensure_ascii=False,separators
 def bundle(man,repo,hf,tag,hfdir):
  asset=str(man['asset']);return {'githubUrl':f'https://github.com/{repo}/releases/download/{tag}/{asset}','hfUrl':f'https://huggingface.co/datasets/{hf}/resolve/main/{hfdir}/{asset}?download=true','members':man['members']}
 def index_urls(name,repo,hf,tag,hfdir):
- return {'indexGithubUrl':f'https://github.com/{repo}/releases/download/{tag}/{name}','indexHfUrl':f'https://huggingface.co/datasets/{hf}/resolve/main/{hfdir}/{name}?download=true'}
+ return {'indexGithubUrl':f'https://github.com/{repo}/releases/download/{tag}/{name}','indexHfUrl':f'https://huggingface.co/datasets/{hf}/resolve/main/{hfdir}/indexes/{name}?download=true'}
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--engine',choices=['voicevox','supertonic3','aivis'],required=True);ap.add_argument('--catalog',default='word-audio-delta-catalog.json');ap.add_argument('--manifest-dir',required=True);ap.add_argument('--out-dir',default='word-audio-delta-publish');ap.add_argument('--repo',default=os.environ.get('GITHUB_REPO','kanuli/japanese-vocab-game'));ap.add_argument('--hf',default=os.environ.get('HF_DATASET_REPO','kanuli1983/japanese-listening-voicevox-backup'));ap.add_argument('--tag',required=True);ap.add_argument('--hf-dir',required=True);args=ap.parse_args()
  src=json.loads(Path(args.catalog).read_text(encoding='utf-8'));words=src.get('words') or {};items=src.get('items') or [];n=int(src.get('wordCount',-1));
