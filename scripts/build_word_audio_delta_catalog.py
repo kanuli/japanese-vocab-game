@@ -24,14 +24,11 @@ def main():
  base=missing_sets['voicevox']
  for name,s in missing_sets.items():
   if s!=base:raise SystemExit(f'Hosted missing-key sets differ: voicevox={len(base)}, {name}={len(s)}')
- if not base:
-  print('No missing hosted vocabulary audio keys.');items=[]
- else:
-  items=[]
-  for key in sorted(base):
-   x=desired[key];items.append({'id':str(x['id']),'key':key,'reading':str(x['reading']),'written':str(x['written']),'level':str(x['level']),'estimated':bool(x.get('estimated'))})
+ items=[]
+ for key in sorted(base):
+  x=desired[key];items.append({'id':str(x['id']),'key':key,'reading':str(x['reading']),'written':str(x['written']),'level':str(x['level']),'estimated':bool(x.get('estimated')),'shard':0})
  if len({x['id'] for x in items})!=len(items):raise SystemExit('Delta stable IDs are not unique')
- out={'version':1,'status':'delta-source','coverageRule':'exact reading|written-form','desiredWordCount':len(desired),'existingHostedWordCount':len(desired)-len(items),'deltaWordCount':len(items),'items':items,'words':{x['key']:[x['id'],0] for x in items}}
+ out={'version':1,'status':'delta-source','engine':'shared-word-audio-delta','coverageRule':'exact reading|written-form','desiredWordCount':len(desired),'existingHostedWordCount':len(desired)-len(items),'wordCount':len(items),'deltaWordCount':len(items),'shardCount':1,'shardCounts':[len(items)],'items':items,'words':{x['key']:[x['id'],0] for x in items}}
  OUT.write_text(json.dumps(out,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
- print({'desired':len(desired),'delta':len(items)})
+ print({'desired':len(desired),'delta':len(items),'shards':1})
 if __name__=='__main__':main()
