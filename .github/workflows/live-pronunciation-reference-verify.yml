@@ -22,7 +22,7 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --silent "playwright@$PW_VERSION"
           npx playwright install --with-deps webkit >/dev/null
-      - name: Verify live pronunciation Supertonic and VOICEVOX
+      - name: Verify live pronunciation old and original libraries
         run: |
           cat >/tmp/live-pronunciation.cjs <<'NODE'
           const {webkit}=require(process.cwd()+'/node_modules/playwright');
@@ -32,23 +32,68 @@ jobs:
               userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1',
               viewport:{width:390,height:844},hasTouch:true,isMobile:true,serviceWorkers:'block'
             });
-            const page=await context.newPage();const errs=[];page.on('pageerror',e=>errs.push(String(e)));
+            const page=await context.newPage();
+            const errs=[];
+            page.on('pageerror',e=>errs.push(String(e)));
             const url='https://kanuli.github.io/japanese-vocab-game/pronunciation.html?liveRef='+Date.now();
-            const r=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});if(!r||r.status()>=400)throw Error('HTTP '+(r?.status()||'none'));
+            const r=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
+            if(!r||r.status()>=400)throw Error('HTTP '+(r?.status()||'none'));
             await page.waitForFunction(()=>window.PronunciationReferenceAudio&&document.querySelector('#referenceEngine')&&document.querySelector('#referenceVoice')?.options.length>=11,null,{timeout:25000});
-            await page.evaluate(()=>{const b=document.createElement('button');b.id='__liveUnlock';b.textContent='unlock';b.style.cssText='position:fixed;left:8px;top:8px;width:120px;height:70px;z-index:2147483647';document.body.appendChild(b)});
-            await page.locator('#__liveUnlock').tap();await page.waitForTimeout(350);
-            const ui=await page.evaluate(()=>({engine:referenceEngine.value,voiceCount:referenceVoice.options.length,mobile:MobileSupertonicGuard.isMobile,local:MobileSupertonicGuard.localAllowed,state:MobileSupertonicGuard.audioState()}));
-            if(ui.engine!=='supertonic'||ui.voiceCount<11||!ui.mobile||ui.local!==false||ui.state.audioContextState!=='running')throw Error('UI '+JSON.stringify(ui));
-            const st=await page.evaluate(async()=>{const o=await PronunciationReferenceAudio.testHosted('supertonic');return{engine:o?.engine,played:o?.played,key:o?.key,label:o?.label,provider:o?.provider,scoreBytes:o?.scoreBytes?.byteLength||0}});
-            if(st.engine!=='supertonic'||!st.played||st.scoreBytes<=0)throw Error('ST '+JSON.stringify(st));
-            console.log('LIVE PRONUNCIATION SUPERTONIC PASS',JSON.stringify(st));
-            const vv=await page.evaluate(async()=>{const o=await PronunciationReferenceAudio.testHosted('voicevox');return{engine:o?.engine,played:o?.played,key:o?.key,label:o?.label,provider:o?.provider,scoreBytes:o?.scoreBytes?.byteLength||0}});
-            if(vv.engine!=='voicevox'||!vv.played||vv.scoreBytes<=0)throw Error('VV '+JSON.stringify(vv));
-            console.log('LIVE PRONUNCIATION VOICEVOX PASS',JSON.stringify(vv));
-            const voicevoxOptions=await page.evaluate(async()=>{referenceEngine.value='voicevox';referenceEngine.dispatchEvent(new Event('change'));await PronunciationReferenceAudio.sync();return referenceVoice.options.length;});
+            await page.evaluate(()=>{
+              const b=document.createElement('button');
+              b.id='__liveUnlock';b.textContent='unlock';
+              b.style.cssText='position:fixed;left:8px;top:8px;width:120px;height:70px;z-index:2147483647';
+              document.body.appendChild(b);
+            });
+            await page.locator('#__liveUnlock').tap();
+            await page.waitForTimeout(350);
+            const ui=await page.evaluate(()=>({
+              engine:referenceEngine.value,
+              supertonicOptions:referenceVoice.options.length,
+              mobile:MobileSupertonicGuard.isMobile,
+              local:MobileSupertonicGuard.localAllowed,
+              state:MobileSupertonicGuard.audioState(),
+              coverage:PronunciationReferenceAudio.coverage()
+            }));
+            if(ui.engine!=='supertonic'||ui.supertonicOptions<11||!ui.mobile||ui.local!==false||ui.state.audioContextState!=='running')throw Error('UI '+JSON.stringify(ui));
+            if(ui.coverage?.supertonic!==10000||ui.coverage?.voicevox!==10000)throw Error('COVERAGE '+JSON.stringify(ui.coverage));
+            console.log('LIVE PRONUNCIATION UI/COVERAGE PASS',JSON.stringify(ui));
+
+            async function verify(engine,library){
+              const out=await page.evaluate(async({engine,library})=>{
+                const o=await PronunciationReferenceAudio.testHosted(engine,library);
+                return {
+                  engine:o?.engine,played:o?.played,key:o?.key,label:o?.label,
+                  provider:o?.provider,scoreBytes:o?.scoreBytes?.byteLength||0,
+                  library:o?.library,qid:o?.qid,
+                  sprite:!!o?.sprite,bytes:o?.bytes?.byteLength||0
+                };
+              },{engine,library});
+              const expectedLibrary=(engine==='voicevox'?'vv':'st')+'-'+library;
+              if(out.engine!==engine||!out.played||out.scoreBytes<=0||out.library!==expectedLibrary){
+                throw Error(`${engine.toUpperCase()} ${library.toUpperCase()} `+JSON.stringify(out));
+              }
+              if(!/Hugging Face/i.test(out.provider||''))throw Error(`${engine} ${library} mobile provider not HF: `+JSON.stringify(out));
+              if(engine==='voicevox'&&library==='old'&&!out.sprite)throw Error('legacy VOICEVOX did not use sprite adapter '+JSON.stringify(out));
+              if(engine==='voicevox'&&library==='original'&&out.bytes<=0)throw Error('original VOICEVOX did not use byte-range bundle '+JSON.stringify(out));
+              if(engine==='supertonic'&&out.bytes<=0)throw Error('Supertonic bytes missing '+JSON.stringify(out));
+              console.log(`LIVE PRONUNCIATION ${engine.toUpperCase()} ${library.toUpperCase()} PASS`,JSON.stringify(out));
+              return out;
+            }
+
+            await verify('supertonic','old');
+            await verify('supertonic','original');
+            await verify('voicevox','old');
+            await verify('voicevox','original');
+
+            const voicevoxOptions=await page.evaluate(async()=>{
+              referenceEngine.value='voicevox';
+              referenceEngine.dispatchEvent(new Event('change'));
+              await PronunciationReferenceAudio.sync();
+              return referenceVoice.options.length;
+            });
             if(voicevoxOptions<44)throw Error('VOICEVOX selector only '+voicevoxOptions+' options');
-            console.log('LIVE PRONUNCIATION VOICE SELECTOR PASS',JSON.stringify({supertonicOptions:ui.voiceCount,voicevoxOptions}));
+            console.log('LIVE PRONUNCIATION VOICE SELECTOR PASS',JSON.stringify({supertonicOptions:ui.supertonicOptions,voicevoxOptions}));
             if(errs.length)throw Error('page errors '+errs.join(' | '));
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
@@ -57,8 +102,9 @@ jobs:
       - name: Summary
         run: |
           echo 'LIVE PRONUNCIATION REFERENCE AUDIO PASSED'
-          echo 'Supertonic 10 voices: live mobile playback + acoustic scoring reference verified.'
-          echo 'VOICEVOX 43 voices: live mobile playback + Supertonic acoustic scoring reference verified.'
+          echo 'Supertonic old 3,310 + original 6,690: mobile hosted playback and score bytes verified.'
+          echo 'VOICEVOX old 3,310 sprite + original 6,690 TAR: mobile hosted playback and Supertonic score bytes verified.'
+          echo 'Mobile provider order verified as Hugging Face first.'
       - name: Publish observable live verification status
         if: always()
         env:
@@ -70,13 +116,14 @@ jobs:
           from datetime import datetime,timezone
           from pathlib import Path
           out={
-            'version':1,
+            'version':2,
             'status':os.environ.get('RESULT','unknown'),
             'checkedAt':datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),
             'runId':os.environ.get('GITHUB_RUN_ID'),
             'runAttempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
             'headSha':os.environ.get('GITHUB_SHA'),
             'target':'https://kanuli.github.io/japanese-vocab-game/pronunciation.html',
+            'checks':['supertonic-old-3310','supertonic-original-6690','voicevox-old-3310-sprite','voicevox-original-6690-tar','mobile-hf-first','voice-selectors'],
             'expected':{
               'sentenceCount':10000,
               'supertonicVoiceCount':10,
