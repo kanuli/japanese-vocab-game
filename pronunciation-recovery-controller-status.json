@@ -1,23 +1,23 @@
 {
   "version": 1,
-  "checkedAt": "2026-08-20T04:12:19.370104Z",
+  "checkedAt": "2026-08-20T04:56:11.055986Z",
   "voicevoxIndex": {
-    "status": "building",
-    "questionCount": 0,
-    "speakerCount": 0,
-    "recordingCount": 0
+    "status": "ready",
+    "questionCount": 6690,
+    "speakerCount": 43,
+    "recordingCount": 287670
   },
-  "activeRunCount": 2,
+  "activeRunCount": 1,
   "recentRuns": [
     {
       "id": 32330848350,
       "runNumber": 16,
       "attempt": 1,
-      "status": "pending",
+      "status": "in_progress",
       "conclusion": null,
       "event": "push",
       "createdAt": "2026-08-20T04:09:50Z",
-      "updatedAt": "2026-08-20T04:09:51Z",
+      "updatedAt": "2026-08-20T04:55:58Z",
       "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32330848350",
       "headSha": "420205fce0094097537770278074cec139c9c2fa"
     },
@@ -25,11 +25,11 @@
       "id": 32330355478,
       "runNumber": 15,
       "attempt": 1,
-      "status": "queued",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "event": "push",
       "createdAt": "2026-08-20T04:01:43Z",
-      "updatedAt": "2026-08-20T04:02:17Z",
+      "updatedAt": "2026-08-20T04:34:49Z",
       "url": "https://github.com/kanuli/japanese-vocab-game/actions/runs/32330355478",
       "headSha": "5e7b2bcf9779a5665fb36980aba4617ebaec62ad"
     },
