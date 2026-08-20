@@ -8,6 +8,8 @@ on:
     paths:
       - tools/audit_vocab_coverage.py
       - tools/refine_vocab_audit_jmdict.py
+      - tools/audit_vocab_surface_forms.py
+      - tools/review_vocab_missing_quality.py
       - audit/vocab/README.md
       - audit/vocab/.run
       - .github/workflows/vocab-coverage-audit.yml
@@ -21,7 +23,7 @@ permissions:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,24 +35,27 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Run N1-N5 vocabulary coverage audit
+      - name: Run baseline N1-N5 vocabulary coverage audit
         run: python tools/audit_vocab_coverage.py --out audit/vocab/results
 
-      - name: Refine missing candidates with JMdict lexical identity
-        run: python tools/refine_vocab_audit_jmdict.py --results audit/vocab/results
+      - name: Run strict written-form + reading coverage audit
+        run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
 
-      - name: Publish summary to workflow page
+      - name: Run final quality review for every strict missing form
+        run: python tools/review_vocab_missing_quality.py --results audit/vocab/results
+
+      - name: Publish summaries to workflow page
         if: always()
         run: |
-          if [ -f audit/vocab/results/README.md ]; then
-            cat audit/vocab/results/README.md >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "## Vocabulary coverage audit failed before report generation" >> "$GITHUB_STEP_SUMMARY"
-          fi
-          if [ -f audit/vocab/results/README_REFINED.md ]; then
-            printf '\n\n' >> "$GITHUB_STEP_SUMMARY"
-            cat audit/vocab/results/README_REFINED.md >> "$GITHUB_STEP_SUMMARY"
-          fi
+          for f in \
+            audit/vocab/results/README.md \
+            audit/vocab/results/SURFACE_FORM_AUDIT.md \
+            audit/vocab/results/QUALITY_REVIEW.md; do
+            if [ -f "$f" ]; then
+              printf '\n\n' >> "$GITHUB_STEP_SUMMARY"
+              cat "$f" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
 
       - name: Upload audit reports
         if: always()
@@ -71,5 +76,5 @@ jobs:
             echo "No audit report changes to commit."
             exit 0
           fi
-          git commit -m "Update JLPT vocabulary coverage audit results"
+          git commit -m "Update strict JLPT vocabulary coverage audit results"
           git push origin HEAD:audit/vocab-coverage-20260821
