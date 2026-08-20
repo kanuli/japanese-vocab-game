@@ -1,4 +1,5 @@
 # Temporary registered-runner probe for the reviewed vocabulary audio completion path.
+# Trigger revision 2: push trigger existed before this commit.
 name: Reviewed vocabulary audio registered runner probe
 
 on:
