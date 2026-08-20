@@ -1,4 +1,4 @@
-name: JLPT vocabulary coverage audit
+name: Vocabulary hosted voice coverage audit
 
 on:
   workflow_dispatch:
@@ -6,31 +6,30 @@ on:
     branches:
       - audit/vocab-coverage-20260821
     paths:
-      - tools/audit_vocab_coverage.py
-      - tools/audit_vocab_surface_forms.py
-      - tools/review_vocab_missing_quality.py
-      - tools/adjudicate_source_check.py
-      - tools/materialize_coverage_additions.py
-      - tools/apply_coverage_additions.py
-      - tools/validate_coverage_additions.py
-      - data/coverage_manual_meanings.json
+      - scripts/build_word_voicevox_catalog.mjs
+      - scripts/build_word_shared_audio_catalog.py
+      - scripts/build_word_supertonic_catalog.py
+      - scripts/build_word_aivis_catalog.py
+      - tools/audit_vocab_voice_coverage.py
+      - data/advanced_vocab.js
       - data/coverage_deferred_manual.js
-      - audit/vocab/.run
+      - data/coverage_sourcecheck_manual.js
+      - data/coverage_postreview_manual.js
       - .github/workflows/vocab-coverage-audit.yml
 
 permissions:
   contents: write
 
 concurrency:
-  group: jlpt-vocab-coverage-${{ github.ref }}
+  group: vocab-hosted-voice-coverage-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
-      - name: Checkout repository
+      - name: Checkout audit branch
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -38,70 +37,57 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
 
-      - name: Install Traditional Chinese converter
-        run: python -m pip install --disable-pip-version-check opencc-python-reimplemented==0.1.7
+      - name: Build desired exact runtime voice catalog
+        env:
+          CATALOG_OUT: audit/vocab/results/desired_word_voice_catalog.json
+        run: node scripts/build_word_voicevox_catalog.mjs
 
-      - name: Run strict written-form plus reading audit
-        run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
-
-      - name: Rebuild final quality review from current runtime
-        run: python tools/review_vocab_missing_quality.py --results audit/vocab/results
-
-      - name: Adjudicate all 378 source-check candidates
-        run: python tools/adjudicate_source_check.py --input audit/vocab/results/final_quality_review_all_missing.csv --results audit/vocab/results
-
-      - name: Materialize approved source-check items with Traditional Chinese meanings
-        run: python tools/materialize_coverage_additions.py --mode source-check --results audit/vocab/results --output data/coverage_sourcecheck_additions.json
-
-      - name: Merge source-check additions into existing advanced bundle
-        run: python tools/apply_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_sourcecheck_additions.json
-
-      - name: Validate generated JavaScript
-        run: node --check data/advanced_vocab.js
-
-      - name: Validate source-check additions survive in bundle
-        run: python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_sourcecheck_additions.json --report audit/vocab/results/source_check_validation.json
-
-      - name: Re-run strict audit after source-check additions
-        run: python tools/audit_vocab_surface_forms.py --results audit/vocab/results
-
-      - name: Re-run final quality review on remaining gaps
-        run: python tools/review_vocab_missing_quality.py --results audit/vocab/results
-
-      - name: Publish summary
-        if: always()
+      - name: Validate desired catalog shape
         run: |
-          for f in audit/vocab/results/source_check_adjudication_summary.json audit/vocab/results/source_check_summary.json audit/vocab/results/source_check_validation.json audit/vocab/results/surface_form_summary.json audit/vocab/results/quality_review_summary.json; do
-            if [ -f "$f" ]; then
-              printf '\n\n## %s\n\n```json\n' "$f" >> "$GITHUB_STEP_SUMMARY"
-              cat "$f" >> "$GITHUB_STEP_SUMMARY"
-              printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
-            fi
-          done
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          p=Path('audit/vocab/results/desired_word_voice_catalog.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          rows=d.get('words') or []
+          if int(d.get('wordCount',-1))!=len(rows): raise SystemExit('desired wordCount mismatch')
+          if len({r.get('key') for r in rows})!=len(rows): raise SystemExit('duplicate desired exact keys')
+          bad=[r.get('key') for r in rows if not re.fullmatch(r'[ぁ-ゖァ-ヺー・ヽヾゝゞ]+',str(r.get('reading') or ''))]
+          if bad: raise SystemExit(f'invalid voice readings: {len(bad)}')
+          print({'desired_word_count':len(rows),'invalid_readings':len(bad)})
+          PY
 
-      - name: Upload audit reports
-        if: always()
+      - name: Compare all hosted voice catalogs
+        run: python tools/audit_vocab_voice_coverage.py --results audit/vocab/results
+
+      - name: Publish audit summary
+        run: |
+          cat audit/vocab/results/voice_coverage_summary.json
+          printf '\n## Hosted vocabulary voice coverage\n\n```json\n' >> "$GITHUB_STEP_SUMMARY"
+          cat audit/vocab/results/voice_coverage_summary.json >> "$GITHUB_STEP_SUMMARY"
+          printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload precise missing-voice reports
         uses: actions/upload-artifact@v4
         with:
-          name: jlpt-vocabulary-coverage-audit
+          name: vocabulary-hosted-voice-coverage
           path: |
-            audit/vocab/results/
-            data/coverage_sourcecheck_additions.json
-          if-no-files-found: warn
+            audit/vocab/results/voice_coverage_summary.json
+            audit/vocab/results/voice_missing_*.csv
+            audit/vocab/results/desired_word_voice_catalog.json
           retention-days: 30
 
-      - name: Commit source-check results to audit branch
-        if: success()
+      - name: Commit audit results to audit branch
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- audit/vocab/results data/coverage_sourcecheck_additions.json data/advanced_vocab.js
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- audit/vocab/results/voice_coverage_summary.json audit/vocab/results/voice_missing_*.csv audit/vocab/results/desired_word_voice_catalog.json
           if git diff --cached --quiet; then
-            echo "No source-check changes to commit."
+            echo 'Voice coverage audit already current.'
             exit 0
           fi
-          git commit -m "Apply source-checked JLPT surface-form additions"
+          git commit -m 'Audit hosted voice coverage for reviewed vocabulary'
           git pull --rebase origin audit/vocab-coverage-20260821
           git push origin HEAD:audit/vocab-coverage-20260821
