@@ -7,6 +7,7 @@ on:
       - audit/vocab-coverage-20260821
     paths:
       - tools/audit_vocab_coverage.py
+      - tools/refine_vocab_audit_jmdict.py
       - audit/vocab/README.md
       - audit/vocab/.run
       - .github/workflows/vocab-coverage-audit.yml
@@ -35,6 +36,9 @@ jobs:
       - name: Run N1-N5 vocabulary coverage audit
         run: python tools/audit_vocab_coverage.py --out audit/vocab/results
 
+      - name: Refine missing candidates with JMdict lexical identity
+        run: python tools/refine_vocab_audit_jmdict.py --results audit/vocab/results
+
       - name: Publish summary to workflow page
         if: always()
         run: |
@@ -42,6 +46,10 @@ jobs:
             cat audit/vocab/results/README.md >> "$GITHUB_STEP_SUMMARY"
           else
             echo "## Vocabulary coverage audit failed before report generation" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f audit/vocab/results/README_REFINED.md ]; then
+            printf '\n\n' >> "$GITHUB_STEP_SUMMARY"
+            cat audit/vocab/results/README_REFINED.md >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Upload audit reports
