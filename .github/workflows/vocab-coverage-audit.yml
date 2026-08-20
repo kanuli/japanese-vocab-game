@@ -11,6 +11,7 @@ on:
       - tools/final_quality_review.py
       - tools/materialize_coverage_additions.py
       - tools/apply_coverage_additions.py
+      - tools/validate_coverage_additions.py
       - tools/build_vocab_bundle.py
       - audit/vocab/README.md
       - audit/vocab/.run
@@ -65,6 +66,9 @@ jobs:
       - name: Preserve approved exact-form additions in generated bundle
         run: python tools/apply_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json
 
+      - name: Validate materialized additions survive in bundle
+        run: python tools/validate_coverage_additions.py --bundle data/advanced_vocab.js --additions data/coverage_additions.json --report audit/vocab/results/coverage_additions_validation.json
+
       - name: Re-run coverage audit after additions
         run: python tools/audit_vocab_coverage.py --out audit/vocab/results
 
@@ -87,6 +91,11 @@ jobs:
           if [ -f audit/vocab/results/coverage_additions_summary.json ]; then
             printf '\n\n## Coverage additions materialization\n\n```json\n' >> "$GITHUB_STEP_SUMMARY"
             cat audit/vocab/results/coverage_additions_summary.json >> "$GITHUB_STEP_SUMMARY"
+            printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ -f audit/vocab/results/coverage_additions_validation.json ]; then
+            printf '\n\n## Coverage additions validation\n\n```json\n' >> "$GITHUB_STEP_SUMMARY"
+            cat audit/vocab/results/coverage_additions_validation.json >> "$GITHUB_STEP_SUMMARY"
             printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
           fi
 
