@@ -1,5 +1,5 @@
 {
-  "version": "20260822-quality3",
+  "version": "20260822-quality4",
   "listening": {
     "raw": 6690,
     "structurallyPassed": 6690,
@@ -88,10 +88,13 @@
     }
   },
   "failures": [],
+  "naturalnessChecked": 5400,
   "finalStatic": {
     "mockCacheBust": true,
     "informationSearchDuplicateRootFixed": true,
     "weakQuickResponseInactive": true,
-    "listeningV82": true
+    "listeningV82": true,
+    "placeSpecificSceneActions": true,
+    "malformedMasuConcatenationRemoved": true
   }
 }
