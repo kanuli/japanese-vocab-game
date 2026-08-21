@@ -30,8 +30,13 @@ jobs:
           ref: fix/grammar-quality-v27
           fetch-depth: 0
 
-      - name: Patch grammar game
-        run: python3 .github/scripts/fix_grammar_quality_v27.py
+      - name: Patch grammar game when needed
+        run: |
+          if grep -q '日本語文法挑戰 v2.7' grammar.html && grep -q 'usage-anchor-not-in-all-four' grammar.html; then
+            echo 'grammar.html is already patched to v2.7; continuing with full audit'
+          else
+            python3 .github/scripts/fix_grammar_quality_v27.py
+          fi
 
       - name: Audit N1-N5 generated questions and answers
         run: node .github/scripts/audit_grammar_quality_v27.mjs
