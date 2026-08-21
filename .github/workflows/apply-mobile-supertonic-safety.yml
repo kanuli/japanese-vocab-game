@@ -1,103 +1,19 @@
-name: Selective final vocabulary audio deployment
+name: Apply mobile Supertonic safety (legacy manual)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/apply-mobile-supertonic-safety.yml'
 
 permissions:
   contents: write
 
-concurrency:
-  group: selective-final-vocab-audio-deploy
-  cancel-in-progress: true
-
 jobs:
-  prepare-deployment:
+  patch:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0
-
-      - name: Create clean deployment branch and copy only production files
+      - name: Legacy notice
         run: |
-          set -euo pipefail
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git fetch origin audit/vocab-coverage-20260821
-          git checkout -B deploy/vocab-audio-final-20260821 origin/main
-          git checkout origin/audit/vocab-coverage-20260821 -- \
-            advanced_words.js \
-            data/advanced_vocab.js \
-            data/coverage_deferred_manual.js \
-            data/coverage_sourcecheck_manual.js \
-            data/coverage_postreview_manual.js \
-            word-voicevox-delta-catalog.json \
-            word-supertonic3-delta-catalog.json \
-            word-aivis-delta-catalog.json \
-            wordaudio-delta-voices.js \
-            wordaudio.html
-
-          python - <<'PY'
-          from pathlib import Path
-          for name in ('index.html','wordlist.html','wordaudio.html'):
-              p=Path(name)
-              s=p.read_text(encoding='utf-8')
-              s=s.replace('./advanced_words.js?v=20260814v7','./advanced_words.js?v=20260821v2')
-              s=s.replace('./advanced_words.js?v=20260821v1','./advanced_words.js?v=20260821v2')
-              s=s.replace('./advanced_words.js"></script>','./advanced_words.js?v=20260821v2"></script>')
-              p.write_text(s,encoding='utf-8')
-          PY
-
-      - name: Validate production payload
-        run: |
-          set -euo pipefail
-          node --check advanced_words.js
-          node --check data/advanced_vocab.js
-          node --check data/coverage_deferred_manual.js
-          node --check data/coverage_sourcecheck_manual.js
-          node --check data/coverage_postreview_manual.js
-          node --check wordaudio-delta-voices.js
-          grep -q 'wordaudio-delta-voices.js?v=20260821v1' wordaudio.html
-          grep -q 'advanced_words.js?v=20260821v2' index.html
-          grep -q 'advanced_words.js?v=20260821v2' wordlist.html
-          grep -q 'advanced_words.js?v=20260821v2' wordaudio.html
-          python - <<'PY'
-          import json
-          checks=[
-            ('word-voicevox-delta-catalog.json',43,30659),
-            ('word-supertonic3-delta-catalog.json',10,7130),
-            ('word-aivis-delta-catalog.json',4,2852),
-          ]
-          for path,voices,recs in checks:
-              d=json.load(open(path,encoding='utf-8'))
-              assert d['status']=='ready', (path,d.get('status'))
-              assert d['wordCount']==713,(path,d.get('wordCount'))
-              assert d['recordingCount']==recs,(path,d.get('recordingCount'))
-              got=len(d.get('speakers') or d.get('voices') or {})
-              assert got==voices,(path,got,voices)
-          print('Production audio catalogs validated: 713 exact keys; 43 + 10 + 4 voices.')
-          PY
-
-      - name: Commit and publish deployment branch
-        run: |
-          set -euo pipefail
-          git add -- \
-            advanced_words.js \
-            data/advanced_vocab.js \
-            data/coverage_deferred_manual.js \
-            data/coverage_sourcecheck_manual.js \
-            data/coverage_postreview_manual.js \
-            word-voicevox-delta-catalog.json \
-            word-supertonic3-delta-catalog.json \
-            word-aivis-delta-catalog.json \
-            wordaudio-delta-voices.js \
-            index.html wordlist.html wordaudio.html
-          git commit -m 'Deploy completed vocabulary and hosted audio coverage'
-          git push --force-with-lease origin HEAD:deploy/vocab-audio-final-20260821
+          echo 'The one-time mobile Supertonic safety migration has already been applied.'
+          echo 'Use the mobile hosted playback workflow for current mobile audio fixes.'
