@@ -8,6 +8,17 @@ on:
       - '.github/workflows/fix-listening-mock-quality-v1.yml'
       - '.github/scripts/fix_listening_mock_quality_v1.py'
       - '.github/scripts/audit_listening_mock_quality_v1.mjs'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'data/listening_mock_quality_v1_trigger.txt'
+      - '.github/workflows/fix-listening-mock-quality-v1.yml'
+      - '.github/scripts/fix_listening_mock_quality_v1.py'
+      - '.github/scripts/audit_listening_mock_quality_v1.mjs'
+      - 'listening.html'
+      - 'mocktest.js'
+      - 'mocktest.html'
 
 permissions:
   contents: write
@@ -18,6 +29,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref }}
+          fetch-depth: 0
       - name: Patch listening and mock exam quality
         run: python3 .github/scripts/fix_listening_mock_quality_v1.py
       - name: Validate JavaScript syntax
@@ -26,7 +40,20 @@ jobs:
         run: node .github/scripts/audit_listening_mock_quality_v1.mjs
       - name: Check whitespace
         run: git diff --check
-      - name: Commit validated quality fixes
+      - name: Commit validated quality fixes to PR branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add listening.html mocktest.js mocktest.html data/listening_mock_quality_v1_report.json
+          if git diff --cached --quiet; then
+            echo 'No changes needed'
+            exit 0
+          fi
+          git commit -m 'Fix listening and mock question quality'
+          git push origin HEAD:${{ github.head_ref }}
+      - name: Commit validated quality fixes on main
+        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -37,5 +64,3 @@ jobs:
           fi
           git commit -m 'Fix listening and mock question quality'
           git push
-
-# trigger-quality-v1-20260822
