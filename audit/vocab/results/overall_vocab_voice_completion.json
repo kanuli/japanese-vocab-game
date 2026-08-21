@@ -80,6 +80,9 @@
     "total_recordings": 40641,
     "source": "existing GitHub Release tar/index assets; no re-synthesis performed by finalizer"
   },
-  "live_main_deployed": false,
-  "live_main_note": "Audit completion is separate from selective deployment to main/GitHub Pages."
+  "live_main_deployed": true,
+  "live_main_commit": "83f8239e92aa618583ad3246a9010b9d4e5504bd",
+  "live_main_pages_verified": true,
+  "live_main_pages_verification": "audit/vocab/results/live_main_pages_verification.json",
+  "live_main_note": "Selective production deployment merged to main and all 12 production runtime files were verified byte-for-byte on GitHub Pages."
 }
