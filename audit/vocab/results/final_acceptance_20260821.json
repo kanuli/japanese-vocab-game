@@ -1,0 +1,36 @@
+{
+  "status": "FINAL_ACCEPTANCE_PASS",
+  "checked_at_utc": "2026-08-21T04:15:45.664007+00:00",
+  "main_commit_verified": "dd33a306da8893383e2a8b1951e7d5306dbaad5d",
+  "reviewed_vocabulary": {
+    "actionable_remaining": 0,
+    "runtime_exact_keys": 23046
+  },
+  "vocabulary_consumers": {
+    "count": 5,
+    "advanced_words_cache_version": "20260821v2",
+    "stale_unversioned_loaders": 0
+  },
+  "live_pages_and_runtime": {
+    "files_checked": 20,
+    "byte_identical": 20
+  },
+  "voice_delta": {
+    "exact_words": 713,
+    "voicevox": {
+      "voices": 43,
+      "recordings": 30659
+    },
+    "supertonic3": {
+      "voices": 10,
+      "recordings": 7130
+    },
+    "aivis": {
+      "voices": 4,
+      "recordings": 2852
+    },
+    "total_recordings": 40641,
+    "missing_exact_words_after_union": 0
+  },
+  "temporary_verifier_cleanup_required": true
+}
