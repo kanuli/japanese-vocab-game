@@ -1,7 +1,8 @@
 {
   "status": "FINAL_ACCEPTANCE_PASS",
   "checked_at_utc": "2026-08-21T04:15:45.664007+00:00",
-  "main_commit_verified": "dd33a306da8893383e2a8b1951e7d5306dbaad5d",
+  "runtime_main_commit_verified": "dd33a306da8893383e2a8b1951e7d5306dbaad5d",
+  "main_commit_after_verifier_cleanup": "2fd8f97047fea44bdeeeb8ab8b85c8e923a6d7cd",
   "reviewed_vocabulary": {
     "actionable_remaining": 0,
     "runtime_exact_keys": 23046
@@ -32,5 +33,7 @@
     "total_recordings": 40641,
     "missing_exact_words_after_union": 0
   },
-  "temporary_verifier_cleanup_required": true
+  "temporary_verifier_cleanup_required": false,
+  "temporary_verifier_cleanup_complete": true,
+  "note": "Final acceptance passed against the production runtime. The only subsequent main change removed the one-time verifier workflow; no production runtime file was changed by cleanup."
 }
