@@ -1,0 +1,64 @@
+name: Final vocabulary cache consistency fix
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/final-vocab-cache-fix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Patch the two stale vocabulary entry points
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          targets=['vocab-plus-game.html','vocabulary-plus.html']
+          old='<script src="./advanced_words.js"></script>'
+          new='<script src="./advanced_words.js?v=20260821v2"></script>'
+          for name in targets:
+              p=Path(name)
+              s=p.read_text(encoding='utf-8')
+              n=s.count(old)
+              assert n==1, (name,'expected exactly one unversioned loader',n)
+              p.write_text(s.replace(old,new),encoding='utf-8')
+          print('Patched:', ', '.join(targets))
+          PY
+      - name: Validate every vocabulary consumer
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          consumers=['index.html','wordlist.html','wordaudio.html','vocab-plus-game.html','vocabulary-plus.html']
+          wanted='./advanced_words.js?v=20260821v2'
+          for name in consumers:
+              s=Path(name).read_text(encoding='utf-8')
+              assert wanted in s,(name,'missing current cache-busted loader')
+          stale=[]
+          for p in Path('.').glob('*.html'):
+              s=p.read_text(encoding='utf-8')
+              if 'src="./advanced_words.js"' in s:
+                  stale.append(p.name)
+          assert not stale,('unversioned advanced_words.js remains',stale)
+          print('PASS: all five vocabulary consumers use 20260821v2; no stale unversioned loader remains.')
+          PY
+      - name: Commit only the two production fixes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- vocab-plus-game.html vocabulary-plus.html
+          if git diff --cached --quiet; then
+            echo 'No production changes required.'
+          else
+            git commit -m 'Fix stale cache keys on legacy vocabulary entry points'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
