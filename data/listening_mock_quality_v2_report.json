@@ -1,0 +1,91 @@
+{
+  "version": "20260822-quality2",
+  "listening": {
+    "raw": 6690,
+    "structurallyPassed": 6690,
+    "structurallyRejected": 0,
+    "perLevelRaw": {
+      "N5": 1456,
+      "N4": 1506,
+      "N3": 1472,
+      "N2": 1236,
+      "N1": 1020
+    },
+    "perLevelPassed": {
+      "N5": 1456,
+      "N4": 1506,
+      "N3": 1472,
+      "N2": 1236,
+      "N1": 1020
+    },
+    "translationRequiredAtSource": 1600,
+    "rejectReasons": {},
+    "correctPositionDistribution": [
+      1680,
+      1662,
+      1672,
+      1676
+    ]
+  },
+  "mock": {
+    "sourceCounts": {
+      "vocab": 10514,
+      "grammar": {
+        "N1": 980,
+        "N2": 764,
+        "N3": 528,
+        "N4": 494,
+        "N5": 544
+      }
+    },
+    "generatedChecked": 9870,
+    "perLevel": {
+      "N5": {
+        "iterations": 30,
+        "vocab": 600,
+        "grammar": 300,
+        "reading": 300,
+        "listening": 480,
+        "qualityFailures": 0,
+        "underfills": 0
+      },
+      "N4": {
+        "iterations": 30,
+        "vocab": 600,
+        "grammar": 360,
+        "reading": 360,
+        "listening": 540,
+        "qualityFailures": 0,
+        "underfills": 0
+      },
+      "N3": {
+        "iterations": 30,
+        "vocab": 600,
+        "grammar": 420,
+        "reading": 420,
+        "listening": 600,
+        "qualityFailures": 0,
+        "underfills": 0
+      },
+      "N2": {
+        "iterations": 30,
+        "vocab": 600,
+        "grammar": 420,
+        "reading": 450,
+        "listening": 660,
+        "qualityFailures": 0,
+        "underfills": 0
+      },
+      "N1": {
+        "iterations": 30,
+        "vocab": 600,
+        "grammar": 420,
+        "reading": 480,
+        "listening": 660,
+        "qualityFailures": 0,
+        "underfills": 0
+      }
+    }
+  },
+  "failures": []
+}
