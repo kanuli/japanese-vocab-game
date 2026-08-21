@@ -1,0 +1,27 @@
+{
+  "status": "LIVE_PASS",
+  "checked_at_utc": "2026-08-21T04:01:41.754693+00:00",
+  "pages_base": "https://kanuli.github.io/japanese-vocab-game",
+  "runtime_deployment_commit": "83f8239e92aa618583ad3246a9010b9d4e5504bd",
+  "live_files_byte_identical": 12,
+  "expected_live_files": 12,
+  "advanced_words_cache_version": "20260821v2",
+  "delta_player_cache_version": "20260821v1",
+  "voice_delta": {
+    "exact_words": 713,
+    "voicevox": {
+      "voices": 43,
+      "recordings": 30659
+    },
+    "supertonic3": {
+      "voices": 10,
+      "recordings": 7130
+    },
+    "aivis": {
+      "voices": 4,
+      "recordings": 2852
+    },
+    "total_recordings": 40641
+  },
+  "note": "All 12 production runtime files fetched from GitHub Pages matched current main byte-for-byte before this marker was written."
+}
