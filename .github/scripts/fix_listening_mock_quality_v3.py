@@ -16,11 +16,8 @@ if old in s:
 elif 't===18?16:18' not in s:
     raise SystemExit('mock information-search duplicate root fix marker missing')
 
-# Naturalness hardening: the first scene generator crossed every place with
-# every action. That could create structurally valid but semantically odd
-# combinations (for example, an action that does not fit the location). Keep
-# a place-specific action bank so generated reading/listening scenes stay
-# plausible before they even reach the structural QA gate.
+# Naturalness hardening: keep place-specific action banks so generated
+# reading/listening scenes stay plausible before they reach structural QA.
 if 'const SCENE_ACTIONS=' not in s:
     marker='function readingTypes(level){return level==="N1"?["短文理解","中文理解","長文理解","統合理解","主題理解"]:level==="N2"?["短文理解","中文理解","統合理解","主題理解"]:level==="N3"?["短文理解","中文理解","長文理解"]:["短文理解","中文理解"]}\n'
     scene_actions='''const SCENE_ACTIONS={
@@ -42,6 +39,16 @@ if old in s:
 elif new not in s:
     raise SystemExit('sceneCombos naturalness patch marker missing')
 
+# Make the SECOND scene action place-specific too. Otherwise the primary
+# action could fit its place while a comparison/sequence action still came
+# from the old global list and made the question semantically odd.
+old='action2=d.actions.find(v=>v!==x.action)||x.action'
+new='action2=((SCENE_ACTIONS[level]?.[place2]||[]).find(v=>v!==x.action)||(SCENE_ACTIONS[level]?.[place2]||[])[0]||x.action)'
+if old in s:
+    s=s.replace(old,new,1)
+elif new not in s:
+    raise SystemExit('reading secondary-action place patch marker missing')
+
 # Avoid malformed masu-form concatenations such as "確認します予定です" or
 # "電話します必要があります". Use two complete polite sentences instead.
 old='passage=`${x.person}は${x.time}に${x.place}で${act}予定です。その前に${place2}で${act2}必要があります。`;question="先にする必要があることは何ですか。";correct=`${place2}で${act2}`'
@@ -62,6 +69,13 @@ if old in s:
 elif new not in s:
     raise SystemExit('buildOriginalScenes place-action patch marker missing')
 
+old='action2=d.actions.find(v=>v!==action)||action'
+new='action2=((SCENE_ACTIONS[level]?.[place2]||[]).find(v=>v!==action)||(SCENE_ACTIONS[level]?.[place2]||[])[0]||action)'
+if old in s:
+    s=s.replace(old,new,1)
+elif new not in s:
+    raise SystemExit('listening secondary-action place patch marker missing')
+
 old='audio=`${person}は${time}に${place}で${act}予定です。その前に${place2}で${act2}必要があります。`;correct=`先に${place2}で${act2}`'
 new='audio=`${person}は、まず${place2}で${act2}。そのあと${time}に${place}で${act}。`;correct=`先に${place2}で${act2}`'
 if old in s:
@@ -74,13 +88,12 @@ s=s.replace('audio=`${person}は最初${time}に${place}へ行く予定でした
 
 p.write_text(s,encoding='utf-8')
 
-# Force browsers/GitHub Pages to fetch the latest repaired mocktest.js instead
-# of a previously cached pre-naturalness build.
+# Force browsers/GitHub Pages to fetch the latest repaired mocktest.js.
 p=Path('mocktest.html')
 h=p.read_text(encoding='utf-8')
-h2=re.sub(r'mocktest\.js\?v=[^"\s<]+','mocktest.js?v=20260822-quality4',h,count=1)
-if h2==h and 'mocktest.js?v=20260822-quality4' not in h:
+h2=re.sub(r'mocktest\.js\?v=[^"\s<]+','mocktest.js?v=20260822-quality5',h,count=1)
+if h2==h and 'mocktest.js?v=20260822-quality5' not in h:
     raise SystemExit('mocktest.js cache-bust marker not found')
 p.write_text(h2,encoding='utf-8')
 
-print('quality v4 naturalness finalization complete')
+print('quality v5 secondary-action finalization complete')
