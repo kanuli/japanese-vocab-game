@@ -1,0 +1,9 @@
+Grammar v2.7 static QA
+Built-in questions checked: 60
+Built-in structural/answer failures: 0
+By level: {"N1": 12, "N2": 12, "N3": 12, "N4": 12, "N5": 12}
+By type: {"副詞": 15, "助詞": 6, "接続詞": 5, "文法": 34}
+Usage cross-grammar distractor generator removed: YES
+Usage all-four-same-anchor runtime gate installed: YES
+All sources pass 4 unique choices + 1 unique answer runtime gate: YES
+Fill questions pass exactly-one-blank + source reconstruction gate: YES

@@ -1,0 +1,51 @@
+{
+  "version": "2.7",
+  "source": "Hanabira N1-N5 live JSON",
+  "perLevel": {
+    "N5": {
+      "sourceGrammarPoints": 136,
+      "generated": 729,
+      "fill": 253,
+      "usage": 476
+    },
+    "N4": {
+      "sourceGrammarPoints": 124,
+      "generated": 466,
+      "fill": 170,
+      "usage": 296
+    },
+    "N3": {
+      "sourceGrammarPoints": 132,
+      "generated": 643,
+      "fill": 183,
+      "usage": 460
+    },
+    "N2": {
+      "sourceGrammarPoints": 191,
+      "generated": 800,
+      "fill": 200,
+      "usage": 600
+    },
+    "N1": {
+      "sourceGrammarPoints": 245,
+      "generated": 800,
+      "fill": 200,
+      "usage": 600
+    }
+  },
+  "totals": {
+    "webGeneratedAndChecked": 3438,
+    "fill": 1006,
+    "usage": 2432,
+    "builtInChecked": 60,
+    "failures": 0,
+    "usageTargetLeakFailures": 0
+  },
+  "douiuRegression": {
+    "sourceGrammarPoints": 1,
+    "generatedQuestions": 4,
+    "generatedUsageQuestions": 4,
+    "allGeneratedUsageChoicesContainSameAnchor": true
+  },
+  "failures": []
+}

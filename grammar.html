@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>日本語文法挑戰 v2.6｜JLPT N1–N5</title>
+<title>日本語文法挑戰 v2.7｜JLPT N1–N5</title>
 <style>
 :root{--bg:#f5f7fb;--card:#fff;--text:#182033;--muted:#687082;--line:#dde3ec;--blue:#3568dd;--blue2:#edf3ff;--ok:#11784a;--okbg:#edf9f2;--bad:#b42318;--badbg:#fff0ee}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC","Microsoft JhengHei","Yu Gothic UI",sans-serif}
@@ -36,7 +36,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-s
 </head>
 <body>
 <div class="wrap"><div class="site-nav" style="display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px"><a href="./index.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">📚 單字</a><a href="./wordaudio.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">🔊 單字聽力</a><a href="./wordlist.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">📋 單字清單</a><a href="./grammar.html" style="text-decoration:none;border:1px solid #3568dd;background:#eef3ff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#3568dd">📝 文法</a><a href="./listening.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">🎧 聽解</a><a href="./conversation.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">💬 場景會話</a><a href="./pronunciation.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">🎙️ 發音</a><a href="./mocktest.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">🧪 模擬試驗</a><a href="./translator.html" style="text-decoration:none;border:1px solid #dfe4ec;background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;font-size:13px;color:#182033">🌐 語音・翻譯</a></div>
-<div class="top"><div><h1>📝 日本語文法挑戰 v2.6</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
+<div class="top"><div><h1>📝 日本語文法挑戰 v2.7</h1><div class="sub">助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな</div></div><div id="total" class="pill">準備中…</div></div>
 
 <div id="setup" class="grid">
 <section class="card">
@@ -117,7 +117,7 @@ ruby{ruby-position:over}rt{font-size:.5em;color:#55647a;font-weight:500;letter-s
 <div class="sheet-actions"><button id="next" class="btn primary next">下一題 →</button></div>
 </div>
 
-<div class="footer">Web 文法資料來源：Hanabira。Web 題先經文法相容性過濾，再產生「填空判斷」與「用法辨識」兩種題型；每個 JLPT 等級最多 800 題，總目標 2,000–4,000 題。所有學習者可見的說明均使用繁體中文；若翻譯結果殘留英文，系統會捨棄並改用繁體中文備援說明。ふりがな由本地 Kuromoji 字典產生。JLPT 等級為學習用分類，並非官方固定文法清單。</div>
+<div class="footer">Web 文法資料來源：Hanabira。Web 題先經文法相容性與答案唯一性 QA；「用法辨識」只保留同一文法、四句都含相同文法錨點的來源例句，再以繁中句意辨識；每個 JLPT 等級最多 800 題，總目標 2,000–4,000 題。所有學習者可見的說明均使用繁體中文；若翻譯結果殘留英文，系統會捨棄並改用繁體中文備援說明。ふりがな由本地 Kuromoji 字典產生。JLPT 等級為學習用分類，並非官方固定文法清單。</div>
 </div>
 
 <script>
@@ -135,6 +135,7 @@ const WEB_FILES={
 const RAW_BASE="https://raw.githubusercontent.com/tristcoil/hanabira.org-japanese-content/main/grammar_json/";
 const CDN_BASE="https://cdn.jsdelivr.net/gh/tristcoil/hanabira.org-japanese-content@main/grammar_json/";
 let webQuestions=[], webPointsCount={}, manual=load("jpgrammar_manual",[]), wrong=new Set(load("jpgrammar_wrong",[])), game=null;
+let builtQuestions=[], qualityStats={};
 let tokenizer=null, kuroReady=false, furiganaCache=new Map(), renderToken=0;
 let zhCache=new Map(Object.entries(load("jpgrammar_zh_cache",{})).filter(([k,v])=>!containsLatin(v)));
 
@@ -258,6 +259,37 @@ function pickWrong(candidates,correct,key="a"){
  const uniq=new Map();for(const x of candidates){const v=x[key];if(v!==correct&&!uniq.has(v))uniq.set(v,x)}
  const pool=[...uniq.values()],out=[];while(out.length<3&&pool.length){const i=Math.floor(Math.random()*Math.min(8,pool.length));out.push(pool.splice(i,1)[0][key])}return out;
 }
+function questionQualityErrors(q){
+ const e=[],choices=Array.isArray(q?.choices)?q.choices.map(x=>String(x??"").trim()):[];
+ if(!q||!String(q.q||"").trim())e.push("missing-question");
+ if(!/^N[1-5]$/.test(String(q?.level||"")))e.push("bad-level");
+ if(!["助詞","副詞","接続詞","文法"].includes(q?.type))e.push("bad-type");
+ if(choices.length!==4)e.push("choice-count");
+ if(choices.some(x=>!x))e.push("empty-choice");
+ if(new Set(choices).size!==4)e.push("duplicate-choice");
+ const answer=String(q?.a??"").trim();
+ if(!answer)e.push("missing-answer");
+ if(choices.filter(x=>x===answer).length!==1)e.push("answer-not-unique");
+ if((q?.mode||"fill")==="fill"){
+   if(countOcc(String(q.q||""),"＿＿")!==1)e.push("blank-count");
+   if(q.sentence&&String(q.q||"").replace("＿＿",answer)!==String(q.sentence))e.push("reconstruction-mismatch");
+ }
+ if(q?.mode==="usage"){
+   const anchor=String(q.usageAnchor||"").trim();
+   if(!String(q.usageHint||"").trim())e.push("usage-missing-meaning");
+   if(!anchor)e.push("usage-missing-anchor");
+   else if(choices.some(x=>countOcc(x,anchor)!==1))e.push("usage-anchor-not-in-all-four");
+ }
+ return e;
+}
+function qualityGate(arr,label="questions"){
+ const ok=[],bad=[];
+ for(const q of (arr||[])){const errors=questionQualityErrors(q);if(errors.length)bad.push({id:q?.id||"?",errors});else ok.push(q)}
+ qualityStats[label]={input:(arr||[]).length,kept:ok.length,dropped:bad.length,reasons:bad.slice(0,20)};
+ if(bad.length)console.warn(`[grammar QA] ${label}: dropped ${bad.length}/${(arr||[]).length}`,bad.slice(0,20));
+ else console.info(`[grammar QA] ${label}: ${ok.length} questions passed`);
+ return ok;
+}
 function capLevel(fill,usage){
  fill=shuffle(fill);usage=shuffle(usage);let a=fill.slice(0,200),b=usage.slice(0,600),left=800-a.length-b.length;
  if(left>0){const extra=fill.slice(a.length,a.length+left);a.push(...extra);left-=extra.length}
@@ -267,21 +299,31 @@ function capLevel(fill,usage){
 function generateFromPoints(points,level){
  const meta=points.map((pt,pi)=>({pt,pi,grammar:cleanTitle(pt.title),category:semanticCategory((pt.short_explanation||"")+" "+(pt.long_explanation||"")),type:classifyType(pt.title,pt.short_explanation),sig:formationSignature(pt.formation,pt.title)}));
 
- // 用法辨識：四個選項都是來源中的完整、文法成立的日文句子。
- const usageRaw=[];
+ // 用法辨識 v2.7：四個選項必須屬於「同一個文法點」，而且四句都實際包含同一個文法錨點。
+ // 不再把其他文法的正確句子混進來，再用文法名稱直接洩漏答案。
+ // 題目改為：同一文法的四個來源例句中，依繁中句意選出對應的一句。
+ const usage=[];
  for(const m of meta){
   if(!m.grammar)continue;
-  for(const [ei,ex] of (m.pt.examples||[]).slice(0,4).entries()){
-   const jp=String(ex.jp||"").trim();if(!jp)continue;
-   usageRaw.push({id:`web-usage-${level}-${m.pi}-${ei}`,level,type:m.type,source:"web",mode:"usage",q:`下列哪一句正確使用「${m.grammar}」？`,a:jp,grammar:m.grammar,meaning:m.category,exp:m.pt.short_explanation||"",zh:ex.en||"",formation:m.pt.formation||"",category:m.category,formSig:m.sig,sentence:jp});
+  const rows=[];
+  for(const [ei,ex] of (m.pt.examples||[]).slice(0,8).entries()){
+   const jp=String(ex.jp||"").trim(),en=String(ex.en||"").trim();
+   if(!jp||!en)continue;
+   rows.push({ei,jp,en});
   }
- }
- const usage=[];
- for(const q of usageRaw){
-  let peers=usageRaw.filter(x=>x.id!==q.id&&x.a!==q.a&&x.type===q.type&&x.category===q.category&&x.formSig===q.formSig&&x.grammar!==q.grammar);
-  if(peers.length<3)peers=usageRaw.filter(x=>x.id!==q.id&&x.a!==q.a&&x.type===q.type&&x.category===q.category&&x.grammar!==q.grammar);
-  if(peers.length<3)continue;
-  const wrongs=pickWrong(peers,q.a,"a");if(wrongs.length<3)continue;q.choices=shuffle([q.a,...wrongs]);usage.push(q);
+  const uniq=[...new Map(rows.map(x=>[x.jp,x])).values()];
+  if(uniq.length<4)continue;
+  const anchor=patternCandidates(m.pt).find(p=>uniq.filter(x=>countOcc(x.jp,p)===1).length>=4)||"";
+  if(!anchor)continue;
+  const eligible=uniq.filter(x=>countOcc(x.jp,anchor)===1);
+  if(eligible.length<4)continue;
+  for(const row of eligible){
+   const peers=eligible.filter(x=>x.jp!==row.jp);
+   const wrongs=pickWrong(peers,row.jp,"jp");
+   if(wrongs.length<3)continue;
+   const q={id:`web-usage-${level}-${m.pi}-${row.ei}`,level,type:m.type,source:"web",mode:"usage",q:`「${m.grammar}」：以下哪一句最符合指定的繁體中文意思？`,a:row.jp,choices:shuffle([row.jp,...wrongs]),grammar:m.grammar,meaning:m.category,exp:m.pt.short_explanation||"",zh:row.en,usageHint:row.en,usageAnchor:anchor,formation:m.pt.formation||"",category:m.category,formSig:m.sig,sentence:row.jp};
+   if(!questionQualityErrors(q).length)usage.push(q);
+  }
  }
 
  // 填空判斷：只有在三個錯誤選項與同一空格位置相容時才保留。
@@ -317,7 +359,7 @@ async function loadWeb(){
  let failures=[];
  for(const r of results){
    if(r.status==="fulfilled"){
-     const [l,pts]=r.value;webPointsCount[l]=pts.length;webQuestions.push(...generateFromPoints(pts,l));
+     const [l,pts]=r.value;webPointsCount[l]=pts.length;webQuestions.push(...qualityGate(generateFromPoints(pts,l),`web-${l}`));
    }else failures.push(String(r.reason?.message||r.reason));
  }
  const totalPts=Object.values(webPointsCount).reduce((a,b)=>a+b,0),fillCount=webQuestions.filter(x=>x.mode==="fill").length,usageCount=webQuestions.filter(x=>x.mode==="usage").length;
@@ -348,7 +390,14 @@ function zhFallback(q){const cat=q.meaning||"一般文法用法",form=q.formatio
 async function translateZh(text){
  text=String(text||"").trim();if(!text)return "";
  if(zhCache.has(text)){const cached=String(zhCache.get(text)||"");if(!containsLatin(cached))return cached;zhCache.delete(text)}
- try{const u="https://api.mymemory.translated.net/get?q="+encodeURIComponent(text.slice(0,480))+"&langpair=en%7Czh-TW",r=await fetch(u,{cache:"force-cache"});if(!r.ok)throw Error("翻譯服務暫時不可用");const d=await r.json();let z=String(d?.responseData?.translatedText||"").trim();if(!z||containsLatin(z)||z.toLowerCase()===text.toLowerCase())throw Error("翻譯結果不符合繁體中文要求");zhCache.set(text,z);save("jpgrammar_zh_cache",Object.fromEntries([...zhCache.entries()].slice(-500)));return z}catch(e){console.warn(e);return ""}
+ const accept=z=>{z=String(z||"").trim();return z&&!containsLatin(z)&&z.toLowerCase()!==text.toLowerCase()?z:""};
+ try{
+  const u="https://api.mymemory.translated.net/get?q="+encodeURIComponent(text.slice(0,480))+"&langpair=en%7Czh-TW",r=await fetch(u,{cache:"force-cache"});if(r.ok){const d=await r.json(),z=accept(d?.responseData?.translatedText);if(z){zhCache.set(text,z);save("jpgrammar_zh_cache",Object.fromEntries([...zhCache.entries()].slice(-700)));return z}}
+ }catch(e){console.warn("MyMemory translation failed",e)}
+ try{
+  const u="https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-TW&dt=t&q="+encodeURIComponent(text.slice(0,480)),r=await fetch(u,{cache:"force-cache"});if(r.ok){const d=await r.json(),z=accept((d?.[0]||[]).map(x=>x?.[0]||"").join(""));if(z){zhCache.set(text,z);save("jpgrammar_zh_cache",Object.fromEntries([...zhCache.entries()].slice(-700)));return z}}
+ }catch(e){console.warn("Google translation fallback failed",e)}
+ return "";
 }
 async function fillWebChinese(q,token){
  const form=q.formation?zhFormation(q.formation):"";$("#aExp").textContent=zhFallback(q);$("#aZh").textContent="繁體中文翻譯載入中…";
@@ -360,7 +409,7 @@ function allQ(){
  let a=[];
  const s=selectedSources();
  if(s.includes("web"))a.push(...webQuestions);
- if(s.includes("built"))a.push(...BUILTIN);
+ if(s.includes("built"))a.push(...builtQuestions);
  if(s.includes("manual"))a.push(...manual.map(x=>({...x,source:"manual"})));
  return a;
 }
@@ -374,7 +423,7 @@ function badges(c){return Object.entries(c).map(([k,v])=>`<span class=count>${k}
 function render(){
  $("#total").textContent=`${allQ().length.toLocaleString()} 題可用`;
  $("#webCounts").innerHTML=badges(countByLevel(webQuestions));
- $("#builtCounts").innerHTML=badges(countByLevel(BUILTIN));
+ $("#builtCounts").innerHTML=badges(countByLevel(builtQuestions));
  availability();renderManual();
 }
 function availability(){
@@ -396,8 +445,13 @@ async function next(){
  hideSheet();if(!game)return;if(!game.infinite&&game.index>=game.limit){finish();return}
  if(game.index>=game.order.length)game.order=shuffle(game.pool);
  const q=game.order[game.index%game.order.length];game.current=q;game.answered=false;
- const token=++renderToken;$("#question").textContent=q.q;if(q.mode!=="usage")setRuby($("#question"),q.q,token);
- const modeLabel=q.mode==="usage"?"用法辨識":"填空判斷";$("#questionType").innerHTML=`${q.level} · ${q.type} · ${modeLabel} · ${q.source==="web"?'<span class=webBadge>WEB</span>':'<span class=fallbackBadge>'+q.source.toUpperCase()+'</span>'}`;
+ const token=++renderToken;
+ if(q.mode==="usage"){
+   $("#question").textContent=`「${learnerText(q.grammar||"")}」：繁體中文題意載入中…`;
+   const zhHint=await translateZh(q.usageHint||q.zh||"");if(token!==renderToken)return;
+   $("#question").textContent=zhHint?`「${learnerText(q.grammar||"")}」：以下哪一句最符合「${zhHint}」？`:`「${learnerText(q.grammar||"")}」：翻譯服務暫時無法提供可靠的繁體中文題意，請按「退出」後重新載入 Web 題庫。`;
+ }else{$("#question").textContent=q.q;setRuby($("#question"),q.q,token)}
+ const modeLabel=q.mode==="usage"?"用法辨識（同文法四句）":"填空判斷";$("#questionType").innerHTML=`${q.level} · ${q.type} · ${modeLabel} · ${q.source==="web"?'<span class=webBadge>WEB</span>':'<span class=fallbackBadge>'+q.source.toUpperCase()+'</span>'}`;
  const cs=shuffle(q.choices);$("#choices").classList.toggle("usage",q.mode==="usage");
  $("#choices").innerHTML=cs.map((x,i)=>`<button class=choice data-v="${encodeURIComponent(x)}"><strong>${String.fromCharCode(65+i)}.</strong> <span class=choiceText>${esc(x)}</span></button>`).join("");
  const btns=$$(".choice");btns.forEach((b,i)=>{b.onclick=()=>answer(decodeURIComponent(b.dataset.v));setRuby(b.querySelector(".choiceText"),cs[i],token)});
@@ -434,6 +488,7 @@ function quit(){hideSheet();game=null;$("#quiz").style.display="none";$("#setup"
 function saveManual(){
  const q=$("#mQ").value.trim(),a=$("#mA").value.trim(),w1=$("#mW1").value.trim(),w2=$("#mW2").value.trim(),w3=$("#mW3").value.trim();
  if(!q||!a||!w1||!w2||!w3){alert("請填寫題目、正確答案及三個錯誤答案。");return}
+ if(countOcc(q,"＿＿")!==1){alert("填空題必須剛好包含一個「＿＿」空格，否則無法保證答案唯一。");return}
  const choices=[a,w1,w2,w3];if(new Set(choices).size<4){alert("四個答案必須不同。");return}
  manual.push({id:"m-"+Date.now(),source:"manual",mode:"fill",level:$("#mLevel").value,type:$("#mType").value,q,choices,a,grammar:$("#mGrammar").value.trim()||a,meaning:"手動題目",exp:$("#mExp").value.trim(),zh:$("#mZh").value.trim()});
  save("jpgrammar_manual",manual);["mQ","mA","mW1","mW2","mW3","mGrammar","mExp","mZh"].forEach(id=>$("#"+id).value="");render();
@@ -452,7 +507,7 @@ $("#start").onclick=start;$("#quit").onclick=quit;$("#again").onclick=quit;$("#r
 $("#toggleManual").onclick=()=>$("#manualForm").style.display=$("#manualForm").style.display==="block"?"none":"block";$("#saveManual").onclick=saveManual;$("#export").onclick=exportManual;$("#import").onchange=e=>{if(e.target.files[0])importManual(e.target.files[0]);e.target.value=""};
 document.addEventListener("keydown",e=>{if($("#quiz").style.display!=="block")return;if(!game?.answered&&["1","2","3","4"].includes(e.key))$$(".choice")[+e.key-1]?.click();else if(game?.answered&&(e.key==="Enter"||e.key===" ")){e.preventDefault();next()}});
 
-render();Promise.allSettled([loadWeb(),initFurigana()]).then(()=>render());
+builtQuestions=qualityGate(BUILTIN,"built");manual=qualityGate(manual.map(x=>({...x,source:"manual",mode:x.mode||"fill"})),"manual");render();Promise.allSettled([loadWeb(),initFurigana()]).then(()=>render());
 })();
 </script>
 </body></html>
