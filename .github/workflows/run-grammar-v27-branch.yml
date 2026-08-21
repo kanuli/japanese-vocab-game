@@ -6,6 +6,16 @@ on:
       - main
     paths:
       - '.github/workflows/run-grammar-v27-branch.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/fix-grammar-quality-v27.yml'
+      - '.github/scripts/fix_grammar_quality_v27.py'
+      - '.github/scripts/audit_grammar_quality_v27.mjs'
+      - 'grammar.html'
+      - 'data/grammar_quality_v27_report.txt'
+      - 'data/grammar_quality_v27_runtime_report.json'
 
 permissions:
   contents: write
@@ -30,6 +40,7 @@ jobs:
         run: git diff --check
 
       - name: Commit validated result to feature branch
+        if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
