@@ -1,137 +1,19 @@
-name: Verify final vocabulary deployment on live GitHub Pages
+name: Apply mobile Supertonic safety (legacy manual)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/apply-mobile-supertonic-safety.yml'
 
 permissions:
   contents: write
 
-concurrency:
-  group: verify-final-vocab-live-pages
-  cancel-in-progress: true
-
 jobs:
-  verify-live:
+  patch:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
-          fetch-depth: 0
-
-      - name: Verify all 12 production files match live Pages byte-for-byte
+      - name: Legacy notice
         run: |
-          set -euo pipefail
-          BASE='https://kanuli.github.io/japanese-vocab-game'
-          paths=(
-            advanced_words.js
-            data/advanced_vocab.js
-            data/coverage_deferred_manual.js
-            data/coverage_postreview_manual.js
-            data/coverage_sourcecheck_manual.js
-            index.html
-            word-aivis-delta-catalog.json
-            word-supertonic3-delta-catalog.json
-            word-voicevox-delta-catalog.json
-            wordaudio-delta-voices.js
-            wordaudio.html
-            wordlist.html
-          )
-          rm -rf /tmp/live-final && mkdir -p /tmp/live-final
-          ok=0
-          for attempt in $(seq 1 36); do
-            failed=0
-            for p in "${paths[@]}"; do
-              mkdir -p "/tmp/live-final/$(dirname "$p")"
-              if ! curl -fsSL --max-time 30 -H 'Cache-Control: no-cache' "$BASE/$p?verify=$GITHUB_RUN_ID-$attempt" -o "/tmp/live-final/$p"; then
-                failed=1
-                break
-              fi
-              expected=$(sha256sum "$p" | awk '{print $1}')
-              actual=$(sha256sum "/tmp/live-final/$p" | awk '{print $1}')
-              if [ "$expected" != "$actual" ]; then
-                echo "attempt=$attempt mismatch=$p expected=$expected actual=$actual"
-                failed=1
-                break
-              fi
-            done
-            if [ "$failed" -eq 0 ]; then
-              ok=1
-              echo "LIVE BYTE-FOR-BYTE MATCH: 12/12"
-              break
-            fi
-            sleep 5
-          done
-          test "$ok" -eq 1
-
-      - name: Validate live runtime markers and catalogs
-        run: |
-          set -euo pipefail
-          grep -q 'advanced_words.js?v=20260821v2' /tmp/live-final/index.html
-          grep -q 'advanced_words.js?v=20260821v2' /tmp/live-final/wordlist.html
-          grep -q 'advanced_words.js?v=20260821v2' /tmp/live-final/wordaudio.html
-          grep -q 'wordaudio-delta-voices.js?v=20260821v1' /tmp/live-final/wordaudio.html
-          grep -q 'coverage_deferred_manual.js?v=20260821v1' /tmp/live-final/advanced_words.js
-          grep -q 'coverage_sourcecheck_manual.js?v=20260821v1' /tmp/live-final/advanced_words.js
-          grep -q 'coverage_postreview_manual.js?v=20260821v1' /tmp/live-final/advanced_words.js
-          python - <<'PY'
-          import json
-          checks=[
-            ('/tmp/live-final/word-voicevox-delta-catalog.json',43,30659),
-            ('/tmp/live-final/word-supertonic3-delta-catalog.json',10,7130),
-            ('/tmp/live-final/word-aivis-delta-catalog.json',4,2852),
-          ]
-          for path,voices,recs in checks:
-              d=json.load(open(path,encoding='utf-8'))
-              assert d['status']=='ready'
-              assert d['wordCount']==713
-              assert d['recordingCount']==recs
-              assert len(d.get('speakers') or d.get('voices') or {})==voices
-          print('LIVE catalogs ready: 713 exact keys on VOICEVOX 43, Supertonic 10, Aivis 4.')
-          PY
-
-      - name: Persist LIVE_PASS evidence on audit branch
-        run: |
-          set -euo pipefail
-          runtime_sha=$(git log -1 --format=%H -- advanced_words.js)
-          python - "$runtime_sha" <<'PY'
-          import json,sys,datetime,os
-          from pathlib import Path
-          runtime_sha=sys.argv[1]
-          out={
-            'status':'LIVE_PASS',
-            'checked_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            'pages_base':'https://kanuli.github.io/japanese-vocab-game',
-            'runtime_deployment_commit':runtime_sha,
-            'live_files_byte_identical':12,
-            'expected_live_files':12,
-            'advanced_words_cache_version':'20260821v2',
-            'delta_player_cache_version':'20260821v1',
-            'voice_delta':{
-              'exact_words':713,
-              'voicevox':{'voices':43,'recordings':30659},
-              'supertonic3':{'voices':10,'recordings':7130},
-              'aivis':{'voices':4,'recordings':2852},
-              'total_recordings':40641
-            },
-            'note':'All 12 production runtime files fetched from GitHub Pages matched current main byte-for-byte before this marker was written.'
-          }
-          Path('/tmp/live-final-verification.json').write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding='utf-8')
-          print(json.dumps(out,ensure_ascii=False,indent=2))
-          PY
-          git fetch origin audit/vocab-coverage-20260821
-          git worktree add /tmp/audit-live origin/audit/vocab-coverage-20260821
-          mkdir -p /tmp/audit-live/audit/vocab/results
-          cp /tmp/live-final-verification.json /tmp/audit-live/audit/vocab/results/live_main_pages_verification.json
-          cd /tmp/audit-live
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add audit/vocab/results/live_main_pages_verification.json
-          git commit -m 'Record live vocabulary Pages verification'
-          git push origin HEAD:audit/vocab-coverage-20260821
+          echo 'The one-time mobile Supertonic safety migration has already been applied.'
+          echo 'Use the mobile hosted playback workflow for current mobile audio fixes.'
