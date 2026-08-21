@@ -27,7 +27,7 @@ for(const x of raw){
   if(errs.length){for(const e of new Set(errs))reasons.set(e,(reasons.get(e)||0)+1);continue}
   passed++;perLevelPass[level]++;positions[keys.indexOf(target)]++;
 }
-report.listening={raw:raw.length,structurallyPassed:passed,structurallyRejected:raw.length-passed,perLevelRaw,perLevelPassed,translationRequiredAtSource:translationRequired,rejectReasons:Object.fromEntries(reasons),correctPositionDistribution:positions};
+report.listening={raw:raw.length,structurallyPassed:passed,structurallyRejected:raw.length-passed,perLevelRaw,perLevelPassed:perLevelPass,translationRequiredAtSource:translationRequired,rejectReasons:Object.fromEntries(reasons),correctPositionDistribution:positions};
 if(raw.length!==6690)report.failures.push(`listening expected 6690 original rows, found ${raw.length}`);
 for(const l of levels)if(perLevelPass[l]<perLevelRaw[l]*.98)report.failures.push(`listening ${l} structural pass too low: ${perLevelPass[l]}/${perLevelRaw[l]}`);
 if(passed<raw.length*.98)report.failures.push(`listening structural pass too low: ${passed}/${raw.length}`);
