@@ -1,5 +1,5 @@
 {
-  "version": "20260822-quality4",
+  "version": "20260822-quality5",
   "listening": {
     "raw": 6690,
     "structurallyPassed": 6690,
@@ -95,6 +95,7 @@
     "weakQuickResponseInactive": true,
     "listeningV82": true,
     "placeSpecificSceneActions": true,
+    "secondaryActionsPlaceCompatible": true,
     "malformedMasuConcatenationRemoved": true
   }
 }
