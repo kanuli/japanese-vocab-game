@@ -29,8 +29,7 @@ globalThis.document = {
 };
 globalThis.localStorage = {getItem(){ return null; }, setItem(){}, removeItem(){}};
 globalThis.alert = ()=>{};
-globalThis.navigator = {userAgent: 'grammar-v27-audit'};
-globalThis.location = {href: 'https://example.invalid/grammar.html'};
+if (!('location' in globalThis)) globalThis.location = {href: 'https://example.invalid/grammar.html'};
 globalThis.kuromoji = undefined;
 if (!globalThis.URL) globalThis.URL = class URL {};
 if (!globalThis.URL.createObjectURL) globalThis.URL.createObjectURL = ()=>'';
