@@ -17,49 +17,105 @@ function normSearch(s){
 var I2U={'い':'う','き':'く','ぎ':'ぐ','し':'す','ち':'つ','に':'ぬ','び':'ぶ','み':'む','り':'る'};
 var A2U={'わ':'う','か':'く','が':'ぐ','さ':'す','た':'つ','な':'ぬ','ば':'ぶ','ま':'む','ら':'る'};
 var E2U={'え':'う','け':'く','げ':'ぐ','せ':'す','て':'つ','ね':'ぬ','べ':'ぶ','め':'む','れ':'る'};
-function addCandidate(set,queue,s){s=normSearch(s);if(!s||set.has(s)||set.size>=140)return;set.add(s);queue.push(s);}
-function fromMasuStem(stem,set,queue){
-  if(!stem)return;
-  addCandidate(set,queue,stem+'る');
-  var last=stem.slice(-1),u=I2U[last];
-  if(u)addCandidate(set,queue,stem.slice(0,-1)+u);
-  if(last==='し')addCandidate(set,queue,stem.slice(0,-1)+'する');
-  if(stem==='き')addCandidate(set,queue,'くる');
-}
-function fromARowStem(stem,set,queue){
-  if(!stem)return;
-  addCandidate(set,queue,stem+'る');
-  var last=stem.slice(-1),u=A2U[last];
-  if(u)addCandidate(set,queue,stem.slice(0,-1)+u);
-  if(last==='し')addCandidate(set,queue,stem.slice(0,-1)+'する');
-  if(stem==='こ')addCandidate(set,queue,'くる');
-}
+var O2U={'お':'う','こ':'く','ご':'ぐ','そ':'す','と':'つ','の':'ぬ','ぼ':'ぶ','も':'む','ろ':'る'};
+function addCandidate(set,queue,s){s=normSearch(s);if(!s||set.has(s)||set.size>=240)return;set.add(s);queue.push(s);}
+function fromMasuStem(stem,set,queue){if(!stem)return;addCandidate(set,queue,stem+'る');var last=stem.slice(-1),u=I2U[last];if(u)addCandidate(set,queue,stem.slice(0,-1)+u);if(last==='し')addCandidate(set,queue,stem.slice(0,-1)+'する');if(stem==='き')addCandidate(set,queue,'くる');}
+function fromARowStem(stem,set,queue){if(!stem)return;addCandidate(set,queue,stem+'る');var last=stem.slice(-1),u=A2U[last];if(u)addCandidate(set,queue,stem.slice(0,-1)+u);if(last==='し')addCandidate(set,queue,stem.slice(0,-1)+'する');if(stem==='こ')addCandidate(set,queue,'くる');}
+function fromERowStem(stem,set,queue){if(!stem)return;addCandidate(set,queue,stem+'る');var last=stem.slice(-1),u=E2U[last];if(u)addCandidate(set,queue,stem.slice(0,-1)+u);}
+function fromORowStem(stem,set,queue){if(!stem)return;var last=stem.slice(-1),u=O2U[last];if(u)addCandidate(set,queue,stem.slice(0,-1)+u);}
 function replaceEnding(s,end,rep,set,queue){if(s.length>end.length&&s.endsWith(end))addCandidate(set,queue,s.slice(0,-end.length)+rep);}
 function deinflectSearch(raw){
   var root=normSearch(raw),set=new Set(),queue=[];addCandidate(set,queue,root);
-  for(var qi=0;qi<queue.length&&qi<140;qi++){
+  for(var qi=0;qi<queue.length&&qi<240;qi++){
     var s=queue[qi],stem,last,u;
-    ['ていなかった','でいなかった','ていました','でいました','ていません','でいません','ていない','でいない','ています','でいます','ていた','でいた','ている','でいる'].forEach(function(end){if(s.endsWith(end)){var lead=end.charAt(0);addCandidate(set,queue,s.slice(0,-end.length)+lead);}});
-    replaceEnding(s,'ちゃった','て',set,queue);replaceEnding(s,'ちゃう','て',set,queue);replaceEnding(s,'じゃった','で',set,queue);replaceEnding(s,'じゃう','で',set,queue);
+
+    // Progressive/resultative and common auxiliary chains: reduce back to te/de form.
+    ['ていなかった','でいなかった','ていました','でいました','ていませんでした','でいませんでした','ていません','でいません','ていない','でいない','ています','でいます','ていた','でいた','ている','でいる','てある','である'].forEach(function(end){if(s.endsWith(end)){var lead=end.charAt(0);addCandidate(set,queue,s.slice(0,-end.length)+lead);}});
+    ['てしまわなかった','でしまわなかった','てしまわない','でしまわない','てしまいました','でしまいました','てしまった','でしまった','てしまう','でしまう','てしまって','でしまって','ておかなかった','でおかなかった','ておかない','でおかない','ておいた','でおいた','ておいて','でおいて','ておく','でおく','てみなかった','でみなかった','てみない','でみない','てみた','でみた','てみて','でみて','てみる','でみる','てきた','できた','てくる','でくる','ていく','でいく','てください','でください','てくれた','でくれた','てくれる','でくれる','てもらった','でもらった','てもらう','でもらう','てあげた','であげた','てあげる','であげる'].forEach(function(end){if(s.endsWith(end)){var lead=end.charAt(0);addCandidate(set,queue,s.slice(0,-end.length)+lead);}});
+    replaceEnding(s,'ちゃった','て',set,queue);replaceEnding(s,'ちゃう','て',set,queue);replaceEnding(s,'ちゃって','て',set,queue);replaceEnding(s,'じゃった','で',set,queue);replaceEnding(s,'じゃう','で',set,queue);replaceEnding(s,'じゃって','で',set,queue);
+    replaceEnding(s,'といた','て',set,queue);replaceEnding(s,'といて','て',set,queue);replaceEnding(s,'とく','て',set,queue);replaceEnding(s,'どいた','で',set,queue);replaceEnding(s,'どいて','で',set,queue);replaceEnding(s,'どく','で',set,queue);
+
+    // Obligation/negative compounds.
+    ['なければならなかった','なければならない','なくてはいけなかった','なくてはいけない','ないといけなかった','ないといけない','なくちゃいけない','なくちゃならない'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))addCandidate(set,queue,s.slice(0,-end.length)+'ない');});
+
+    // Polite and desire forms.
     ['ませんでした','ましょう','ました','ません','ます'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))fromMasuStem(s.slice(0,-end.length),set,queue);});
     ['たくなかった','たくない','たかった','たい'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))fromMasuStem(s.slice(0,-end.length),set,queue);});
+    ['ながら','やすかった','やすくない','やすい','にくかった','にくくない','にくい','すぎました','すぎた','すぎない','すぎる'].forEach(function(end){if(s.length>end.length&&s.endsWith(end)){stem=s.slice(0,-end.length);fromMasuStem(stem,set,queue);if(end.indexOf('すぎ')===0)addCandidate(set,queue,stem+'い');}});
+
+    // i-adjective / copula.
     ['くなかった','くない','かった','くて','ければ'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))addCandidate(set,queue,s.slice(0,-end.length)+'い');});
     ['ではありませんでした','じゃありませんでした','ではなかった','じゃなかった','ではありません','じゃありません','ではない','じゃない','でした','だった','です','だ'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))addCandidate(set,queue,s.slice(0,-end.length));});
+
+    // Plain negative.
     ['なければ','なくて','なかった','ない'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))fromARowStem(s.slice(0,-end.length),set,queue);});
+
+    // Conditional tara: first recover past form, then normal past rules can fire.
+    if(s.length>2&&s.endsWith('たら'))addCandidate(set,queue,s.slice(0,-1));
+    if(s.length>2&&s.endsWith('だら'))addCandidate(set,queue,s.slice(0,-1));
+    // Conditional ba.
+    if(s.length>2&&s.endsWith('れば')){stem=s.slice(0,-2);addCandidate(set,queue,stem+'る');fromERowStem(stem,set,queue);}
+    if(s.length>1&&s.endsWith('ば'))fromERowStem(s.slice(0,-1),set,queue);
+
+    // Volitional.
+    if(s.length>2&&s.endsWith('よう')){stem=s.slice(0,-2);addCandidate(set,queue,stem+'る');if(stem==='し')addCandidate(set,queue,'する');if(stem==='こ')addCandidate(set,queue,'くる');}
+    if(s.length>1&&s.endsWith('う'))fromORowStem(s.slice(0,-1),set,queue);
+
+    // Imperative / prohibitive.
+    if(s.length>1&&s.endsWith('な'))addCandidate(set,queue,s.slice(0,-1));
+    if(s.length>1&&s.endsWith('ろ'))addCandidate(set,queue,s.slice(0,-1)+'る');
+    if(s.length>1&&s.endsWith('よ'))addCandidate(set,queue,s.slice(0,-1)+'る');
+    if(s==='しろ'||s==='せよ')addCandidate(set,queue,'する');
+    if(s==='こい')addCandidate(set,queue,'くる');
+    if(s.length>1&&!s.endsWith('れば'))fromERowStem(s,set,queue);
+
+    // Te / past forms.
     if(/(いて|いた)$/.test(s))addCandidate(set,queue,s.slice(0,-2)+'く');
     if(/(いで|いだ)$/.test(s))addCandidate(set,queue,s.slice(0,-2)+'ぐ');
     if(/(して|した)$/.test(s)){stem=s.slice(0,-2);addCandidate(set,queue,stem+'す');addCandidate(set,queue,stem+'する');}
     if(/(んで|んだ)$/.test(s)){stem=s.slice(0,-2);['む','ぶ','ぬ'].forEach(function(x){addCandidate(set,queue,stem+x);});}
     if(/(って|った)$/.test(s)){stem=s.slice(0,-2);['う','つ','る','く'].forEach(function(x){addCandidate(set,queue,stem+x);});}
     if(s.length>1&&(s.endsWith('て')||s.endsWith('た')))addCandidate(set,queue,s.slice(0,-1)+'る');
+
+    // Passive / potential. The A-row path handles godan passive and ichidan -られる ambiguity.
     ['れなかった','れない','れました','れません','れる','れた','れて'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))fromARowStem(s.slice(0,-end.length),set,queue);});
-    ['させられなかった','させられない','させられる','させられた','させられて','させなかった','させない','させる','させた','させて'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))addCandidate(set,queue,s.slice(0,-end.length)+'る');});
+
+    // Causative-passive, including godan contracted -される.
+    ['させられなかった','させられない','させられました','させられません','させられる','させられた','させられて'].forEach(function(end){
+      if(s.length>end.length&&s.endsWith(end)){
+        stem=s.slice(0,-end.length);
+        addCandidate(set,queue,stem+'る');
+        addCandidate(set,queue,stem+'する');
+        if(stem==='こ')addCandidate(set,queue,'くる');
+      }
+    });
+    ['せられなかった','せられない','せられました','せられません','せられる','せられた','せられて','されなかった','されない','されました','されません','される','された','されて'].forEach(function(end){
+      if(s.length>end.length&&s.endsWith(end))fromARowStem(s.slice(0,-end.length),set,queue);
+    });
+
+    // Causative: ichidan/suru/kuru -させる; godan -せる after A-row stem.
+    ['させなかった','させない','させました','させません','させる','させた','させて'].forEach(function(end){
+      if(s.length>end.length&&s.endsWith(end)){
+        stem=s.slice(0,-end.length);
+        addCandidate(set,queue,stem+'る');
+        addCandidate(set,queue,stem+'する');
+        if(stem==='こ')addCandidate(set,queue,'くる');
+      }
+    });
+    ['せなかった','せない','せました','せません','せる','せた','せて'].forEach(function(end){if(s.length>end.length&&s.endsWith(end))fromARowStem(s.slice(0,-end.length),set,queue);});
+
+    // Godan potential and other e-row + る forms.
     if(s.endsWith('る')&&s.length>1){stem=s.slice(0,-1);last=stem.slice(-1);u=E2U[last];if(u)addCandidate(set,queue,stem.slice(0,-1)+u);}
     if(s.endsWith('できる')&&s.length>3)addCandidate(set,queue,s.slice(0,-3)+'する');
-    if(s==='きた'||s==='きて'||s==='きない'||s==='きなかった')addCandidate(set,queue,'くる');
+
+    // Irregular する / 来る inflections.
+    ['した','して','しない','しなかった','します','しました','しません','しませんでした','しよう','しろ','せよ','される','された','させる','させられる'].forEach(function(x){if(s===x)addCandidate(set,queue,'する');});
+    ['きた','きて','きない','きなかった','きます','きました','きません','きませんでした','こよう','こい','こない','こなかった','こさせる','こさせられる','こられる','こられない'].forEach(function(x){if(s===x)addCandidate(set,queue,'くる');});
+    ['来た','来て','来ない','来なかった','来ます','来ました','来ません','来ませんでした','来よう','来い','来させる','来させられる','来られる','来られない'].forEach(function(x){if(s===normSearch(x))addCandidate(set,queue,'来る');});
   }
   return Array.from(set);
 }
+
 function hasJapanese(s){return /[ぁ-ゖァ-ヺ一-龯々〆ヵヶ]/.test(s);}
 function smartMatch(w,q,variants){
   if(!q)return true;
