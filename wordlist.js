@@ -61,9 +61,9 @@ function deinflectSearch(raw){
   return Array.from(set);
 }
 function hasJapanese(s){return /[ぁ-ゖァ-ヺ一-龯々〆ヵヶ]/.test(s);}
-function smartMatch(w,raw){
-  var q=normSearch(raw);if(!q)return true;
-  var variants=deinflectSearch(q),jp=[w.kanji,w.displayWord,w.reading].map(normSearch).filter(Boolean),i,j,f,v;
+function smartMatch(w,q,variants){
+  if(!q)return true;
+  var jp=[w.kanji,w.displayWord,w.reading].map(normSearch).filter(Boolean),i,j,f,v;
   for(i=0;i<jp.length;i++){
     f=jp[i];
     for(j=0;j<variants.length;j++){
@@ -74,7 +74,7 @@ function smartMatch(w,raw){
   }
   return [w.meaning,w.level].some(function(x){return normSearch(x).indexOf(q)>=0;});
 }
-function filtered(){var levels=W.levels(),q=(document.getElementById('search').value||'').trim();var a=(W.words||[]).filter(function(w){if(levels.indexOf(w.level)<0)return false;if(selectedKana&&firstKana(w)!==selectedKana)return false;if(!q)return true;return smartMatch(w,q);});a.sort(function(a,b){return hira(a.reading||'').localeCompare(hira(b.reading||''),'ja')||String(a.displayWord||a.kanji||'').localeCompare(String(b.displayWord||b.kanji||''),'ja');});return a;}
+function filtered(){var levels=W.levels(),raw=(document.getElementById('search').value||'').trim(),q=normSearch(raw),variants=q?deinflectSearch(q):[];var a=(W.words||[]).filter(function(w){if(levels.indexOf(w.level)<0)return false;if(selectedKana&&firstKana(w)!==selectedKana)return false;if(!q)return true;return smartMatch(w,q,variants);});a.sort(function(a,b){return hira(a.reading||'').localeCompare(hira(b.reading||''),'ja')||String(a.displayWord||a.kanji||'').localeCompare(String(b.displayWord||b.kanji||''),'ja');});return a;}
 function setBusy(v){audioBusy=v;document.querySelectorAll('.play-btn').forEach(function(b){b.disabled=v;});var s=document.getElementById('sampleVoice');if(s)s.disabled=v;var voice=document.getElementById('voice');if(voice)voice.disabled=v;var eng=document.getElementById('audioEngine');if(eng)eng.disabled=v;}
 function engineLabel(e){return e==='voicevox'?'VOICEVOX':e==='aivis'?'AivisSpeech / Style-Bert-VITS':e==='device'?'裝置 Japanese voice':'Supertonic 3';}
 async function speakWord(w){if(audioBusy)return;setBusy(true);var status=document.getElementById('audioStatus'),name=w.kanji||w.displayWord||w.reading;status.textContent='🔊 正在播放：'+name+'（'+w.reading+'）';try{if(!W.speak){status.textContent='⚠️ 多聲線模組尚未載入。';return;}var used=await W.speak(w.reading,w);status.textContent=used?'✅ 已播放：'+name+'｜'+engineLabel(engine()):'⚠️ 語音暫時無法播放。';}catch(e){status.textContent='⚠️ 播放失敗：'+(e&&e.message?e.message:String(e));}finally{setBusy(false);}}
