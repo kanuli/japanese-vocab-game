@@ -1,0 +1,164 @@
+name: Regenerate shared Word Supertonic 3 F3 v2 — 20 shards
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-supertonic3-f3-v2-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-supertonic3-f3-v2
+  HF_PREFIX: word/supertonic3/f3-v2
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Derive exact 22,333-word catalog
+        run: python scripts/build_word_shared_audio_catalog.py
+      - name: Validate catalog
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('word-shared-audio-catalog.json',encoding='utf-8'))
+          assert d['wordCount']==22333 and d['shardCount']==20 and len(d['items'])==22333
+          print('F3 regeneration catalog ready:',d['wordCount'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-f3-v2-catalog
+          path: word-shared-audio-catalog.json
+          retention-days: 3
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic 3 F3 vocabulary v2' --notes 'Full 22,333-word F3 regeneration using Supertonic 1.3.1, 16 synthesis steps, 0.97 speed, terminal Japanese punctuation, and 96 kbps MP3. Replaces the failed F3 learning-production batch without changing the other nine voices.'
+
+  generate:
+    needs: [catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-f3-v2-catalog
+          path: .
+      - name: Install current Supertonic and ffmpeg
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.3.1' 'numpy<3'
+      - name: Generate F3 shard at learning quality
+        env:
+          VOICE: F3
+          SHARD: ${{ matrix.shard }}
+          OUT_DIR: word-supertonic-out
+          TOTAL_STEPS: '16'
+          SPEED: '0.97'
+          ADD_TERMINAL_PUNCT: '1'
+        run: python scripts/generate_word_supertonic_shard.py
+      - name: Validate and publish fresh F3 shard
+        env:
+          S: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          s=os.environ['S'];m=json.load(open(f'word-supertonic-out/F3-shard{s}.json',encoding='utf-8'))
+          assert m['voice']=='F3' and m['version']==2 and m['count']>=900 and len(m['members'])==m['count']
+          assert m['synthesis']=={'steps':16,'speed':0.97,'terminalPunctuation':True}
+          p=Path('word-supertonic-out')/m['asset'];assert p.is_file() and p.stat().st_size>100000
+          with tarfile.open(p,'r:') as tf:assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
+          print('Validated F3 v2 shard',s,m['count'],p.stat().st_size)
+          PY
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "word-supertonic-out/F3-shard$S.tar" "$HF_PREFIX/F3-shard$S.tar" --repo-type dataset --commit-message "Word Supertonic F3 v2 shard $S"
+          gh release upload "$RELEASE_TAG" "word-supertonic-out/F3-shard$S.tar" --clobber
+          mkdir -p manifest-artifact && cp "word-supertonic-out/F3-shard$S.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-f3-v2-manifest-${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+
+  finalize:
+    needs: [catalog,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-f3-v2-catalog
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-f3-v2-manifest-*
+          path: word-f3-v2-manifests
+          merge-multiple: true
+      - name: Build fresh F3 v2 index and switch production catalog
+        run: |
+          test "$(find word-f3-v2-manifests -name 'F3-shard*.json' | wc -l)" -eq 20
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.load(open('word-shared-audio-catalog.json',encoding='utf-8'))
+          bundles={};seen=set()
+          for shard in range(20):
+              p=Path('word-f3-v2-manifests')/f'F3-shard{shard}.json'
+              m=json.loads(p.read_text(encoding='utf-8'))
+              expected={x['id'] for x in c['items'] if int(x['shard'])==shard}
+              assert set(m['members'])==expected
+              seen|=expected
+              asset=m['asset']
+              bundles[str(shard)]={
+                  'githubUrl':f'https://github.com/kanuli/japanese-vocab-game/releases/download/word-supertonic3-f3-v2/{asset}',
+                  'hfUrl':f'https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/word/supertonic3/f3-v2/{asset}?download=true',
+                  'members':m['members']
+              }
+          assert len(seen)==22333
+          idx={'version':2,'engine':'supertonic-3','voice':'F3','label':'🎙️ 專業播音女聲（F3）','wordCount':22333,'shardCount':20,'generation':'f3-v2-supertonic-1.3.1-steps16','bundles':bundles}
+          Path('word-supertonic3-F3-index.json').write_text(json.dumps(idx,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
+          prod=json.load(open('word-supertonic3-catalog.json',encoding='utf-8'))
+          assert prod['status']=='ready' and prod['wordCount']==22333 and 'F3' in prod['voices']
+          prod['voices']['F3']['indexUrl']='./word-supertonic3-F3-index.json?v=2'
+          prod['voices']['F3']['generation']='f3-v2-supertonic-1.3.1-steps16'
+          Path('word-supertonic3-catalog.json').write_text(json.dumps(prod,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
+          print('Production switched to regenerated F3 v2:',len(seen),'words')
+          PY
+      - name: Commit F3 production switch
+        run: |
+          git config user.name 'github-actions[bot]';git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-supertonic3-F3-index.json word-supertonic3-catalog.json
+          git commit -m 'Publish regenerated F3 vocabulary audio v2'
+          git pull --rebase origin main
+          git push origin main
