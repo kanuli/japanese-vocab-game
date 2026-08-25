@@ -1,2 +1,2 @@
-2026-08-25T13:40+08:00
-Apply audited static N1-N5 defaults and cache-bust corrected vocabulary/furigana loaders, then allow targeted and full-site verification to re-run.
+2026-08-25T14:03+08:00
+Reapply whole-site audit hardening with reviewed vocabulary precedence: 庭（にわ） must resolve as N4 across vocabulary game, word list and word audio; refresh loader cache keys and preserve all N1-N5 defaults.
