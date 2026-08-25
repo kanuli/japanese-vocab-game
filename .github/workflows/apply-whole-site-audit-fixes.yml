@@ -1,0 +1,93 @@
+name: Apply whole-site audit fixes
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.apply-whole-site-audit-fixes-trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apply-whole-site-audit-fixes
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+
+      - name: Apply deterministic UI and cache fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re,json,datetime
+
+          default_pages=['index.html','wordaudio.html','wordlist.html','grammar.html','listening.html','pronunciation.html']
+          changes=[]
+          for name in default_pages:
+              p=Path(name); s=p.read_text(encoding='utf-8'); original=s
+              for n in range(1,6):
+                  pattern=rf'(<input id="n{n}" type="checkbox" value="N{n}")(?: checked)?(>)'
+                  s,count=re.subn(pattern,rf'\1 checked\2',s,count=1)
+                  if count!=1: raise SystemExit(f'{name}: expected exactly one N{n} checkbox, got {count}')
+              if s!=original:
+                  p.write_text(s,encoding='utf-8');changes.append(f'{name}: default N1-N5')
+
+          # Conversation already has its own lvN1-lvN5 controls; enforce that all remain selected.
+          cp=Path('conversation.html'); cs=cp.read_text(encoding='utf-8')
+          for n in range(1,6):
+              if not re.search(rf'<input id="lvN{n}" type="checkbox" value="N{n}" checked>',cs):
+                  raise SystemExit(f'conversation.html: lvN{n} is not default checked')
+
+          # Cache-bust modified shared vocabulary loader anywhere it is referenced.
+          for p in Path('.').glob('*.html'):
+              s=p.read_text(encoding='utf-8');
+              s2,n=re.subn(r'advanced_words\.js\?v=[^"\']+', 'advanced_words.js?v=20260825v3', s)
+              if n and s2!=s:
+                  p.write_text(s2,encoding='utf-8');changes.append(f'{p.name}: advanced_words cache key')
+
+          # Cache-bust the corrected calendar-date furigana implementation.
+          p=Path('pronunciation.html');s=p.read_text(encoding='utf-8')
+          s2,n=re.subn(r'pronunciation-furigana\.js\?v=[^"\']+', 'pronunciation-furigana.js?v=20260825v2', s)
+          if n!=1: raise SystemExit(f'pronunciation.html: furigana script reference count={n}')
+          if s2!=s:
+              p.write_text(s2,encoding='utf-8');changes.append('pronunciation.html: furigana cache key')
+
+          # Static postconditions.
+          for name in default_pages:
+              s=Path(name).read_text(encoding='utf-8')
+              selected=[]
+              for n in range(1,6):
+                  if re.search(rf'<input id="n{n}" type="checkbox" value="N{n}" checked>',s): selected.append(f'N{n}')
+              if selected!=['N1','N2','N3','N4','N5']:
+                  raise SystemExit(f'{name}: postcondition failed {selected}')
+          if 'pronunciation-furigana.js?v=20260825v2' not in Path('pronunciation.html').read_text(encoding='utf-8'):
+              raise SystemExit('pronunciation furigana cache postcondition failed')
+
+          status={
+            'version':1,'status':'applied',
+            'checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
+            'defaultAllPages':default_pages+['conversation.html'],
+            'furiganaCacheKey':'20260825v2','advancedWordsCacheKey':'20260825v3',
+            'changes':changes
+          }
+          Path('audit-fix-application-status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(status,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Commit applied fixes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html wordaudio.html wordlist.html grammar.html listening.html conversation.html pronunciation.html audit-fix-application-status.json
+          git add '*.html' || true
+          git commit -m 'Apply audited UI defaults and cache keys' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
