@@ -1,2 +1,2 @@
-2026-08-25T14:03+08:00
-Reapply whole-site audit hardening with reviewed vocabulary precedence: 庭（にわ） must resolve as N4 across vocabulary game, word list and word audio; refresh loader cache keys and preserve all N1-N5 defaults.
+2026-08-25T14:08+08:00
+Reapply whole-site hardening including vocab-plus-game: all N1-N5 defaults, reviewed vocabulary precedence for 庭（にわ）N4, refreshed vocabulary/data/furigana cache keys.
