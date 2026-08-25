@@ -1,10 +1,10 @@
 {
   "version": 2,
   "status": "success",
-  "checkedAt": "2026-08-20T05:39:19.967369Z",
-  "runId": "32336314011",
+  "checkedAt": "2026-08-25T05:54:43.698124Z",
+  "runId": "32814585959",
   "runAttempt": "1",
-  "headSha": "583e52d74054d0bb568ad2e1c735ef60ba2d9c0a",
+  "headSha": "6cc278efa89164466266199f7cf51d018ff541ef",
   "target": "https://kanuli.github.io/japanese-vocab-game/pronunciation.html",
   "checks": [
     "supertonic-old-3310",
