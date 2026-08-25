@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "status": "success",
+  "checkedAt": "2026-08-25T05:53:03Z",
+  "runId": "32814507362",
+  "headSha": "1dfcd16ad5c916f22859a78db3228b36e1e573ff",
+  "target": "mobile hosted audio stack",
+  "checks": [
+    "static-hosted-audio",
+    "iphone-webkit-unlock",
+    "voicevox-range-playback",
+    "supertonic-range-playback",
+    "generic-voice-test",
+    "mocktest-exclusion"
+  ],
+  "expected": {
+    "voicevoxSpeakers": 43,
+    "supertonicVoices": 10,
+    "mobileLocalSupertonicDisabled": true
+  }
+}
