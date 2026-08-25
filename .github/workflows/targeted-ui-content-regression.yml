@@ -1,0 +1,158 @@
+name: Targeted UI and content regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.targeted-ui-audit-trigger'
+      - 'site-health.js'
+      - 'pronunciation-furigana.js'
+      - 'advanced_words.js'
+      - 'data/vocab_common_fixups.js'
+      - 'index.html'
+      - 'wordaudio.html'
+      - 'wordlist.html'
+      - 'grammar.html'
+      - 'listening.html'
+      - 'conversation.html'
+      - 'pronunciation.html'
+      - 'data/grammar_quality_v27_runtime_report.json'
+      - 'data/listening_mock_quality_v3_report.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: targeted-ui-content-regression
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+
+      - name: Static content and syntax checks
+        run: |
+          node --check site-health.js
+          node --check pronunciation-furigana.js
+          node --check advanced_words.js
+          node --check data/vocab_common_fixups.js
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          g=json.loads(Path('data/grammar_quality_v27_runtime_report.json').read_text(encoding='utf-8'))
+          l=json.loads(Path('data/listening_mock_quality_v3_report.json').read_text(encoding='utf-8'))
+          assert g['totals']['failures']==0 and g['totals']['usageTargetLeakFailures']==0
+          assert g['douiuRegression']['allGeneratedUsageChoicesContainSameAnchor'] is True
+          assert l['listening']['structurallyRejected']==0 and not l['failures']
+          assert all(x['qualityFailures']==0 and x['underfills']==0 for x in l['mock']['perLevel'].values())
+          s=Path('data/vocab_common_fixups.js').read_text(encoding='utf-8')
+          assert "level:'N4'" in s and "reading:'にわ'" in s and "kanji:'庭'" in s
+          print('Static targeted regression checks PASS')
+          PY
+
+      - name: Install Chromium browser runtime
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Browser-check requested defaults and semantic fixes
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/targeted-http.log 2>&1 &
+          echo $! >/tmp/targeted-http.pid
+          trap 'kill $(cat /tmp/targeted-http.pid) 2>/dev/null || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/index.html >/dev/null && break; sleep 1; done
+          cat >/tmp/targeted-regression.cjs <<'NODE'
+          const {chromium}=require(process.cwd()+'/node_modules/playwright');
+          const pages=['index.html','wordaudio.html','wordlist.html','grammar.html','listening.html','conversation.html','pronunciation.html'];
+          const expected=['N1','N2','N3','N4','N5'];
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({serviceWorkers:'block'});
+            for(const name of pages){
+              const page=await context.newPage();
+              const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+              const r=await page.goto('http://127.0.0.1:4173/'+name+'?targeted='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+              if(!r||r.status()>=400)throw Error(name+' HTTP '+(r?.status()||'none'));
+              await page.waitForTimeout(800);
+              const levels=await page.evaluate(()=>[...document.querySelectorAll('.levels .level input[type="checkbox"]')].filter(x=>/^N[1-5]$/i.test(x.value)).filter(x=>x.checked).map(x=>x.value.toUpperCase()).sort());
+              if(JSON.stringify(levels)!==JSON.stringify(expected))throw Error(name+' default levels '+JSON.stringify(levels));
+              if(['conversation.html','pronunciation.html'].includes(name)){
+                const presets=await page.locator('[data-jlpt-range-presets]').count();
+                if(presets!==1)throw Error(name+' missing shared JLPT range presets');
+              }
+              if(errors.length)throw Error(name+' page errors '+errors.join(' | '));
+              console.log('DEFAULT PASS',name,levels.join(','));
+              await page.close();
+            }
+
+            const audio=await context.newPage();
+            await audio.goto('http://127.0.0.1:4173/wordaudio.html?controls='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            const controls=await audio.evaluate(()=>({
+              repeatGap:[...document.querySelectorAll('#repeatGap option')].map(x=>x.value),
+              limit:[...document.querySelectorAll('#limit option')].map(x=>x.value)
+            }));
+            if(JSON.stringify(controls.repeatGap)!==JSON.stringify(['1','2','3','5']))throw Error('wordaudio repeatGap '+JSON.stringify(controls));
+            if(JSON.stringify(controls.limit)!==JSON.stringify(['10','20','30','50','100','500','0']))throw Error('wordaudio limit '+JSON.stringify(controls));
+            console.log('WORD AUDIO CONTROLS PASS',JSON.stringify(controls));
+            await audio.close();
+
+            const wl=await context.newPage();
+            await wl.goto('http://127.0.0.1:4173/wordlist.html?niwa='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            await wl.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>0,null,{timeout:30000});
+            const niwa=await wl.evaluate(()=>window.WA.words.find(w=>w.kanji==='庭'&&w.reading==='にわ'));
+            if(!niwa||niwa.level!=='N4')throw Error('庭/にわ N4 missing '+JSON.stringify(niwa));
+            console.log('VOCAB PASS 庭 にわ',JSON.stringify(niwa));
+            await wl.close();
+
+            const pr=await context.newPage();
+            await pr.goto('http://127.0.0.1:4173/pronunciation.html?date='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            await pr.waitForFunction(()=>window.PronunciationFurigana?.rubyHTML,null,{timeout:15000});
+            const date=await pr.evaluate(async()=>({day:PronunciationFurigana.dayReading(8),html:await PronunciationFurigana.rubyHTML('今日は9月8日です。')}));
+            if(date.day!=='ようか'||!date.html.includes('くがつ')||!date.html.includes('ようか'))throw Error('date furigana '+JSON.stringify(date));
+            console.log('DATE FURIGANA PASS',JSON.stringify(date));
+            await pr.close();
+
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          node /tmp/targeted-regression.cjs
+
+      - name: Publish targeted regression status
+        if: always()
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from datetime import datetime,timezone
+          from pathlib import Path
+          out={
+            'version':1,
+            'status':os.environ.get('RESULT','unknown'),
+            'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
+            'runId':os.environ.get('GITHUB_RUN_ID'),
+            'headSha':os.environ.get('GITHUB_SHA'),
+            'checks':[
+              'default-all-N1-N5-seven-pages','conversation-pronunciation-range-presets',
+              'wordaudio-repeat-gap-options','wordaudio-quantity-options','vocab-niwa-N4',
+              'pronunciation-9month-8day-furigana','grammar-quality-zero-failures',
+              'listening-mock-quality-zero-failures'
+            ]
+          }
+          Path('targeted-ui-audit-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add targeted-ui-audit-status.json
+          git commit -m 'Update targeted UI audit status' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
