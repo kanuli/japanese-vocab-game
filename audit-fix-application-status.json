@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "status": "applied",
+  "checkedAt": "2026-08-25T05:59:38Z",
+  "defaultAllPages": [
+    "index.html",
+    "wordaudio.html",
+    "wordlist.html",
+    "grammar.html",
+    "listening.html",
+    "pronunciation.html",
+    "conversation.html"
+  ],
+  "furiganaCacheKey": "20260825v2",
+  "advancedWordsCacheKey": "20260825v3",
+  "changes": [
+    "index.html: default N1-N5",
+    "wordaudio.html: default N1-N5",
+    "wordlist.html: default N1-N5",
+    "grammar.html: default N1-N5",
+    "listening.html: default N1-N5",
+    "pronunciation.html: default N1-N5",
+    "index.html: advanced_words cache key",
+    "wordaudio.html: advanced_words cache key",
+    "wordlist.html: advanced_words cache key",
+    "vocabulary-plus.html: advanced_words cache key",
+    "vocab-plus-game.html: advanced_words cache key",
+    "pronunciation.html: furigana cache key"
+  ]
+}
