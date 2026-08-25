@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "status": "success",
+  "checkedAt": "2026-08-25T05:53:24Z",
+  "runId": "32814535966",
+  "headSha": "1f14dad487a3f4be700351cad2b1c288a5f177a5",
+  "target": "https://kanuli.github.io/japanese-vocab-game/",
+  "browser": "iPhone/WebKit",
+  "checks": [
+    "live-github-pages",
+    "voicevox-hosted-playback",
+    "supertonic-hosted-playback",
+    "generic-voice-test"
+  ]
+}
