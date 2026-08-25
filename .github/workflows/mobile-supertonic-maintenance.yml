@@ -32,7 +32,7 @@ on:
       - '.mobile-supertonic-safety-trigger'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: mobile-hosted-audio-maintenance
@@ -111,3 +111,32 @@ jobs:
           echo 'Generic Voice Test: every non-mock page group covered; real playback verified'
           echo 'Mock Test: generic Voice Test exclusion verified'
           echo 'Local 400 MB Supertonic remains disabled only on mobile'
+
+      - name: Publish observable mobile hosted-audio status
+        if: always()
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from datetime import datetime,timezone
+          from pathlib import Path
+          out={
+            'version':1,
+            'status':os.environ.get('RESULT','unknown'),
+            'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
+            'runId':os.environ.get('GITHUB_RUN_ID'),
+            'headSha':os.environ.get('GITHUB_SHA'),
+            'target':'mobile hosted audio stack',
+            'checks':['static-hosted-audio','iphone-webkit-unlock','voicevox-range-playback','supertonic-range-playback','generic-voice-test','mocktest-exclusion'],
+            'expected':{'voicevoxSpeakers':43,'supertonicVoices':10,'mobileLocalSupertonicDisabled':True}
+          }
+          Path('mobile-hosted-audio-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mobile-hosted-audio-status.json
+          git commit -m 'Update mobile hosted audio health status' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
