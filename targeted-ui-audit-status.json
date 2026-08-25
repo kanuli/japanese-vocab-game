@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "status": "failure",
+  "checkedAt": "2026-08-25T05:59:26Z",
+  "runId": "32814977623",
+  "headSha": "f8b8a2d313c180c269290fcd54c9808e75e41413",
+  "checks": [
+    "default-all-N1-N5-seven-pages",
+    "conversation-pronunciation-range-presets",
+    "wordaudio-repeat-gap-options",
+    "wordaudio-quantity-options",
+    "vocab-niwa-N4",
+    "pronunciation-9month-8day-furigana",
+    "grammar-quality-zero-failures",
+    "listening-mock-quality-zero-failures"
+  ]
+}
