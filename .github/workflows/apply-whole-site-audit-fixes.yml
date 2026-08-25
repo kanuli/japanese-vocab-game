@@ -29,7 +29,7 @@ jobs:
           from pathlib import Path
           import re,json,datetime
 
-          default_pages=['index.html','wordaudio.html','wordlist.html','grammar.html','listening.html','pronunciation.html']
+          default_pages=['index.html','wordaudio.html','wordlist.html','grammar.html','listening.html','pronunciation.html','vocab-plus-game.html']
           changes=[]
           for name in default_pages:
               p=Path(name); s=p.read_text(encoding='utf-8'); original=s
@@ -45,8 +45,6 @@ jobs:
               if not re.search(rf'<input id="lvN{n}" type="checkbox" value="N{n}" checked>',cs):
                   raise SystemExit(f'conversation.html: lvN{n} is not default checked')
 
-          # Ensure the main vocabulary game applies direct-reviewed metadata overrides
-          # after merging upstream core + advanced + manual words.
           p=Path('index.html');s=p.read_text(encoding='utf-8')
           old='function allWords(){return uniqueWords([...web,...advancedDeduped(),...manual.map(w=>({...w,estimated:!!w.estimated,source:w.source||"手動加入",pos:w.pos||guessPos(w.kanji||w.reading)}))])}'
           new='function allWords(){const merged=uniqueWords([...web,...advancedDeduped(),...manual.map(w=>({...w,estimated:!!w.estimated,source:w.source||"手動加入",pos:w.pos||guessPos(w.kanji||w.reading)}))]);return window.applyVocabCommonFixups?window.applyVocabCommonFixups(merged):merged}'
@@ -55,14 +53,20 @@ jobs:
           elif new not in s:
               raise SystemExit('index.html: allWords merge pattern not found')
 
-          # Cache-bust the shared vocabulary loader after the reviewed override update.
+          p=Path('vocab-plus-game.html');s=p.read_text(encoding='utf-8')
+          old='function merge(){return uniq([...core,...adv])}'
+          new='function merge(){const merged=uniq([...core,...adv]);return window.applyVocabCommonFixups?window.applyVocabCommonFixups(merged):merged}'
+          if old in s:
+              s=s.replace(old,new,1);p.write_text(s,encoding='utf-8');changes.append('vocab-plus-game.html: reviewed vocabulary override precedence')
+          elif new not in s:
+              raise SystemExit('vocab-plus-game.html: merge pattern not found')
+
           for p in Path('.').glob('*.html'):
               s=p.read_text(encoding='utf-8')
               s2,n=re.subn(r'advanced_words\.js\?v=[^"\']+', 'advanced_words.js?v=20260825v4', s)
               if n and s2!=s:
                   p.write_text(s2,encoding='utf-8');changes.append(f'{p.name}: advanced_words cache key')
 
-          # wordaudio-data now applies the same reviewed overrides used by word list/audio.
           for p in Path('.').glob('*.html'):
               s=p.read_text(encoding='utf-8')
               s2,n=re.subn(r'wordaudio-data\.js\?v=[^"\']+', 'wordaudio-data.js?v=20260825v2', s)
@@ -83,16 +87,19 @@ jobs:
               if selected!=['N1','N2','N3','N4','N5']:
                   raise SystemExit(f'{name}: postcondition failed {selected}')
           idx=Path('index.html').read_text(encoding='utf-8')
+          plus=Path('vocab-plus-game.html').read_text(encoding='utf-8')
           if 'window.applyVocabCommonFixups' not in idx: raise SystemExit('index reviewed vocabulary override missing')
+          if 'window.applyVocabCommonFixups' not in plus: raise SystemExit('Plus reviewed vocabulary override missing')
           if 'pronunciation-furigana.js?v=20260825v2' not in Path('pronunciation.html').read_text(encoding='utf-8'):
               raise SystemExit('pronunciation furigana cache postcondition failed')
 
           status={
-            'version':2,'status':'applied',
+            'version':3,'status':'applied',
             'checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
             'defaultAllPages':default_pages+['conversation.html'],
             'furiganaCacheKey':'20260825v2','advancedWordsCacheKey':'20260825v4','wordaudioDataCacheKey':'20260825v2',
             'reviewedVocabularyOverride':True,
+            'reviewedVocabularyOverridePages':['index.html','wordaudio.html','wordlist.html','vocab-plus-game.html'],
             'changes':changes
           }
           Path('audit-fix-application-status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
