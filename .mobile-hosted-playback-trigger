@@ -1,2 +1,2 @@
 2026-08-25T13:40+08:00
-Post-fix audit: run iPhone-WebKit hosted audio validation with current checkout/runtime dependencies and real hosted VOICEVOX/Supertonic playback.
+Post-fix audit rerun: validate iPhone-WebKit hosted VOICEVOX/Supertonic playback and publish mobile-hosted-audio-status.json.
