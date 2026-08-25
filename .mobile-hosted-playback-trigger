@@ -1,2 +1,2 @@
-2026-08-17T19:30+08:00
-Run iPhone-WebKit hosted audio validation using a real hit-testable button tap.
+2026-08-25T13:40+08:00
+Post-fix audit: run iPhone-WebKit hosted audio validation with current checkout/runtime dependencies and real hosted VOICEVOX/Supertonic playback.
