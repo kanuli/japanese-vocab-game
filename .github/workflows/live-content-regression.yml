@@ -1,0 +1,117 @@
+name: Live semantic content regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.live-content-audit-trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live-semantic-content-regression
+  cancel-in-progress: true
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+
+      - name: Wait for audited revision to reach GitHub Pages
+        run: |
+          EXPECTED=$(python - <<'PY'
+          import json
+          print(json.load(open('audit-fix-application-status.json',encoding='utf-8'))['checkedAt'])
+          PY
+          )
+          echo "Expected live audit status: $EXPECTED"
+          ok=0
+          for i in {1..36}; do
+            LIVE=$(curl -fsSL --max-time 20 "https://kanuli.github.io/japanese-vocab-game/audit-fix-application-status.json?live=$RANDOM" 2>/dev/null | python -c 'import sys,json; print(json.load(sys.stdin).get("checkedAt",""))' 2>/dev/null || true)
+            if [ "$LIVE" = "$EXPECTED" ]; then ok=1; break; fi
+            sleep 5
+          done
+          test "$ok" = 1 || { echo 'Latest audited revision did not reach GitHub Pages in verification window' >&2; exit 1; }
+
+      - name: Install Chromium
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Verify live defaults, vocabulary and calendar furigana
+        run: |
+          cat >/tmp/live-content.cjs <<'NODE'
+          const {chromium}=require(process.cwd()+'/node_modules/playwright');
+          const base='https://kanuli.github.io/japanese-vocab-game/';
+          const pages=['index.html','wordaudio.html','wordlist.html','grammar.html','listening.html','conversation.html','pronunciation.html','vocab-plus-game.html'];
+          const expected=['N1','N2','N3','N4','N5'];
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({serviceWorkers:'block'});
+            for(const name of pages){
+              const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
+              const r=await page.goto(base+name+'?liveContent='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+              if(!r||r.status()>=400)throw Error(name+' HTTP '+(r?.status()||'none'));
+              await page.waitForTimeout(900);
+              const levels=await page.evaluate(()=>[...document.querySelectorAll('.levels input[type="checkbox"]')].filter(x=>/^N[1-5]$/i.test(x.value)).filter(x=>x.checked).map(x=>x.value.toUpperCase()).sort());
+              if(levels.length&&JSON.stringify(levels)!==JSON.stringify(expected))throw Error(name+' default levels '+JSON.stringify(levels));
+              if(errors.length)throw Error(name+' page errors '+errors.join(' | '));
+              console.log('LIVE DEFAULT PASS',name,levels.join(','));
+              await page.close();
+            }
+
+            const wl=await context.newPage();
+            await wl.goto(base+'wordlist.html?liveNiwa='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            await wl.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>0,null,{timeout:30000});
+            const niwa=await wl.evaluate(()=>window.WA.words.find(w=>w.kanji==='庭'&&w.reading==='にわ'));
+            if(!niwa||niwa.level!=='N4')throw Error('LIVE 庭/にわ N4 missing '+JSON.stringify(niwa));
+            console.log('LIVE VOCAB PASS',JSON.stringify(niwa));
+            await wl.close();
+
+            const audio=await context.newPage();
+            await audio.goto(base+'wordaudio.html?liveControls='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            const controls=await audio.evaluate(()=>({repeatGap:[...document.querySelectorAll('#repeatGap option')].map(x=>x.value),limit:[...document.querySelectorAll('#limit option')].map(x=>x.value)}));
+            if(JSON.stringify(controls.repeatGap)!==JSON.stringify(['1','2','3','5']))throw Error('LIVE repeatGap '+JSON.stringify(controls));
+            if(JSON.stringify(controls.limit)!==JSON.stringify(['10','20','30','50','100','500','0']))throw Error('LIVE limit '+JSON.stringify(controls));
+            console.log('LIVE WORD AUDIO CONTROLS PASS');
+            await audio.close();
+
+            const pr=await context.newPage();
+            await pr.goto(base+'pronunciation.html?liveDate='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            await pr.waitForFunction(()=>window.PronunciationFurigana?.rubyHTML,null,{timeout:20000});
+            const date=await pr.evaluate(async()=>({day:PronunciationFurigana.dayReading(8),html:await PronunciationFurigana.rubyHTML('今日は9月8日です。')}));
+            if(date.day!=='ようか'||!date.html.includes('くがつ')||!date.html.includes('ようか'))throw Error('LIVE date furigana '+JSON.stringify(date));
+            console.log('LIVE DATE PASS',JSON.stringify(date));
+            await pr.close();
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          node /tmp/live-content.cjs
+
+      - name: Publish live content regression status
+        if: always()
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from datetime import datetime,timezone
+          from pathlib import Path
+          out={'version':1,'status':os.environ.get('RESULT','unknown'),'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'runId':os.environ.get('GITHUB_RUN_ID'),'headSha':os.environ.get('GITHUB_SHA'),'target':'https://kanuli.github.io/japanese-vocab-game/','checks':['live-default-all-eight-pages','live-niwa-N4','live-wordaudio-controls','live-9month-8day-furigana']}
+          Path('live-content-audit-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add live-content-audit-status.json
+          git commit -m 'Update live content audit status' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
