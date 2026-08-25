@@ -1,7 +1,7 @@
 {
-  "version": 2,
+  "version": 3,
   "status": "applied",
-  "checkedAt": "2026-08-25T06:02:05Z",
+  "checkedAt": "2026-08-25T06:02:55Z",
   "defaultAllPages": [
     "index.html",
     "wordaudio.html",
@@ -9,20 +9,21 @@
     "grammar.html",
     "listening.html",
     "pronunciation.html",
+    "vocab-plus-game.html",
     "conversation.html"
   ],
   "furiganaCacheKey": "20260825v2",
   "advancedWordsCacheKey": "20260825v4",
   "wordaudioDataCacheKey": "20260825v2",
   "reviewedVocabularyOverride": true,
+  "reviewedVocabularyOverridePages": [
+    "index.html",
+    "wordaudio.html",
+    "wordlist.html",
+    "vocab-plus-game.html"
+  ],
   "changes": [
-    "index.html: reviewed vocabulary override precedence",
-    "index.html: advanced_words cache key",
-    "wordaudio.html: advanced_words cache key",
-    "wordlist.html: advanced_words cache key",
-    "vocabulary-plus.html: advanced_words cache key",
-    "vocab-plus-game.html: advanced_words cache key",
-    "wordaudio.html: wordaudio-data cache key",
-    "wordlist.html: wordaudio-data cache key"
+    "vocab-plus-game.html: default N1-N5",
+    "vocab-plus-game.html: reviewed vocabulary override precedence"
   ]
 }
