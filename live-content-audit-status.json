@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "status": "success",
+  "checkedAt": "2026-08-25T06:05:18Z",
+  "runId": "32815330920",
+  "headSha": "2661daee9b959d7b87b5135787a346b6bf69dbca",
+  "target": "https://kanuli.github.io/japanese-vocab-game/",
+  "checks": [
+    "live-default-all-eight-pages",
+    "live-niwa-N4",
+    "live-wordaudio-controls",
+    "live-9month-8day-furigana"
+  ]
+}
