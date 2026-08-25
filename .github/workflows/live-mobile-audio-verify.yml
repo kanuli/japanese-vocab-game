@@ -8,7 +8,7 @@ on:
       - '.live-mobile-audio-trigger'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: live-mobile-hosted-audio-verify
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           ref: main
       - name: Install WebKit mobile browser runtime
@@ -36,3 +36,31 @@ jobs:
         run: |
           echo 'LIVE MOBILE AUDIO PASSED'
           echo 'GitHub Pages + iPhone/WebKit + real VOICEVOX + real Hosted Supertonic verified.'
+      - name: Publish observable live mobile audio status
+        if: always()
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from datetime import datetime,timezone
+          from pathlib import Path
+          out={
+            'version':1,
+            'status':os.environ.get('RESULT','unknown'),
+            'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
+            'runId':os.environ.get('GITHUB_RUN_ID'),
+            'headSha':os.environ.get('GITHUB_SHA'),
+            'target':'https://kanuli.github.io/japanese-vocab-game/',
+            'browser':'iPhone/WebKit',
+            'checks':['live-github-pages','voicevox-hosted-playback','supertonic-hosted-playback','generic-voice-test']
+          }
+          Path('live-mobile-audio-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add live-mobile-audio-status.json
+          git commit -m 'Update live mobile audio verification status' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
