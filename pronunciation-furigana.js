@@ -12,7 +12,7 @@ function kataToHira(s){
 
 function esc(s){
   return String(s??'').replace(/[&<>"']/g,function(c){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c];
   });
 }
 
@@ -32,6 +32,33 @@ function tokenRuby(t){
     if(rubyReading) return '<ruby>'+esc(stem)+'<rt>'+esc(rubyReading)+'</rt></ruby>'+esc(suffix);
   }
   return '<ruby>'+esc(surf)+'<rt>'+esc(rd)+'</rt></ruby>';
+}
+
+const MONTH_READINGS={1:'いちがつ',2:'にがつ',3:'さんがつ',4:'しがつ',5:'ごがつ',6:'ろくがつ',7:'しちがつ',8:'はちがつ',9:'くがつ',10:'じゅうがつ',11:'じゅういちがつ',12:'じゅうにがつ'};
+const SPECIAL_DAY_READINGS={1:'ついたち',2:'ふつか',3:'みっか',4:'よっか',5:'いつか',6:'むいか',7:'なのか',8:'ようか',9:'ここのか',10:'とおか',14:'じゅうよっか',20:'はつか',24:'にじゅうよっか'};
+function dayNumberReading(n){
+  const ones={0:'',1:'いち',2:'に',3:'さん',4:'よん',5:'ご',6:'ろく',7:'しち',8:'はち',9:'く'};
+  if(n<10)return ones[n]||'';
+  if(n<20)return 'じゅう'+(ones[n-10]||'');
+  if(n<30)return 'にじゅう'+(ones[n-20]||'');
+  if(n<=31)return 'さんじゅう'+(ones[n-30]||'');
+  return '';
+}
+function dayReading(n){return SPECIAL_DAY_READINGS[n]||((dayNumberReading(n)||String(n))+'にち');}
+function calendarRubyHTML(text,renderPlain){
+  const s=String(text||'');
+  const re=/(\d{1,2})月(\d{1,2})日/g;
+  let out='',last=0,m;
+  while((m=re.exec(s))){
+    const month=Number(m[1]),day=Number(m[2]);
+    if(month<1||month>12||day<1||day>31)continue;
+    out+=renderPlain(s.slice(last,m.index));
+    out+='<ruby>'+esc(m[1]+'月')+'<rt>'+esc(MONTH_READINGS[month])+'</rt></ruby>';
+    out+='<ruby>'+esc(m[2]+'日')+'<rt>'+esc(dayReading(day))+'</rt></ruby>';
+    last=m.index+m[0].length;
+  }
+  out+=renderPlain(s.slice(last));
+  return out;
 }
 
 function ensureStyle(){
@@ -66,9 +93,13 @@ function init(){
 
 async function rubyHTML(text){
   const t=tokenizer||await init();
-  if(!t) return esc(text);
-  try{return t.tokenize(String(text||'')).map(tokenRuby).join('');}
-  catch(err){console.warn(err);return esc(text);}
+  const renderPlain=function(segment){
+    if(!segment)return '';
+    if(!t)return esc(segment);
+    try{return t.tokenize(segment).map(tokenRuby).join('');}
+    catch(err){console.warn(err);return esc(segment);}
+  };
+  return calendarRubyHTML(text,renderPlain);
 }
 
 async function render(el,text){
@@ -80,7 +111,7 @@ async function render(el,text){
   el.innerHTML=html;
 }
 
-window.PronunciationFurigana={init:init,render:render,rubyHTML:rubyHTML,ready:function(){return !!tokenizer;}};
+window.PronunciationFurigana={init:init,render:render,rubyHTML:rubyHTML,ready:function(){return !!tokenizer;},dayReading:dayReading};
 ensureStyle();
 init();
 })();
