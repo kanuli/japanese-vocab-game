@@ -1,7 +1,7 @@
 {
   "version": 1,
   "status": "ok",
-  "checkedAt": "2026-08-24T04:27:35Z",
+  "checkedAt": "2026-08-25T05:47:36Z",
   "playwright": {
     "previous": "1.62.1",
     "latest": "1.62.1",
