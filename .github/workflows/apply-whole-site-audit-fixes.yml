@@ -23,7 +23,7 @@ jobs:
         with:
           ref: main
 
-      - name: Apply deterministic UI and cache fixes
+      - name: Apply deterministic UI, cache and vocabulary fixes
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -40,27 +40,41 @@ jobs:
               if s!=original:
                   p.write_text(s,encoding='utf-8');changes.append(f'{name}: default N1-N5')
 
-          # Conversation already has its own lvN1-lvN5 controls; enforce that all remain selected.
           cp=Path('conversation.html'); cs=cp.read_text(encoding='utf-8')
           for n in range(1,6):
               if not re.search(rf'<input id="lvN{n}" type="checkbox" value="N{n}" checked>',cs):
                   raise SystemExit(f'conversation.html: lvN{n} is not default checked')
 
-          # Cache-bust modified shared vocabulary loader anywhere it is referenced.
+          # Ensure the main vocabulary game applies direct-reviewed metadata overrides
+          # after merging upstream core + advanced + manual words.
+          p=Path('index.html');s=p.read_text(encoding='utf-8')
+          old='function allWords(){return uniqueWords([...web,...advancedDeduped(),...manual.map(w=>({...w,estimated:!!w.estimated,source:w.source||"手動加入",pos:w.pos||guessPos(w.kanji||w.reading)}))])}'
+          new='function allWords(){const merged=uniqueWords([...web,...advancedDeduped(),...manual.map(w=>({...w,estimated:!!w.estimated,source:w.source||"手動加入",pos:w.pos||guessPos(w.kanji||w.reading)}))]);return window.applyVocabCommonFixups?window.applyVocabCommonFixups(merged):merged}'
+          if old in s:
+              s=s.replace(old,new,1);p.write_text(s,encoding='utf-8');changes.append('index.html: reviewed vocabulary override precedence')
+          elif new not in s:
+              raise SystemExit('index.html: allWords merge pattern not found')
+
+          # Cache-bust the shared vocabulary loader after the reviewed override update.
           for p in Path('.').glob('*.html'):
-              s=p.read_text(encoding='utf-8');
-              s2,n=re.subn(r'advanced_words\.js\?v=[^"\']+', 'advanced_words.js?v=20260825v3', s)
+              s=p.read_text(encoding='utf-8')
+              s2,n=re.subn(r'advanced_words\.js\?v=[^"\']+', 'advanced_words.js?v=20260825v4', s)
               if n and s2!=s:
                   p.write_text(s2,encoding='utf-8');changes.append(f'{p.name}: advanced_words cache key')
 
-          # Cache-bust the corrected calendar-date furigana implementation.
+          # wordaudio-data now applies the same reviewed overrides used by word list/audio.
+          for p in Path('.').glob('*.html'):
+              s=p.read_text(encoding='utf-8')
+              s2,n=re.subn(r'wordaudio-data\.js\?v=[^"\']+', 'wordaudio-data.js?v=20260825v2', s)
+              if n and s2!=s:
+                  p.write_text(s2,encoding='utf-8');changes.append(f'{p.name}: wordaudio-data cache key')
+
           p=Path('pronunciation.html');s=p.read_text(encoding='utf-8')
           s2,n=re.subn(r'pronunciation-furigana\.js\?v=[^"\']+', 'pronunciation-furigana.js?v=20260825v2', s)
           if n!=1: raise SystemExit(f'pronunciation.html: furigana script reference count={n}')
           if s2!=s:
               p.write_text(s2,encoding='utf-8');changes.append('pronunciation.html: furigana cache key')
 
-          # Static postconditions.
           for name in default_pages:
               s=Path(name).read_text(encoding='utf-8')
               selected=[]
@@ -68,14 +82,17 @@ jobs:
                   if re.search(rf'<input id="n{n}" type="checkbox" value="N{n}" checked>',s): selected.append(f'N{n}')
               if selected!=['N1','N2','N3','N4','N5']:
                   raise SystemExit(f'{name}: postcondition failed {selected}')
+          idx=Path('index.html').read_text(encoding='utf-8')
+          if 'window.applyVocabCommonFixups' not in idx: raise SystemExit('index reviewed vocabulary override missing')
           if 'pronunciation-furigana.js?v=20260825v2' not in Path('pronunciation.html').read_text(encoding='utf-8'):
               raise SystemExit('pronunciation furigana cache postcondition failed')
 
           status={
-            'version':1,'status':'applied',
+            'version':2,'status':'applied',
             'checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
             'defaultAllPages':default_pages+['conversation.html'],
-            'furiganaCacheKey':'20260825v2','advancedWordsCacheKey':'20260825v3',
+            'furiganaCacheKey':'20260825v2','advancedWordsCacheKey':'20260825v4','wordaudioDataCacheKey':'20260825v2',
+            'reviewedVocabularyOverride':True,
             'changes':changes
           }
           Path('audit-fix-application-status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
@@ -86,8 +103,8 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add index.html wordaudio.html wordlist.html grammar.html listening.html conversation.html pronunciation.html audit-fix-application-status.json
+          git add audit-fix-application-status.json
           git add '*.html' || true
-          git commit -m 'Apply audited UI defaults and cache keys' || exit 0
+          git commit -m 'Apply audited UI, cache and vocabulary fixes' || exit 0
           git pull --rebase origin main
           git push origin HEAD:main
