@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "status": "cancelled",
-  "checkedAt": "2026-08-25T06:01:32Z",
-  "runId": "32815131001",
-  "headSha": "d24b2eb4009518a5204c80a2983df14e636b736a",
+  "status": "success",
+  "checkedAt": "2026-08-25T06:02:22Z",
+  "runId": "32815180957",
+  "headSha": "5f5ce956bfba9542fed891b3a78cc9d46835f9f9",
   "checks": [
     "default-all-N1-N5-seven-pages",
     "conversation-pronunciation-range-presets",
