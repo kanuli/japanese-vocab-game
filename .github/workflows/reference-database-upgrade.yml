@@ -30,6 +30,7 @@ on:
       - 'tools/apply_conversation_quality_batch7.py'
       - '.github/scripts/analyze_full_conversation_batch7.mjs'
       - '.github/scripts/audit_full_conversation_batch7.mjs'
+      - '.github/scripts/analyze_grammar_depth_batch8.mjs'
       - 'tools/fix_listening_gap_naturalness.py'
       - 'tools/audit_coverage_gaps.py'
       - 'tools/reconcile_coverage_report.py'
@@ -77,6 +78,8 @@ jobs:
         run: python tools/apply_conversation_quality_batch7.py
       - name: Audit Batch 7 full conversation completion
         run: node .github/scripts/audit_full_conversation_batch7.mjs
+      - name: Analyze Batch 8 grammar depth
+        run: node .github/scripts/analyze_grammar_depth_batch8.mjs
       - name: Audit batch 5 listening repair
         run: python tools/audit_listening_repair_batch5.py
       - name: Audit reference expansion
@@ -101,6 +104,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-original-catalog.json listening-gap-expansion.js conversation-quality-batch7.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json data/quality_depth_batch3_report.json data/full_listening_quality_batch4_report.json data/listening_repair_batch5_preflight.json data/listening_repair_batch5_report.json data/listening_length_batch6_preflight.json data/listening_length_batch6_report.json data/listening_completion_batch6_report.json data/full_conversation_batch7_preflight.json data/full_conversation_batch7_report.json
-          git commit -m 'Complete Japanese conversation quality batch 7'
+          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-original-catalog.json listening-gap-expansion.js conversation-quality-batch7.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json data/quality_depth_batch3_report.json data/full_listening_quality_batch4_report.json data/listening_repair_batch5_preflight.json data/listening_repair_batch5_report.json data/listening_length_batch6_preflight.json data/listening_length_batch6_report.json data/listening_completion_batch6_report.json data/full_conversation_batch7_preflight.json data/full_conversation_batch7_report.json data/grammar_depth_batch8_preflight.json
+          git commit -m 'Analyze Japanese grammar depth batch 8'
           git push
