@@ -1,12 +1,13 @@
 {
-  "generated": "2026-08-26T11:29:46.747627+00:00",
+  "generated": "2026-08-26T11:45:01.961753+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
     "officialJlptNote": "No official post-2010 JLPT per-word vocabulary list exists; site levels are third-party learning labels or estimates.",
     "coreRefinement": "Every original core fallback is reviewed against all safe exact-equivalent form+reading Tomoshi/JMdict candidates. Bracketed furigana notation, Unicode/Japanese glyph normalization and hiragana/katakana reading equivalence are allowed only when the raw exact lookup has no candidate. Automatic semantic selection still requires strong Traditional-Chinese agreement and a clear margin. Mazii/MOJi/時雨 are secondary manual validation only; their proprietary dictionary text is not bulk-copied.",
     "advancedExpansion": "Full Tomoshi/JMdict open corpus; prior 12.5k preserved; new canonical rows require reusable zh-TW plus learner evidence. Exact lexical ambiguity is skipped. Proprietary web dictionaries are validation-only.",
-    "jlptLevel": "Teacher audit per exact reading+display key. Manual/teacher anchors first; core exact baseline and exact OpenJLPT/Waller evidence next; same-JMdict-form evidence never decides a level; only residual words are model/distribution estimates; estimated N1 requires positive rarity evidence."
+    "jlptLevel": "Teacher audit per exact reading+display key. Manual/teacher anchors first; core exact baseline and exact OpenJLPT/Waller evidence next; same-JMdict-form evidence never decides a level; only residual words are model/distribution estimates; estimated N1 requires positive rarity evidence.",
+    "runtimeJlptLevel": "Every additive runtime vocabulary exact key is reconciled to the teacher audit. Unsupported legacy N1 estimates are forbidden; N1 requires direct evidence."
   },
   "counts": {
     "core": 10511,
@@ -16210,7 +16211,8 @@
       }
     },
     "auditArtifact": "data/jlpt_teacher_audit.tsv",
-    "officialJlptCaveat": "JLPT does not publish a canonical post-2010 word-by-word vocabulary list; non-direct rows are teacher-style study estimates, not official JLPT classifications."
+    "officialJlptCaveat": "JLPT does not publish a canonical post-2010 word-by-word vocabulary list; non-direct rows are teacher-style study estimates, not official JLPT classifications.",
+    "runtimeExtendedAuditRows": 32613
   },
   "reviewIssues": [
     {
@@ -17204,5 +17206,48 @@
       ]
     }
   ],
-  "reviewIssueCount": 66
+  "reviewIssueCount": 66,
+  "runtimeTeacherAudit": {
+    "status": "complete",
+    "version": "20260826-teacher-runtime-v1",
+    "scope": "all generated core+advanced keys plus every additive runtime vocabulary supplement loaded by advanced_words.js",
+    "baseTeacherRows": 32511,
+    "supplementConfiguredUniqueKeys": 393,
+    "supplementUniqueKeysAlreadyAudited": 291,
+    "supplementUniqueKeysAddedToAudit": 102,
+    "rowCount": 32613,
+    "countsByLevel": {
+      "N5": 2652,
+      "N4": 2506,
+      "N3": 10563,
+      "N2": 10792,
+      "N1": 6100
+    },
+    "gradeCounts": {
+      "A": 7169,
+      "D": 19332,
+      "C": 514,
+      "B": 5598
+    },
+    "directSupplementRowsAdded": 24,
+    "conflictingDirectSupplementRowsAdded": 2,
+    "estimatedSupplementRowsAdded": 78,
+    "estimatedN1": 0,
+    "duplicateExactKeys": 0,
+    "rankLogMediansUsed": {
+      "N5": 3.9970804354717306,
+      "N4": 3.932423026376739,
+      "N3": 3.784831178124469,
+      "N2": 4.067777358633317
+    },
+    "overlay": {
+      "version": "20260826-teacher-runtime-v1",
+      "generated": "2026-08-26T11:45:42.730159+00:00",
+      "configuredKeys": 393,
+      "rule": "apply teacher-audited exact reading+display level after all additive runtime supplements"
+    },
+    "auditArtifact": "data/jlpt_teacher_audit.tsv",
+    "overlayArtifact": "data/vocab_teacher_runtime_overlay.js",
+    "officialJlptCaveat": "JLPT does not publish a canonical post-2010 word-by-word vocabulary list; grade D rows are teacher-style study estimates, not official JLPT classifications."
+  }
 }

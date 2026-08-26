@@ -525,6 +525,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 すき	好き	N5	A	direct	core-exact-corroborated	1	23982	1277450	"{""core-deck-exact"":""N5"",""openjlpt-exact"":""N5"",""waller-exact"":""N5"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
 すくない	少ない	N5	A	direct	core-exact-corroborated	1	7548	1348910	"{""core-deck-exact"":""N5"",""openjlpt-exact"":""N5"",""waller-exact"":""N5"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
 すぐ	すぐ	N5	B	direct+conflict	core-exact	1	24481	1430610	"{""core-deck-exact"":""N5"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
+すぐに	すぐに	N5	A	direct	openjlpt+waller+tomoshi-exact	1	24482	1430620	"{""runtimeSources"":[""coverage_deferred_manual""],""legacyLevel"":""N5"",""exactEvidence"":{""openjlpt"":""N5"",""waller"":""N5"",""tomoshi"":""N5""},""tomoshiEntryIds"":[""1430620""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N5""],""tomoshiLevelSources"":[""1430620:waller:N5""]}"
 すぐに	直ぐに	N5	B	direct	existing-direct-exact-row	1	24482	1430620	"{""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
 すげー	すげー	N5	D	estimated	model+frequency+world-distribution	1	26149	2722660	{}
 すこし	少し	N5	A	direct	core-exact-corroborated	1	253	1348870	"{""core-deck-exact"":""N5"",""openjlpt-exact"":""N5"",""waller-exact"":""N5"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
@@ -1124,6 +1125,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 アイアン	アイアン	N5	D	estimated	model+frequency+world-distribution	1	29949	1013880	{}
 アイゼン	アイゼン	N5	D	estimated	model+frequency+world-distribution	1	29950	1014080	{}
 アイヌ	アイヌ	N5	D	estimated	model+frequency+world-distribution	1	26518	1014390	{}
+アカウント	アカウント	N5	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1014970	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N5"",""exactEvidence"":{},""tomoshiEntryIds"":[""1014970""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 アカシア	アカシア	N5	D	estimated	model+frequency+world-distribution	1	29958	1014980	{}
 アジ	アジ	N5	D	estimated	model+frequency+world-distribution	1	29963	1015830	{}
 アジト	アジト	N5	D	estimated	model+frequency+world-distribution	1	26539	1015890	{}
@@ -2600,6 +2602,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 レーン	レーン	N5	D	estimated	model+frequency+world-distribution	1	29742	1144490	{}
 ロイヤル	ロイヤル	N5	D	estimated	model+frequency+world-distribution	1	29813	1147040	{}
 ログ	ログ	N5	D	estimated	model+frequency+world-distribution	1	29815	1147090	{}
+ログイン	ログイン	N5	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1147120	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N5"",""exactEvidence"":{},""tomoshiEntryIds"":[""1147120""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ロケ	ロケ	N5	D	estimated	model+frequency+world-distribution	1	29816	1147180	{}
 ロケハン	ロケハン	N5	D	estimated	model+frequency+world-distribution	1	29818	1147250	{}
 ロココ	ロココ	N5	D	estimated	model+frequency+world-distribution	1	29819	1147260	{}
@@ -4265,6 +4268,8 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 アスリート	アスリート	N4	D	estimated	model+frequency+world-distribution	1	26543	1016180	{}
 アダプター	アダプター	N4	D	estimated	model+frequency+world-distribution	1	26547	1016460	{}
 アダージョ	アダージョ	N4	D	estimated	model+frequency+world-distribution	1	29974	1016440	{}
+アップデート	アップデート	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1016650	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""1016650""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
+アップロード	アップロード	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1016710	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""1016710""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 アディオス	アディオス	N4	D	estimated	model+frequency+world-distribution	1	29978	1016760	{}
 アトラス	アトラス	N4	D	estimated	model+frequency+world-distribution	1	26094	2455980	{}
 アナウンサー	アナウンサー	N4	A	direct	core-exact-corroborated	1	22893	1017330	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
@@ -4415,6 +4420,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 キックオフ	キックオフ	N4	D	estimated	model+frequency+world-distribution	1	26987	1041090	{}
 キャスター	キャスター	N4	D	estimated	model+frequency+world-distribution	1	26995	1041330	{}
 キャッシュ	キャッシュ	N4	D	estimated	model+frequency+world-distribution	1	26998	1041420	{}
+キャッシュレス	キャッシュレス	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1041480	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""1041480""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 キャディー	キャディー	N4	D	estimated	model+frequency+world-distribution	1	27006	1041640	{}
 キャバレー	キャバレー	N4	D	estimated	model+frequency+world-distribution	1	27007	1041700	{}
 キャラバン	キャラバン	N4	D	estimated	model+frequency+world-distribution	1	27018	1041940	{}
@@ -4638,6 +4644,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 セミコロン	セミコロン	N4	D	estimated	model+frequency+world-distribution	1	27868	1074700	{}
 セラピー	セラピー	N4	D	estimated	model+frequency+world-distribution	1	25844	2134870	{}
 セラミック	セラミック	N4	D	estimated	model+frequency+world-distribution	1	27871	1074770	{}
+セルフレジ	セルフレジ	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2830100	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""2830100""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 セルロイド	セルロイド	N4	D	estimated	model+frequency+world-distribution	1	27875	1074870	{}
 セレナーデ	セレナーデ	N4	D	estimated	model+frequency+world-distribution	1	27878	1074910	{}
 センチ	センチ	N4	C	direct+conflict	core-exact-large-conflict-kept	1	23177	1075060	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -4709,6 +4716,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 デュエット	デュエット	N4	D	estimated	model+frequency+world-distribution	1	28131	1084180	{}
 デラックス	デラックス	N4	D	estimated	model+frequency+world-distribution	1	28133	1084250	{}
 デリケート	デリケート	N4	D	estimated	model+frequency+world-distribution	1	28136	1084320	{}
+デリバリー	デリバリー	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1084350	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""1084350""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 デルタ	Δ	N4	D	estimated	model+frequency+world-distribution	1	28137	1084380	{}
 デーゲーム	デーゲーム	N4	D	estimated	model+frequency+world-distribution	1	28077	1081170	{}
 トイレット	トイレット	N4	D	estimated	model+frequency+world-distribution	1	28149	1084830	{}
@@ -4782,6 +4790,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 バウサイド	バウサイド	N4	D	estimated	model+frequency+world-distribution	1	28448	1098110	{}
 バガボンド	バガボンド	N4	D	estimated	model+frequency+world-distribution	1	28452	1098170	{}
 バクテリア	バクテリア	N4	D	estimated	model+frequency+world-distribution	1	28454	1098250	{}
+バグ	バグ	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1098260	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""1098260""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 バスケット	バスケット	N4	D	estimated	model+frequency+world-distribution	1	23316	1098430	{}
 バスツアー	バスツアー	N4	D	estimated	model+frequency+world-distribution	1	25968	2207990	{}
 バスルーム	バスルーム	N4	D	estimated	model+frequency+world-distribution	1	28459	1098540	{}
@@ -4891,6 +4900,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 フェロモン	フェロモン	N4	D	estimated	model+frequency+world-distribution	1	28775	1110060	{}
 フォアグラ	フォアグラ	N4	D	estimated	model+frequency+world-distribution	1	28793	1110430	{}
 フォアマン	フォアマン	N4	D	estimated	model+frequency+world-distribution	1	28796	1110470	{}
+フォルダ	フォルダ	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1110750	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""1110750""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 フォワード	フォワード	N4	D	estimated	model+frequency+world-distribution	1	28801	1110850	{}
 フォーカス	フォーカス	N4	D	estimated	model+frequency+world-distribution	1	28778	1110100	{}
 フォーマル	フォーマル	N4	D	estimated	model+frequency+world-distribution	1	28785	1110290	{}
@@ -4900,6 +4910,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 フラメンコ	フラメンコ	N4	D	estimated	model+frequency+world-distribution	1	28818	1111450	{}
 フリゲート	フリゲート	N4	D	estimated	model+frequency+world-distribution	1	28838	1111950	{}
 フリッカー	フリッカー	N4	D	estimated	model+frequency+world-distribution	1	28896	1114240	{}
+フリマ	フリマ	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1924860	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""1924860""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 フリーダム	フリーダム	N4	D	estimated	model+frequency+world-distribution	1	28832	1111840	{}
 フリーパス	フリーパス	N4	D	estimated	model+frequency+world-distribution	1	28834	1111890	{}
 フレックス	フレックス	N4	D	estimated	model+frequency+world-distribution	1	28847	1112460	{}
@@ -4996,6 +5007,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ポリネシア	ポリネシア	N4	D	estimated	model+frequency+world-distribution	1	29216	1125840	{}
 ポンド	听	N4	D	estimated	model+frequency+world-distribution	1	29222	1126030	{}
 ポータブル	ポータブル	N4	D	estimated	model+frequency+world-distribution	1	29186	1124680	{}
+マイバッグ	マイバッグ	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2448390	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""2448390""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 マイホーム	マイホーム	N4	D	estimated	model+frequency+world-distribution	1	29244	1127040	{}
 マイル	哩	N4	D	estimated	model+frequency+world-distribution	1	29246	1127070	{}
 マウンテン	マウンテン	N4	D	estimated	model+frequency+world-distribution	1	29250	1127180	{}
@@ -5068,6 +5080,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 モトクロス	モトクロス	N4	D	estimated	model+frequency+world-distribution	1	29471	1135380	{}
 モノトーン	モノトーン	N4	D	estimated	model+frequency+world-distribution	1	29476	1135570	{}
 モノローグ	モノローグ	N4	D	estimated	model+frequency+world-distribution	1	29479	1135690	{}
+モバイルバッテリー	モバイルバッテリー	N4	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2837030	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N4"",""exactEvidence"":{},""tomoshiEntryIds"":[""2837030""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 モルモット	モルモット	N4	D	estimated	model+frequency+world-distribution	1	29488	1135980	{}
 モンスター	モンスター	N4	D	estimated	model+frequency+world-distribution	1	29493	1136110	{}
 モンスーン	モンスーン	N4	D	estimated	model+frequency+world-distribution	1	29492	1136100	{}
@@ -5496,6 +5509,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 いちじ	一字	N3	D	estimated	model+frequency+world-distribution	1	9774	1162900	{}
 いちじ	一時	N3	A	direct	core-exact-corroborated	1	450	1576100	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 いちじゅ	一樹	N3	D	estimated	model+frequency+world-distribution	1	15419	1728310	{}
+いちじょうほう	位置情報	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2512110	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""2512110""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 いちじん	一陣	N3	D	estimated	model+frequency+world-distribution	1	20662	1163890	{}
 いちたいいち	1対1	N3	D	estimated	model+frequency+world-distribution	1	9776	1164560	{}
 いちだ	一打	N3	D	estimated	model+frequency+world-distribution	1	8333	1164480	{}
@@ -6054,6 +6068,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おじか	牡鹿	N3	D	estimated	model+frequency+world-distribution	1	17829	2203210	{}
 おじぎ	お辞儀	N3	B	direct+conflict	core-exact	1	18296	1002030	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 おす	推す	N3	D	estimated	model+frequency+world-distribution	1	9950	1371070	{}
+おすすめ	おすすめ	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1002150	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1002150""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 おせん	汚染	N3	A	direct+conflict	two-exact-sources-over-core-adjacent	1	1014	1179040	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 おそるべき	恐るべき	N3	D	estimated	model+frequency+world-distribution	1	25281	1609420	{}
 おそれる	恐れる	N3	A	direct+conflict	two-exact-sources-over-core-adjacent	1	7276	1589200	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
@@ -7386,6 +7401,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 くちがね	口金	N3	D	estimated	model+frequency+world-distribution	1	22113	1276000	{}
 くちく	駆逐	N3	D	estimated	model+frequency+world-distribution	1	15631	1244870	{}
 くちぐち	口々	N3	D	estimated	model+frequency+world-distribution	1	8226	1592190	{}
+くちこみ	口コミ	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 くちごもる	口ごもる	N3	D	estimated	model+frequency+world-distribution	1	23976	1276990	{}
 くちび	口火	N3	D	estimated	model+frequency+world-distribution	1	7470	1275860	{}
 くちぶり	口ぶり	N3	D	estimated	model+frequency+world-distribution	1	8438	1276420	{}
@@ -8603,6 +8619,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ざいけ	在家	N3	D	estimated	model+frequency+world-distribution	1	16821	1741200	{}
 ざいさん	財産	N3	A	direct+conflict	two-exact-sources-over-core-adjacent	1	1617	1296820	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 ざいせいとうゆうし	財政投融資	N3	D	estimated	model+frequency+world-distribution	1	6830	1657830	{}
+ざいたくきんむ	在宅勤務	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1296550	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1296550""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ざいだんほうじん	財団法人	N3	D	estimated	model+frequency+world-distribution	1	2111	1296950	{}
 ざいちゅう	在中	N3	D	estimated	model+frequency+world-distribution	1	20073	1741030	{}
 ざいにん	在任	N3	D	estimated	model+frequency+world-distribution	1	4559	1296590	{}
@@ -9489,6 +9506,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 じこくひょう	時刻表	N3	C	direct+conflict	core-exact-large-conflict-kept	1	13148	1316230	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 じご	事後	N3	D	estimated	model+frequency+world-distribution	1	5563	1313880	{}
 じさ	時差	N3	C	direct+conflict	core-exact-large-conflict-kept	1	6528	1316240	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
+じさしゅっきん	時差出勤	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1816550	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1816550""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 じさつ	自殺	N3	A	direct	openjlpt+waller-exact	1	2637	1317770	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 じしつ	自室	N3	D	estimated	model+frequency+world-distribution	1	6834	1658570	{}
 じしゃ	寺社	N3	D	estimated	model+frequency+world-distribution	1	16768	1635210	{}
@@ -11416,7 +11434,9 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 でんごん	伝言	N3	C	direct+conflict	core-exact-large-conflict-kept	1	8210	1582180	"{""core-deck-exact"":""N3"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 でんし	電子	N3	A	direct+conflict	two-exact-sources-over-core-adjacent	1	1787	1443320	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 でんしけいさんき	電子計算機	N3	D	estimated	model+frequency+world-distribution	1	15745	1443420	{}
+でんしけっさい	電子決済	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1998830	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1998830""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 でんしけんびきょう	電子顕微鏡	N3	D	estimated	model+frequency+world-distribution	1	14029	1765680	{}
+でんしまねー	電子マネー	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 でんじゅ	伝授	N3	D	estimated	model+frequency+world-distribution	1	17610	1442020	{}
 でんそう	伝送	N3	D	estimated	model+frequency+world-distribution	1	9068	1442160	{}
 でんそう	電送	N3	D	estimated	model+frequency+world-distribution	1	19450	1443590	{}
@@ -11658,6 +11678,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 どうか	銅貨	N3	D	estimated	model+frequency+world-distribution	1	24557	1454350	{}
 どうかつ	恫喝	N3	D	estimated	model+frequency+world-distribution	1	19985	1566820	{}
 どうが	童画	N3	D	estimated	model+frequency+world-distribution	1	18538	1453940	{}
+どうがはいしん	動画配信	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2835328	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""2835328""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 どうがん	童顔	N3	D	estimated	model+frequency+world-distribution	1	16675	1453950	{}
 どうきゅうせい	同級生	N3	B	direct	core-exact	1	4233	1452120	"{""core-deck-exact"":""N3"",""existing-direct"":""N3""}"
 どうきょう	道教	N3	D	estimated	model+frequency+world-distribution	1	17125	1454160	{}
@@ -12011,6 +12032,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 にたいして	に対して	N3	D	estimated	model+frequency+world-distribution	1	22769	1009800	{}
 にたいする	に対する	N3	D	estimated	model+frequency+world-distribution	1	22770	1009810	{}
 にだい	荷台	N3	D	estimated	model+frequency+world-distribution	1	7873	1195370	{}
+にだんかいにんしょう	二段階認証	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2838088	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""2838088""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 にちじょう	日常	N3	A	direct	core-exact-corroborated	1	1339	1464180	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 にちじょうさはんじ	日常茶飯事	N3	D	estimated	model+frequency+world-distribution	1	13072	1730400	{}
 にちぼつ	日没	N3	D	estimated	model+frequency+world-distribution	1	9084	1464450	{}
@@ -13343,6 +13365,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ほんど	本土	N3	D	estimated	model+frequency+world-distribution	1	5364	1627340	{}
 ほんどう	本道	N3	D	estimated	model+frequency+world-distribution	1	17182	1523080	{}
 ほんにん	本人	N3	A	direct	core-exact-corroborated	1	908	1522750	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
+ほんにんかくにん	本人確認	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2828131	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""2828131""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ほんねん	本年	N3	D	estimated	model+frequency+world-distribution	1	9614	1523120	{}
 ほんばこ	本箱	N3	D	estimated	model+frequency+world-distribution	1	24773	1523140	{}
 ほんぶん	本分	N3	D	estimated	model+frequency+world-distribution	1	17711	1627330	{}
@@ -14188,6 +14211,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 らいせ	来世	N3	D	estimated	model+frequency+world-distribution	1	17669	1548070	{}
 らいてん	来店	N3	B	direct	core-exact	1	11515	1548170	"{""core-deck-exact"":""N3"",""existing-direct"":""N3""}"
 らいひん	来賓	N3	D	estimated	model+frequency+world-distribution	1	9159	1548230	{}
+らいぶはいしん	ライブ配信	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 らいめい	雷鳴	N3	D	estimated	model+frequency+world-distribution	1	18597	1548470	{}
 らいれき	来歴	N3	D	estimated	model+frequency+world-distribution	1	20881	1548340	{}
 らかん	羅漢	N3	D	estimated	model+frequency+world-distribution	1	19973	1547540	{}
@@ -14809,6 +14833,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 クライアント	クライアント	N3	D	estimated	model+frequency+world-distribution	1	27077	1043850	{}
 クライマックス	クライマックス	N3	D	estimated	model+frequency+world-distribution	1	27079	1043930	{}
 クライミング	クライミング	N3	D	estimated	model+frequency+world-distribution	1	27080	1043940	{}
+クラウド	クラウド	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1920050"",""2857863""],""tomoshiAmbiguous"":true,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 クラクション	クラクション	N3	D	estimated	model+frequency+world-distribution	1	27083	1043990	{}
 クラゲ	水母	N3	D	estimated	model+frequency+world-distribution	1	26408	1592420	{}
 クラシック	クラシック	N3	A	direct	core-exact-corroborated	1	23021	1044020	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
@@ -14923,6 +14948,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 サザンクロス	サザンクロス	N3	D	estimated	model+frequency+world-distribution	1	27397	1056530	{}
 サスペンション	サスペンション	N3	D	estimated	model+frequency+world-distribution	1	27398	1056580	{}
 サファリラリー	サファリラリー	N3	D	estimated	model+frequency+world-distribution	1	27415	1057150	{}
+サブスク	サブスク	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2840866	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""2840866""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 サブタイトル	サブタイトル	N3	D	estimated	model+frequency+world-distribution	1	27417	1057300	{}
 サプライヤー	サプライヤー	N3	D	estimated	model+frequency+world-distribution	1	27420	1057550	{}
 サマースクール	サマースクール	N3	D	estimated	model+frequency+world-distribution	1	27424	1057680	{}
@@ -15032,6 +15058,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ストライカー	ストライカー	N3	D	estimated	model+frequency+world-distribution	1	27762	1071170	{}
 ストリッパー	ストリッパー	N3	D	estimated	model+frequency+world-distribution	1	27767	1071380	{}
 ストリーカー	ストリーカー	N3	D	estimated	model+frequency+world-distribution	1	27765	1071270	{}
+ストリーミング	ストリーミング	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1986870	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1986870""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ストレス	ストレス	N3	C	direct+conflict	core-exact-large-conflict-kept	1	23145	1071490	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ストロベリー	ストロベリー	N3	D	estimated	model+frequency+world-distribution	1	27773	1071590	{}
 ストロンチウム	ストロンチウム	N3	D	estimated	model+frequency+world-distribution	1	27775	1071620	{}
@@ -15127,6 +15154,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 テレビゲーム	TVゲーム	N3	D	estimated	model+frequency+world-distribution	1	28065	1080520	{}
 テレビジョン	テレビジョン	N3	D	estimated	model+frequency+world-distribution	1	28066	1080550	{}
 テレメーター	テレメーター	N3	D	estimated	model+frequency+world-distribution	1	28068	1080800	{}
+テレワーク	テレワーク	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1924210	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1924210""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 テンポラリー	テンポラリー	N3	D	estimated	model+frequency+world-distribution	1	28076	1081140	{}
 テープ	テープ	N3	C	direct+conflict	core-exact-large-conflict-kept	1	23224	1078750	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N5"",""waller-exact"":""N5"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
 テーマソング	テーマソング	N3	D	estimated	model+frequency+world-distribution	1	28031	1078850	{}
@@ -15640,6 +15668,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 リフレッシュ	リフレッシュ	N3	D	estimated	model+frequency+world-distribution	1	29679	1142630	{}
 リベラリスト	リベラリスト	N3	D	estimated	model+frequency+world-distribution	1	29683	1142770	{}
 リベラリズム	リベラリズム	N3	D	estimated	model+frequency+world-distribution	1	29684	1142780	{}
+リモートワーク	リモートワーク	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2843257	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""2843257""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 リュックサック	リュックサック	N3	B	direct	core-exact	1	29696	1143160	"{""core-deck-exact"":""N3"",""existing-direct"":""N3""}"
 リングサイド	リングサイド	N3	D	estimated	model+frequency+world-distribution	1	29704	1143450	{}
 リンパ	淋巴	N3	D	estimated	model+frequency+world-distribution	1	29708	1143520	{}
@@ -15905,6 +15934,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あんか	安価	N2	B	direct	core-exact	1	6878	1153740	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 あんがい	案外	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	6880	1154820	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 あんぎゃ	行脚	N2	D	estimated	model+frequency+world-distribution	1	10358	1281900	{}
+あんごうか	暗号化	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1154440	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""1154440""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 あんしんかん	安心感	N2	D	estimated	model+frequency+world-distribution	1	7757	1613240	{}
 あんぜんそうち	安全装置	N2	D	estimated	model+frequency+world-distribution	1	13542	1757210	{}
 あんぜんちたい	安全地帯	N2	D	estimated	model+frequency+world-distribution	1	13231	1154020	{}
@@ -16142,6 +16172,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 いってい	一定	N2	A	direct	core-exact-corroborated	1	1004	1164950	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 いってきます	行ってきます	N2	D	estimated	model+frequency+world-distribution	1	25634	2020140	{}
 いってまいります	行ってまいります	N2	B	direct	existing-direct-exact-row	0		2149180	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+いってらっしゃい	いってらっしゃい	N2	A	direct	waller+tomoshi-exact	1	25744	2088750	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""2088750""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""2088750:waller:N2""]}"
 いってらっしゃい	行ってらっしゃい	N2	B	direct	existing-direct-exact-row	1	25744	2088750	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 いってん	一転	N2	B	direct	core-exact	1	11824	1165070	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 いってんばり	一点張り	N2	D	estimated	model+frequency+world-distribution	1	13243	1165110	{}
@@ -16696,6 +16727,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おこらせる	怒らせる	N2	D	estimated	model+frequency+world-distribution	1	9707	1633780	{}
 おごる	おごる	N2	B	direct	core-exact	1	24923	1565940	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 おさえこむ	押さえ込む	N2	D	estimated	model+frequency+world-distribution	1	21582	1180120	{}
+おさきに	おさきに	N2	A	direct	openjlpt+waller+tomoshi-exact	1	22496	1002280	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1002280""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1002280:waller:N2""]}"
 おさなともだち	幼友達	N2	D	estimated	model+frequency+world-distribution	1	22375	1818960	{}
 おさめる	治める	N2	A	direct	openjlpt+waller-exact	1	21536	1316830	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 おさめる	納める	N2	A	direct+conflict	core-exact-corroborated	1	10136	1589090	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N3""}"
@@ -16802,6 +16834,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おまえ	お前	N2	B	direct+conflict	core-exact	1	10245	1002290	"{""core-deck-exact"":""N2"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 おまたせしました	お待たせしました	N2	B	direct	existing-direct-exact-row	1	25912	2149640	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 おまちかね	お待ちかね	N2	D	estimated	model+frequency+world-distribution	1	26430	1621110	{}
+おまちどおさま	おまちどおさま	N2	A	direct	openjlpt+waller+tomoshi-exact	0		1002360	"{""runtimeSources"":[""coverage_deferred_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1002360""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1002360:waller:N2""]}"
 おまちどおさま	お待ちどおさま	N2	B	direct	existing-direct-exact-row	0		1002360	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 おまつりさわぎ	お祭り騒ぎ	N2	D	estimated	model+frequency+world-distribution	1	13524	1694610	{}
 おみこし	お神輿	N2	D	estimated	model+frequency+world-distribution	1	25105	1589310	{}
@@ -16847,6 +16880,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おやがわり	親代わり	N2	D	estimated	model+frequency+world-distribution	1	20971	1720710	{}
 おやきょうだい	親兄弟	N2	D	estimated	model+frequency+world-distribution	1	20972	1720720	{}
 おやこうこう	親孝行	N2	D	estimated	model+frequency+world-distribution	1	14100	1365160	{}
+おやすみ	おやすみ	N2	A	direct	openjlpt+waller+tomoshi-exact	1	25411	1612680	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1612680""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1612680:waller:N2""]}"
 おやすみなさい	お休みなさい	N2	D	estimated	model+frequency+world-distribution	1	22485	1001780	{}
 おやつ	おやつ	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	25106	1589430	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2""}"
 おやふこう	親不孝	N2	D	estimated	model+frequency+world-distribution	1	24259	1365320	{}
@@ -16881,9 +16915,11 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おんこう	温厚	N2	B	direct	core-exact	1	11225	1183380	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 おんし	恩賜	N2	D	estimated	model+frequency+world-distribution	1	12287	1183170	{}
 おんしつ	温室	N2	A	direct	openjlpt+waller-exact	1	5925	1183390	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+おんしつこうかがす	温室効果ガス	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 おんしらず	恩知らず	N2	D	estimated	model+frequency+world-distribution	1	23666	1183250	{}
 おんしん	音信	N2	D	estimated	model+frequency+world-distribution	1	15131	1183870	{}
 おんせい	音声	N2	B	direct	core-exact	1	2995	1183880	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+おんせいにんしき	音声認識	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2057630	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2057630""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 おんせんきょう	温泉郷	N2	D	estimated	model+frequency+world-distribution	1	20992	1781080	{}
 おんぞうし	御曹司	N2	D	estimated	model+frequency+world-distribution	1	21640	1270470	{}
 おんぞん	温存	N2	D	estimated	model+frequency+world-distribution	1	10280	1183460	{}
@@ -17026,6 +17062,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かおあわせ	顔合わせ	N2	D	estimated	model+frequency+world-distribution	1	7732	1589800	{}
 かおく	家屋	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	4944	1191780	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 かおだち	顔立ち	N2	D	estimated	model+frequency+world-distribution	1	14077	1217880	{}
+かおにんしょう	顔認証	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2449640	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2449640""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 かおみしり	顔見知り	N2	D	estimated	model+frequency+world-distribution	1	10633	1614360	{}
 かおむけ	顔向け	N2	D	estimated	model+frequency+world-distribution	1	21448	1756200	{}
 かおをだす	顔を出す	N2	D	estimated	model+frequency+world-distribution	1	25773	2101420	{}
@@ -17101,6 +17138,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かくち	各地	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	23753	1205100	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 かくちょう	拡張	N2	A	direct	core-exact-corroborated	1	4957	1205220	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 かくちょう	格調	N2	D	estimated	model+frequency+world-distribution	1	11846	1205430	{}
+かくちょうげんじつ	拡張現実	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2512130	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2512130""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 かくちょうし	拡張子	N2	D	estimated	model+frequency+world-distribution	1	25729	2084590	{}
 かくづけ	格付け	N2	D	estimated	model+frequency+world-distribution	1	8367	1205480	{}
 かくど	確度	N2	B	direct	core-exact	1	18736	1819590	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -17174,6 +17212,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かしかん	下士官	N2	D	estimated	model+frequency+world-distribution	1	14179	1185110	{}
 かしきり	貸し切り	N2	D	estimated	model+frequency+world-distribution	1	18814	1590230	{}
 かしきり	貸切り	N2	D	estimated	model+frequency+world-distribution	1	18814	1590230	{}
+かしこまりました	かしこまりました	N2	A	direct	openjlpt+waller+tomoshi-exact	1	22512	1002790	"{""runtimeSources"":[""coverage_deferred_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1002790""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1002790:waller:N2""]}"
 かしこまる	かしこまる	N2	B	direct	core-exact	0		1157440	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 かしだおれ	貸し倒れ	N2	D	estimated	model+frequency+world-distribution	1	17103	1411210	{}
 かしだし	貸出	N2	B	direct	existing-direct-exact-row	1	3879	1590240	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -17222,6 +17261,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かぜをひく	風邪をひく	N2	D	estimated	model+frequency+world-distribution	1	24708	1499880	{}
 かそう	下層	N2	D	estimated	model+frequency+world-distribution	1	11837	1185680	{}
 かそう	仮装	N2	D	estimated	model+frequency+world-distribution	1	13258	1187790	{}
+かそうげんじつ	仮想現実	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2343990	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2343990""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 かそうてきこく	仮想敵国	N2	D	estimated	model+frequency+world-distribution	1	16806	1718190	{}
 かそく	加速	N2	A	direct	core-exact-corroborated	1	3962	1190370	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 かそくど	加速度	N2	A	direct	openjlpt+waller-exact	1	12288	1190390	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -17612,6 +17652,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 がし	餓死	N2	D	estimated	model+frequency+world-distribution	1	10601	1587980	{}
 がしょう	画商	N2	D	estimated	model+frequency+world-distribution	1	10745	1197280	{}
 がぞう	画像	N2	B	direct	core-exact	1	3006	1197390	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+がぞうにんしき	画像認識	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2860106	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2860106""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 がだん	画壇	N2	D	estimated	model+frequency+world-distribution	1	12765	1197430	{}
 がっか	学科	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	2516	1206590	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 がっかい	学会	N2	A	direct	openjlpt+waller-exact	1	1531	1206610	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -17652,6 +17693,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 きおち	気落ち	N2	D	estimated	model+frequency+world-distribution	1	14428	1618040	{}
 きかい	器械	N2	A	direct+conflict	openjlpt+waller-exact	1	1049	1220810	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N3""}"
 きかいか	機械化	N2	D	estimated	model+frequency+world-distribution	1	10307	1220820	{}
+きかいがくしゅう	機械学習	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2756840	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2756840""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 きかいたいそう	器械体操	N2	D	estimated	model+frequency+world-distribution	1	22341	1757120	{}
 きかいてき	機械的	N2	B	direct	core-exact	0		1780150	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 きかがく	幾何学	N2	D	estimated	model+frequency+world-distribution	1	11259	1220020	{}
@@ -17699,6 +17741,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 きこう	寄稿	N2	D	estimated	model+frequency+world-distribution	1	11852	1219710	{}
 きこう	起工	N2	D	estimated	model+frequency+world-distribution	1	11265	1223760	{}
 きこうし	貴公子	N2	D	estimated	model+frequency+world-distribution	1	22303	1669020	{}
+きこうへんどう	気候変動	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2238850	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2238850""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 きこむ	着込む	N2	D	estimated	model+frequency+world-distribution	1	18043	1423040	{}
 きごう	記号	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	6447	1223210	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 きごこち	着心地	N2	D	estimated	model+frequency+world-distribution	1	18519	1423120	{}
@@ -18847,6 +18890,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こじょう	古城	N2	D	estimated	model+frequency+world-distribution	1	14697	1265560	{}
 こじんしゅぎ	個人主義	N2	D	estimated	model+frequency+world-distribution	1	11873	1264850	{}
 こじんじょうほう	個人情報	N2	B	direct	core-exact	0		1264870	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+こじんじょうほうほご	個人情報保護	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 こじんてき	個人的	N2	B	direct	core-exact	1	2576	1264890	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 こす	超す	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	13597	1175300	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N3""}"
 こする	こする	N2	B	direct	core-exact	1	24040	1298910	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -18900,6 +18944,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こどもたち	子供達	N2	D	estimated	model+frequency+world-distribution	1	24069	1307870	{}
 こどものころ	子供の頃	N2	D	estimated	model+frequency+world-distribution	1	26199	2827554	{}
 こどもよう	子供用	N2	D	estimated	model+frequency+world-distribution	1	24070	1307880	{}
+こないだ	こないだ	N2	A	direct	openjlpt+waller+tomoshi-exact	0		1004610	"{""runtimeSources"":[""coverage_deferred_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1004610""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1004610:waller:N2""]}"
 こないだ	此間	N2	B	direct	existing-direct-exact-row	0		1004610	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 こなぐすり	粉薬	N2	B	direct	core-exact	0		1504890	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 こなす	こなす	N2	B	direct	core-exact	1	17440	1612850	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -18973,6 +19018,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こんりゅう	建立	N2	D	estimated	model+frequency+world-distribution	1	10794	1257550	{}
 こんれい	婚礼	N2	D	estimated	model+frequency+world-distribution	1	12349	1289730	{}
 ご	碁	N2	A	direct	core-exact-corroborated	1	5018	1270870	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+ごういけいせい	合意形成	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2804410	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2804410""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ごういん	強引	N2	A	direct	core-exact-corroborated	1	3526	1236170	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ごうかばん	豪華版	N2	D	estimated	model+frequency+world-distribution	1	19370	1285530	{}
 ごうがい	号外	N2	D	estimated	model+frequency+world-distribution	1	13301	1284230	{}
@@ -19000,6 +19046,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ごく	極[ごく]	N2	B	direct+conflict	core-exact	1	6467	1240180	"{""core-deck-exact"":""N2"",""existing-direct"":""N3"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 ごくごく	ごくごく	N2	A	direct	manual-secondary-exact	0		2178890	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ごくさいしき	極彩色	N2	D	estimated	model+frequency+world-distribution	1	16830	1760600	{}
+ごくろうさま	ごくろうさま	N2	A	direct	openjlpt+waller+tomoshi-exact	1	14068	1005030	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1005030""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1005030:waller:N2""]}"
 ごこう	後光	N2	B	direct	core-exact	0		1678630	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ごさんけ	御三家	N2	D	estimated	model+frequency+world-distribution	1	12550	1631080	{}
 ごしゅじんさま	ご主人様	N2	D	estimated	model+frequency+world-distribution	1	26468	2793200	{}
@@ -19075,6 +19122,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 さいじき	歳時記	N2	D	estimated	model+frequency+world-distribution	1	13088	1806020	{}
 さいじつ	祭日	N2	A	direct	openjlpt+waller-exact	1	24029	1295310	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 さいじゅうてん	最重点	N2	D	estimated	model+frequency+world-distribution	1	10668	1657730	{}
+さいせいかのうえねるぎー	再生可能エネルギー	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 さいせいき	最盛期	N2	D	estimated	model+frequency+world-distribution	1	7010	1294110	{}
 さいせいさん	再生産	N2	D	estimated	model+frequency+world-distribution	1	15175	1292970	{}
 さいせき	採石	N2	D	estimated	model+frequency+world-distribution	1	13074	1741310	{}
@@ -19093,6 +19141,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 さいにんしき	再認識	N2	D	estimated	model+frequency+world-distribution	1	21403	1657670	{}
 さいねんしょう	最年少	N2	D	estimated	model+frequency+world-distribution	1	6875	2006790	{}
 さいはいち	再配置	N2	D	estimated	model+frequency+world-distribution	1	13306	1293390	{}
+さいばーこうげき	サイバー攻撃	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 さいひ	歳費	N2	D	estimated	model+frequency+world-distribution	1	11896	1294990	{}
 さいぶ	細部	N2	B	direct	core-exact	1	5539	1295710	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 さいぶんぱい	再分配	N2	D	estimated	model+frequency+world-distribution	1	22122	1293540	{}
@@ -19782,6 +19831,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 しょう	省	N2	B	direct	core-exact	0		2081540	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 しょうい	小異	N2	D	estimated	model+frequency+world-distribution	1	14966	1744260	{}
 しょううちゅう	小宇宙	N2	D	estimated	model+frequency+world-distribution	1	18702	1743670	{}
+しょうえね	省エネ	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 しょうか	唱歌	N2	D	estimated	model+frequency+world-distribution	1	12375	1347500	{}
 しょうか	商科	N2	D	estimated	model+frequency+world-distribution	1	12864	1346620	{}
 しょうか	消化	N2	A	direct	core-exact-corroborated	1	5608	1350140	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -19817,6 +19867,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 しょうさん	称賛	N2	D	estimated	model+frequency+world-distribution	1	11086	1594920	{}
 しょうさん	賞賛	N2	D	estimated	model+frequency+world-distribution	1	11086	1594920	{}
 しょうしか	少子化	N2	B	direct	core-exact	0		2011350	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+しょうしこうれいか	少子高齢化	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2654240	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2654240""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 しょうしつ	消失	N2	D	estimated	model+frequency+world-distribution	1	11929	1350230	{}
 しょうしみん	小市民	N2	D	estimated	model+frequency+world-distribution	1	20496	1660480	{}
 しょうしゃ	商社	N2	A	direct	openjlpt+waller-exact	1	1678	1347080	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -19912,6 +19963,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 しょくば	職場	N2	B	direct	core-exact	1	1224	1357540	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 しょくばい	触媒	N2	D	estimated	model+frequency+world-distribution	1	10412	1358060	{}
 しょくひ	食費	N2	B	direct	core-exact	1	8027	1358590	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+しょくひんろす	食品ロス	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 しょくぶつえん	植物園	N2	D	estimated	model+frequency+world-distribution	1	8026	1357310	{}
 しょくぶつゆ	植物油	N2	D	estimated	model+frequency+world-distribution	1	16846	1788490	{}
 しょくむしつもん	職務質問	N2	D	estimated	model+frequency+world-distribution	1	16391	1832800	{}
@@ -19935,6 +19987,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 しょてん	書店	N2	A	direct	core-exact-corroborated	1	1673	1344120	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 しょとう	初等	N2	D	estimated	model+frequency+world-distribution	1	14746	1342960	{}
 しょとうきょういく	初等教育	N2	D	estimated	model+frequency+world-distribution	1	17320	1798950	{}
+しょとくかくさ	所得格差	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1995150	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""1995150""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 しょどう	書道	N2	A	direct	core-exact-corroborated	1	3152	1344130	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 しょにんきゅう	初任給	N2	D	estimated	model+frequency+world-distribution	1	7542	1343020	{}
 しょはん	諸般	N2	D	estimated	model+frequency+world-distribution	1	12862	1344340	{}
@@ -20166,6 +20219,8 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 じそく	時速	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	3131	1316290	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 じそん	自尊	N2	D	estimated	model+frequency+world-distribution	1	14254	1318210	{}
 じぞう	地蔵	N2	D	estimated	model+frequency+world-distribution	1	9995	1421330	{}
+じぞくかのうせい	持続可能性	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2828113	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2828113""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
+じぞくかのうなかいはつ	持続可能な開発	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2549300	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2549300""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 じぞくてき	持続的	N2	D	estimated	model+frequency+world-distribution	1	8780	1770060	{}
 じた	自他	N2	D	estimated	model+frequency+world-distribution	1	10854	1318230	{}
 じたい	自体	N2	B	direct	core-exact	1	19385	1318250	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -20339,6 +20394,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 じゅんえん	順延	N2	D	estimated	model+frequency+world-distribution	1	13339	1342270	{}
 じゅんおくり	順送り	N2	D	estimated	model+frequency+world-distribution	1	15425	1736610	{}
 じゅんかん	循環	N2	A	direct	core-exact-corroborated	1	5105	1341340	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+じゅんかんがたしゃかい	循環型社会	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2069500	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2069500""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 じゅんかんき	循環器	N2	D	estimated	model+frequency+world-distribution	1	11164	1735930	{}
 じゅんかんごふ	准看護婦	N2	D	estimated	model+frequency+world-distribution	1	13574	1885670	{}
 じゅんきょう	殉教	N2	D	estimated	model+frequency+world-distribution	1	14447	1635820	{}
@@ -20419,10 +20475,14 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 じょうはんしん	上半身	N2	B	direct	core-exact	1	8022	1354180	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 じょうぶ	上部	N2	B	direct	core-exact	1	5114	1354250	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 じょうへき	城壁	N2	D	estimated	model+frequency+world-distribution	1	12869	1355770	{}
+じょうほうかくさ	情報格差	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2099110	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2099110""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 じょうほうがく	情報学	N2	D	estimated	model+frequency+world-distribution	1	14535	1958410	{}
 じょうほうさんぎょう	情報産業	N2	D	estimated	model+frequency+world-distribution	1	9739	1750500	{}
 じょうほうしょり	情報処理	N2	D	estimated	model+frequency+world-distribution	1	7057	1356460	{}
+じょうほうそうさ	情報操作	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2831963	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2831963""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 じょうほうぶ	情報部	N2	D	estimated	model+frequency+world-distribution	1	8296	1750510	{}
+じょうほうりてらしー	情報リテラシー	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
+じょうほうろうえい	情報漏洩	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2831082	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2831082""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 じょうむ	乗務	N2	D	estimated	model+frequency+world-distribution	1	13068	1706910	{}
 じょうむいん	乗務員	N2	D	estimated	model+frequency+world-distribution	1	8024	1355440	{}
 じょうようかんじ	常用漢字	N2	D	estimated	model+frequency+world-distribution	1	24225	1356150	{}
@@ -20464,6 +20524,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 じんぎ	仁義	N2	D	estimated	model+frequency+world-distribution	1	12873	1369670	{}
 じんけんようご	人権擁護	N2	D	estimated	model+frequency+world-distribution	1	25505	1730970	{}
 じんこうえいせい	人工衛星	N2	B	direct	core-exact	1	7566	1367430	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+じんこうげんしょう	人口減少	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2588660	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2588660""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 じんこうこきゅう	人工呼吸	N2	D	estimated	model+frequency+world-distribution	1	8033	1367450	{}
 じんこうちのう	人工知能	N2	B	direct	core-exact	0		1367560	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 じんこうてき	人工的	N2	D	estimated	model+frequency+world-distribution	1	8508	1367590	{}
@@ -20706,6 +20767,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 せいじんびょう	成人病	N2	D	estimated	model+frequency+world-distribution	1	5884	1764100	{}
 せいすい	盛衰	N2	D	estimated	model+frequency+world-distribution	1	12395	1379800	{}
 せいすう	整数	N2	A	direct	openjlpt+waller-exact	1	24293	1376190	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+せいせいえーあい	生成AI	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 せいせっかい	生石灰	N2	D	estimated	model+frequency+world-distribution	1	21222	1379190	{}
 せいそう	正装	N2	D	estimated	model+frequency+world-distribution	1	15054	1377480	{}
 せいそう	清掃	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	4165	1378320	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -20818,7 +20880,9 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 せつだん	切断	N2	D	estimated	model+frequency+world-distribution	1	11740	1385120	{}
 せつでん	節電	N2	B	direct	core-exact	1	18028	1386310	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 せつめいしょ	説明書	N2	D	estimated	model+frequency+world-distribution	1	9489	1386470	{}
+せつめいせきにん	説明責任	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2062750	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2062750""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 せつめいぶん	説明文	N2	D	estimated	model+frequency+world-distribution	1	16856	1802690	{}
+せつやくしこう	節約志向	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 せとぎわ	瀬戸際	N2	D	estimated	model+frequency+world-distribution	1	8513	1374380	{}
 せともの	瀬戸物	N2	A	direct	openjlpt+waller-exact	1	24285	1374400	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 せのび	背伸び	N2	B	direct	core-exact	1	18090	1472770	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -21579,6 +21643,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 だっとう	脱党	N2	D	estimated	model+frequency+world-distribution	1	12135	1802550	{}
 だついじょ	脱衣所	N2	D	estimated	model+frequency+world-distribution	1	25034	1581570	{}
 だつさんしん	奪三振	N2	D	estimated	model+frequency+world-distribution	1	5890	1892580	{}
+だつたんそ	脱炭素	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2849337	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2849337""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 だつりゅう	脱硫	N2	D	estimated	model+frequency+world-distribution	1	11580	1623790	{}
 だでん	打電	N2	D	estimated	model+frequency+world-distribution	1	13024	1616650	{}
 だとう	妥当	N2	A	direct	core-exact-corroborated	1	18792	1408540	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -21611,6 +21676,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 だんぺんてき	断片的	N2	D	estimated	model+frequency+world-distribution	1	14006	1704890	{}
 だんまつま	断末魔	N2	D	estimated	model+frequency+world-distribution	1	21746	1419800	{}
 だんわしつ	談話室	N2	D	estimated	model+frequency+world-distribution	1	14998	1838890	{}
+ちいきかくさ	地域格差	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ちいさいころ	小さい頃	N2	D	estimated	model+frequency+world-distribution	1	26085	2420940	{}
 ちえおくれ	知恵遅れ	N2	D	estimated	model+frequency+world-distribution	1	15476	1892890	{}
 ちえぶくろ	知恵袋	N2	D	estimated	model+frequency+world-distribution	1	20569	1800220	{}
@@ -21664,6 +21730,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ちぢむ	縮む	N2	A	direct	core-exact-corroborated	1	14566	1337560	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ちぢめる	縮める	N2	A	direct	core-exact-corroborated	1	24160	1337570	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ちぢれる	縮れる	N2	A	direct	openjlpt+waller-exact	1	24161	1337590	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+ちてきざいさん	知的財産	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1420660	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""1420660""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ちてん	地点	N2	A	direct	openjlpt+waller-exact	1	2253	1421380	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ちどり	千鳥	N2	D	estimated	model+frequency+world-distribution	1	11399	1389070	{}
 ちにち	知日	N2	D	estimated	model+frequency+world-distribution	1	12134	1800110	{}
@@ -21806,6 +21873,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ちょくりつ	直立	N2	D	estimated	model+frequency+world-distribution	1	14794	1431570	{}
 ちょくりゅう	直流	N2	A	direct	openjlpt+waller-exact	1	18983	1431600	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ちょさくけん	著作権	N2	D	estimated	model+frequency+world-distribution	1	3736	1427100	{}
+ちょさくけんしんがい	著作権侵害	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1942640	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""1942640""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ちょじゅつ	著述	N2	D	estimated	model+frequency+world-distribution	1	13407	1427120	{}
 ちょすいち	貯水池	N2	D	estimated	model+frequency+world-distribution	1	16177	1427210	{}
 ちょぞう	貯蔵	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	5180	1427220	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -22234,6 +22302,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 でさききかん	出先機関	N2	D	estimated	model+frequency+world-distribution	1	12857	1339520	{}
 でし	弟子	N2	B	direct	core-exact	1	4831	1581960	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 でしいり	弟子入り	N2	D	estimated	model+frequency+world-distribution	1	19253	1436220	{}
+でじたるかくさ	デジタル格差	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 でそろう	出そろう	N2	D	estimated	model+frequency+world-distribution	1	15339	1598570	{}
 でたらめ	でたらめ	N2	A	direct	core-exact-corroborated	1	24165	1339630	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2""}"
 でつくす	出尽くす	N2	D	estimated	model+frequency+world-distribution	1	15686	1339320	{}
@@ -22364,6 +22433,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 とうほん	謄本	N2	D	estimated	model+frequency+world-distribution	1	12441	1450020	{}
 とうほんせいそう	東奔西走	N2	D	estimated	model+frequency+world-distribution	1	20369	1448200	{}
 とうめい	透明	N2	A	direct	core-exact-corroborated	1	2289	1450590	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+とうめいせい	透明性	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1450600	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""1450600""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 とうもろこし	玉蜀黍	N2	D	estimated	model+frequency+world-distribution	1	23866	1240700	{}
 とうやく	投薬	N2	D	estimated	model+frequency+world-distribution	1	10488	1447370	{}
 とうゆ	灯油	N2	A	direct	openjlpt+waller-exact	1	7149	1448760	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -22453,6 +22523,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 とっけいかんぜい	特恵関税	N2	D	estimated	model+frequency+world-distribution	1	18067	1454860	{}
 とっこうたい	特攻隊	N2	D	estimated	model+frequency+world-distribution	1	8596	1454900	{}
 とっこうやく	特効薬	N2	B	direct	core-exact	1	9547	1454890	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+とっさに	とっさに	N2	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	24913	1565180	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""1565180""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 とっさに	咄嗟に	N2	D	estimated	model+frequency+world-distribution	1	24913	1565180	{}
 とっぱつ	突発	N2	D	estimated	model+frequency+world-distribution	1	12446	1457130	{}
 とっぱんいんさつ	凸版印刷	N2	D	estimated	model+frequency+world-distribution	1	14337	1456550	{}
@@ -22598,6 +22669,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 どうそう	同窓	N2	D	estimated	model+frequency+world-distribution	1	10492	1452990	{}
 どうぞう	銅像	N2	D	estimated	model+frequency+world-distribution	1	10024	1454380	{}
 どうぞく	同族	N2	D	estimated	model+frequency+world-distribution	1	12442	1453020	{}
+どうぞよろしく	どうぞよろしく	N2	A	direct	openjlpt+waller+tomoshi-exact	0		1008960	"{""runtimeSources"":[""coverage_deferred_manual""],""legacyLevel"":""N3"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1008960""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1008960:waller:N2""]}"
 どうちゅう	道中	N2	D	estimated	model+frequency+world-distribution	1	14972	1770610	{}
 どうてい	道程	N2	B	direct	core-exact	1	7155	1454110	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 どうでもいい	どうでも良い	N2	D	estimated	model+frequency+world-distribution	1	25719	2083140	{}
@@ -22805,6 +22877,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ならびかえる	並びかえる	N2	D	estimated	model+frequency+world-distribution	1	26072	2394230	{}
 ならびかえる	並び替える	N2	D	estimated	model+frequency+world-distribution	1	26072	2394230	{}
 ならべたてる	並べ立てる	N2	B	direct	core-exact	0		1508410	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+なりすまし	なりすまし	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1648710	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""1648710""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 なりふり	なりふり	N2	B	direct	core-exact	0		1820920	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 なりものいり	鳴り物入り	N2	D	estimated	model+frequency+world-distribution	1	14057	1899480	{}
 なる	生る	N2	A	direct	openjlpt+waller-exact	1	3417	1611000	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -22895,6 +22968,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 にじみでる	にじみ出る	N2	B	direct	core-exact	0		2002500	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 にじゅううつし	二重写し	N2	D	estimated	model+frequency+world-distribution	1	18074	1462170	{}
 にじゅうそう	二重奏	N2	D	estimated	model+frequency+world-distribution	1	19460	1462270	{}
+にせじょうほう	偽情報	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2634750	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2634750""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 にせる	似せる	N2	B	direct	core-exact	1	17851	1314560	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 にそう	尼僧	N2	D	estimated	model+frequency+world-distribution	1	13895	1463410	{}
 にたつ	煮立つ	N2	D	estimated	model+frequency+world-distribution	1	21698	1322640	{}
@@ -23277,6 +23351,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 はじしらず	恥知らず	N2	D	estimated	model+frequency+world-distribution	1	25349	1611180	{}
 はじまらない	始まらない	N2	D	estimated	model+frequency+world-distribution	1	13498	1625770	{}
 はじめに	初めに	N2	B	direct	single-exact-source	1	24066	1307520	"{""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+はじめに	始めに	N2	A	direct	openjlpt+waller+tomoshi-exact	1	24066	1307520	"{""runtimeSources"":[""coverage_deferred_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1307520""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1307520:waller:N2""]}"
 はじょう	波状	N2	D	estimated	model+frequency+world-distribution	1	13967	1625800	{}
 はす	斜	N2	B	direct	single-exact-source	0		2085880	"{""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 はずれ	外れ	N2	B	direct	core-exact	1	9320	1203300	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -23287,6 +23362,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 はたがしら	旗頭	N2	D	estimated	model+frequency+world-distribution	1	14656	1220280	{}
 はたけちがい	畑違い	N2	D	estimated	model+frequency+world-distribution	1	19472	1476530	{}
 はたらきかける	働きかける	N2	D	estimated	model+frequency+world-distribution	1	9074	1451060	{}
+はたらきかたかいかく	働き方改革	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2843170	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2843170""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 はたらきぐち	働き口	N2	D	estimated	model+frequency+world-distribution	1	18062	1451070	{}
 はたらきざかり	働き盛り	N2	D	estimated	model+frequency+world-distribution	1	10023	1451110	{}
 はたらきて	働き手	N2	B	direct	core-exact	1	14413	1582340	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -23352,6 +23428,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 はなしことば	話し言葉	N2	B	direct	core-exact	1	14619	1611250	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 はなしこむ	話込む	N2	D	estimated	model+frequency+world-distribution	1	16017	1562320	{}
 はなしちゅう	話し中	N2	B	direct	existing-direct-exact-row	1	20911	1600920	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+はなしちゅう	話中	N2	A	direct	openjlpt+waller+tomoshi-exact	1	20911	1600920	"{""runtimeSources"":[""coverage_deferred_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1600920""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1600920:waller:N2""]}"
 はなして	話し手	N2	B	direct	core-exact	0		1562330	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 はなたかだか	鼻高々	N2	D	estimated	model+frequency+world-distribution	1	21369	1600940	{}
 はなはだしい	甚だしい	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	21073	1370010	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -23664,6 +23741,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ひとちがい	人違い	N2	D	estimated	model+frequency+world-distribution	1	20621	1366540	{}
 ひとつひとつ	一つ一つ	N2	D	estimated	model+frequency+world-distribution	1	8811	1160830	{}
 ひとづきあい	人付き合い	N2	D	estimated	model+frequency+world-distribution	1	18950	1369040	{}
+ひとでぶそく	人手不足	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1368010	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""1368010""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ひととおり	一通り	N2	A	direct	core-exact-corroborated	1	18298	1164910	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ひとどおり	人通り	N2	A	direct	core-exact-corroborated	1	11732	1368820	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ひとばんじゅう	一晩中	N2	D	estimated	model+frequency+world-distribution	1	25360	1611360	{}
@@ -23718,6 +23796,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ひへい	疲弊	N2	D	estimated	model+frequency+world-distribution	1	10520	1483770	{}
 ひほう	悲報	N2	D	estimated	model+frequency+world-distribution	1	13905	1483340	{}
 ひほけんしゃ	被保険者	N2	D	estimated	model+frequency+world-distribution	1	11122	1626720	{}
+ひぼうちゅうしょう	誹謗中傷	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2052500	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2052500""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ひぼし	日干し	N2	D	estimated	model+frequency+world-distribution	1	18186	1620550	{}
 ひましに	日増しに	N2	D	estimated	model+frequency+world-distribution	1	9688	1611390	{}
 ひまつぶし	暇潰し	N2	D	estimated	model+frequency+world-distribution	1	23713	1192820	{}
@@ -23819,6 +23898,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 びんぼうにん	貧乏人	N2	D	estimated	model+frequency+world-distribution	1	24681	1490930	{}
 ぴかぴか	ぴかぴか	N2	A	direct	core-exact-corroborated	1	22800	1010830	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ふあんてい	不安定	N2	B	direct	core-exact	1	2336	1491190	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+ふぃっしんぐさぎ	フィッシング詐欺	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ふいうち	不意打ち	N2	D	estimated	model+frequency+world-distribution	1	19544	1602430	{}
 ふいに	不意に	N2	D	estimated	model+frequency+world-distribution	1	25361	1611400	{}
 ふうあつ	風圧	N2	D	estimated	model+frequency+world-distribution	1	12147	1843970	{}
@@ -23949,6 +24029,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ふじょぼうこう	婦女暴行	N2	D	estimated	model+frequency+world-distribution	1	8803	2000350	{}
 ふじんか	婦人科	N2	D	estimated	model+frequency+world-distribution	1	10997	1496680	{}
 ふすま	襖	N2	A	direct	openjlpt+waller-exact	1	17362	1181720	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+ふせいあくせす	不正アクセス	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ふせいかく	不正確	N2	D	estimated	model+frequency+world-distribution	1	14829	1493380	{}
 ふせいこう	不成功	N2	D	estimated	model+frequency+world-distribution	1	20842	1493300	{}
 ふせいしゅつ	不世出	N2	D	estimated	model+frequency+world-distribution	1	21315	1493280	{}
@@ -24112,6 +24193,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ぶたいげき	舞台劇	N2	D	estimated	model+frequency+world-distribution	1	18217	1673960	{}
 ぶたいそうち	舞台装置	N2	D	estimated	model+frequency+world-distribution	1	12087	1638890	{}
 ぶっかしすう	物価指数	N2	D	estimated	model+frequency+world-distribution	1	8771	1722620	{}
+ぶっかだか	物価高	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		1906840	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""1906840""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ぶっきらぼう	ぶっきら棒	N2	D	estimated	model+frequency+world-distribution	1	22808	1011160	{}
 ぶっしつてき	物質的	N2	D	estimated	model+frequency+world-distribution	1	10686	1722960	{}
 ぶっしょう	物証	N2	D	estimated	model+frequency+world-distribution	1	10534	1502580	{}
@@ -24308,6 +24390,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ほうじ	法事	N2	D	estimated	model+frequency+world-distribution	1	14987	1805140	{}
 ほうせい	縫製	N2	D	estimated	model+frequency+world-distribution	1	11636	1729140	{}
 ほうせいきょく	法制局	N2	D	estimated	model+frequency+world-distribution	1	10173	1627490	{}
+ほうせつせい	包摂性	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ほうそう	包装	N2	A	direct	core-exact-corroborated	1	5263	1515510	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ほうそう	法曹	N2	D	estimated	model+frequency+world-distribution	1	12977	1517360	{}
 ほうそうかい	法曹界	N2	D	estimated	model+frequency+world-distribution	1	13448	1517370	{}
@@ -25486,6 +25569,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 よろしくおねがいいたします	よろしくお願いいたします	N2	D	estimated	model+frequency+world-distribution	1	25834	2133760	{}
 よろしくおねがいします	よろしくお願いします	N2	D	estimated	model+frequency+world-distribution	1	25833	2133750	{}
 よろめく	蹌踉めく	N2	D	estimated	model+frequency+world-distribution	1	22873	1013220	{}
+よろんけいせい	世論形成	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 よわきもの	弱き者	N2	D	estimated	model+frequency+world-distribution	1	21177	1324550	{}
 よわごし	弱腰	N2	D	estimated	model+frequency+world-distribution	1	12361	1324740	{}
 よわび	弱火	N2	D	estimated	model+frequency+world-distribution	1	13521	1662360	{}
@@ -25710,6 +25794,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ろうどうじょうけん	労働条件	N2	D	estimated	model+frequency+world-distribution	1	5808	1560500	{}
 ろうどうそうぎ	労働争議	N2	D	estimated	model+frequency+world-distribution	1	15814	1560520	{}
 ろうどうりょく	労働力	N2	D	estimated	model+frequency+world-distribution	1	24890	1560560	{}
+ろうどうりょくぶそく	労働力不足	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2143450	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2143450""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ろうにゃく	老若	N2	D	estimated	model+frequency+world-distribution	1	12731	1585280	{}
 ろうふ	老婦	N2	D	estimated	model+frequency+world-distribution	1	11124	1628240	{}
 ろうふうふ	老夫婦	N2	D	estimated	model+frequency+world-distribution	1	11125	1628250	{}
@@ -25783,6 +25868,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 わらいばなし	笑い話	N2	D	estimated	model+frequency+world-distribution	1	14751	1351350	{}
 わらいもの	笑い者	N2	D	estimated	model+frequency+world-distribution	1	20981	1744740	{}
 わり	割り	N2	B	direct	core-exact	1	2433	1606800	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+わりあいに	わりあいに	N2	A	direct	openjlpt+waller+tomoshi-exact	1	25398	1612360	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1612360""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1612360:waller:N2""]}"
 わりあてる	割当てる	N2	D	estimated	model+frequency+world-distribution	1	19229	1207880	{}
 わりかん	割り勘	N2	D	estimated	model+frequency+world-distribution	1	19546	1606840	{}
 わりこみ	割り込み	N2	D	estimated	model+frequency+world-distribution	1	10619	1606860	{}
@@ -25856,6 +25942,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 インディペンデント	インディペンデント	N2	D	estimated	model+frequency+world-distribution	1	26654	1023720	{}
 インドシナ	印度支那	N2	D	estimated	model+frequency+world-distribution	1	26658	1023880	{}
 インパクト	インパクト	N2	B	direct	core-exact	1	26661	1024010	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+インフルエンサー	インフルエンサー	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2832889	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2832889""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 インフルエンザ	インフルエンザ	N2	B	direct	core-exact	1	22928	1024400	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 インフレーション	インフレーション	N2	D	estimated	model+frequency+world-distribution	1	26351	1024440	{}
 インプット	インプット	N2	B	direct	core-exact	1	26664	1024470	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -25926,6 +26013,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 カレーライス	カレーライス	N2	B	direct	core-exact	1	25331	1610810	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 カロリー	カロリー	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	22990	1039300	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 カーブ	カーブ	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	22970	1036560	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+カーボンニュートラル	カーボンニュートラル	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2153240	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2153240""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ガストアルバイター	ガストアルバイター	N2	D	estimated	model+frequency+world-distribution	1	26959	1040110	{}
 ガラクタ	我楽多	N2	D	estimated	model+frequency+world-distribution	1	26439	1979110	{}
 ガラスばり	ガラス張り	N2	D	estimated	model+frequency+world-distribution	1	22999	1040400	{}
@@ -26123,6 +26211,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ダイアグラム	ダイアグラム	N2	B	direct	existing-direct-exact-row	1	27947	1076680	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ダイナミック	ダイナミック	N2	B	direct	core-exact	1	27954	1076820	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ダイナースクラブ	ダイナースクラブ	N2	D	estimated	model+frequency+world-distribution	1	27951	1076770	{}
+ダイヤグラム	ダイヤグラム	N2	A	direct	openjlpt+waller+tomoshi-exact	1	27947	1076680	"{""runtimeSources"":[""coverage_deferred_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1076680""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1076680:waller:N2""]}"
 ダイヤモンド	ダイヤモンド	N2	A	direct	openjlpt+waller-exact	1	23200	1076890	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ダイヤル	ダイヤル	N2	A	direct	openjlpt+waller-exact	1	23201	1076900	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ダウンサイジング	ダウンサイジング	N2	D	estimated	model+frequency+world-distribution	1	27958	1076990	{}
@@ -26264,6 +26353,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 フィルハーモニー	フィルハーモニー	N2	D	estimated	model+frequency+world-distribution	1	28758	1109370	{}
 フィールドワーク	フィールドワーク	N2	D	estimated	model+frequency+world-distribution	1	28741	1108970	{}
 フェア	フェア	N2	B	direct	core-exact	1	28761	1109580	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+フェイクニュース	フェイクニュース	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2831962	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""2831962""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 フェデレーション	フェデレーション	N2	D	estimated	model+frequency+world-distribution	1	28767	1109860	{}
 フォスターチャイルド	フォスターチャイルド	N2	D	estimated	model+frequency+world-distribution	1	28797	1110490	{}
 フォックストロット	フォックストロット	N2	D	estimated	model+frequency+world-distribution	1	28798	1110510	{}
@@ -26295,6 +26385,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 プライベート	プライベート	N2	B	direct	core-exact	1	28934	1115430	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 プラグマティズム	プラグマティズム	N2	D	estimated	model+frequency+world-distribution	1	28939	1115600	{}
 プラスチック	プラスチック	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	23409	1115670	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
+プラットフォーム	プラットフォーム	N2	A	direct	waller+tomoshi-exact	1	23410	1115820	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N3"",""exactEvidence"":{""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1115820""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1115820:waller:N2""]}"
 プラットホーム	プラットホーム	N2	A	direct	openjlpt+waller-exact	1	23410	1115820	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 プリント	プリント	N2	A	direct+conflict	two-exact-sources-over-core-adjacent	1	23413	1116300	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 プルークボーゲン	プルークボーゲン	N2	D	estimated	model+frequency+world-distribution	1	29888	1639280	{}
@@ -26357,6 +26448,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 メキシコ	墨西哥	N2	D	estimated	model+frequency+world-distribution	1	23501	1133090	{}
 メキシコわん	メキシコ湾	N2	D	estimated	model+frequency+world-distribution	1	25482	1641400	{}
 メダル	メダル	N2	B	direct	core-exact	1	29416	1133500	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
+メディアリテラシー	メディアリテラシー	N2	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0		2060430	"{""runtimeSources"":[""advanced_words_curated""],""legacyLevel"":""N1"",""exactEvidence"":{},""tomoshiEntryIds"":[""2060430""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 メディカルエンジニアリング	メディカルエンジニアリング	N2	D	estimated	model+frequency+world-distribution	1	29420	1133670	{}
 メモリアルホール	メモリアルホール	N2	D	estimated	model+frequency+world-distribution	1	29429	1133890	{}
 メリット	メリット	N2	B	direct	core-exact	1	29432	1134030	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -26613,6 +26705,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 いうまでもない	言うまでもない	N1	B	direct	core-exact	1	10800	1264350	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 いえがら	家柄	N1	B	direct	core-exact	1	17365	1192460	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 いえで	家出	N1	A	direct	openjlpt+waller-exact	1	10742	1192030	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
+いえぬし	家主	N1	C	direct+conflict	runtime-exact-source-conflict	1	9307	1191990	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""openjlpt"":""N1"",""waller"":""N1"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1191990""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1191990:waller:N2""]}"
 いかが	如何	N1	A	direct+conflict	openjlpt+waller-exact	1	26271	2845606	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N5""}"
 いかす	生かす	N1	A	direct+conflict	two-exact-sources-over-core-adjacent	1	5824	1587070	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いかなる	いかなる	N1	B	direct	core-exact	0		1466960	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -26861,6 +26954,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 うながす	促す	N1	A	direct+conflict	two-exact-sources-over-core-adjacent	1	12686	1403760	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うなだれる	うなだれる	N1	B	direct	core-exact	0		1676500	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うなる	唸る	N1	A	direct+conflict	openjlpt+waller-exact	1	24914	1565300	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N3""}"
+うぬぼれ	うぬぼれ	N1	A	direct	waller+tomoshi-exact	1	24108	1317730	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1317730""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1317730:waller:N1""]}"
 うぬぼれ	自惚れ	N1	A	direct	openjlpt+waller-exact	1	24108	1317730	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うねり	うねり	N1	B	direct	core-exact	1	22460	1001050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うのみ	鵜呑[うの]み	N1	B	direct	core-exact	0		1172210	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
@@ -27899,6 +27993,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ぐずぐず	ぐずぐず	N1	B	direct	core-exact	1	22561	1004040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぐちょく	愚直	N1	B	direct	core-exact	1	19338	1245180	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぐっと	ぐっと	N1	A	direct	core-exact-corroborated	0		1004080	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
+ぐらい	ぐらい	N1	A	direct	openjlpt+waller+tomoshi-exact	1	23577	1154340	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""openjlpt"":""N1"",""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1154340""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1154340:waller:N1""]}"
 ぐん	群	N1	A	direct	openjlpt+waller-exact	1	4997	1247490	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぐんかん	軍艦	N1	A	direct	openjlpt+waller-exact	1	8899	1247830	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぐんしゅう	群衆	N1	B	direct	core-exact	1	6778	1592510	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29471,6 +29566,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 そこいじ	底意地	N1	B	direct	core-exact	0		2016550	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 そこぢから	底力	N1	B	direct	core-exact	1	9531	1436120	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 そこで	其処で	N1	A	direct+conflict	openjlpt+waller-exact	1	24388	1406090	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N3""}"
+そこなう	損う	N1	A	direct	waller+tomoshi-exact	1	7740	1596510	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1596510""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1596510:waller:N1""]}"
 そこなう	損なう	N1	A	direct+conflict	two-exact-sources-over-core-adjacent	1	7740	1596510	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 そこねる	損ねる	N1	B	direct	core-exact	1	21078	1406690	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 そざい	素材	N1	A	direct+conflict	two-exact-sources-over-core-adjacent	1	1728	1397220	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -30125,6 +30221,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 とうしゅ	投手	N1	B	direct	core-exact	1	346	1447260	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 とうしゅう	踏襲	N1	B	direct	core-exact	1	20015	1619900	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 とうじ	冬至	N1	B	direct	core-exact	1	24543	1446130	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
+とうじ	統治	N1	A	direct	openjlpt+waller+tomoshi-exact	1	1797	1449790	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""openjlpt"":""N1"",""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1449790""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1449790:waller:N1""]}"
 とうじしゃ	当事者	N1	B	direct	core-exact	1	2285	1449080	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 とうじょう	搭乗	N1	B	direct	core-exact	1	6648	1447400	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 とうじる	投じる	N1	B	direct	core-exact	1	9071	1447100	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -30812,6 +30909,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ばんのう	万能	N1	A	direct	openjlpt+waller-exact	1	7267	1584530	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ばんめ	番目	N1	A	direct	openjlpt+waller-exact	1	24652	1482410	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぱらぱら	ぱらぱら	N1	A	direct	manual-secondary-exact	0			"{""manual-secondary-exact"":""N1"",""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
+ひ	碑	N1	A	direct	waller+tomoshi-exact	1	4406	1702990	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N3"",""exactEvidence"":{""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1702990""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1702990:waller:N1""]}"
 ひ	非	N1	A	direct	core-exact-corroborated	1	24662	1484710	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひあい	悲哀	N1	B	direct	core-exact	1	10048	1483210	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひいき	贔屓[ひいき]	N1	B	direct	core-exact	1	24978	1573200	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
@@ -31344,6 +31442,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ぼうぜん	茫[ぼう]然	N1	B	direct	core-exact	0		2835317	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ぼうそう	暴走	N1	B	direct	core-exact	1	5765	1519480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぼうちょう	膨張	N1	B	direct	existing-direct-exact-row	1	5768	1520010	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
+ぼうちょう	膨脹	N1	A	direct	openjlpt+waller+tomoshi-exact	1	5768	1520010	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""openjlpt"":""N1"",""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1520010""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1520010:waller:N1""]}"
 ぼうっと	ぼうっと	N1	B	direct	core-exact	1	22823	1011760	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぼうとう	冒頭	N1	A	direct	core-exact-corroborated	1	1872	1519860	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぼうどう	暴動	N1	A	direct	openjlpt+waller-exact	1	3334	1519520	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31455,6 +31554,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 まよなか	真夜中	N1	B	direct	core-exact	1	10417	1364380	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 まり	鞠	N1	A	direct	openjlpt+waller-exact	0		1226280	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まるごと	丸ごと	N1	A	direct	core-exact-corroborated	1	10300	1216410	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
+まるっきり	まるっきり	N1	A	direct	waller+tomoshi-exact	1	23798	1216270	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1216270""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1216270:waller:N1""]}"
 まるっきり	丸っきり	N1	A	direct	openjlpt+waller-exact	1	23798	1216270	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まるで	丸で	N1	A	direct+conflict	openjlpt+waller-exact	1	23799	1216280	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N3""}"
 まるまる	丸々	N1	A	direct	openjlpt+waller-exact	1	17900	1604260	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31764,6 +31864,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 やかましい	喧しい	N1	A	direct+conflict	openjlpt+waller-exact	1	23779	1211380	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N2""}"
 やがい	野外	N1	A	direct+conflict	two-exact-sources-over-core-adjacent	1	4796	1537270	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 やきにく	焼肉	N1	B	direct	core-exact	1	10155	1605420	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
+やぎょう	夜行	N1	C	direct+conflict	runtime-exact-source-conflict	1	12251		"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""openjlpt"":""N1"",""waller"":""N1"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1136480"",""1584820""],""tomoshiAmbiguous"":true,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1584820:waller:N2""]}"
 やくいん	役員	N1	B	direct	core-exact	1	921	1537990	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 やくがら	役柄	N1	B	direct	core-exact	1	9146	1538070	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 やくざい	薬剤	N1	B	direct	core-exact	1	6722	1538220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -32080,6 +32181,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ろうりょく	労力	N1	A	direct	core-exact-corroborated	1	10119	1560650	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ろか	濾[ろ]過	N1	B	direct	core-exact	0		1568860	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ろくが	録画	N1	B	direct	core-exact	1	5810	1561610	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
+ろくな	ろくな	N1	A	direct	waller+tomoshi-exact	1	25396	1612330	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1612330""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1612330:waller:N1""]}"
 ろくな	碌な	N1	A	direct	openjlpt+waller-exact	1	25396	1612330	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ろくに	ろくに	N1	B	direct	core-exact	1	24958	1570040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ろくに	碌に	N1	A	direct	openjlpt+waller-exact	1	24958	1570040	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
