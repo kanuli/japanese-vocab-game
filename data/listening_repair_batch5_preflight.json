@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-27-listening-repair-batch5-preflight-v1",
+  "version": "2026-08-27-listening-repair-batch5-preflight-v2",
   "catalogCount": 6690,
   "weakCount": 904,
   "weakByLevel": {
@@ -101,6 +101,274 @@
     {
       "count": 160,
       "signature": "只改地點不改日期｜明日照常舉行｜星期五的会議取消改到明日"
+    },
+    {
+      "count": 131,
+      "signature": "あさって照常舉行｜只改地點不改日期｜星期五的会議取消改到あさって"
+    },
+    {
+      "count": 32,
+      "signature": "会議八時結束前三十分鐘才報到｜会議八時開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+    },
+    {
+      "count": 32,
+      "signature": "会議八時半結束前三十分鐘才報到｜会議八時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+    },
+    {
+      "count": 32,
+      "signature": "会議九時結束前三十分鐘才報到｜会議九時開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+    },
+    {
+      "count": 32,
+      "signature": "会議九時半結束前三十分鐘才報到｜会議九時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+    }
+  ],
+  "taskChoiceValues": [
+    {
+      "value": "完全按原定順序。",
+      "count": 256,
+      "hasKana": false
+    },
+    {
+      "value": "三件事同時開始。",
+      "count": 227,
+      "hasKana": false
+    },
+    {
+      "value": "メールを確認する",
+      "count": 222,
+      "hasKana": true
+    },
+    {
+      "value": "予約を変更する",
+      "count": 204,
+      "hasKana": true
+    },
+    {
+      "value": "薬を受け取る",
+      "count": 198,
+      "hasKana": true
+    },
+    {
+      "value": "会議室を予約する",
+      "count": 195,
+      "hasKana": true
+    },
+    {
+      "value": "本を図書館へ返す",
+      "count": 185,
+      "hasKana": true
+    },
+    {
+      "value": "切符を買う",
+      "count": 181,
+      "hasKana": true
+    },
+    {
+      "value": "担当者に電話する",
+      "count": 173,
+      "hasKana": true
+    },
+    {
+      "value": "荷物を二階へ運ぶ",
+      "count": 131,
+      "hasKana": true
+    },
+    {
+      "value": "申込書に名前を書く",
+      "count": 130,
+      "hasKana": true
+    },
+    {
+      "value": "コピーを三部取る",
+      "count": 128,
+      "hasKana": true
+    },
+    {
+      "value": "資料を受付に出す",
+      "count": 123,
+      "hasKana": true
+    },
+    {
+      "value": "鍵を受付へ返す",
+      "count": 101,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做担当者に電話する。",
+      "count": 21,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做コピーを三部取る。",
+      "count": 21,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做切符を買う。",
+      "count": 18,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做本を図書館へ返す。",
+      "count": 18,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做資料を受付に出す。",
+      "count": 18,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做薬を受け取る。",
+      "count": 16,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做荷物を二階へ運ぶ。",
+      "count": 14,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做会議室を予約する。",
+      "count": 12,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做メールを確認する。",
+      "count": 11,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做申込書に名前を書く。",
+      "count": 10,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做鍵を受付へ返す。",
+      "count": 8,
+      "hasKana": true
+    },
+    {
+      "value": "照常先做予約を変更する。",
+      "count": 7,
+      "hasKana": true
+    }
+  ],
+  "n2ChoiceValues": [
+    {
+      "value": "今天不勉強處理，改在明早優先處理資料。",
+      "count": 247
+    },
+    {
+      "value": "完全放棄處理資料。",
+      "count": 247
+    },
+    {
+      "value": "今天一定處理資料。",
+      "count": 247
+    },
+    {
+      "value": "全部交給男方。",
+      "count": 247
+    }
+  ],
+  "kanaWeakValues": [
+    {
+      "value": "メールを確認する",
+      "count": 222
+    },
+    {
+      "value": "予約を変更する",
+      "count": 204
+    },
+    {
+      "value": "薬を受け取る",
+      "count": 198
+    },
+    {
+      "value": "会議室を予約する",
+      "count": 195
+    },
+    {
+      "value": "本を図書館へ返す",
+      "count": 185
+    },
+    {
+      "value": "切符を買う",
+      "count": 181
+    },
+    {
+      "value": "担当者に電話する",
+      "count": 173
+    },
+    {
+      "value": "荷物を二階へ運ぶ",
+      "count": 131
+    },
+    {
+      "value": "申込書に名前を書く",
+      "count": 130
+    },
+    {
+      "value": "コピーを三部取る",
+      "count": 128
+    },
+    {
+      "value": "資料を受付に出す",
+      "count": 123
+    },
+    {
+      "value": "鍵を受付へ返す",
+      "count": 101
+    },
+    {
+      "value": "照常先做担当者に電話する。",
+      "count": 21
+    },
+    {
+      "value": "照常先做コピーを三部取る。",
+      "count": 21
+    },
+    {
+      "value": "照常先做切符を買う。",
+      "count": 18
+    },
+    {
+      "value": "照常先做本を図書館へ返す。",
+      "count": 18
+    },
+    {
+      "value": "照常先做資料を受付に出す。",
+      "count": 18
+    },
+    {
+      "value": "照常先做薬を受け取る。",
+      "count": 16
+    },
+    {
+      "value": "照常先做荷物を二階へ運ぶ。",
+      "count": 14
+    },
+    {
+      "value": "照常先做会議室を予約する。",
+      "count": 12
+    },
+    {
+      "value": "照常先做メールを確認する。",
+      "count": 11
+    },
+    {
+      "value": "照常先做申込書に名前を書く。",
+      "count": 10
+    },
+    {
+      "value": "照常先做鍵を受付へ返す。",
+      "count": 8
+    },
+    {
+      "value": "照常先做予約を変更する。",
+      "count": 7
     }
   ],
   "samples": {
@@ -148,6 +416,28 @@
           "nearMiss": 0,
           "lengthOutlier": 0
         }
+      },
+      {
+        "id": "JL-N1-0013",
+        "level": "N1",
+        "typeZh": "任務理解",
+        "type": "task",
+        "jp": "上司：通常なら切符を買うを先にしますが、今日は電車が遅れているため例外です。鍵を受付へ返すを優先し、問題がなければ切符を買うへ進んでください。担当者に電話するは最後で構いません。最優先は何ですか。",
+        "correctZh": "鍵を受付へ返す",
+        "choicesZh": [
+          "担当者に電話する",
+          "照常先做切符を買う。",
+          "鍵を受付へ返す",
+          "切符を買う"
+        ],
+        "explanationZh": "任務理解：答案只取決於錄音中的關鍵時間、地點、順序、結論或意圖。正確答案：鍵を受付へ返す",
+        "quality": {
+          "pass": false,
+          "structural": false,
+          "extremeWrong": 0,
+          "nearMiss": 0,
+          "lengthOutlier": 0
+        }
       }
     ],
     "N2": [
@@ -185,6 +475,28 @@
           "今天一定處理資料。",
           "全部交給男方。",
           "今天不勉強處理，改在明早優先處理資料。"
+        ],
+        "explanationZh": "推論／意圖理解：答案只取決於錄音中的關鍵時間、地點、順序、結論或意圖。正確答案：今天不勉強處理，改在明早優先處理資料。",
+        "quality": {
+          "pass": false,
+          "structural": false,
+          "extremeWrong": 3,
+          "nearMiss": 2,
+          "lengthOutlier": 1
+        }
+      },
+      {
+        "id": "JL-N2-0015",
+        "level": "N2",
+        "typeZh": "推論／意圖理解",
+        "type": "inference",
+        "jp": "女の人：資料を今日中に確認する必要がありますが、電車が遅れていると聞きました。男の人：急ぎでなければ明日に回せます。女の人：締め切りは明日の昼なので朝一番にします。意図は何ですか。",
+        "correctZh": "今天不勉強處理，改在明早優先處理資料。",
+        "choicesZh": [
+          "今天一定處理資料。",
+          "全部交給男方。",
+          "今天不勉強處理，改在明早優先處理資料。",
+          "完全放棄處理資料。"
         ],
         "explanationZh": "推論／意圖理解：答案只取決於錄音中的關鍵時間、地點、順序、結論或意圖。正確答案：今天不勉強處理，改在明早優先處理資料。",
         "quality": {
@@ -240,6 +552,28 @@
           "nearMiss": 0,
           "lengthOutlier": 0
         }
+      },
+      {
+        "id": "JL-N3-0013",
+        "level": "N3",
+        "typeZh": "任務理解",
+        "type": "task",
+        "jp": "上司：電車が遅れているので予定を変えます。まず薬を受け取る。その後で本を図書館へ返す。担当者に電話するは午後でかまいません。最初にすることは何ですか。",
+        "correctZh": "薬を受け取る",
+        "choicesZh": [
+          "担当者に電話する",
+          "完全按原定順序。",
+          "薬を受け取る",
+          "本を図書館へ返す"
+        ],
+        "explanationZh": "任務理解：答案只取決於錄音中的關鍵時間、地點、順序、結論或意圖。正確答案：薬を受け取る",
+        "quality": {
+          "pass": false,
+          "structural": false,
+          "extremeWrong": 1,
+          "nearMiss": 0,
+          "lengthOutlier": 0
+        }
       }
     ],
     "N4": [
@@ -279,6 +613,28 @@
           "申込書に名前を書く"
         ],
         "explanationZh": "任務理解：答案只取決於錄音中的關鍵時間、地點、順序、結論或意圖。正確答案：申込書に名前を書く",
+        "quality": {
+          "pass": false,
+          "structural": false,
+          "extremeWrong": 0,
+          "nearMiss": 0,
+          "lengthOutlier": 0
+        }
+      },
+      {
+        "id": "JL-N4-0013",
+        "level": "N4",
+        "typeZh": "任務理解",
+        "type": "task",
+        "jp": "上司：最初に鍵を受付へ返す。終わったら申込書に名前を書く。時間があれば切符を買う。まず何をしますか。",
+        "correctZh": "鍵を受付へ返す",
+        "choicesZh": [
+          "切符を買う",
+          "三件事同時開始。",
+          "鍵を受付へ返す",
+          "申込書に名前を書く"
+        ],
+        "explanationZh": "任務理解：答案只取決於錄音中的關鍵時間、地點、順序、結論或意圖。正確答案：鍵を受付へ返す",
         "quality": {
           "pass": false,
           "structural": false,
