@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 
 import audit_runtime_supplements as audit
+import teacher_jlpt_policy_v5 as v5
 
 
 def parse_r_file(path: Path) -> list[dict]:
@@ -32,12 +33,8 @@ def parse_r_file(path: Path) -> list[dict]:
     return out
 
 
-# Use the same externally validated exact teacher anchors as the base v4 entrypoint.
-audit.v4.TEACHER_ANCHORS.update({
-    "さらいげつ|再来月": "N5",
-    "さらいねん|再来年": "N5",
-    "つくる|造る": "N5",
-})
+v5.install()
+audit.choose_direct = v5.choose_runtime_direct
 audit.parse_r_file = parse_r_file
 
 if __name__ == "__main__":
