@@ -1,7 +1,7 @@
 (()=>{'use strict';
 const root=window.REFERENCE_GRAMMAR_EXPANSION=window.REFERENCE_GRAMMAR_EXPANSION||[];
 const seen=new Set(root.map(x=>`${x.level}|${x.q}`));
-function add(q,choices,a,grammar,meaning,exp,zh){
+function add(q,choices,grammar,a,meaning,exp,zh){
   const x={level:'N4',type:'文法',q,choices,a,grammar,meaning,exp,zh,source:'original coverage-gap expansion',mode:'fill',coverageGap:'passive'};
   const k=`${x.level}|${x.q}`;if(!seen.has(k)){root.push(x);seen.add(k)}
 }
