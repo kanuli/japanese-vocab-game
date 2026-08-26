@@ -8,9 +8,11 @@ on:
       - tools/build_vocab_bundle.py
       - tools/build_vocab_bundle_exact.py
       - tools/refine_core_ambiguity.py
+      - tools/expand_advanced_vocab_stage12.py
       - tools/classify_vocab_audit.py
       - tools/check_vocab_sentinels.py
       - data/vocab_external_crosscheck.js
+      - data/vocab_stage2_external_validation.json
       - large_vocab_sources.js
       - large_vocab_build.js
       - large_vocab_matchers.js
@@ -23,7 +25,7 @@ permissions:
 jobs:
   rebuild:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -35,9 +37,10 @@ jobs:
         run: |
           curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
           zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
-      - name: Build, refine and classify all vocabulary data
+      - name: Build, refine, expand and classify all vocabulary data
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
+          VOCAB_ADVANCED_TARGET: '30000'
         run: |
           set +e
           python tools/build_vocab_bundle_exact.py
@@ -48,6 +51,7 @@ jobs:
             exit "$build_rc"
           fi
           python tools/refine_core_ambiguity.py
+          python tools/expand_advanced_vocab_stage12.py
           python tools/classify_vocab_audit.py
       - name: Verify coverage and audit
         run: |
@@ -57,19 +61,24 @@ jobs:
           audit = json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
           assert audit['fatalIssueCount'] == 0, audit['fatalIssues']
           assert audit.get('refinementFatalIssueCount', 0) == 0
+          assert audit.get('expansionFatalIssueCount', 0) == 0
           assert audit['counts']['core'] >= 10000, audit['counts']
-          assert audit['counts']['advanced'] >= 7000, audit['counts']
-          assert audit['counts']['runtimeUnique'] >= 17000, audit['counts']
+          assert audit['counts']['advanced'] >= 30000, audit['counts']
+          assert audit['counts']['runtimeUnique'] >= 40000, audit['counts']
+          assert audit['counts']['stage1AdvancedAddedVs12500'] >= 17000, audit['counts']
+          assert audit['counts']['stage1SafeCandidatePool'] >= 30000, audit['counts']
           assert audit['coreAudit']['tomoshiMeaningsApplied'] >= 10000, audit['coreAudit']
           assert audit['coreAudit']['manualSecondaryCrosscheckApplied'] >= 46, audit['coreAudit']
           assert audit['coreAudit']['originalMeaningFallback'] == 0, audit['coreAudit']
           assert audit['counts']['coreMeaningFallbackAfterRefinement'] == 0, audit['counts']
           assert len(audit.get('coreUnresolvedAll', [])) == 0, audit.get('coreUnresolvedAll', [])[:10]
+          assert len(audit.get('stage2ExternalValidation', {}).get('reviewSample', [])) >= 24
           print(json.dumps(audit['counts'], ensure_ascii=False, indent=2))
+          print(json.dumps(audit['stage1Expansion'], ensure_ascii=False, indent=2))
           print(json.dumps(audit['coreAudit'], ensure_ascii=False, indent=2))
-          print(json.dumps(audit['sentinelMai'], ensure_ascii=False, indent=2))
           print('reviewIssueCount=', audit.get('reviewIssueCount', 0))
-          print('fullResidualCount=', len(audit.get('coreUnresolvedAll', [])))
+          print('expansionReviewIssueCount=', audit.get('expansionReviewIssueCount', 0))
+          print('stage2ReviewSample=', len(audit.get('stage2ExternalValidation', {}).get('reviewSample', [])))
           PY
       - name: Verify blocking semantic sentinels
         run: python tools/check_vocab_sentinels.py
@@ -82,5 +91,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json
-          git commit -m "Rebuild and refine audited vocabulary data"
+          git commit -m "Rebuild refine and expand audited vocabulary data"
           git push
