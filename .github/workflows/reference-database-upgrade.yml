@@ -18,12 +18,14 @@ on:
       - 'conversation-quality-batch3.js'
       - 'tools/apply_reference_database_upgrade.py'
       - 'tools/apply_quality_depth_batch3.py'
+      - 'tools/apply_quality_depth_batch4.py'
       - 'tools/fix_listening_gap_naturalness.py'
       - 'tools/audit_coverage_gaps.py'
       - 'tools/reconcile_coverage_report.py'
       - 'tools/reconcile_batch2_coverage.py'
       - '.github/scripts/audit_reference_expansion.mjs'
       - '.github/scripts/audit_quality_depth_batch3.mjs'
+      - '.github/scripts/audit_full_listening_quality_batch4.mjs'
       - 'data/CONTENT_REFERENCE_POLICY.md'
       - 'data/content_reference_map.json'
   workflow_dispatch:
@@ -44,6 +46,8 @@ jobs:
         run: python tools/apply_reference_database_upgrade.py
       - name: Apply batch 3 quality-depth integration
         run: python tools/apply_quality_depth_batch3.py
+      - name: Apply batch 4 full-listening quality integration
+        run: python tools/apply_quality_depth_batch4.py
       - name: Audit reference expansion
         run: node .github/scripts/audit_reference_expansion.mjs
       - name: Audit cross-database coverage gaps
@@ -54,6 +58,8 @@ jobs:
         run: python tools/reconcile_batch2_coverage.py
       - name: Audit batch 3 quality depth
         run: node .github/scripts/audit_quality_depth_batch3.mjs
+      - name: Audit full listening quality batch 4
+        run: node .github/scripts/audit_full_listening_quality_batch4.mjs
       - name: Check patch whitespace
         run: git diff --check
       - name: Commit integrated database upgrade
@@ -64,6 +70,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-gap-expansion.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json data/quality_depth_batch3_report.json
-          git commit -m 'Apply Japanese database quality-depth batch 3'
+          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-gap-expansion.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json data/quality_depth_batch3_report.json data/full_listening_quality_batch4_report.json
+          git commit -m 'Apply Japanese full listening quality-depth batch 4'
           git push
