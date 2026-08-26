@@ -3,7 +3,7 @@
 
 Primary semantic source: Tomoshi open dictionary zh-TW definitions, joined by JMdict
 entry_id. Core deck rows are resolved by exact written-form + reading. No meaning is
-ever borrowed from a reading-only homophone or alternate spelling.
+ever borrowed from a reading-only homophone or unrelated alternate spelling.
 """
 from __future__ import annotations
 
@@ -25,8 +25,6 @@ CORE_OUT = ROOT / "data" / "vocab_core_verified.js"
 AUDIT_OUT = ROOT / "data" / "vocab_audit.json"
 DB_PATH = Path(os.environ.get("TOMOSHI_DB", "/tmp/tomoshi.db"))
 VALID_LEVELS = {"N1", "N2", "N3", "N4", "N5"}
-MIN_ZH_CONFIDENCE = 0.65
-MIN_COMMUNITY_LEVEL_CONFIDENCE = 0.75
 
 # Corrections are keyed by (reading, displayed form), never by reading alone.
 CURATED = {
@@ -52,14 +50,12 @@ def exact_entry(raw: dict):
     return entry
 
 
-def parse_json_list(value) -> list[str]:
-    if isinstance(value, list):
-        return [str(x) for x in value]
-    try:
-        parsed = json.loads(value or "[]")
-        return [str(x) for x in parsed] if isinstance(parsed, list) else []
-    except Exception:
-        return []
+def normalized_level(value) -> str:
+    value = str(value or "").upper().strip()
+    if value in VALID_LEVELS:
+        return value
+    m = re.fullmatch(r"([1-5])", value)
+    return f"N{m.group(1)}" if m else ""
 
 
 def clean_gloss(value: str) -> str:
@@ -67,66 +63,86 @@ def clean_gloss(value: str) -> str:
     text = NOISE_PREFIX.sub("", text)
     text = POS_PREFIX.sub("", text)
     text = re.sub(r"\s+", " ", text).strip(" ；;。")
-    if not text or len(text) > 70:
-        return ""
-    if re.search(r"[\[\]{}<>]", text):
+    if not text or len(text) > 70 or re.search(r"[\[\]{}<>]", text):
         return ""
     return text
 
 
-def gloss_text(raw_glosses) -> str:
+def zh_meaning_from_data(raw_data: str) -> str:
+    try:
+        data = json.loads(raw_data or "{}")
+    except Exception:
+        return ""
+    senses = data.get("senses") or {}
+    if isinstance(senses, list):
+        ordered = list(enumerate(senses))
+    elif isinstance(senses, dict):
+        def sort_key(item):
+            try:
+                return int(item[0])
+            except Exception:
+                return 999999
+        ordered = sorted(senses.items(), key=sort_key)
+    else:
+        ordered = []
     out = []
-    for raw in parse_json_list(raw_glosses):
-        text = clean_gloss(raw)
-        if text and text not in out:
-            out.append(text)
-        if len(out) >= 3:
-            break
+    for _idx, sense in ordered:
+        if not isinstance(sense, dict):
+            continue
+        for gloss in sense.get("glosses") or []:
+            text = clean_gloss(gloss.get("text") if isinstance(gloss, dict) else gloss)
+            if text and text not in out:
+                out.append(text)
+            if len(out) >= 3:
+                return "；".join(out)[:100]
     return "；".join(out)[:100]
 
 
 def load_tomoshi(conn: sqlite3.Connection):
     zh = {}
-    zh_all = 0
-    for row in conn.execute("SELECT entry_id, glosses, method, confidence FROM zh_defs_zhtw"):
-        zh_all += 1
-        confidence = float(row[3] or 0)
-        meaning = gloss_text(row[1])
-        if meaning and confidence >= MIN_ZH_CONFIDENCE:
-            zh[int(row[0])] = (meaning, confidence, str(row[2] or ""))
+    zh_total = 0
+    for row in conn.execute("SELECT entry_id, data FROM zh_defs_zhtw WHERE locale='zh-TW'"):
+        zh_total += 1
+        meaning = zh_meaning_from_data(row[1])
+        if meaning:
+            zh[str(row[0])] = meaning
 
-    meta = {}
-    for row in conn.execute("SELECT entry_id, jlpt_canonical, jlpt_level, is_common FROM entries"):
-        meta[int(row[0])] = {
-            "canonical": str(row[1] or ""),
-            "level": int(row[2]) if row[2] is not None else None,
-            "common": bool(row[3]),
+    entry_info = {}
+    for row in conn.execute("SELECT id, is_common, data FROM entries"):
+        eid = str(row[0])
+        try:
+            data = json.loads(row[2] or "{}")
+        except Exception:
+            data = {}
+        readings = {str(x.get("text") or "").strip() for x in (data.get("kana") or []) if isinstance(x, dict) and str(x.get("text") or "").strip()}
+        written = {str(x.get("text") or "").strip() for x in (data.get("kanji") or []) if isinstance(x, dict) and str(x.get("text") or "").strip()}
+        entry_info[eid] = {
+            "common": bool(row[1]),
+            "readings": readings,
+            "written": written,
+            "jlpt": normalized_level(data.get("jlpt_level")),
         }
 
-    community = {}
-    for row in conn.execute("SELECT entry_id, n_level, source, confidence FROM vocab_jlpt"):
-        community[int(row[0])] = (int(row[1]), str(row[2] or ""), float(row[3] or 0))
-    return zh, meta, community, zh_all
+    jlpt = {}
+    for row in conn.execute("SELECT entry_id, level, source FROM vocab_jlpt"):
+        level = normalized_level(row[1])
+        if level:
+            jlpt[str(row[0])] = (level, str(row[2] or "community"))
+    return zh, entry_info, jlpt, zh_total
 
 
-def normalized_level(value) -> str:
-    value = str(value or "").upper().strip()
-    return value if value in VALID_LEVELS else ""
-
-
-def level_for(entry_id: int | None, waller: str, original: str, rank: int,
-              meta: dict, community: dict) -> tuple[str, str]:
+def level_for(entry_id: str | None, waller: str, original: str, rank: int,
+              entry_info: dict, tomoshi_jlpt: dict) -> tuple[str, str]:
     waller = normalized_level(waller)
     if waller:
         return waller, "jlpt-waller"
-    if entry_id is not None:
-        info = meta.get(entry_id) or {}
-        canonical = normalized_level(info.get("canonical"))
-        if canonical:
-            return canonical, "tomoshi-canonical"
-        comm = community.get(entry_id)
-        if comm and comm[2] >= MIN_COMMUNITY_LEVEL_CONFIDENCE and 1 <= comm[0] <= 5:
-            return f"N{comm[0]}", f"tomoshi-{comm[1] or 'community'}"
+    if entry_id:
+        tj = tomoshi_jlpt.get(entry_id)
+        if tj:
+            return tj[0], f"tomoshi-{tj[1]}"
+        embedded = normalized_level((entry_info.get(entry_id) or {}).get("jlpt"))
+        if embedded:
+            return embedded, "tomoshi-entry-jlpt"
     original = normalized_level(original)
     if original:
         return original, "core-deck"
@@ -150,64 +166,54 @@ def parse_core_records(text: str) -> list[dict]:
         reading = base.reading_from_furigana(row[6], display)
         meaning = base.clean_text(row[8])
         level_match = re.search(r"(?:^|[^A-Za-z0-9])N([1-5])(?=$|[^0-9])", f"{row[1]} {row[38]}", re.I)
-        if not (display and reading and meaning and level_match):
-            continue
-        records.append({
-            "display": display,
-            "reading": reading,
-            "key": f"{reading}|{display}",
-            "meaning": meaning,
-            "level": f"N{level_match.group(1)}",
-        })
-    # Preserve first occurrence exactly as runtime does.
+        if display and reading and meaning and level_match:
+            records.append({"display": display, "reading": reading, "key": f"{reading}|{display}", "meaning": meaning, "level": f"N{level_match.group(1)}"})
     seen = set()
-    return [r for r in records if not (r["key"] in seen or seen.add(r["key"]))]
+    out = []
+    for rec in records:
+        if rec["key"] not in seen:
+            seen.add(rec["key"])
+            out.append(rec)
+    return out
 
 
-def build_core_form_index(conn: sqlite3.Connection, core_keys: set[str]) -> dict[str, list[dict]]:
+def build_core_form_index(conn: sqlite3.Connection, core_records: list[dict], entry_info: dict) -> dict[str, list[dict]]:
+    by_display = defaultdict(set)
+    for rec in core_records:
+        by_display[rec["display"]].add(rec["reading"])
+    wanted_displays = set(by_display)
     result = defaultdict(list)
-    for row in conn.execute("SELECT entry_id, text, reading, common, pri_rank, preferred FROM forms"):
-        entry_id, text, reading, common, pri_rank, preferred = row
-        key = f"{reading}|{text}"
-        if key not in core_keys:
+    for row in conn.execute("SELECT text, entry_id, is_kana, is_common FROM forms"):
+        text = str(row[0])
+        if text not in wanted_displays:
             continue
-        result[key].append({
-            "entry_id": int(entry_id),
-            "common": int(common or 0),
-            "pri_rank": int(pri_rank or 0),
-            "preferred": int(preferred or 0),
-        })
+        eid = str(row[1])
+        info = entry_info.get(eid) or {}
+        readings = info.get("readings") or set()
+        for reading in by_display[text]:
+            if reading in readings:
+                result[f"{reading}|{text}"].append({
+                    "entry_id": eid,
+                    "form_common": bool(row[3]),
+                    "entry_common": bool(info.get("common")),
+                    "written_exact": text in (info.get("written") or set()),
+                })
     return result
 
 
-def choose_core_entry(options: list[dict], zh: dict, meta: dict) -> tuple[int | None, bool]:
+def choose_core_entry(options: list[dict], zh: dict) -> tuple[str | None, bool]:
     if not options:
         return None, False
-    ids = {x["entry_id"] for x in options}
-    ambiguous = len(ids) > 1
-    ranked = sorted(options, key=lambda x: (
+    unique = {x["entry_id"]: x for x in options}
+    values = list(unique.values())
+    ambiguous = len(values) > 1
+    ranked = sorted(values, key=lambda x: (
         1 if x["entry_id"] in zh else 0,
-        zh.get(x["entry_id"], ("", 0, ""))[1],
-        x["preferred"], x["common"],
-        1 if (meta.get(x["entry_id"]) or {}).get("common") else 0,
-        x["pri_rank"],
+        x["form_common"], x["entry_common"], x["written_exact"],
     ), reverse=True)
-    if ambiguous:
-        best = ranked[0]
-        second = ranked[1]
-        best_score = (
-            best["entry_id"] in zh,
-            round(zh.get(best["entry_id"], ("", 0, ""))[1], 2),
-            best["preferred"], best["common"],
-            bool((meta.get(best["entry_id"]) or {}).get("common")),
-        )
-        second_score = (
-            second["entry_id"] in zh,
-            round(zh.get(second["entry_id"], ("", 0, ""))[1], 2),
-            second["preferred"], second["common"],
-            bool((meta.get(second["entry_id"]) or {}).get("common")),
-        )
-        if best_score == second_score:
+    if ambiguous and len(ranked) > 1:
+        score = lambda x: (x["entry_id"] in zh, x["form_common"], x["entry_common"], x["written_exact"])
+        if score(ranked[0]) == score(ranked[1]):
             return None, True
     return ranked[0]["entry_id"], ambiguous
 
@@ -227,28 +233,24 @@ def write_core_overlay(rows: list[list], meta: dict):
 
 
 def advanced_quality(item: dict):
-    source_rank = 0 if item["meaning_source"] == "tomoshi-entry-id" else 1
-    waller_rank = 0 if item["level_source"] == "jlpt-waller" else 1
+    direct_level = 0 if item["level_source"] != "exact-frequency-estimate" else 1
     known_rank = 0 if item["rank"] < 999999 else 1
     common_rank = 0 if item.get("common") else 1
-    return (source_rank, waller_rank, common_rank, known_rank, item["rank"], -item["meaning_confidence"], item["reading"])
+    return (direct_level, common_rank, known_rank, item["rank"], item["reading"])
 
 
 def semantic_audit(all_rows: list[dict], fatal: list[dict]):
     by_display = defaultdict(list)
     for row in all_rows:
         by_display[row["display"]].append(row)
-
-    forbidden = {
-        "教え": ["學園", "学校", "學校"],
-        "共和": ["西周"],
-        "指令": ["歐洲聯盟指令"],
-    }
-    for display, bads in forbidden.items():
+    forbidden_substrings = {"教え": ["學園", "学校", "學校"], "共和": ["西周"]}
+    for display, bads in forbidden_substrings.items():
         for row in by_display.get(display, []):
             if any(bad in row["meaning"] for bad in bads):
                 fatal.append({"type": "semantic_sentinel_failed", "display": display, "meaning": row["meaning"]})
-
+    for row in by_display.get("指令", []):
+        if row["meaning"].strip() == "歐洲聯盟指令":
+            fatal.append({"type": "semantic_sentinel_failed", "display": "指令", "meaning": row["meaning"]})
     for display in ("仕上げ", "美人"):
         for row in by_display.get(display, []):
             if NOISE_PREFIX.search(row["meaning"]) or POS_PREFIX.search(row["meaning"]):
@@ -261,7 +263,6 @@ def build() -> int:
     if not DB_PATH.exists():
         raise RuntimeError(f"Tomoshi SQLite database not found: {DB_PATH}")
     conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
 
     print("Downloading JLPT core, JMdict-derived words, and frequency data...")
     core_text = base.fetch_text(base.URLS["core"])
@@ -276,37 +277,29 @@ def build() -> int:
     core_keys = {r["key"] for r in core_records}
     print(f"core unique rows: {len(core_records):,}")
 
-    zh, tmeta, community, zh_total = load_tomoshi(conn)
-    print(f"Tomoshi zh-TW rows: {zh_total:,}; accepted confidence >= {MIN_ZH_CONFIDENCE:.2f}: {len(zh):,}")
+    zh, entry_info, tomoshi_jlpt, zh_total = load_tomoshi(conn)
+    print(f"Tomoshi zh-TW rows: {zh_total:,}; usable meanings: {len(zh):,}; JLPT rows: {len(tomoshi_jlpt):,}")
 
     waller_by_id = {}
     chosen_entries = []
     for raw in words_data.get("words") or []:
-        try:
-            eid = int(raw.get("id"))
-        except Exception:
-            eid = None
-        if eid is not None:
+        eid = str(raw.get("id") or "").strip()
+        if eid:
             waller_by_id[eid] = normalized_level(raw.get("jlpt_waller"))
         entry = exact_entry(raw)
-        if entry and eid is not None:
+        if entry and eid:
             entry["entry_id"] = eid
             chosen_entries.append(entry)
 
     # ---------- Core overlay: check every runtime core row ----------
-    core_form_index = build_core_form_index(conn, core_keys)
+    core_form_index = build_core_form_index(conn, core_records, entry_info)
     core_overlay = []
-    core_audit = {
-        "total": len(core_records), "exactEntryResolved": 0, "ambiguousPairs": 0,
-        "unresolvedPairs": 0, "tomoshiMeaningsApplied": 0,
-        "originalMeaningFallback": 0, "meaningChanged": 0, "levelChanged": 0,
-    }
-    ambiguous_samples = []
-    unresolved_samples = []
+    core_audit = {"total": len(core_records), "exactEntryResolved": 0, "ambiguousPairs": 0, "unresolvedPairs": 0, "tomoshiMeaningsApplied": 0, "originalMeaningFallback": 0, "meaningChanged": 0, "levelChanged": 0}
+    ambiguous_samples, unresolved_samples = [], []
     core_rows_for_audit = []
     for rec in core_records:
         options = core_form_index.get(rec["key"], [])
-        eid, was_ambiguous = choose_core_entry(options, zh, tmeta)
+        eid, was_ambiguous = choose_core_entry(options, zh)
         if was_ambiguous:
             core_audit["ambiguousPairs"] += 1
         if eid is None:
@@ -318,17 +311,14 @@ def build() -> int:
         if was_ambiguous and len(ambiguous_samples) < 50:
             ambiguous_samples.append({"key": rec["key"], "candidateEntryIds": sorted({x["entry_id"] for x in options}), "selected": eid})
 
-        meaning = rec["meaning"]
-        meaning_source = "core-original-fallback"
-        if eid in zh:
-            meaning = zh[eid][0]
-            meaning_source = "tomoshi-entry-id"
+        meaning, meaning_source = rec["meaning"], "core-original-fallback"
+        if eid and eid in zh:
+            meaning, meaning_source = zh[eid], "tomoshi-entry-id"
             core_audit["tomoshiMeaningsApplied"] += 1
         else:
             core_audit["originalMeaningFallback"] += 1
-
         rank = min(frequency.get(f"{rec['display']}|{rec['reading']}", 999999), frequency.get(rec["display"], 999999))
-        level, level_source = level_for(eid, waller_by_id.get(eid, "") if eid else "", rec["level"], rank, tmeta, community)
+        level, level_source = level_for(eid, waller_by_id.get(eid, "") if eid else "", rec["level"], rank, entry_info, tomoshi_jlpt)
         if meaning != rec["meaning"]:
             core_audit["meaningChanged"] += 1
         if level != rec["level"]:
@@ -336,52 +326,39 @@ def build() -> int:
         core_overlay.append([rec["reading"], rec["display"], level, meaning, meaning_source, level_source, eid])
         core_rows_for_audit.append({"reading": rec["reading"], "display": rec["display"], "meaning": meaning, "level": level, "source": "core"})
 
-    core_meta = {
-        "version": "core-verified-20260826-v1",
-        "generated": datetime.now(timezone.utc).isoformat(),
-        "rows": len(core_overlay),
-        "meaningPolicy": "Tomoshi zh-TW by exact JMdict entry ID; exact form+reading resolution; original core meaning only when unresolved/missing",
-        "levelPolicy": "JLPT Waller > Tomoshi canonical > high-confidence community > original core deck",
-    }
-    write_core_overlay(core_overlay, core_meta)
+    write_core_overlay(core_overlay, {
+        "version": "core-verified-20260826-v1", "generated": datetime.now(timezone.utc).isoformat(), "rows": len(core_overlay),
+        "meaningPolicy": "Tomoshi zh-TW by exact JMdict entry ID; core entry resolved by exact written form + reading; original core value retained when ambiguous/unresolved",
+        "levelPolicy": "JLPT Waller/Tomoshi JLPT > embedded entry level > original core deck",
+    })
 
-    # ---------- Advanced: only structured entry-ID meanings ----------
+    # ---------- Advanced: structured entry-ID meanings only ----------
     candidates = {}
+    duplicate_entry_keys = defaultdict(set)
     for entry in chosen_entries:
         key = f"{entry['reading']}|{entry['display']}"
         if key in core_keys:
             continue
         eid = entry["entry_id"]
-        z = zh.get(eid)
-        if not z:
+        meaning = zh.get(eid)
+        if not meaning:
             continue
         rank = min(frequency.get(f"{entry['display']}|{entry['reading']}", 999999), frequency.get(entry["display"], 999999))
-        level, level_source = level_for(eid, entry["raw"].get("jlpt_waller"), "", rank, tmeta, community)
-        item = {
-            "level": level, "reading": entry["reading"], "kanji": entry["kanji"],
-            "display": entry["display"], "meaning": z[0], "pos": entry["pos"],
-            "rank": rank, "key": key, "entry_id": eid, "meaning_confidence": z[1],
-            "meaning_source": "tomoshi-entry-id", "level_source": level_source,
-            "common": bool((tmeta.get(eid) or {}).get("common")),
-        }
+        level, level_source = level_for(eid, entry["raw"].get("jlpt_waller"), "", rank, entry_info, tomoshi_jlpt)
+        item = {"level": level, "reading": entry["reading"], "kanji": entry["kanji"], "display": entry["display"], "meaning": meaning, "pos": entry["pos"], "rank": rank, "key": key, "entry_id": eid, "meaning_source": "tomoshi-entry-id", "level_source": level_source, "common": bool((entry_info.get(eid) or {}).get("common"))}
+        duplicate_entry_keys[key].add(eid)
         prev = candidates.get(key)
         if prev is None or advanced_quality(item) < advanced_quality(prev):
             candidates[key] = item
 
-    # Apply exact-key curated corrections and add missing sentinel/variant forms.
     for (reading, display), (level, meaning, pos) in CURATED.items():
         key = f"{reading}|{display}"
         if key in core_keys:
             continue
         if key in candidates:
-            candidates[key].update(level=level, meaning=meaning, pos=pos, meaning_source="curated-exact", level_source="curated-exact", meaning_confidence=1.0)
+            candidates[key].update(level=level, meaning=meaning, pos=pos, meaning_source="curated-exact", level_source="curated-exact")
         else:
-            candidates[key] = {
-                "level": level, "reading": reading, "kanji": display if base.CJK_RE.search(display) else "",
-                "display": display, "meaning": meaning, "pos": pos, "rank": 999999,
-                "key": key, "entry_id": None, "meaning_confidence": 1.0,
-                "meaning_source": "curated-exact", "level_source": "curated-exact", "common": True,
-            }
+            candidates[key] = {"level": level, "reading": reading, "kanji": display if base.CJK_RE.search(display) else "", "display": display, "meaning": meaning, "pos": pos, "rank": 999999, "key": key, "entry_id": None, "meaning_source": "curated-exact", "level_source": "curated-exact", "common": True}
 
     ranked = sorted(candidates.values(), key=advanced_quality)
     if len(ranked) > 12500:
@@ -396,8 +373,7 @@ def build() -> int:
     all_rows = core_rows_for_audit + advanced_rows_for_audit
     semantic_audit(all_rows, fatal)
 
-    seen = set()
-    homophones = defaultdict(list)
+    seen, homophones = set(), defaultdict(list)
     mai = {"まい": [], "舞": [], "枚": [], "毎": []}
     negative = re.compile(r"(?:不(?:會|会|打算|可能|要)?|否定|絕不|绝不|恐怕不)")
     for row in all_rows:
@@ -413,8 +389,7 @@ def build() -> int:
                 fatal.append({"type": "mai_semantic_contamination", "key": key, "meaning": row["meaning"]})
         homophones[row["reading"]].append(row)
 
-    variant_groups = []
-    level_conflicts = []
+    variant_groups, level_conflicts = [], []
     for reading, group in homophones.items():
         by_meaning = defaultdict(list)
         for row in group:
@@ -433,63 +408,34 @@ def build() -> int:
     meaning_sources = Counter(x["meaning_source"] for x in ranked)
     tuples = [[x["level"], x["reading"], x["kanji"], x["meaning"], x["pos"], x["level_source"], x["entry_id"]] for x in ranked]
     adv_meta = {
-        "version": "prebuilt-20260826-v5-jmdict-id",
-        "generated": datetime.now(timezone.utc).isoformat(),
-        "generatedCount": len(tuples),
-        "coreUniqueAtBuild": len(core_keys),
-        "mergedUniqueAtBuild": merged_unique,
-        "countsByLevel": {level: counts.get(level, 0) for level in ["N1", "N2", "N3", "N4", "N5"]},
-        "meaningSources": dict(meaning_sources),
-        "levelSources": dict(level_sources),
-        "source": "JMdict-derived Japanese Language Data + Tomoshi zh-TW definitions joined by JMdict entry_id",
-        "meaningPolicy": "structured JMdict entry-ID match; no reading/alternate-form semantic fallback",
-        "levelPolicy": "JLPT Waller > Tomoshi canonical > high-confidence community > exact-form frequency estimate",
-        "audit": "data/vocab_audit.json",
+        "version": "prebuilt-20260826-v5-jmdict-id", "generated": datetime.now(timezone.utc).isoformat(), "generatedCount": len(tuples), "coreUniqueAtBuild": len(core_keys), "mergedUniqueAtBuild": merged_unique,
+        "countsByLevel": {level: counts.get(level, 0) for level in ["N1", "N2", "N3", "N4", "N5"]}, "meaningSources": dict(meaning_sources), "levelSources": dict(level_sources),
+        "source": "JMdict-derived Japanese Language Data + Tomoshi zh-TW definitions joined by JMdict entry_id", "meaningPolicy": "structured JMdict entry-ID match; no reading/alternate-form semantic fallback", "levelPolicy": "JLPT Waller/Tomoshi JLPT > embedded entry level > exact-form frequency estimate", "audit": "data/vocab_audit.json",
     }
     payload = json.dumps(tuples, ensure_ascii=False, separators=(",", ":"))
     meta_json = json.dumps(adv_meta, ensure_ascii=False, separators=(",", ":"))
-    js = (
+    ADV_OUT.write_text(
         "// AUTO-GENERATED by tools/build_vocab_bundle_exact.py. Do not edit by hand.\n"
         "// Meanings use structured JMdict-ID Traditional-Chinese definitions. Levels are third-party/estimated, not an official JLPT vocabulary list.\n"
-        "(()=>{\"use strict\";\n"
-        f"const M={meta_json},T={payload};\n"
-        "window.ADVANCED_WORDS=Array.isArray(window.ADVANCED_WORDS)?window.ADVANCED_WORDS:[];\n"
-        "const base=window.ADVANCED_WORDS.length;\n"
-        "for(let i=0;i<T.length;i++){const x=T[i];window.ADVANCED_WORDS.push({id:`bundle-${i}`,level:x[0],reading:x[1],kanji:x[2]||\"\",displayWord:x[2]||x[1],meaning:x[3],pos:x[4]||\"other\",estimated:true,levelSource:x[5]||\"\",entryId:x[6]||null,source:\"進階補充詞（JMdict-ID 核對・推定等級）\"});}\n"
-        "window.ADVANCED_WORDS_BUNDLE_META={...M,loadedCount:window.ADVANCED_WORDS.length-base};\n"
-        "})();\n"
-    )
-    ADV_OUT.write_text(js, encoding="utf-8")
+        "(()=>{\"use strict\";\n" + f"const M={meta_json},T={payload};\n" +
+        "window.ADVANCED_WORDS=Array.isArray(window.ADVANCED_WORDS)?window.ADVANCED_WORDS:[];const base=window.ADVANCED_WORDS.length;"
+        "for(let i=0;i<T.length;i++){const x=T[i];window.ADVANCED_WORDS.push({id:`bundle-${i}`,level:x[0],reading:x[1],kanji:x[2]||\"\",displayWord:x[2]||x[1],meaning:x[3],pos:x[4]||\"other\",estimated:true,levelSource:x[5]||\"\",entryId:x[6]||null,source:\"進階補充詞（JMdict-ID 核對・推定等級）\"});}"
+        "window.ADVANCED_WORDS_BUNDLE_META={...M,loadedCount:window.ADVANCED_WORDS.length-base};})();\n",
+        encoding="utf-8")
 
+    multi_entry_keys = [{"key": k, "entryIds": sorted(v)} for k, v in duplicate_entry_keys.items() if len(v) > 1]
     audit = {
         "generated": datetime.now(timezone.utc).isoformat(),
-        "policy": {
-            "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
-            "level": "JLPT Waller > Tomoshi canonical > high-confidence community > core deck/exact frequency fallback",
-            "officialJlptNote": "No official post-2010 JLPT per-word vocabulary list exists; site levels are learning labels from third-party sources or estimates.",
-        },
-        "counts": {
-            "core": len(core_records), "advanced": len(ranked), "runtimeUnique": len(seen),
-            "tomoshiZhRowsTotal": zh_total, "tomoshiZhAccepted": len(zh),
-            "sameMeaningVariantGroups": len(variant_groups),
-            "sameMeaningVariantLevelConflicts": len(level_conflicts),
-        },
-        "coreAudit": core_audit,
-        "coreAmbiguousSamples": ambiguous_samples,
-        "coreUnresolvedSamples": unresolved_samples,
-        "advancedMeaningSources": dict(meaning_sources),
-        "advancedLevelSources": dict(level_sources),
-        "sentinelMai": mai,
-        "variantGroups": variant_groups[:100],
-        "levelConflicts": level_conflicts[:100],
-        "semanticSentinels": ["教え", "共和", "指令", "仕上げ", "美人", "まい/舞/枚/毎"],
-        "fatalIssueCount": len(fatal),
-        "fatalIssues": fatal[:100],
+        "policy": {"meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback", "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback", "officialJlptNote": "No official post-2010 JLPT per-word vocabulary list exists; site levels are third-party learning labels or estimates."},
+        "counts": {"core": len(core_records), "advanced": len(ranked), "runtimeUnique": len(seen), "tomoshiZhRowsTotal": zh_total, "tomoshiZhUsable": len(zh), "tomoshiJlptRows": len(tomoshi_jlpt), "sameMeaningVariantGroups": len(variant_groups), "sameMeaningVariantLevelConflicts": len(level_conflicts), "advancedMultiEntryExactKeys": len(multi_entry_keys)},
+        "coreAudit": core_audit, "coreAmbiguousSamples": ambiguous_samples, "coreUnresolvedSamples": unresolved_samples,
+        "advancedMeaningSources": dict(meaning_sources), "advancedLevelSources": dict(level_sources), "advancedMultiEntrySamples": multi_entry_keys[:100],
+        "sentinelMai": mai, "variantGroups": variant_groups[:100], "levelConflicts": level_conflicts[:100],
+        "semanticSentinels": ["教え", "共和", "指令", "仕上げ", "美人", "まい/舞/枚/毎"], "fatalIssueCount": len(fatal), "fatalIssues": fatal[:100],
     }
     AUDIT_OUT.write_text(json.dumps(audit, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if fatal:
         raise RuntimeError(f"vocabulary audit failed with {len(fatal)} fatal issue(s): {fatal[:5]}")
-
     print(json.dumps(audit, ensure_ascii=False, indent=2))
     print(f"wrote {ADV_OUT.relative_to(ROOT)} ({ADV_OUT.stat().st_size / 1024 / 1024:.2f} MiB)")
     print(f"wrote {CORE_OUT.relative_to(ROOT)} ({CORE_OUT.stat().st_size / 1024 / 1024:.2f} MiB)")
