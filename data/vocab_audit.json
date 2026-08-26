@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T09:14:55.095260+00:00",
+  "generated": "2026-08-26T09:21:42.594894+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
@@ -16,23 +16,23 @@
     "sameMeaningVariantGroups": 477,
     "sameMeaningVariantLevelConflicts": 66,
     "advancedMultiEntryExactKeys": 18,
-    "coreMeaningFallbackAfterRefinement": 30,
-    "coreSecondaryCrosschecksApplied": 16,
-    "coreSemanticResolvedPairs": 108,
+    "coreMeaningFallbackAfterRefinement": 0,
+    "coreSecondaryCrosschecksApplied": 46,
+    "coreSemanticResolvedPairs": 123,
     "coreNormalizedFormReadingRecoveredPairs": 182,
     "orthographicVariantLevelDifferencesForReview": 66
   },
   "coreAudit": {
     "total": 10511,
-    "exactEntryResolved": 10486,
+    "exactEntryResolved": 10501,
     "ambiguousPairs": 320,
-    "unresolvedPairs": 25,
-    "tomoshiMeaningsApplied": 10480,
-    "originalMeaningFallback": 30,
-    "meaningChanged": 10176,
+    "unresolvedPairs": 10,
+    "tomoshiMeaningsApplied": 10495,
+    "originalMeaningFallback": 0,
+    "meaningChanged": 10205,
     "levelChanged": 2845,
-    "semanticResolvedPairs": 108,
-    "manualSecondaryCrosscheckApplied": 16,
+    "semanticResolvedPairs": 123,
+    "manualSecondaryCrosscheckApplied": 46,
     "semanticCandidatesReviewed": 130,
     "normalizedFormReadingRecoveredPairs": 182
   },
@@ -544,38 +544,7 @@
       "selected": "2029080"
     }
   ],
-  "coreUnresolvedSamples": [
-    "そう|そう",
-    "だけ|だけ",
-    "ない|ない",
-    "ごくごく|ごくごく",
-    "ぱらぱら|ぱらぱら",
-    "ようやく|ようやく",
-    "おえる|終える",
-    "めんきょ|免許",
-    "しゅ|手",
-    "あと|あと",
-    "で|で",
-    "もくもく|もくもく",
-    "より|より(副)",
-    "いわば|いわば",
-    "くわえる|くわえる",
-    "にじ|虹",
-    "きる|きる",
-    "かける|駆ける",
-    "ごさ|誤差",
-    "み|味",
-    "どんぞこ|どん底",
-    "はいはい|はいはい",
-    "かられる|駆られる",
-    "たたえる|たたえる",
-    "ウエア|ウエア",
-    "ゆがみ|ゆがみ",
-    "ぜんだま|善玉",
-    "こがねいろ|こがね色",
-    "とろみ|とろみ",
-    "さきのばし|先延ばし"
-  ],
+  "coreUnresolvedSamples": [],
   "advancedMeaningSources": {
     "tomoshi-entry-id": 12492,
     "curated-exact": 8
@@ -3085,949 +3054,7 @@
   ],
   "fatalIssueCount": 0,
   "fatalIssues": [],
-  "coreUnresolvedAll": [
-    {
-      "key": "そう|そう",
-      "lookupDisplay": "そう",
-      "lookupReading": "そう",
-      "originalMeaning": "（表示同意、肯定）對，嗯；（突然想到）啊；那樣，那麼",
-      "level": "N5",
-      "candidateCount": 36,
-      "candidates": [
-        {
-          "entryId": "1398670",
-          "meaning": "一對；雙",
-          "semantic": 0.04,
-          "score": 0.135,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1399590",
-          "meaning": "觀念；想法；思想；想蘊（佛教用語，五蘊之一，指感知）",
-          "semantic": 0.0237,
-          "score": 0.1187,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1440810",
-          "meaning": "滿足；符合；達到；不負（期望等）；伴隨；陪同；跟隨；與...同行；結交；交往；混在一起",
-          "semantic": 0.0366,
-          "score": 0.0966,
-          "candidateLevel": "N1",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1399250",
-          "meaning": "喪；居喪；服喪；災禍；不幸；厄運",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1399990",
-          "meaning": "貞節；忠貞；節操；貞潔；貞烈；婦女的節操",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1375190",
-          "meaning": "姓氏；（古代日本）世襲姓號；表示氏族等級與政治地位的稱號",
-          "semantic": 0.0349,
-          "score": 0.0949,
-          "candidateLevel": "N2",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1006610",
-          "meaning": "看起來；似乎；顯得；有…的樣子",
-          "semantic": 0.0278,
-          "score": 0.0878,
-          "candidateLevel": "N4",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1581200",
-          "meaning": "曾祖父母等的字首；表示隔代或更遠的關係",
-          "semantic": 0.0412,
-          "score": 0.0762,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "1176700",
-          "meaning": "沿著；緊靠；順著（線條）延伸；遵循；按照；符合；與…保持一致；滿足；達到；不負（期望等）",
-          "semantic": 0.016,
-          "score": 0.076,
-          "candidateLevel": "N1",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1241450",
-          "meaning": "琴（日本十三絃箏）；絃樂器；箏；古箏",
-          "semantic": 0.0,
-          "score": 0.06,
-          "candidateLevel": "N2",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1290810",
-          "meaning": "左右；左邊和右邊；控制；影響；支配；侍從；隨從",
-          "semantic": 0.0,
-          "score": 0.06,
-          "candidateLevel": "N3",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1398030",
-          "meaning": "僧；僧侶；和尚；僧伽；佛教僧團",
-          "semantic": 0.0,
-          "score": 0.06,
-          "candidateLevel": "N1",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "だけ|だけ",
-      "lookupDisplay": "だけ",
-      "lookupReading": "だけ",
-      "originalMeaning": "只，僅",
-      "level": "N5",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1007340",
-          "meaning": "僅僅；只是；不過；單單；儘可能；儘量；到…的程度",
-          "semantic": 0.0985,
-          "score": 0.1585,
-          "candidateLevel": "N1",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1207210",
-          "meaning": "（高）山；嶽；峰；山頂；山峰",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "ない|ない",
-      "lookupDisplay": "ない",
-      "lookupReading": "ない",
-      "originalMeaning": "沒有，缺少",
-      "level": "N5",
-      "candidateCount": 6,
-      "candidates": [
-        {
-          "entryId": "1529520",
-          "meaning": "不存在；不在；未擁有；沒有；未曾擁有；獨特；獨一無二",
-          "semantic": 0.98,
-          "score": 1.075,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "2257550",
-          "meaning": "不；沒有；無",
-          "semantic": 0.98,
-          "score": 1.075,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "2098290",
-          "meaning": "在...之內；...以內",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1518450",
-          "meaning": "死的；亡故的",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2861097",
-          "meaning": "強調性字尾",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2862777",
-          "meaning": "地震",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "ごくごく|ごくごく",
-      "lookupDisplay": "ごくごく",
-      "lookupReading": "ごくごく",
-      "originalMeaning": "咕嘟咕嘟地大口喝水時發出的聲音",
-      "level": "N2",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "2178890",
-          "meaning": "大口大口地喝；咕嘟咕嘟地喝",
-          "semantic": 0.4724,
-          "score": 0.5074,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "1760690",
-          "meaning": "極其；極為",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "ぱらぱら|ぱらぱら",
-      "lookupDisplay": "ぱらぱら",
-      "lookupReading": "ぱらぱら",
-      "originalMeaning": "（雨滴、眼淚等較輕的顆粒狀物體）連續掉落狀①；快速翻頁時發出的聲音①；稀稀落落⓪",
-      "level": "N1",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1102580",
-          "meaning": "（雨、鹽等）零零散散地灑落；淅瀝瀝地；噼啪啪地；（翻書等）飛快地翻動；嘩啦啦地翻；稀疏；散落；零星",
-          "semantic": 0.0696,
-          "score": 0.1646,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "2846699",
-          "meaning": "帕拉帕拉；一種舞蹈風格，跳舞者做出同步的手臂動作",
-          "semantic": 0.0164,
-          "score": 0.1114,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "ようやく|ようやく",
-      "lookupDisplay": "ようやく",
-      "lookupReading": "ようやく",
-      "originalMeaning": "總算",
-      "level": "N3",
-      "candidateCount": 4,
-      "candidates": [
-        {
-          "entryId": "1605860",
-          "meaning": "摘要；總結；梗概",
-          "semantic": 0.08,
-          "score": 0.175,
-          "candidateLevel": "N3",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1394600",
-          "meaning": "終於；最終；勉強；好不容易；僅僅；逐漸；漸漸；一點一點",
-          "semantic": 0.0,
-          "score": 0.06,
-          "candidateLevel": "N2",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1620090",
-          "meaning": "歡欣雀躍；手舞足蹈",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N3",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2856628",
-          "meaning": "簡譯；摘譯",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N3",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "おえる|終える",
-      "lookupDisplay": "終える",
-      "lookupReading": "おえる",
-      "originalMeaning": "做完，完成",
-      "level": "N4",
-      "candidateCount": 1,
-      "candidates": []
-    },
-    {
-      "key": "めんきょ|免許",
-      "lookupDisplay": "免許",
-      "lookupReading": "めんきょ",
-      "originalMeaning": "許可；執照",
-      "level": "N3",
-      "candidateCount": 1,
-      "candidates": []
-    },
-    {
-      "key": "しゅ|手",
-      "lookupDisplay": "手",
-      "lookupReading": "しゅ",
-      "originalMeaning": "（負責某項工作的人）……員",
-      "level": "N5",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あと|あと",
-      "lookupDisplay": "あと",
-      "lookupReading": "あと",
-      "originalMeaning": "還有，另外",
-      "level": "N5",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1269320",
-          "meaning": "後面；背後；之後；以後；剩餘；其餘",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N5",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1383680",
-          "meaning": "蹤跡；痕跡；標記；徵兆；遺址；殘跡；廢墟；疤痕；傷疤",
-          "semantic": 0.0,
-          "score": 0.06,
-          "candidateLevel": "N3",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "で|で",
-      "lookupDisplay": "で",
-      "lookupReading": "で",
-      "originalMeaning": "（催促對方往下說）那麼",
-      "level": "N2",
-      "candidateCount": 4,
-      "candidates": [
-        {
-          "entryId": "2028980",
-          "meaning": "在；於；在；當；用；以",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1896380",
-          "meaning": "出現；外出；流出；升起；出席；登場；輪到；開始；起初",
-          "semantic": 0.0,
-          "score": 0.06,
-          "candidateLevel": "N3",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "2654270",
-          "meaning": "和；並且；然後；接著；因為；所以；由於",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2844355",
-          "meaning": "不...就；未經...",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "もくもく|もくもく",
-      "lookupDisplay": "もくもく",
-      "lookupReading": "もくもく",
-      "originalMeaning": "（濃煙、濃霧等）滾滾狀",
-      "level": "N1",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "2009910",
-          "meaning": "（煙、雲等）升起；捲起；翻滾",
-          "semantic": 0.1067,
-          "score": 0.1417,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "1605200",
-          "meaning": "沉默的；無言的；啞口無言的",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "より|より(副)",
-      "lookupDisplay": "より(副)",
-      "lookupReading": "より",
-      "originalMeaning": "更加，進一步",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "いわば|いわば",
-      "lookupDisplay": "いわば",
-      "lookupReading": "いわば",
-      "originalMeaning": "說起來，可謂是",
-      "level": "N2",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1264380",
-          "meaning": "可以說；如此說來；打個比方說",
-          "semantic": 0.1067,
-          "score": 0.1667,
-          "candidateLevel": "N3",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1839100",
-          "meaning": "岩石地帶；岩石區域；岩石路段；巖壁",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "くわえる|くわえる",
-      "lookupDisplay": "くわえる",
-      "lookupReading": "くわえる",
-      "originalMeaning": "銜，叼",
-      "level": "N3",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1609730",
-          "meaning": "咬住；銜住；含在嘴裡；帶著；攜帶；隨身帶",
-          "semantic": 0.0492,
-          "score": 0.1092,
-          "candidateLevel": "N2",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1189960",
-          "meaning": "新增；加上；附加；併入；增加；加快；提升；包括；計入；吸收；接納",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N3",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "にじ|虹",
-      "lookupDisplay": "虹",
-      "lookupReading": "にじ",
-      "originalMeaning": "彩虹",
-      "level": "N2",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1463740",
-          "meaning": "虹",
-          "semantic": 0.2133,
-          "score": 0.3283,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1461870",
-          "meaning": "第二；次要的；次要的；附屬的；二次的；二階的",
-          "semantic": 0.0,
-          "score": 0.115,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "きる|きる",
-      "lookupDisplay": "きる",
-      "lookupReading": "きる",
-      "originalMeaning": "……完",
-      "level": "N2",
-      "candidateCount": 7,
-      "candidates": [
-        {
-          "entryId": "1304400",
-          "meaning": "用刀刃（刀、砍刀、小刀等）殺死（人）；切斷；砍掉；割掉",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1384830",
-          "meaning": "切割；切開；進行（手術）；切斷（聯絡、關係）；關閉（如燈）",
-          "semantic": 0.0,
-          "score": 0.06,
-          "candidateLevel": "N5",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1423000",
-          "meaning": "穿（從肩部往下）；穿上；著裝；承擔（責任、過錯）；擔負",
-          "semantic": 0.0,
-          "score": 0.06,
-          "candidateLevel": "N5",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1564590",
-          "meaning": "剪；修剪；裁剪",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2107690",
-          "meaning": "切割（如布料等）；裁",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2107700",
-          "meaning": "砍伐；伐木；砍倒",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2222200",
-          "meaning": "鑽木取火；敲石生火",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "かける|駆ける",
-      "lookupDisplay": "駆ける",
-      "lookupReading": "かける",
-      "originalMeaning": "快跑，飛奔",
-      "level": "N3",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1570710",
-          "meaning": "翱翔；飛翔；奔跑；疾馳",
-          "semantic": 0.1745,
-          "score": 0.2545,
-          "candidateLevel": "N1",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "1244720",
-          "meaning": "奔跑；衝刺；疾馳；騎馬賓士；騎馬慢跑；向敵軍進攻；騎馬衝鋒",
-          "semantic": 0.061,
-          "score": 0.141,
-          "candidateLevel": "N1",
-          "levelMatch": false,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "ごさ|誤差",
-      "lookupDisplay": "誤差",
-      "lookupReading": "ごさ",
-      "originalMeaning": "誤差；差錯",
-      "level": "N1",
-      "candidateCount": 1,
-      "candidates": []
-    },
-    {
-      "key": "み|味",
-      "lookupDisplay": "味",
-      "lookupReading": "み",
-      "originalMeaning": "表示藥品或食材的種類",
-      "level": "N1",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "2258680",
-          "meaning": "味覺；滋味；種（用於計數食品、飲料或藥物）",
-          "semantic": 0.12,
-          "score": 0.175,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2258670",
-          "meaning": "…的性質；…的程度；略帶…；一絲…；…之處；時而…時而…；有時…有時…",
-          "semantic": 0.0,
-          "score": 0.055,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "どんぞこ|どん底",
-      "lookupDisplay": "どん底",
-      "lookupReading": "どんぞこ",
-      "originalMeaning": "底層，最下層，最差的狀態",
-      "level": "N1",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1009350",
-          "meaning": "最底層；最低點",
-          "semantic": 0.8333,
-          "score": 0.8883,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "5742138",
-          "meaning": "《在底層》",
-          "semantic": 0.8333,
-          "score": 0.8883,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "はいはい|はいはい",
-      "lookupDisplay": "はいはい",
-      "lookupReading": "はいはい",
-      "originalMeaning": "（幼兒用語）爬",
-      "level": "N1",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1474190",
-          "meaning": "爬行（嬰兒）；匍匐爬行",
-          "semantic": 0.128,
-          "score": 0.163,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2088990",
-          "meaning": "是是（敷衍地）；隨便；好吧；是的；好的；明白了；喂；你好",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "かられる|駆られる",
-      "lookupDisplay": "駆られる",
-      "lookupReading": "かられる",
-      "originalMeaning": "受……驅使",
-      "level": "N2",
-      "candidateCount": 1,
-      "candidates": []
-    },
-    {
-      "key": "たたえる|たたえる",
-      "lookupDisplay": "たたえる",
-      "lookupReading": "たたえる",
-      "originalMeaning": "裝滿；洋溢",
-      "level": "N1",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1982910",
-          "meaning": "充滿；填滿；流露；表現；帶著",
-          "semantic": 0.0533,
-          "score": 0.0883,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "1351230",
-          "meaning": "稱讚；頌揚；讚美；稱頌；謳歌",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "ウエア|ウエア",
-      "lookupDisplay": "ウエア",
-      "lookupReading": "うえあ",
-      "originalMeaning": "衣著，衣服",
-      "level": "N1",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "1025730",
-          "meaning": "服裝；衣物；穿著",
-          "semantic": 0.2133,
-          "score": 0.3083,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        },
-        {
-          "entryId": "2869280",
-          "meaning": "商品；貨物；軟體；-軟體",
-          "semantic": 0.0,
-          "score": 0.095,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": true,
-          "entryCommon": true
-        }
-      ]
-    },
-    {
-      "key": "ゆがみ|ゆがみ",
-      "lookupDisplay": "ゆがみ",
-      "lookupReading": "ゆがみ",
-      "originalMeaning": "（物體）歪斜；（內心）不直爽，古怪",
-      "level": "N2",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "2846529",
-          "meaning": "扭曲；變形；彎曲；傾斜；性格扭曲；扭曲",
-          "semantic": 0.032,
-          "score": 0.067,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2826242",
-          "meaning": "髮型；髮髻",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N2",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "ぜんだま|善玉",
-      "lookupDisplay": "善玉",
-      "lookupReading": "ぜんだま",
-      "originalMeaning": "好人，正派角色",
-      "level": "N1",
-      "candidateCount": 1,
-      "candidates": []
-    },
-    {
-      "key": "こがねいろ|こがね色",
-      "lookupDisplay": "こがね色",
-      "lookupReading": "こがねいろ",
-      "originalMeaning": "金黃色",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "とろみ|とろみ",
-      "lookupDisplay": "とろみ",
-      "lookupReading": "とろみ",
-      "originalMeaning": "（勾芡後的）黏稠狀（湯汁）",
-      "level": "N1",
-      "candidateCount": 2,
-      "candidates": [
-        {
-          "entryId": "2058000",
-          "meaning": "（醬汁、湯等的）濃稠度；粘稠度；濃稠",
-          "semantic": 0.128,
-          "score": 0.163,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        },
-        {
-          "entryId": "2647500",
-          "meaning": "停滯；靜止",
-          "semantic": 0.0,
-          "score": 0.035,
-          "candidateLevel": "N1",
-          "levelMatch": true,
-          "formCommon": false,
-          "entryCommon": false
-        }
-      ]
-    },
-    {
-      "key": "さきのばし|先延ばし",
-      "lookupDisplay": "先延ばし",
-      "lookupReading": "さきのばし",
-      "originalMeaning": "拖延，擱置",
-      "level": "N1",
-      "candidateCount": 1,
-      "candidates": []
-    }
-  ],
+  "coreUnresolvedAll": [],
   "coreSemanticResolved": [
     {
       "key": "なす|なす",
@@ -4932,6 +3959,365 @@
       ]
     },
     {
+      "key": "そう|そう",
+      "lookupDisplay": "そう",
+      "originalMeaning": "（表示同意、肯定）對，嗯；（突然想到）啊；那樣，那麼",
+      "anchorMeaning": "對、是；那樣、如此；那麼；啊（突然想起時）",
+      "selectedEntryId": "1272690",
+      "candidates": [
+        {
+          "entryId": "1272690",
+          "meaning": "是；存在；做；進行",
+          "semantic": 0.84,
+          "score": 0.875,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "1398670",
+          "meaning": "一對；雙",
+          "semantic": 0.0457,
+          "score": 0.1407,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1006610",
+          "meaning": "看起來；似乎；顯得；有…的樣子",
+          "semantic": 0.061,
+          "score": 0.121,
+          "candidateLevel": "N4",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1399590",
+          "meaning": "觀念；想法；思想；想蘊（佛教用語，五蘊之一，指感知）",
+          "semantic": 0.0256,
+          "score": 0.1206,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1399250",
+          "meaning": "喪；居喪；服喪；災禍；不幸；厄運",
+          "semantic": 0.0,
+          "score": 0.095,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1399990",
+          "meaning": "貞節；忠貞；節操；貞潔；貞烈；婦女的節操",
+          "semantic": 0.0,
+          "score": 0.095,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1440810",
+          "meaning": "滿足；符合；達到；不負（期望等）；伴隨；陪同；跟隨；與...同行；結交；交往；混在一起",
+          "semantic": 0.0194,
+          "score": 0.0794,
+          "candidateLevel": "N1",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "2843362",
+          "meaning": "室町時期農村地方自治",
+          "semantic": 0.0291,
+          "score": 0.0641,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "1176700",
+          "meaning": "沿著；緊靠；順著（線條）延伸；遵循；按照；符合；與…保持一致；滿足；達到；不負（期望等）",
+          "semantic": 0.0,
+          "score": 0.06,
+          "candidateLevel": "N1",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1241450",
+          "meaning": "琴（日本十三絃箏）；絃樂器；箏；古箏",
+          "semantic": 0.0,
+          "score": 0.06,
+          "candidateLevel": "N2",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1290810",
+          "meaning": "左右；左邊和右邊；控制；影響；支配；侍從；隨從",
+          "semantic": 0.0,
+          "score": 0.06,
+          "candidateLevel": "N3",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1375190",
+          "meaning": "姓氏；（古代日本）世襲姓號；表示氏族等級與政治地位的稱號",
+          "semantic": 0.0,
+          "score": 0.06,
+          "candidateLevel": "N2",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1398030",
+          "meaning": "僧；僧侶；和尚；僧伽；佛教僧團",
+          "semantic": 0.0,
+          "score": 0.06,
+          "candidateLevel": "N1",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1401470",
+          "meaning": "全；總；總計；整體；概括（選舉、經理等用作字首）",
+          "semantic": 0.0,
+          "score": 0.06,
+          "candidateLevel": "N1",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1400810",
+          "meaning": "外觀；容貌；樣子；相貌；面相（作為占卜運勢的依據）；相；態",
+          "semantic": 0.0237,
+          "score": 0.0587,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "1399540",
+          "meaning": "層；層級；地層；礦脈；階級；階層；等級；範圍；層",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "1581200",
+          "meaning": "曾祖父母等的字首；表示隔代或更遠的關係",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2027990",
+          "meaning": "琵琶的琴身",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2033880",
+          "meaning": "笙（日本傳統簧管樂器，類似排簫，用於日本雅樂）",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2077160",
+          "meaning": "（小）船隻的量詞",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2249280",
+          "meaning": "莊園；別墅",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2253390",
+          "meaning": "宋朝（中國古代王朝，960-1279年）；劉宋（中國古代王朝，420-479年）；宋國（中國古代諸侯國，西元前11世紀-前286年）",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2406720",
+          "meaning": "氣勢；力量；勇氣；陽剛之氣；壯年；盛年（約三十歲左右；尤指男性）；艾草灸數的計數單位",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2414580",
+          "meaning": "草稿；初稿；草書；草體",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2414600",
+          "meaning": "衣著；服裝；裝訂；書籍的裝幀",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2609760",
+          "meaning": "跑；賽跑",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2639080",
+          "meaning": "蒸籠；蒸籃；蒸甑；清酒釀造蒸米桶",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2681340",
+          "meaning": "叢；網狀結構",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2843365",
+          "meaning": "毛毛雨；零星小雨",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2843386",
+          "meaning": "奏報；向皇帝報告",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2843387",
+          "meaning": "老翁；老者",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2843388",
+          "meaning": "官府官員的辦公室；政府部門的房間；同伴；一夥人；宗族；家族",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2843390",
+          "meaning": "葬禮；埋葬",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2843391",
+          "meaning": "躁狂症；躁狂",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2844287",
+          "meaning": "根源；來源；德行高尚的祖先",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
       "key": "そこ|そこ",
       "lookupDisplay": "そこ",
       "originalMeaning": "（指代對方附近）那裡；指剛才提及的事情或狀態",
@@ -5054,6 +4440,35 @@
           "levelMatch": true,
           "formCommon": false,
           "entryCommon": false
+        }
+      ]
+    },
+    {
+      "key": "だけ|だけ",
+      "lookupDisplay": "だけ",
+      "originalMeaning": "只，僅",
+      "anchorMeaning": "只；僅；只是",
+      "selectedEntryId": "1007340",
+      "candidates": [
+        {
+          "entryId": "1007340",
+          "meaning": "僅僅；只是；不過；單單；儘可能；儘量；到…的程度",
+          "semantic": 0.98,
+          "score": 1.04,
+          "candidateLevel": "N1",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1207210",
+          "meaning": "（高）山；嶽；峰；山頂；山峰",
+          "semantic": 0.0,
+          "score": 0.095,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
         }
       ]
     },
@@ -6471,6 +5886,35 @@
       ]
     },
     {
+      "key": "ごくごく|ごくごく",
+      "lookupDisplay": "ごくごく",
+      "originalMeaning": "咕嘟咕嘟地大口喝水時發出的聲音",
+      "anchorMeaning": "咕嘟咕嘟地大口喝",
+      "selectedEntryId": "2178890",
+      "candidates": [
+        {
+          "entryId": "2178890",
+          "meaning": "大口大口地喝；咕嘟咕嘟地喝",
+          "semantic": 0.7086,
+          "score": 0.7436,
+          "candidateLevel": "N2",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "1760690",
+          "meaning": "極其；極為",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N2",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
       "key": "こしょう|こしょう",
       "lookupDisplay": "こしょう",
       "originalMeaning": "胡椒",
@@ -7562,6 +7006,55 @@
       ]
     },
     {
+      "key": "ようやく|ようやく",
+      "lookupDisplay": "ようやく",
+      "originalMeaning": "總算",
+      "anchorMeaning": "終於；總算；好不容易；逐漸",
+      "selectedEntryId": "1394600",
+      "candidates": [
+        {
+          "entryId": "1394600",
+          "meaning": "終於；最終；勉強；好不容易；僅僅；逐漸；漸漸；一點一點",
+          "semantic": 0.98,
+          "score": 1.04,
+          "candidateLevel": "N2",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1605860",
+          "meaning": "摘要；總結；梗概",
+          "semantic": 0.0427,
+          "score": 0.1377,
+          "candidateLevel": "N3",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1620090",
+          "meaning": "歡欣雀躍；手舞足蹈",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N3",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2856628",
+          "meaning": "簡譯；摘譯",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N3",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
       "key": "ライト|ライト",
       "lookupDisplay": "ライト",
       "originalMeaning": "光，燈；輕的；（顏色）明亮的，淡的",
@@ -7620,6 +7113,35 @@
       ]
     },
     {
+      "key": "あと|あと",
+      "lookupDisplay": "あと",
+      "originalMeaning": "還有，另外",
+      "anchorMeaning": "還有；另外；其餘",
+      "selectedEntryId": "1269320",
+      "candidates": [
+        {
+          "entryId": "1269320",
+          "meaning": "後面；背後；之後；以後；剩餘；其餘",
+          "semantic": 0.98,
+          "score": 1.075,
+          "candidateLevel": "N5",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1383680",
+          "meaning": "蹤跡；痕跡；標記；徵兆；遺址；殘跡；廢墟；疤痕；傷疤",
+          "semantic": 0.0,
+          "score": 0.06,
+          "candidateLevel": "N3",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        }
+      ]
+    },
+    {
       "key": "おいて|おいて",
       "lookupDisplay": "おいて",
       "originalMeaning": "在……，於……",
@@ -7662,6 +7184,55 @@
           "semantic": 0.0,
           "score": 0.035,
           "candidateLevel": "N3",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
+      "key": "で|で",
+      "lookupDisplay": "で",
+      "originalMeaning": "（催促對方往下說）那麼",
+      "anchorMeaning": "那麼；然後呢（催促對方繼續說）",
+      "selectedEntryId": "2654270",
+      "candidates": [
+        {
+          "entryId": "2654270",
+          "meaning": "和；並且；然後；接著；因為；所以；由於",
+          "semantic": 0.8333,
+          "score": 0.8683,
+          "candidateLevel": "N2",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2028980",
+          "meaning": "在；於；在；當；用；以",
+          "semantic": 0.0,
+          "score": 0.095,
+          "candidateLevel": "N2",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1896380",
+          "meaning": "出現；外出；流出；升起；出席；登場；輪到；開始；起初",
+          "semantic": 0.0,
+          "score": 0.06,
+          "candidateLevel": "N3",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "2844355",
+          "meaning": "不...就；未經...",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N2",
           "levelMatch": true,
           "formCommon": false,
           "entryCommon": false
@@ -7741,6 +7312,35 @@
           "semantic": 0.0,
           "score": 0.035,
           "candidateLevel": "N3",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
+      "key": "もくもく|もくもく",
+      "lookupDisplay": "もくもく",
+      "originalMeaning": "（濃煙、濃霧等）滾滾狀",
+      "anchorMeaning": "（煙、雲等）滾滾升起、冒出",
+      "selectedEntryId": "2009910",
+      "candidates": [
+        {
+          "entryId": "2009910",
+          "meaning": "（煙、雲等）升起；捲起；翻滾",
+          "semantic": 0.98,
+          "score": 1.015,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "1605200",
+          "meaning": "沉默的；無言的；啞口無言的",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N1",
           "levelMatch": true,
           "formCommon": false,
           "entryCommon": false
@@ -7956,6 +7556,35 @@
           "semantic": 0.0291,
           "score": 0.1241,
           "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        }
+      ]
+    },
+    {
+      "key": "いわば|いわば",
+      "lookupDisplay": "いわば",
+      "originalMeaning": "說起來，可謂是",
+      "anchorMeaning": "可以說；可謂；所謂",
+      "selectedEntryId": "1264380",
+      "candidates": [
+        {
+          "entryId": "1264380",
+          "meaning": "可以說；如此說來；打個比方說",
+          "semantic": 0.98,
+          "score": 1.04,
+          "candidateLevel": "N3",
+          "levelMatch": false,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "1839100",
+          "meaning": "岩石地帶；岩石區域；岩石路段；巖壁",
+          "semantic": 0.0,
+          "score": 0.095,
+          "candidateLevel": "N2",
           "levelMatch": true,
           "formCommon": true,
           "entryCommon": true
@@ -9061,6 +8690,35 @@
       ]
     },
     {
+      "key": "み|味",
+      "lookupDisplay": "味",
+      "originalMeaning": "表示藥品或食材的種類",
+      "anchorMeaning": "種、份（計算食品、飲料或藥品種類的量詞）",
+      "selectedEntryId": "2258680",
+      "candidates": [
+        {
+          "entryId": "2258680",
+          "meaning": "味覺；滋味；種（用於計數食品、飲料或藥物）",
+          "semantic": 0.84,
+          "score": 0.895,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2258670",
+          "meaning": "…的性質；…的程度；略帶…；一絲…；…之處；時而…時而…；有時…有時…",
+          "semantic": 0.0,
+          "score": 0.055,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
       "key": "おろか|おろか",
       "lookupDisplay": "おろか",
       "originalMeaning": "（「AはおろかB…」の形で）不用說",
@@ -9115,6 +8773,64 @@
           "levelMatch": true,
           "formCommon": true,
           "entryCommon": true
+        }
+      ]
+    },
+    {
+      "key": "どんぞこ|どん底",
+      "lookupDisplay": "どん底",
+      "originalMeaning": "底層，最下層，最差的狀態",
+      "anchorMeaning": "最底層；最低點；最差狀態",
+      "selectedEntryId": "1009350",
+      "candidates": [
+        {
+          "entryId": "1009350",
+          "meaning": "最底層；最低點",
+          "semantic": 0.98,
+          "score": 1.035,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "5742138",
+          "meaning": "《在底層》",
+          "semantic": 0.2516,
+          "score": 0.3066,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
+      "key": "はいはい|はいはい",
+      "lookupDisplay": "はいはい",
+      "originalMeaning": "（幼兒用語）爬",
+      "anchorMeaning": "（嬰兒）爬行；爬爬",
+      "selectedEntryId": "1474190",
+      "candidates": [
+        {
+          "entryId": "1474190",
+          "meaning": "爬行（嬰兒）；匍匐爬行",
+          "semantic": 0.98,
+          "score": 1.015,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2088990",
+          "meaning": "是是（敷衍地）；隨便；好吧；是的；好的；明白了；喂；你好",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
         }
       ]
     },
@@ -9187,6 +8903,35 @@
         {
           "entryId": "2850990",
           "meaning": "百；百個；眾多；許多",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
+      "key": "たたえる|たたえる",
+      "lookupDisplay": "たたえる",
+      "originalMeaning": "裝滿；洋溢",
+      "anchorMeaning": "充滿；蓄滿；洋溢；流露",
+      "selectedEntryId": "1982910",
+      "candidates": [
+        {
+          "entryId": "1982910",
+          "meaning": "充滿；填滿；流露；表現；帶著",
+          "semantic": 0.98,
+          "score": 1.015,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "1351230",
+          "meaning": "稱讚；頌揚；讚美；稱頌；謳歌",
           "semantic": 0.0,
           "score": 0.035,
           "candidateLevel": "N1",
@@ -9339,6 +9084,35 @@
           "levelMatch": true,
           "formCommon": false,
           "entryCommon": false
+        }
+      ]
+    },
+    {
+      "key": "ウエア|ウエア",
+      "lookupDisplay": "ウエア",
+      "originalMeaning": "衣著，衣服",
+      "anchorMeaning": "衣著；衣服；服裝",
+      "selectedEntryId": "1025730",
+      "candidates": [
+        {
+          "entryId": "1025730",
+          "meaning": "服裝；衣物；穿著",
+          "semantic": 0.98,
+          "score": 1.075,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
+        },
+        {
+          "entryId": "2869280",
+          "meaning": "商品；貨物；軟體；-軟體",
+          "semantic": 0.0,
+          "score": 0.095,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": true,
+          "entryCommon": true
         }
       ]
     },
@@ -9636,6 +9410,35 @@
       ]
     },
     {
+      "key": "ゆがみ|ゆがみ",
+      "lookupDisplay": "ゆがみ",
+      "originalMeaning": "（物體）歪斜；（內心）不直爽，古怪",
+      "anchorMeaning": "歪斜；扭曲；變形；性格或狀態上的扭曲",
+      "selectedEntryId": "2846529",
+      "candidates": [
+        {
+          "entryId": "2846529",
+          "meaning": "扭曲；變形；彎曲；傾斜；性格扭曲；扭曲",
+          "semantic": 0.98,
+          "score": 1.015,
+          "candidateLevel": "N2",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2826242",
+          "meaning": "髮型；髮髻",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N2",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
       "key": "すら|すら",
       "lookupDisplay": "すら",
       "originalMeaning": "連，甚至，尚且",
@@ -9752,6 +9555,35 @@
         {
           "entryId": "1028760",
           "meaning": "短距起降；短距離起降（STOL）",
+          "semantic": 0.0,
+          "score": 0.035,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
+      "key": "とろみ|とろみ",
+      "lookupDisplay": "とろみ",
+      "originalMeaning": "（勾芡後的）黏稠狀（湯汁）",
+      "anchorMeaning": "（醬汁、湯等的）黏稠度；濃稠狀態",
+      "selectedEntryId": "2058000",
+      "candidates": [
+        {
+          "entryId": "2058000",
+          "meaning": "（醬汁、湯等的）濃稠度；粘稠度；濃稠",
+          "semantic": 0.98,
+          "score": 1.015,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "2647500",
+          "meaning": "停滯；靜止",
           "semantic": 0.0,
           "score": 0.035,
           "candidateLevel": "N1",
