@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T11:28:03.404215+00:00",
+  "generated": "2026-08-26T11:29:46.747627+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
@@ -13479,17 +13479,17 @@
       "N1": 6090
     },
     "directCountsByLevel": {
-      "N3": 2325,
-      "N4": 764,
+      "N3": 2324,
+      "N4": 762,
       "N2": 3203,
       "N1": 6090,
-      "N5": 875
+      "N5": 878
     },
     "estimatedCountsByLevel": {
-      "N3": 8222,
-      "N4": 1732,
+      "N3": 8223,
+      "N4": 1734,
       "N2": 7526,
-      "N5": 1774
+      "N5": 1771
     },
     "teacherGradeCounts": {
       "B": 5598,
@@ -16067,11 +16067,11 @@
     "coreDeckExactEvidence": 10511,
     "manualSecondaryExactConfigured": 58,
     "trainingCountsByLevel": {
-      "N3": 2325,
-      "N4": 764,
+      "N3": 2324,
+      "N4": 762,
       "N2": 3203,
       "N1": 6090,
-      "N5": 875
+      "N5": 878
     },
     "worldTargetCounts": {
       "N5": 2649,
@@ -16081,16 +16081,16 @@
       "N1": 13457
     },
     "residualQuotas": {
-      "N5": 1774,
-      "N4": 1732,
-      "N3": 8222,
+      "N5": 1771,
+      "N4": 1734,
+      "N3": 8223,
       "N2": 7526,
       "N1": 0
     },
     "modelRankLogMedians": {
-      "N5": 3.9951260202512477,
-      "N4": 3.9464031338990546,
-      "N3": 3.784724235378672,
+      "N5": 3.9970804354717306,
+      "N4": 3.932423026376739,
+      "N3": 3.784831178124469,
       "N2": 4.067777358633317,
       "N1": 4.020029633542699
     },
@@ -16189,12 +16189,12 @@
         "basis": "teacher-anchor"
       },
       "さらいげつ|再来月": {
-        "level": "N4",
+        "level": "N5",
         "grade": "A",
         "basis": "teacher-anchor"
       },
       "さらいねん|再来年": {
-        "level": "N4",
+        "level": "N5",
         "grade": "A",
         "basis": "teacher-anchor"
       },
@@ -16204,7 +16204,7 @@
         "basis": "teacher-anchor"
       },
       "つくる|造る": {
-        "level": "N3",
+        "level": "N5",
         "grade": "A",
         "basis": "teacher-anchor"
       }
