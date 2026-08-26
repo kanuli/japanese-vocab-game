@@ -1,29 +1,94 @@
 {
-  "version": "2026-08-26-v1",
+  "version": "2026-08-27-gap-v3",
   "grammar": {
-    "count": 96,
+    "count": 108,
     "perLevel": {
       "N1": 24,
       "N2": 18,
       "N3": 18,
-      "N4": 18,
+      "N4": 30,
       "N5": 18
-    }
+    },
+    "targetedGap": "N4 passive"
   },
   "listening": {
-    "count": 60,
+    "count": 245,
     "perLevel": {
-      "N1": 12,
-      "N2": 12,
-      "N3": 12,
-      "N4": 12,
-      "N5": 12
-    }
+      "N1": 44,
+      "N2": 43,
+      "N3": 52,
+      "N4": 50,
+      "N5": 56
+    },
+    "typeCounts": {
+      "N1": {
+        "正式公告": 7,
+        "論理理解": 3,
+        "判斷理解": 6,
+        "時間關係": 6,
+        "展開理解": 6,
+        "範圍理解": 7,
+        "逆接理解": 3,
+        "評價理解": 3,
+        "結論推論": 3
+      },
+      "N2": {
+        "程序理解": 5,
+        "變化理解": 5,
+        "課題理解": 3,
+        "原因結果": 5,
+        "原因推論": 3,
+        "範圍理解": 3,
+        "指示理解": 3,
+        "否定推論": 3,
+        "建議理解": 5,
+        "趨勢理解": 5,
+        "風險推論": 3
+      },
+      "N3": {
+        "變更理解": 5,
+        "細節理解": 6,
+        "習慣理解": 5,
+        "課題理解": 5,
+        "變化理解": 5,
+        "資訊來源": 5,
+        "意圖理解": 3,
+        "決定理解": 5,
+        "順序理解": 5,
+        "範圍理解": 3,
+        "理由理解": 5
+      },
+      "N4": {
+        "順序理解": 6,
+        "目的理解": 6,
+        "原因結果": 7,
+        "指示理解": 6,
+        "條件理解": 6,
+        "準備理解": 6,
+        "方向理解": 6,
+        "可能性理解": 3,
+        "特徵理解": 3,
+        "概要理解": 1
+      },
+      "N5": {
+        "資訊理解": 7,
+        "時間理解": 8,
+        "交通理解": 8,
+        "數量理解": 7,
+        "行動理解": 8,
+        "地點理解": 8,
+        "即時應答": 2,
+        "人物關係": 8
+      }
+    },
+    "targetedGap": "underrepresented listening subtypes",
+    "note": "Candidate templates are sentence-deduplicated; explicit top-ups bring every targeted sparse subtype to at least three unique expansion examples."
   },
   "conversation": {
-    "newScenes": 10,
-    "newDialogues": 250,
-    "perScene": 25
+    "newScenes": 16,
+    "newDialogues": 400,
+    "perScene": 25,
+    "targetedGap": "JF food + nature/environment + language/culture"
   },
   "pageChecks": {
     "grammar": true,

@@ -1,9 +1,10 @@
 {
-  "version": "2026-08-27-gap-audit-v2",
+  "version": "2026-08-27-gap-audit-v4",
   "methodology": {
     "jlpt": "Official JLPT capability descriptions are the difficulty anchor; grammar matrix is diagnostic, not an official syllabus.",
     "jfStandard": "Conversation topic coverage uses the Japan Foundation JF Standard 15-topic framework as a diagnostic taxonomy.",
-    "copyright": "External proprietary sites are reference-only and are not scraped or copied."
+    "copyright": "External proprietary sites are reference-only and are not scraped or copied.",
+    "listeningDedup": "Listening subtype counts are reconciled from the QA-executed, sentence-deduplicated expansion pool; duplicate candidate templates are not counted as database growth."
   },
   "grammar": {
     "N5": {
@@ -23,7 +24,7 @@
       "coveragePct": 100.0
     },
     "N4": {
-      "signals": 142,
+      "signals": 154,
       "covered": [
         "experience",
         "preparation",
@@ -37,12 +38,11 @@
         "ease",
         "difficulty",
         "change_state",
-        "potential"
-      ],
-      "missing": [
+        "potential",
         "passive"
       ],
-      "coveragePct": 92.9
+      "missing": [],
+      "coveragePct": 100.0
     },
     "N3": {
       "signals": 150,
@@ -131,7 +131,9 @@
   },
   "listening": {
     "N5": {
-      "count": 1468,
+      "catalogCount": 1456,
+      "uniqueExpansionCount": 56,
+      "combinedDiagnosticCount": 1512,
       "distinctTypes": 12,
       "topTypes": [
         [
@@ -156,66 +158,39 @@
         ],
         [
           "時間理解",
-          2
+          8
         ],
         [
           "交通理解",
-          2
+          8
         ],
         [
           "行動理解",
-          2
-        ],
-        [
-          "資訊理解",
-          1
-        ],
-        [
-          "數量理解",
-          1
+          8
         ],
         [
           "地點理解",
-          1
+          8
         ],
         [
           "人物關係",
-          1
+          8
+        ],
+        [
+          "資訊理解",
+          7
+        ],
+        [
+          "數量理解",
+          7
         ]
       ],
-      "underrepresented": [
-        [
-          "人物關係",
-          1
-        ],
-        [
-          "地點理解",
-          1
-        ],
-        [
-          "數量理解",
-          1
-        ],
-        [
-          "資訊理解",
-          1
-        ],
-        [
-          "交通理解",
-          2
-        ],
-        [
-          "時間理解",
-          2
-        ],
-        [
-          "行動理解",
-          2
-        ]
-      ]
+      "underrepresented": []
     },
     "N4": {
-      "count": 1518,
+      "catalogCount": 1506,
+      "uniqueExpansionCount": 50,
+      "combinedDiagnosticCount": 1556,
       "distinctTypes": 14,
       "topTypes": [
         [
@@ -240,82 +215,56 @@
         ],
         [
           "原因結果",
-          2
-        ],
-        [
-          "條件理解",
-          2
+          7
         ],
         [
           "順序理解",
-          1
+          6
         ],
         [
           "目的理解",
-          1
+          6
         ],
         [
           "指示理解",
-          1
+          6
+        ],
+        [
+          "條件理解",
+          6
         ],
         [
           "準備理解",
-          1
+          6
         ],
         [
           "方向理解",
-          1
+          6
         ],
         [
           "可能性理解",
-          1
+          3
         ],
         [
           "特徵理解",
-          1
+          3
         ]
       ],
       "underrepresented": [
         [
           "可能性理解",
-          1
-        ],
-        [
-          "指示理解",
-          1
-        ],
-        [
-          "方向理解",
-          1
-        ],
-        [
-          "準備理解",
-          1
+          3
         ],
         [
           "特徵理解",
-          1
-        ],
-        [
-          "目的理解",
-          1
-        ],
-        [
-          "順序理解",
-          1
-        ],
-        [
-          "原因結果",
-          2
-        ],
-        [
-          "條件理解",
-          2
+          3
         ]
       ]
     },
     "N3": {
-      "count": 1484,
+      "catalogCount": 1472,
+      "uniqueExpansionCount": 52,
+      "combinedDiagnosticCount": 1524,
       "distinctTypes": 16,
       "topTypes": [
         [
@@ -340,94 +289,64 @@
         ],
         [
           "細節理解",
-          2
+          6
         ],
         [
           "變更理解",
-          1
+          5
         ],
         [
           "習慣理解",
-          1
+          5
         ],
         [
           "課題理解",
-          1
+          5
         ],
         [
           "變化理解",
-          1
+          5
         ],
         [
           "資訊來源",
-          1
-        ],
-        [
-          "意圖理解",
-          1
+          5
         ],
         [
           "決定理解",
-          1
+          5
         ],
         [
           "順序理解",
-          1
+          5
+        ],
+        [
+          "理由理解",
+          5
+        ],
+        [
+          "意圖理解",
+          3
         ],
         [
           "範圍理解",
-          1
+          3
         ]
       ],
       "underrepresented": [
         [
           "意圖理解",
-          1
-        ],
-        [
-          "決定理解",
-          1
-        ],
-        [
-          "理由理解",
-          1
+          3
         ],
         [
           "範圍理解",
-          1
-        ],
-        [
-          "習慣理解",
-          1
-        ],
-        [
-          "課題理解",
-          1
-        ],
-        [
-          "變化理解",
-          1
-        ],
-        [
-          "變更理解",
-          1
-        ],
-        [
-          "資訊來源",
-          1
-        ],
-        [
-          "順序理解",
-          1
-        ],
-        [
-          "細節理解",
-          2
+          3
         ]
       ]
     },
     "N2": {
-      "count": 1248,
+      "catalogCount": 1236,
+      "uniqueExpansionCount": 43,
+      "combinedDiagnosticCount": 1279,
       "distinctTypes": 16,
       "topTypes": [
         [
@@ -451,95 +370,81 @@
           247
         ],
         [
-          "範圍理解",
-          2
-        ],
-        [
           "程序理解",
-          1
+          5
         ],
         [
           "變化理解",
-          1
-        ],
-        [
-          "課題理解",
-          1
+          5
         ],
         [
           "原因結果",
-          1
-        ],
-        [
-          "原因推論",
-          1
-        ],
-        [
-          "指示理解",
-          1
-        ],
-        [
-          "否定推論",
-          1
+          5
         ],
         [
           "建議理解",
-          1
+          5
         ],
         [
           "趨勢理解",
-          1
+          5
+        ],
+        [
+          "課題理解",
+          3
+        ],
+        [
+          "原因推論",
+          3
+        ],
+        [
+          "範圍理解",
+          3
+        ],
+        [
+          "指示理解",
+          3
+        ],
+        [
+          "否定推論",
+          3
+        ],
+        [
+          "風險推論",
+          3
         ]
       ],
       "underrepresented": [
         [
           "原因推論",
-          1
-        ],
-        [
-          "原因結果",
-          1
+          3
         ],
         [
           "否定推論",
-          1
-        ],
-        [
-          "建議理解",
-          1
+          3
         ],
         [
           "指示理解",
-          1
-        ],
-        [
-          "程序理解",
-          1
-        ],
-        [
-          "課題理解",
-          1
-        ],
-        [
-          "變化理解",
-          1
-        ],
-        [
-          "趨勢理解",
-          1
-        ],
-        [
-          "風險推論",
-          1
+          3
         ],
         [
           "範圍理解",
-          2
+          3
+        ],
+        [
+          "課題理解",
+          3
+        ],
+        [
+          "風險推論",
+          3
         ]
       ]
     },
     "N1": {
-      "count": 1032,
+      "catalogCount": 1020,
+      "uniqueExpansionCount": 44,
+      "combinedDiagnosticCount": 1064,
       "distinctTypes": 14,
       "topTypes": [
         [
@@ -564,112 +469,89 @@
         ],
         [
           "正式公告",
-          2
-        ],
-        [
-          "論理理解",
-          2
+          7
         ],
         [
           "範圍理解",
-          2
+          7
         ],
         [
           "判斷理解",
-          1
+          6
         ],
         [
           "時間關係",
-          1
+          6
         ],
         [
           "展開理解",
-          1
+          6
+        ],
+        [
+          "論理理解",
+          3
         ],
         [
           "逆接理解",
-          1
+          3
         ],
         [
           "評價理解",
-          1
+          3
         ],
         [
           "結論推論",
-          1
+          3
         ]
       ],
       "underrepresented": [
         [
-          "判斷理解",
-          1
-        ],
-        [
-          "展開理解",
-          1
-        ],
-        [
-          "時間關係",
-          1
-        ],
-        [
           "結論推論",
-          1
+          3
         ],
         [
           "評價理解",
-          1
-        ],
-        [
-          "逆接理解",
-          1
-        ],
-        [
-          "正式公告",
-          2
-        ],
-        [
-          "範圍理解",
-          2
+          3
         ],
         [
           "論理理解",
-          2
+          3
+        ],
+        [
+          "逆接理解",
+          3
         ]
       ]
     }
   },
   "conversation": {
-    "sceneCount": 71,
+    "sceneCount": 77,
     "topicCounts": {
       "travel_transport": 8,
       "shopping": 8,
-      "food": 2,
+      "food": 4,
       "health": 5,
       "work": 4,
-      "relationships": 4,
+      "relationships": 5,
       "housing": 5,
       "society": 7,
-      "life_lifecycle": 6,
+      "life_lifecycle": 7,
       "science_technology": 2,
-      "education": 2,
+      "education": 3,
       "leisure": 3,
       "self_family": 2,
-      "language_culture": 1,
-      "nature_environment": 1
+      "language_culture": 3,
+      "nature_environment": 3
     },
-    "weakTopics": [
-      "nature_environment",
-      "language_culture"
-    ],
+    "weakTopics": [],
     "levelFunctions": {
       "N5": {
-        "counts": {
-          "request": 12,
-          "permission": 0,
-          "apology": 3,
+        "signalCounts": {
+          "request": 13,
+          "permission": 1,
+          "apology": 4,
           "refusal": 0,
-          "clarification": 0,
+          "clarification": 1,
           "change_reschedule": 1,
           "complaint_problem": 0,
           "negotiation_alternative": 0,
@@ -681,40 +563,34 @@
           "recommendation": 0,
           "comparison": 0
         },
-        "weakExpected": [
-          "permission",
-          "clarification"
-        ]
+        "weakExpected": []
       },
       "N4": {
-        "counts": {
+        "signalCounts": {
           "request": 10,
           "permission": 1,
-          "apology": 1,
+          "apology": 2,
           "refusal": 0,
-          "clarification": 1,
+          "clarification": 2,
           "change_reschedule": 0,
           "complaint_problem": 0,
           "negotiation_alternative": 0,
           "procedure": 0,
           "reporting": 0,
           "emergency": 1,
-          "reason_explanation": 8,
+          "reason_explanation": 9,
           "exception": 0,
           "recommendation": 0,
           "comparison": 0
         },
         "weakExpected": [
-          "permission",
-          "apology",
-          "clarification",
           "change_reschedule",
           "recommendation"
         ]
       },
       "N3": {
-        "counts": {
-          "request": 9,
+        "signalCounts": {
+          "request": 10,
           "permission": 0,
           "apology": 3,
           "refusal": 0,
@@ -725,69 +601,56 @@
           "procedure": 0,
           "reporting": 1,
           "emergency": 0,
-          "reason_explanation": 18,
+          "reason_explanation": 19,
           "exception": 0,
           "recommendation": 3,
           "comparison": 4
         },
         "weakExpected": [
-          "change_reschedule",
-          "complaint_problem",
-          "procedure",
-          "reporting"
+          "procedure"
         ]
       },
       "N2": {
-        "counts": {
+        "signalCounts": {
           "request": 9,
           "permission": 2,
           "apology": 2,
-          "refusal": 0,
+          "refusal": 2,
           "clarification": 1,
           "change_reschedule": 2,
           "complaint_problem": 9,
-          "negotiation_alternative": 2,
+          "negotiation_alternative": 3,
           "procedure": 5,
           "reporting": 1,
           "emergency": 2,
-          "reason_explanation": 26,
+          "reason_explanation": 27,
           "exception": 0,
           "recommendation": 3,
           "comparison": 3
         },
         "weakExpected": [
-          "apology",
-          "refusal",
-          "clarification",
-          "change_reschedule",
-          "negotiation_alternative",
-          "reporting",
           "exception"
         ]
       },
       "N1": {
-        "counts": {
+        "signalCounts": {
           "request": 12,
           "permission": 2,
           "apology": 3,
-          "refusal": 2,
+          "refusal": 3,
           "clarification": 2,
           "change_reschedule": 7,
-          "complaint_problem": 5,
+          "complaint_problem": 6,
           "negotiation_alternative": 1,
           "procedure": 8,
           "reporting": 3,
           "emergency": 5,
-          "reason_explanation": 40,
-          "exception": 7,
+          "reason_explanation": 42,
+          "exception": 8,
           "recommendation": 3,
           "comparison": 3
         },
-        "weakExpected": [
-          "refusal",
-          "clarification",
-          "negotiation_alternative"
-        ]
+        "weakExpected": []
       }
     },
     "sceneTopics": {
@@ -972,6 +835,27 @@
       ],
       "insurance-claim": [
         "society"
+      ],
+      "dietary-restrictions": [
+        "food"
+      ],
+      "cooking-substitution": [
+        "food"
+      ],
+      "weather-warning": [
+        "nature_environment"
+      ],
+      "outdoor-nature": [
+        "nature_environment"
+      ],
+      "japanese-learning": [
+        "relationships",
+        "education",
+        "language_culture"
+      ],
+      "culture-manners": [
+        "life_lifecycle",
+        "language_culture"
       ]
     }
   }
