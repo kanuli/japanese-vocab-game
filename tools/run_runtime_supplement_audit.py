@@ -8,6 +8,7 @@ from pathlib import Path
 
 import audit_runtime_supplements as audit
 import teacher_jlpt_policy_v5 as v5
+import teacher_manual_review as manual_review
 
 
 def parse_r_file(path: Path) -> list[dict]:
@@ -33,6 +34,7 @@ def parse_r_file(path: Path) -> list[dict]:
     return out
 
 
+manual_review.install()
 v5.install()
 audit.choose_direct = v5.choose_runtime_direct
 audit.parse_r_file = parse_r_file
