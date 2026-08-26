@@ -23,7 +23,6 @@ for name in PAGES:
     }
     if 'lang="zh-Hant"' not in s: fail.append(f'{name}: page language is not zh-Hant')
 
-# Pages whose level selector is driven by the canonical teacher-calibrated vocabulary runtime.
 vocab_pages=['index.html','wordaudio.html','wordlist.html','vocab-plus-game.html','vocabulary-plus.html','mocktest.html']
 for name in vocab_pages:
     s=(ROOT/name).read_text(encoding='utf-8')
@@ -38,7 +37,7 @@ if 'function teacherRuntimeVocab()' not in mock_js or "source:'teacher-runtime'"
 if '5mdld/anki-jlpt-decks 只在本地教師題庫無法載入時作備援' not in mock_html:
     fail.append('mocktest.html: source disclosure does not identify external deck as fallback')
 
-# 2) Existing exhaustive domain audits become binding teacher-level prerequisites.
+# 2) Existing exhaustive domain audits are binding teacher-level prerequisites.
 queue=load_json('data/jlpt_teacher_review_queue.json')
 queue_open=queue.get('pending', queue.get('queueCount', queue.get('count', 0)))
 if isinstance(queue_open, dict): queue_open=sum(queue_open.values())
@@ -75,59 +74,70 @@ if not all(cavg[i]>cavg[i+1] for i in range(4)):
 mockq=load_json('data/listening_mock_quality_v3_report.json')
 if mockq.get('failures') or any(v.get('qualityFailures',0) for v in mockq.get('mock',{}).get('perLevel',{}).values()):
     fail.append('mock-test generated quality failures remain')
-
 coverage=load_json('data/database_completion_report.json')
 if not coverage.get('passed') or coverage.get('failures'):
     fail.append('cross-database completion gate failed')
 
-# 3) Teacher-check the hard-coded Mock Test vocabulary fallback against the canonical teacher TSV.
-audit_rows=[]
+# 3) Canonical vocabulary lookup.
 with (ROOT/'data/jlpt_teacher_audit.tsv').open(encoding='utf-8',newline='') as f:
     audit_rows=list(csv.DictReader(f,delimiter='\t'))
 exact={(r.get('reading',''),r.get('display','')):r.get('level','') for r in audit_rows}
 by_display={}
-for r in audit_rows:
-    by_display.setdefault(r.get('display',''),set()).add(r.get('level',''))
+for r in audit_rows: by_display.setdefault(r.get('display',''),set()).add(r.get('level',''))
 
-fallback_block=re.search(r'const FALLBACK_VOCAB=\{(.*?)\};\nconst FALLBACK_GRAMMAR=',mock_js,re.S)
-fallback_mismatch=[]; fallback_unknown=[]; fallback_checked=0
+def teacher_level(reading,word):
+    actual=exact.get((reading,word))
+    if actual:return actual
+    levels=by_display.get(word,set())
+    return next(iter(levels)) if len(levels)==1 else None
+
+# 4) Effective Mock Test emergency fallback after teacher-level override map + N1 replenishment.
+fix_block=re.search(r'const FALLBACK_LEVEL_FIXES=\{(.*?)\};',mock_js,re.S)
+fixes={k:v for k,v in re.findall(r'"([^"]+)":"(N[1-5])"',fix_block.group(1) if fix_block else '')}
+fallback_block=re.search(r'const FALLBACK_VOCAB=\{(.*?)\};\nconst FALLBACK_LEVEL_FIXES=',mock_js,re.S)
+effective=[]
 if not fallback_block:
-    fail.append('mocktest.js: FALLBACK_VOCAB block missing')
+    fail.append('mocktest.js: teacher-aligned FALLBACK_VOCAB block missing')
 else:
     b=fallback_block.group(1)
-    matches=list(re.finditer(r'N([1-5]):\[(.*?)(?=\],\nN[1-5]:|\]\s*$)',b,re.S))
-    for m in matches:
+    for m in re.finditer(r'N([1-5]):\[(.*?)(?=\],\nN[1-5]:|\]\s*$)',b,re.S):
         declared='N'+m.group(1)
         for word,reading,meaning in re.findall(r'\["([^"]+)","([^"]+)","([^"]*)"\]',m.group(2)):
-            fallback_checked+=1
-            actual=exact.get((reading,word))
-            if actual and actual!=declared:
-                fallback_mismatch.append({'word':word,'reading':reading,'declared':declared,'teacher':actual})
-            elif not actual:
-                levels=by_display.get(word,set())
-                if len(levels)==1:
-                    actual=next(iter(levels))
-                    if actual!=declared:fallback_mismatch.append({'word':word,'reading':reading,'declared':declared,'teacher':actual})
-                else:fallback_unknown.append({'word':word,'reading':reading,'declared':declared})
-if fallback_mismatch:
-    fail.append(f'mocktest fallback level mismatches={len(fallback_mismatch)}')
+            effective.append({'word':word,'reading':reading,'level':fixes.get(f'{reading}|{word}',declared),'sourceDeclared':declared,'kind':'base'})
+extra_block=re.search(r'const FALLBACK_EXTRA=\{N1:\[(.*?)\]\};',mock_js,re.S)
+if extra_block:
+    for word,reading,meaning in re.findall(r'\["([^"]+)","([^"]+)","([^"]*)"\]',extra_block.group(1)):
+        effective.append({'word':word,'reading':reading,'level':'N1','sourceDeclared':'N1','kind':'extra'})
 
-# 4) Check target vocabulary used in SPECIAL mock questions when a unique teacher level exists.
-special_block=re.search(r'const SPECIAL=\{(.*?)\};\nconst QUICK_RESPONSE=',mock_js,re.S)
+fallback_mismatch=[];fallback_unknown=[]
+for row in effective:
+    actual=teacher_level(row['reading'],row['word'])
+    if actual and actual!=row['level']:
+        fallback_mismatch.append({**row,'teacher':actual})
+    elif not actual:
+        fallback_unknown.append(row)
+fallback_counts={l:sum(1 for x in effective if x['level']==l) for l in order}
+if fallback_mismatch: fail.append(f'mocktest effective fallback level mismatches={len(fallback_mismatch)}')
+if any(fallback_counts[l]<8 for l in order): fail.append(f'mocktest fallback underfill by level: {fallback_counts}')
+
+# 5) Effective SPECIAL level after teacher-level move map.
+special_fix_block=re.search(r'const SPECIAL_LEVEL_FIXES=\{(.*?)\};',mock_js,re.S)
+special_fixes={k:v for k,v in re.findall(r'"([^"]+)":"(N[1-5])"',special_fix_block.group(1) if special_fix_block else '')}
+special_block=re.search(r'const SPECIAL=\{(.*?)\};\nconst SPECIAL_LEVEL_FIXES=',mock_js,re.S)
 special_checked=[];special_mismatch=[]
 if special_block:
     b=special_block.group(1)
     for lm in re.finditer(r'N([1-5]):\[(.*?)(?=\],\nN[1-5]:|\]\s*$)',b,re.S):
         declared='N'+lm.group(1)
         for term in re.findall(r'『([^』]+)』',lm.group(2)):
+            effective_level=special_fixes.get(term,declared)
             levels=by_display.get(term,set())
             if len(levels)==1:
-                teacher=next(iter(levels));special_checked.append({'term':term,'declared':declared,'teacher':teacher})
-                if teacher!=declared:special_mismatch.append({'term':term,'declared':declared,'teacher':teacher})
-if special_mismatch:
-    fail.append(f'mocktest SPECIAL target level mismatches={len(special_mismatch)}')
+                teacher=next(iter(levels));special_checked.append({'term':term,'sourceDeclared':declared,'effective':effective_level,'teacher':teacher})
+                if teacher!=effective_level:special_mismatch.append({'term':term,'sourceDeclared':declared,'effective':effective_level,'teacher':teacher})
+if special_mismatch: fail.append(f'mocktest effective SPECIAL target level mismatches={len(special_mismatch)}')
 
-# 5) Page-copy integrity: no page may call the project vocabulary/grammar list an official fixed JLPT list.
+# 6) Page-copy integrity: no project page may imply an official fixed JLPT vocab/grammar list.
 misleading=[]
 for name in PAGES:
     s=(ROOT/name).read_text(encoding='utf-8')
@@ -141,7 +151,7 @@ report={
   'pages':page_status,
   'vocabulary':{
     'teacherAuditRows':len(audit_rows),'reviewQueueOpen':queue_open or 0,'runtimeStatus':v5.get('status'),
-    'mockFallbackChecked':fallback_checked,'mockFallbackMismatches':fallback_mismatch,'mockFallbackUnknown':fallback_unknown,
+    'mockFallbackChecked':len(effective),'mockFallbackCounts':fallback_counts,'mockFallbackMismatches':fallback_mismatch,'mockFallbackUnknown':fallback_unknown,
     'mockSpecialChecked':special_checked,'mockSpecialMismatches':special_mismatch
   },
   'grammar':{'runtimeGeneratedChecked':gram.get('totals',{}).get('webGeneratedAndChecked'),'failures':gram.get('totals',{}).get('failures'),'depthPassed':gdepth.get('passed')},
@@ -149,8 +159,7 @@ report={
   'conversation':{'scenes':conv.get('sceneCount'),'dialogues':conv.get('dialogueCount'),'exactDuplicatePairs':conv.get('exactDuplicatePairs'),'avgDialogueCharsN1toN5':cavg},
   'mocktest':{'existingGeneratedQualityFailures':sum(v.get('qualityFailures',0) for v in mockq.get('mock',{}).get('perLevel',{}).values()),'teacherRuntimePrimary':"source:'teacher-runtime'" in mock_js},
   'misleadingOfficialListPages':sorted(set(misleading)),
-  'failures':fail,
-  'passed':not fail
+  'failures':fail,'passed':not fail
 }
 Path('data/teacher_page_suitability_report.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(report,ensure_ascii=False,indent=2))
