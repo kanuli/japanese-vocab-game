@@ -1,0 +1,245 @@
+{
+  "version": "2026-08-27-listening-length-batch6-v1",
+  "before": {
+    "weakCount": 186,
+    "weakByLevel": {
+      "N1": 14,
+      "N2": 86,
+      "N3": 8,
+      "N4": 12,
+      "N5": 66
+    }
+  },
+  "repair": {
+    "changed": 186,
+    "failures": []
+  },
+  "after": {
+    "weakCount": 0,
+    "weakByLevel": {}
+  },
+  "targets": {
+    "weakCountMax": 0,
+    "structuralErrorsMax": 0,
+    "kanaChoiceCountMax": 0
+  },
+  "samples": [
+    {
+      "id": "JL-N5-0013",
+      "level": "N5",
+      "beforeCorrect": "更改預約",
+      "afterCorrect": "先更改預約",
+      "beforeChoices": [
+        "先確認預約內容但暫不更改",
+        "影印三份文件之後再更改預約",
+        "更改預約",
+        "影印三份文件"
+      ],
+      "afterChoices": [
+        "先把鑰匙交接待處",
+        "先影印三份文件",
+        "先保留原預約",
+        "先更改預約"
+      ]
+    },
+    {
+      "id": "JL-N5-0028",
+      "level": "N5",
+      "beforeCorrect": "在申請表上填寫姓名",
+      "afterCorrect": "先填寫申請表姓名",
+      "beforeChoices": [
+        "先檢查申請表但不填姓名",
+        "確認電郵",
+        "把鑰匙交還接待處之後再在申請表上填寫姓名",
+        "在申請表上填寫姓名"
+      ],
+      "afterChoices": [
+        "先填寫申請表姓名",
+        "先把鑰匙交接待處",
+        "先填寫申請表地址",
+        "先檢查申請表姓名"
+      ]
+    },
+    {
+      "id": "JL-N5-0053",
+      "level": "N5",
+      "beforeCorrect": "領取藥物",
+      "afterCorrect": "先領取藥物",
+      "beforeChoices": [
+        "請負責人代為領取藥物",
+        "把書歸還圖書館之後再領取藥物",
+        "領取藥物",
+        "把書歸還圖書館"
+      ],
+      "afterChoices": [
+        "先影印三份文件",
+        "先把資料交接待處",
+        "先詢問藥物",
+        "先領取藥物"
+      ]
+    },
+    {
+      "id": "JL-N5-0103",
+      "level": "N5",
+      "beforeCorrect": "確認電郵",
+      "afterCorrect": "先確認電郵",
+      "beforeChoices": [
+        "確認電郵",
+        "致電負責人",
+        "先回覆電郵再確認內容",
+        "致電負責人之後再確認電郵"
+      ],
+      "afterChoices": [
+        "先查看電郵標題",
+        "先確認電郵",
+        "先領取藥物",
+        "先預約會議室"
+      ]
+    },
+    {
+      "id": "JL-N5-0108",
+      "level": "N5",
+      "beforeCorrect": "購買車票",
+      "afterCorrect": "先購買車票",
+      "beforeChoices": [
+        "先查看車票但稍後購買",
+        "把資料交到接待處",
+        "致電負責人之後再購買車票",
+        "購買車票"
+      ],
+      "afterChoices": [
+        "先購買車票",
+        "先填寫申請表姓名",
+        "先影印三份文件",
+        "先查看車票"
+      ]
+    },
+    {
+      "id": "JL-N5-0113",
+      "level": "N5",
+      "beforeCorrect": "領取藥物",
+      "afterCorrect": "先領取藥物",
+      "beforeChoices": [
+        "請負責人代為領取藥物",
+        "致電負責人之後再領取藥物",
+        "領取藥物",
+        "致電負責人"
+      ],
+      "afterChoices": [
+        "先詢問藥物",
+        "稍後領取藥物",
+        "先確認藥物",
+        "先領取藥物"
+      ]
+    },
+    {
+      "id": "JL-N5-0133",
+      "level": "N5",
+      "beforeCorrect": "更改預約",
+      "afterCorrect": "先更改預約",
+      "beforeChoices": [
+        "維持原有預約不作更改",
+        "影印三份文件之後再更改預約",
+        "更改預約",
+        "影印三份文件"
+      ],
+      "afterChoices": [
+        "先歸還圖書",
+        "先購買車票",
+        "先保留原預約",
+        "先更改預約"
+      ]
+    },
+    {
+      "id": "JL-N5-0163",
+      "level": "N5",
+      "beforeCorrect": "確認電郵",
+      "afterCorrect": "先確認電郵",
+      "beforeChoices": [
+        "確認電郵",
+        "只查看電郵標題，稍後再確認內容",
+        "把資料交到接待處",
+        "更改預約之後再確認電郵"
+      ],
+      "afterChoices": [
+        "先查看電郵標題",
+        "先確認電郵",
+        "先搬行李到二樓",
+        "先填寫申請表姓名"
+      ]
+    },
+    {
+      "id": "JL-N5-0173",
+      "level": "N5",
+      "beforeCorrect": "領取藥物",
+      "afterCorrect": "先領取藥物",
+      "beforeChoices": [
+        "請負責人代為領取藥物",
+        "更改預約之後再領取藥物",
+        "領取藥物",
+        "更改預約"
+      ],
+      "afterChoices": [
+        "先預約會議室",
+        "先歸還圖書",
+        "先詢問藥物",
+        "先領取藥物"
+      ]
+    },
+    {
+      "id": "JL-N5-0223",
+      "level": "N5",
+      "beforeCorrect": "確認電郵",
+      "afterCorrect": "先確認電郵",
+      "beforeChoices": [
+        "確認電郵",
+        "只查看電郵標題，稍後再確認內容",
+        "把資料交到接待處",
+        "影印三份文件之後再確認電郵"
+      ],
+      "afterChoices": [
+        "先查看電郵標題",
+        "先確認電郵",
+        "先把鑰匙交接待處",
+        "先影印三份文件"
+      ]
+    },
+    {
+      "id": "JL-N5-0233",
+      "level": "N5",
+      "beforeCorrect": "領取藥物",
+      "afterCorrect": "先領取藥物",
+      "beforeChoices": [
+        "請負責人代為領取藥物",
+        "影印三份文件之後再領取藥物",
+        "領取藥物",
+        "影印三份文件"
+      ],
+      "afterChoices": [
+        "先致電負責人",
+        "先搬行李到二樓",
+        "先詢問藥物",
+        "先領取藥物"
+      ]
+    },
+    {
+      "id": "JL-N5-0253",
+      "level": "N5",
+      "beforeCorrect": "更改預約",
+      "afterCorrect": "先更改預約",
+      "beforeChoices": [
+        "維持原有預約不作更改",
+        "把行李搬到二樓之後再更改預約",
+        "更改預約",
+        "把行李搬到二樓"
+      ],
+      "afterChoices": [
+        "先保留原預約",
+        "先取消原預約",
+        "先確認原預約",
+        "先更改預約"
+      ]
+    }
+  ],
+  "passed": true
+}
