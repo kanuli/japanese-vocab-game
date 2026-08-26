@@ -1,2 +1,2 @@
-2026-08-27-gap-audit-v1
-Run cross-database JLPT/JF Standard coverage-gap audit before the next targeted expansion.
+2026-08-27-gap-audit-v2
+Run corrected JLPT/JF Standard coverage-gap audit and commit the generated report.
