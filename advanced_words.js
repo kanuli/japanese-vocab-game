@@ -3,14 +3,14 @@ document.write('<script src="./advanced_words_curated.js?v=20260821v1"><\/script
 // Full-database audit outputs. Load the core overlay before any page fetches notes.csv,
 // then apply conservative secondary dictionary cross-checks to exact ambiguous keys.
 document.write('<script src="./data/vocab_core_verified.js?v=20260826v1"><\/script>');
-document.write('<script src="./data/vocab_external_crosscheck.js?v=20260826v3"><\/script>');
+document.write('<script src="./data/vocab_external_crosscheck.js?v=20260826v4jlpt"><\/script>');
 document.write('<script src="./core_vocab_fetch_patch.js?v=20260826v2"><\/script>');
 // Stage 1 evidence-gated expanded prebuilt bundle. Cache token is pinned to this
 // audited bundle contract so browsers cannot reuse the old 12.5k file.
 document.write('<script src="./data/advanced_vocab.js?v=20260826v2stage12"><\/script>');
-// Stage 2 exact-form validation may correct ONLY frequency-estimated levels. It is
-// deliberately loaded after the advanced bundle so it can patch those generated rows.
-document.write('<script src="./data/vocab_stage2_level_overrides.js?v=20260826v1"><\/script>');
+// Stage 2 exact-form validation and conservative JLPT recalibration. Frequency-only
+// N1 is prohibited: missing/rare frequency is not evidence that a word is N1.
+document.write('<script src="./data/vocab_stage2_level_overrides.js?v=20260826v2jlpt"><\/script>');
 // Strict surface-form completion layer: the 185 direct-reviewed forms that were
 // previously deferred only because the automatic sources had no reliable TC meaning.
 document.write('<script src="./data/coverage_deferred_manual.js?v=20260821v1"><\/script>');
