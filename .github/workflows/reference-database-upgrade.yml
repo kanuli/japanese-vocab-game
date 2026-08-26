@@ -19,7 +19,8 @@ on:
       - 'tools/apply_reference_database_upgrade.py'
       - 'tools/apply_quality_depth_batch3.py'
       - 'tools/apply_quality_depth_batch4.py'
-      - 'tools/analyze_listening_repair_batch5.py'
+      - 'tools/repair_listening_catalog_batch5.py'
+      - 'tools/audit_listening_repair_batch5.py'
       - 'tools/fix_listening_gap_naturalness.py'
       - 'tools/audit_coverage_gaps.py'
       - 'tools/reconcile_coverage_report.py'
@@ -49,8 +50,10 @@ jobs:
         run: python tools/apply_quality_depth_batch3.py
       - name: Apply batch 4 full-listening quality integration
         run: python tools/apply_quality_depth_batch4.py
-      - name: Analyze batch 5 listening repair candidates
-        run: python tools/analyze_listening_repair_batch5.py
+      - name: Repair batch 5 listening catalog
+        run: python tools/repair_listening_catalog_batch5.py
+      - name: Audit batch 5 listening repair
+        run: python tools/audit_listening_repair_batch5.py
       - name: Audit reference expansion
         run: node .github/scripts/audit_reference_expansion.mjs
       - name: Audit cross-database coverage gaps
@@ -73,6 +76,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-gap-expansion.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json data/quality_depth_batch3_report.json data/full_listening_quality_batch4_report.json data/listening_repair_batch5_preflight.json
-          git commit -m 'Analyze Japanese listening repair batch 5'
+          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-original-catalog.json listening-gap-expansion.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json data/quality_depth_batch3_report.json data/full_listening_quality_batch4_report.json data/listening_repair_batch5_preflight.json data/listening_repair_batch5_report.json
+          git commit -m 'Repair Japanese listening catalog quality batch 5'
           git push
