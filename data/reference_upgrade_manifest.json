@@ -1,0 +1,37 @@
+{
+  "version": "2026-08-26-v1",
+  "policy": "data/CONTENT_REFERENCE_POLICY.md",
+  "referenceMap": "data/content_reference_map.json",
+  "expansions": {
+    "grammar": "grammar-reference-expansion.js",
+    "listening": "listening-reference-expansion.js",
+    "conversation": "conversation-reference-expansion.js"
+  },
+  "integratedPages": [
+    "grammar.html",
+    "listening.html",
+    "conversation.html",
+    "mocktest.html",
+    "mocktest.js"
+  ],
+  "sharedPagesReviewed": {
+    "vocabulary": [
+      "index.html",
+      "wordlist.html",
+      "wordaudio.html",
+      "vocab-plus-game.html",
+      "vocabulary-plus.html"
+    ],
+    "pronunciation": [
+      "pronunciation.html"
+    ],
+    "utility": [
+      "translator.html"
+    ]
+  },
+  "notes": [
+    "Vocabulary pages continue using the shared world-evidence calibration layer instead of a new duplicate level system.",
+    "Pronunciation inherits verified readings; raw count is not expanded independently.",
+    "Translator remains a utility and is not treated as a JLPT database."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "version": "2026-08-26-v1",
+  "grammar": {
+    "count": 96,
+    "perLevel": {
+      "N1": 24,
+      "N2": 18,
+      "N3": 18,
+      "N4": 18,
+      "N5": 18
+    }
+  },
+  "listening": {
+    "count": 60,
+    "perLevel": {
+      "N1": 12,
+      "N2": 12,
+      "N3": 12,
+      "N4": 12,
+      "N5": 12
+    }
+  },
+  "conversation": {
+    "newScenes": 10,
+    "newDialogues": 250,
+    "perScene": 25
+  },
+  "pageChecks": {
+    "grammar": true,
+    "listening": true,
+    "conversation": true,
+    "mocktest": true
+  },
+  "failures": [],
+  "passed": true
+}
