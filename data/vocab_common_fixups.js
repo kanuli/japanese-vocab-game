@@ -3,7 +3,7 @@
 (()=>{'use strict';
 const A=window.ADVANCED_WORDS=window.ADVANCED_WORDS||[];
 const FIXUPS=[
-  {id:'common-fix-niwa',level:'N4',reading:'にわ',kanji:'庭',displayWord:'庭',meaning:'庭院、院子',pos:'noun',estimated:false,source:'常用 JLPT 補充（人工確認）'}
+  {id:'common-fix-niwa',level:'N5',reading:'にわ',kanji:'庭',displayWord:'庭',meaning:'庭院、院子',pos:'noun',estimated:false,source:'常用 JLPT 補充（教師來源確認）'}
 ];
 const key=x=>`${String(x?.reading||'').trim()}|${String(x?.kanji||x?.displayWord||'').trim()}`;
 function apply(words){
