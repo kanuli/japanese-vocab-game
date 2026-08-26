@@ -35,8 +35,13 @@ if((grammarPerLevel.N4||0)<30)failures.push('grammar: N4 targeted passive top-up
 const lwBase=runFile('listening-reference-expansion.js');
 const lw=runFile('listening-gap-expansion.js',{REFERENCE_LISTENING_EXPANSION:[...(lwBase.REFERENCE_LISTENING_EXPANSION||[])]});
 const listening=lw.REFERENCE_LISTENING_EXPANSION||[];
-const listeningPerLevel={};
-for(const l of levels)listeningPerLevel[l]=listening.filter(x=>x.level===l).length;
+const listeningPerLevel={}, listeningTypeCounts={};
+for(const l of levels){
+  const rows=listening.filter(x=>x.level===l);
+  listeningPerLevel[l]=rows.length;
+  listeningTypeCounts[l]={};
+  for(const x of rows){const t=String(x.typeZh||x.type||'未分類');listeningTypeCounts[l][t]=(listeningTypeCounts[l][t]||0)+1}
+}
 const listeningSentences=new Set(), listeningIds=new Set();
 const badJapanese=[/受け取りて/,/送りて/,/買い物をできる/,/より速く[^。]*ます[。]/];
 for(const [i,x] of listening.entries()){
@@ -50,8 +55,18 @@ for(const [i,x] of listening.entries()){
   const sk=`${x.level}|${norm(x.jp)}`;if(listeningSentences.has(sk))failures.push(`listening ${i}: duplicate Japanese sentence`);listeningSentences.add(sk);
   if(x.id){if(listeningIds.has(x.id))failures.push(`listening ${i}: duplicate id ${x.id}`);listeningIds.add(x.id)}
 }
-if(new Set(Object.values(listeningPerLevel)).size!==1)failures.push('listening: per-level expansion is not balanced');
-for(const l of levels)if((listeningPerLevel[l]||0)<56)failures.push(`listening: ${l} targeted subtype top-up missing`);
+const targetedTypes={
+ N5:['人物關係','地點理解','數量理解','資訊理解','交通理解','時間理解','行動理解'],
+ N4:['順序理解','目的理解','指示理解','準備理解','方向理解','可能性理解','特徵理解','原因結果','條件理解'],
+ N3:['變更理解','習慣理解','課題理解','變化理解','資訊來源','意圖理解','決定理解','順序理解','範圍理解','理由理解','細節理解'],
+ N2:['程序理解','變化理解','課題理解','原因結果','原因推論','指示理解','否定推論','建議理解','趨勢理解','風險推論','範圍理解'],
+ N1:['正式公告','論理理解','範圍理解','判斷理解','時間關係','展開理解','逆接理解','評價理解','結論推論']
+};
+if(listening.length<230)failures.push(`listening: unique expansion pool too small (${listening.length})`);
+for(const l of levels){
+  if((listeningPerLevel[l]||0)<38)failures.push(`listening: ${l} unique expansion pool too small`);
+  for(const t of targetedTypes[l])if((listeningTypeCounts[l]?.[t]||0)<3)failures.push(`listening: ${l}/${t} still under-covered`);
+}
 
 const cwBase=runFile('conversation-reference-expansion.js',{SITUATION_SCENES:[]});
 const cw=runFile('conversation-gap-expansion.js',{SITUATION_SCENES:[...(cwBase.SITUATION_SCENES||[])]});
@@ -62,9 +77,7 @@ for(const s of scenes){
   if(!s.id||!s.zh||!s.jp)failures.push(`conversation: incomplete scene metadata ${s.id||'?'}`);
   if(sceneIds.has(s.id))failures.push(`conversation: duplicate scene id ${s.id}`);sceneIds.add(s.id);
   if((s.items||[]).length!==25)failures.push(`conversation ${s.id}: expected 25 items`);
-  for(const l of levels){
-    if((s.items||[]).filter(x=>x.level===l).length!==5)failures.push(`conversation ${s.id}: ${l} expected 5 items`);
-  }
+  for(const l of levels)if((s.items||[]).filter(x=>x.level===l).length!==5)failures.push(`conversation ${s.id}: ${l} expected 5 items`);
   for(const [i,x] of (s.items||[]).entries()){
     if(!x.situation)failures.push(`conversation ${s.id}/${i}: missing situation`);
     if(!Array.isArray(x.lines)||x.lines.length!==2)failures.push(`conversation ${s.id}/${i}: expected 2 lines`);
@@ -83,9 +96,9 @@ const pageChecks={
 for(const [k,v] of Object.entries(pageChecks))if(!v)failures.push(`integration: ${k} not wired`);
 
 const report={
-  version:'2026-08-27-gap-v1',
+  version:'2026-08-27-gap-v2',
   grammar:{count:grammar.length,perLevel:grammarPerLevel,targetedGap:'N4 passive'},
-  listening:{count:listening.length,perLevel:listeningPerLevel,targetedGap:'underrepresented listening subtypes'},
+  listening:{count:listening.length,perLevel:listeningPerLevel,typeCounts:listeningTypeCounts,targetedGap:'underrepresented listening subtypes',note:'Candidate templates are sentence-deduplicated; QA requires unique subtype coverage rather than artificial count balance.'},
   conversation:{newScenes:scenes.length,newDialogues:dialogueCount,perScene:25,targetedGap:'JF food + nature/environment + language/culture'},
   pageChecks,
   failures,
