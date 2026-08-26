@@ -14,15 +14,27 @@ function norm(x,n){
 function parse(t){const h=String(t).split(/\r?\n/,1)[0].trim().toLowerCase(),d=h==="#separator:comma"?",":h==="#separator:semicolon"?";":"\t",rows=[];let row=[],f="",q=false;for(let p=0;p<t.length;p++){const c=t[p];if(q){if(c==='"'){if(t[p+1]==='"'){f+='"';p++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===d){row.push(f);f=""}else if(c==='\n'){row.push(f);rows.push(row);row=[];f=""}else if(c!=='\r')f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows}
 function core(rows){const out=[];for(let r of rows){if(!r.length||String(r[0]).startsWith("#"))continue;if(r.length===F.length+1)r=r.slice(1);if(r.length!==F.length)continue;const f=Object.fromEntries(F.map((n,j)=>[n,r[j]||""])),w=strip(f.VocabKanji).replace(/\s+/g,""),m=strip(f.VocabDefTC),lv=`${f.Deck} ${f.Tags}`.match(/(?:^|[^A-Za-z0-9])N([1-5])(?=$|[^0-9])/i),rd=reading(f.VocabFurigana,w);if(w&&m&&lv&&rd)out.push({id:`c-${f.NoteID||out.length}`,level:`N${lv[1]}`,reading:rd,kanji:kanji(w)?w:"",displayWord:w,meaning:m,estimated:false,teacherGrade:"core",teacherBasis:"external-core-fetch"})}return out}
 function uniq(a){const s=new Set;return a.filter(w=>{const k=W.key(w);if(s.has(k))return false;s.add(k);return true})}
+W.buildWords=async()=>{
+  if(Array.isArray(W.words)&&W.words.length>=32000)return W.words;
+  if(W._buildWordsPromise)return W._buildWordsPromise;
+  W._buildWordsPromise=(async()=>{
+    const adv=(window.ADVANCED_WORDS||[]).map(norm).filter(Boolean);let c=[];
+    for(const u of URLS){try{const r=await fetch(u);if(!r.ok)throw 0;c=core(parse(await r.text()));if(c.length<1000)throw 0;break}catch{c=[]}}
+    const merged=uniq([...c,...adv]);
+    W.words=window.applyVocabCommonFixups?window.applyVocabCommonFixups(merged):merged;
+    W.coreCount=c.length;
+    return W.words;
+  })();
+  try{return await W._buildWordsPromise}finally{W._buildWordsPromise=null}
+};
 W.loadData=async()=>{
-  const adv=(window.ADVANCED_WORDS||[]).map(norm).filter(Boolean);let c=[];
-  for(const u of URLS){try{const r=await fetch(u);if(!r.ok)throw 0;c=core(parse(await r.text()));if(c.length<1000)throw 0;break}catch{c=[]}}
-  const merged=uniq([...c,...adv]);
-  W.words=window.applyVocabCommonFixups?window.applyVocabCommonFixups(merged):merged;
+  await W.buildWords();
   const n={N1:0,N2:0,N3:0,N4:0,N5:0};W.words.forEach(w=>n[w.level]++);
-  W.$("#total").textContent=`📚 ${W.words.length.toLocaleString()} 個單字`;
-  W.$("#counts").innerHTML=Object.entries(n).map(([k,v])=>`<span class=count>${k}: ${v.toLocaleString()}</span>`).join("");
-  W.$("#dataStatus").textContent=c.length?`✅ 核心 ${c.length.toLocaleString()} + 進階詞，去重後 ${W.words.length.toLocaleString()} 個。`:`⚠️ 核心詞暫時無法載入；仍可使用 ${W.words.length.toLocaleString()} 個進階詞。`;
-  W.available();
+  const total=W.$("#total"),counts=W.$("#counts"),status=W.$("#dataStatus");
+  if(total)total.textContent=`📚 ${W.words.length.toLocaleString()} 個單字`;
+  if(counts)counts.innerHTML=Object.entries(n).map(([k,v])=>`<span class=count>${k}: ${v.toLocaleString()}</span>`).join("");
+  if(status)status.textContent=W.coreCount?`✅ 核心 ${W.coreCount.toLocaleString()} + 進階詞，去重後 ${W.words.length.toLocaleString()} 個。`:`⚠️ 核心詞暫時無法載入；仍可使用 ${W.words.length.toLocaleString()} 個進階詞。`;
+  if(typeof W.available==="function")W.available();
+  return W.words;
 };
 })();
