@@ -1,2 +1,2 @@
-2026-08-27-listening-repair-batch5-preflight-v1
-Analyze all 904 weak listening catalog candidates by level, subtype, option pattern and template reuse before deterministic repair.
+2026-08-27-listening-repair-batch5-v1
+Repair the 904 weak catalog rows, translate the 12 task-action answer values to Traditional Chinese, rebuild N2 inference distractors, and reduce repeated wrong-choice templates.
