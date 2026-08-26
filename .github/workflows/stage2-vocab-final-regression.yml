@@ -1,0 +1,90 @@
+name: Stage 2 vocabulary final regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'advanced_words.js'
+      - 'data/advanced_vocab.js'
+      - 'data/vocab_stage2_level_overrides.js'
+      - 'data/vocab_stage2_external_validation.json'
+      - 'large_vocab_loader.js'
+      - '.github/workflows/stage2-vocab-final-regression.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  stage2-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+
+      - name: Static Stage 2 gates
+        run: |
+          node --check advanced_words.js
+          node --check data/advanced_vocab.js
+          node --check data/vocab_stage2_level_overrides.js
+          node --check large_vocab_loader.js
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('data/vocab_stage2_external_validation.json').read_text(encoding='utf-8'))
+          assert x['status']=='complete', x
+          assert x['sampleCount']>=12, x
+          assert x['counts']['pass']==x['sampleCount'], x['counts']
+          assert x['blockingConflicts']==0, x
+          assert x['counts']['frequencyOnlyLevelOverrides']==2, x['counts']
+          print('STAGE2 STATIC PASS', x['counts'])
+          PY
+
+      - name: Install Chromium
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Chromium runtime gate
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/stage2-http.log 2>&1 &
+          echo $! >/tmp/stage2-http.pid
+          trap 'kill $(cat /tmp/stage2-http.pid) 2>/dev/null || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/wordlist.html >/dev/null && break; sleep 1; done
+          cat >/tmp/stage2-regression.cjs <<'NODE'
+          const {chromium}=require(process.cwd()+'/node_modules/playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({serviceWorkers:'block'});
+            const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
+            const r=await page.goto('http://127.0.0.1:4173/wordlist.html?stage2='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            if(!r||r.status()>=400)throw Error('HTTP '+(r?.status()||'none'));
+            await page.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>=32000,null,{timeout:30000});
+            const out=await page.evaluate(()=>{
+              const words=window.WA.words;
+              const find=(reading,display)=>words.find(w=>w.reading===reading&&(w.kanji||w.displayWord||w.reading)===display);
+              return {
+                runtimeCount:words.length,
+                bundle:window.ADVANCED_WORDS_BUNDLE_META||null,
+                loader:window.ADVANCED_WORDS_META||null,
+                stage2:window.VOCAB_STAGE2_LEVEL_OVERRIDE_META||null,
+                hoten:find('ほてん','補填'),
+                apple:find('アップル','アップル')
+              };
+            });
+            if(errors.length)throw Error('page errors '+errors.join(' | '));
+            if(out.runtimeCount<32000)throw Error('runtime count '+out.runtimeCount);
+            if(!out.bundle||out.bundle.version!=='prebuilt-20260826-v6-expanded-stage12'||out.bundle.generatedCount<22000)throw Error('bundle '+JSON.stringify(out.bundle));
+            if(!out.loader||out.loader.audited!==true)throw Error('loader '+JSON.stringify(out.loader));
+            if(!out.stage2||out.stage2.configured!==2||out.stage2.eligible!==2||out.stage2.applied!==2)throw Error('stage2 '+JSON.stringify(out.stage2));
+            if(!out.hoten||out.hoten.level!=='N2'||!String(out.hoten.levelSource||'').includes('manual-secondary-crosscheck'))throw Error('補填 '+JSON.stringify(out.hoten));
+            if(!out.apple||out.apple.level!=='N5'||!String(out.apple.levelSource||'').includes('manual-secondary-crosscheck'))throw Error('アップル '+JSON.stringify(out.apple));
+            console.log('STAGE2 RUNTIME PASS',JSON.stringify(out));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          node /tmp/stage2-regression.cjs
