@@ -15,6 +15,7 @@ on:
       - tools/recalibrate_jlpt_teacher_v4.py
       - tools/run_teacher_jlpt_audit.py
       - tools/audit_runtime_supplements.py
+      - tools/run_runtime_supplement_audit.py
       - tools/classify_vocab_audit.py
       - tools/check_vocab_sentinels.py
       - advanced_words_curated.js
@@ -125,7 +126,7 @@ jobs:
       - name: Extend teacher audit through every additive runtime vocabulary layer
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
-        run: python tools/audit_runtime_supplements.py
+        run: python tools/run_runtime_supplement_audit.py
       - name: Verify complete runtime teacher audit
         run: |
           node --check data/vocab_teacher_runtime_overlay.js
