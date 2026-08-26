@@ -13,6 +13,7 @@ on:
       - tools/recalibrate_jlpt_world_v2.py
       - tools/recalibrate_jlpt_world_v3.py
       - tools/recalibrate_jlpt_teacher_v4.py
+      - tools/teacher_jlpt_policy_v5.py
       - tools/run_teacher_jlpt_audit.py
       - tools/audit_runtime_supplements.py
       - tools/run_runtime_supplement_audit.py
@@ -88,7 +89,10 @@ jobs:
           assert len(audit.get('stage2ExternalValidation',{}).get('reviewSample',[]))>=24
           r=audit.get('jlptRecalibration',{})
           assert r.get('status')=='complete', r
-          assert r.get('version')=='20260826-teacher-v4-exact-audit', r
+          assert r.get('version')=='20260826-teacher-v5-source-lineage', r
+          assert r.get('policyRevision')=='v5-source-lineage', r
+          assert 'never counted as independent votes' in r.get('sourceIndependence',''), r
+          assert r.get('independentTeacherAnchors',0)>=80, r
           assert r.get('scope')=='every core+advanced runtime word exact key', r
           assert r.get('rowCount',0)>=32000, r
           assert r.get('directRows',0)>=10000, r
@@ -99,7 +103,7 @@ jobs:
           c=r.get('combinedCountsByLevel',{})
           assert sum(c.values())==r['rowCount'],(c,r['rowCount'])
           assert all(c.get(x,0)>0 for x in ['N1','N2','N3','N4','N5']),c
-          assert c.get('N1',999999)<14500,c
+          assert c.get('N1',999999)<12000,c
           assert c.get('N5',0)>=1800 and c.get('N4',0)>=1500 and c.get('N3',0)>=4000,c
           expected={
             'まい|まい':'N2','まい|舞':'N2','まい|枚':'N5','まい|毎':'N5',
@@ -107,7 +111,11 @@ jobs:
             'おもしろい|面白い':'N5','あかるい|明るい':'N5','おわる|終わる':'N5',
             'べんきょう|勉強':'N5','さんぽ|散歩':'N5','だんだん|だんだん':'N5','もし|もし':'N4',
             'ふん|分':'N5','キロ|キロ':'N5','さらいげつ|再来月':'N5','さらいねん|再来年':'N5',
-            'まんなか|真ん中':'N4','つくる|造る':'N5'
+            'まんなか|真ん中':'N4','つくる|造る':'N5',
+            'ぎん|銀':'N5','けいかん|警官':'N5','レコード|レコード':'N3','じしん|地震':'N4',
+            'こうちょう|校長':'N5','たて|縦':'N5','じてん|辞典':'N4','つる|釣る':'N4',
+            'どろぼう|泥棒':'N4','れいぼう|冷房':'N3','アクセサリー|アクセサリー':'N4','ソフト|ソフト':'N4',
+            'がいこう|外交':'N2','きんゆう|金融':'N2','したぎ|下着':'N5','ちり|地理':'N4','ちじ|知事':'N1'
           }
           s=r.get('teacherSentinels',{})
           for key,level in expected.items():
@@ -120,7 +128,8 @@ jobs:
           assert all(x['level'] in {'N1','N2','N3','N4','N5'} for x in rows)
           assert all(x['grade'] in {'A','B','C','D'} for x in rows)
           assert all(x['basis'] for x in rows)
-          print('BASE TEACHER JLPT AUDIT PASS',json.dumps(c,ensure_ascii=False))
+          assert not [x for x in rows if x['level']=='N1' and x['status'].startswith('estimated')]
+          print('BASE V5 TEACHER JLPT AUDIT PASS',json.dumps(c,ensure_ascii=False))
           print('rows=',len(rows),'grades=',json.dumps(r.get('teacherGradeCounts',{}),ensure_ascii=False))
           PY
       - name: Extend teacher audit through every additive runtime vocabulary layer
@@ -137,12 +146,15 @@ jobs:
           base=audit['jlptRecalibration']
           r=audit.get('runtimeTeacherAudit',{})
           assert r.get('status')=='complete',r
-          assert r.get('version')=='20260826-teacher-runtime-v1',r
+          assert r.get('version')=='20260826-teacher-runtime-v2-lineage',r
+          assert r.get('policyRevision')=='v5-source-lineage',r
+          assert 'never counted as independent votes' in r.get('sourceIndependence',''),r
           assert r.get('rowCount',0)>=base['rowCount'],(r,base['rowCount'])
           assert r.get('supplementConfiguredUniqueKeys',0)>=200,r
           assert r.get('supplementUniqueKeysAddedToAudit',0)>0,r
           assert r.get('estimatedN1')==0,r
           assert r.get('duplicateExactKeys')==0,r
+          assert r.get('overlay',{}).get('version')=='20260826-teacher-runtime-v2-lineage',r
           assert r.get('overlay',{}).get('configuredKeys')==r.get('supplementConfiguredUniqueKeys'),r
           path=Path('data/jlpt_teacher_audit.tsv')
           with path.open(encoding='utf-8',newline='') as f:
@@ -151,7 +163,7 @@ jobs:
           assert len({(x['reading'],x['display']) for x in rows})==len(rows)
           assert not [x for x in rows if x['level']=='N1' and x['status'].startswith('estimated')]
           assert all(x['grade'] in {'A','B','C','D'} and x['basis'] for x in rows)
-          print('FULL RUNTIME TEACHER AUDIT PASS',json.dumps(r,ensure_ascii=False))
+          print('FULL V5 RUNTIME TEACHER AUDIT PASS',json.dumps(r,ensure_ascii=False))
           PY
       - name: Verify blocking semantic sentinels
         run: python tools/check_vocab_sentinels.py
@@ -164,5 +176,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js
-          git commit -m "Rebuild complete runtime teacher-audited JLPT data"
+          git commit -m "Rebuild v5 source-lineage teacher-audited JLPT data"
           git push
