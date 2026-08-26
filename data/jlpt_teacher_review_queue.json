@@ -1,0 +1,20 @@
+{
+  "status": "complete",
+  "sourceRows": 32613,
+  "reviewRows": 514,
+  "countsByLevel": {
+    "N1": 111,
+    "N2": 22,
+    "N3": 214,
+    "N4": 69,
+    "N5": 98
+  },
+  "countsByBasis": {
+    "core-exact-large-conflict-kept": 465,
+    "exact-conflict-existing-direct-tiebreak": 35,
+    "single-exact-over-existing-conflict": 11,
+    "runtime-exact-source-conflict": 2,
+    "exact-conflict-common-easier": 1
+  },
+  "rule": "all grade-C teacher audit rows; no sampling"
+}
