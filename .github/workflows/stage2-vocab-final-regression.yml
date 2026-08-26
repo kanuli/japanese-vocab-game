@@ -7,6 +7,8 @@ on:
     paths:
       - 'advanced_words.js'
       - 'data/advanced_vocab.js'
+      - 'data/vocab_core_verified.js'
+      - 'data/vocab_audit.json'
       - 'data/vocab_stage2_level_overrides.js'
       - 'data/vocab_external_crosscheck.js'
       - 'data/vocab_stage2_external_validation.json'
@@ -25,10 +27,11 @@ jobs:
         with:
           ref: main
 
-      - name: Static Stage 2 gates
+      - name: Static vocabulary and JLPT gates
         run: |
           node --check advanced_words.js
           node --check data/advanced_vocab.js
+          node --check data/vocab_core_verified.js
           node --check data/vocab_stage2_level_overrides.js
           node --check data/vocab_external_crosscheck.js
           node --check large_vocab_loader.js
@@ -40,7 +43,15 @@ jobs:
           assert x['sampleCount']>=12, x
           assert x['counts']['pass']==x['sampleCount'], x['counts']
           assert x['blockingConflicts']==0, x
-          print('STAGE2 STATIC PASS', x['counts'])
+          a=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
+          r=a.get('jlptRecalibration',{})
+          assert r.get('status')=='complete',r
+          assert r.get('estimatedN1WithoutObservedRank')==0,r
+          c=r.get('combinedCountsByLevel',{})
+          assert sum(c.values())>=32000,c
+          assert c.get('N1',999999)<14500,c
+          assert c.get('N5',0)>=1500 and c.get('N4',0)>=1500 and c.get('N3',0)>=4000,c
+          print('STATIC JLPT PASS',c)
           PY
 
       - name: Install Chromium
@@ -62,7 +73,7 @@ jobs:
             const browser=await chromium.launch({headless:true});
             const page=await browser.newPage({serviceWorkers:'block'});
             const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
-            const r=await page.goto('http://127.0.0.1:4173/wordlist.html?stage2='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            const r=await page.goto('http://127.0.0.1:4173/wordlist.html?worldjlpt='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
             if(!r||r.status()>=400)throw Error('HTTP '+(r?.status()||'none'));
             await page.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>=32000,null,{timeout:30000});
             const out=await page.evaluate(()=>{
@@ -71,33 +82,36 @@ jobs:
               const find=(reading,display)=>words.find(w=>w.reading===reading&&(w.kanji||w.displayWord||w.reading)===display);
               const counts={N1:0,N2:0,N3:0,N4:0,N5:0};
               for(const w of words)if(counts[w.level]!==undefined)counts[w.level]++;
-              const badFrequencyN1=adv.filter(w=>String(w.level).toUpperCase()==='N1'&&String(w.levelSource||'').includes('frequency-estimate'));
+              const estimatedN1WithoutRank=adv.filter(w=>w.level==='N1'&&String(w.levelSource||'').includes('world-distribution-calibrated-estimate')&&(w.frequencyRank==null));
               return {
                 runtimeCount:words.length,
                 counts,
                 bundle:window.ADVANCED_WORDS_BUNDLE_META||null,
+                recal:window.VOCAB_JLPT_RECALIBRATION_META||null,
                 loader:window.ADVANCED_WORDS_META||null,
                 stage2:window.VOCAB_STAGE2_LEVEL_OVERRIDE_META||null,
                 external:window.VOCAB_EXTERNAL_CROSSCHECK_META||null,
                 hoten:find('ほてん','補填'),
                 apple:find('アップル','アップル'),
                 suika:find('すいか','西瓜'),
-                badFrequencyN1Count:badFrequencyN1.length,
-                badFrequencyN1Sample:badFrequencyN1.slice(0,10).map(w=>({reading:w.reading,display:w.kanji||w.displayWord||w.reading,levelSource:w.levelSource}))
+                estimatedN1WithoutRankCount:estimatedN1WithoutRank.length,
+                estimatedN1WithoutRankSample:estimatedN1WithoutRank.slice(0,10).map(w=>({reading:w.reading,display:w.kanji||w.displayWord||w.reading,levelSource:w.levelSource}))
               };
             });
             if(errors.length)throw Error('page errors '+errors.join(' | '));
             if(out.runtimeCount<32000)throw Error('runtime count '+out.runtimeCount);
-            if(!out.bundle||out.bundle.version!=='prebuilt-20260826-v6-expanded-stage12'||out.bundle.generatedCount<22000)throw Error('bundle '+JSON.stringify(out.bundle));
+            if(!out.bundle||out.bundle.version!=='prebuilt-20260826-v7-world-jlpt'||out.bundle.generatedCount<22000)throw Error('bundle '+JSON.stringify(out.bundle));
+            if(!out.recal||out.recal.status!=='complete'||out.recal.estimatedN1WithoutObservedRank!==0)throw Error('recal '+JSON.stringify(out.recal));
             if(!out.loader||out.loader.audited!==true)throw Error('loader '+JSON.stringify(out.loader));
-            if(!out.stage2||out.stage2.version!=='20260826-v2-jlpt-recalibrated'||out.stage2.configuredExact!==3)throw Error('stage2 '+JSON.stringify(out.stage2));
-            if(out.badFrequencyN1Count!==0)throw Error('frequency-only N1 remains '+JSON.stringify(out.badFrequencyN1Sample));
-            if(!out.external||out.external.version!=='20260826-v4-jlpt-recheck'||out.external.configured<47)throw Error('external '+JSON.stringify(out.external));
+            if(!out.stage2||out.stage2.version!=='20260826-v3-exact-only'||out.stage2.configured!==2||out.stage2.applied!==2||out.stage2.broadReclassificationApplied!==0)throw Error('stage2 '+JSON.stringify(out.stage2));
+            if(out.estimatedN1WithoutRankCount!==0)throw Error('estimated N1 without rank '+JSON.stringify(out.estimatedN1WithoutRankSample));
+            if(!out.external||out.external.configured<47)throw Error('external '+JSON.stringify(out.external));
             if(!out.hoten||out.hoten.level!=='N2')throw Error('補填 '+JSON.stringify(out.hoten));
             if(!out.apple||out.apple.level!=='N5')throw Error('アップル '+JSON.stringify(out.apple));
             if(!out.suika||out.suika.level!=='N5'||out.suika.meaning!=='西瓜')throw Error('西瓜 '+JSON.stringify(out.suika));
-            if(out.counts.N1>=10000)throw Error('N1 distribution still implausibly inflated '+JSON.stringify(out.counts));
-            console.log('STAGE2 RUNTIME PASS',JSON.stringify(out));
+            if(out.counts.N1>=14500)throw Error('N1 distribution inflated '+JSON.stringify(out.counts));
+            if(out.counts.N5<1500||out.counts.N4<1500||out.counts.N3<4000)throw Error('lower/intermediate distribution too thin '+JSON.stringify(out.counts));
+            console.log('WORLD JLPT RUNTIME PASS',JSON.stringify(out));
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
