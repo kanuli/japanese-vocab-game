@@ -14,10 +14,10 @@ ORIGINAL_CHOOSE = base.choose_entry
 # Explicit corrections for the ambiguity that exposed the original bug.
 # These are keyed by (reading, displayed form), never by reading alone.
 CURATED = {
-    ("まい", "まい"): ("N2", "不會～；不打算～；恐怕不～（否定推量／否定意志）"),
-    ("まい", "舞"): ("N2", "舞；舞蹈"),
-    ("まい", "枚"): ("N5", "張、枚（計算薄而平物件的量詞）"),
-    ("まい", "毎"): ("N5", "每～；每一～"),
+    ("まい", "まい"): ("N2", "不會～；不打算～；恐怕不～（否定推量／否定意志）", "other"),
+    ("まい", "舞"): ("N2", "舞；舞蹈", "noun"),
+    ("まい", "枚"): ("N5", "張、枚（計算薄而平物件的量詞）", "noun"),
+    ("まい", "毎"): ("N5", "每～；每一～", "other"),
 }
 
 
@@ -54,12 +54,25 @@ def dedupe_and_curate(tuples: list[list]):
         seen.add(key)
         fix = CURATED.get((reading, display))
         if fix:
-            level, meaning = fix
+            level, meaning, pos = fix
         unique.append([level, reading, kanji, meaning, pos])
     return unique, removed
 
 
-def audit(tuples: list[list], duplicate_rows_removed: int) -> dict:
+def ensure_curated(tuples: list[list], core_keys: set[str]):
+    existing = {f"{row[1]}|{row[2] or row[1]}" for row in tuples if len(row) >= 5}
+    added = []
+    for (reading, display), (level, meaning, pos) in CURATED.items():
+        key = f"{reading}|{display}"
+        if key in existing or key in core_keys:
+            continue
+        tuples.append([level, reading, display if display != reading else "", meaning, pos])
+        existing.add(key)
+        added.append(key)
+    return added
+
+
+def audit(tuples: list[list], duplicate_rows_removed: int, core_keys: set[str], curated_added: list[str]) -> dict:
     fatal = []
     keys = set()
     homophones = defaultdict(list)
@@ -79,18 +92,24 @@ def audit(tuples: list[list], duplicate_rows_removed: int) -> dict:
             fatal.append({"type": "invalid_row", "key": key})
         homophones[reading].append((display, meaning, level))
         if reading == "まい" and display in sentinel:
-            sentinel[display].append({"meaning": meaning, "level": level})
+            sentinel[display].append({"meaning": meaning, "level": level, "location": "advanced"})
             # Only written kanji forms are forbidden from inheriting the negative auxiliary sense.
             if display != "まい" and negative.search(str(meaning)):
                 fatal.append({"type": "mai_semantic_contamination", "key": key, "meaning": meaning})
 
-    review_groups = 0
-    for group in homophones.values():
-        by_meaning = defaultdict(set)
-        for display, meaning, _level in group:
-            by_meaning[meaning].add(display)
-        if any(len(forms) > 1 for forms in by_meaning.values()):
-            review_groups += 1
+    core_presence = {}
+    for display in sentinel:
+        key = f"まい|{display}"
+        core_presence[display] = key in core_keys
+
+    review = []
+    for reading, group in homophones.items():
+        by_meaning = defaultdict(list)
+        for display, meaning, level in group:
+            by_meaning[meaning].append({"display": display, "level": level})
+        for meaning, forms in by_meaning.items():
+            if len({x["display"] for x in forms}) > 1:
+                review.append({"reading": reading, "meaning": meaning, "forms": forms})
 
     return {
         "policy": {
@@ -102,9 +121,13 @@ def audit(tuples: list[list], duplicate_rows_removed: int) -> dict:
             "advancedGenerated": len(tuples),
             "uniqueKeys": len(keys),
             "duplicateRowsRemoved": duplicate_rows_removed,
-            "sameMeaningHomophoneGroupsForReview": review_groups
+            "sameMeaningHomophoneGroupsForReview": len(review),
+            "curatedRowsAdded": len(curated_added)
         },
         "sentinelMai": sentinel,
+        "sentinelMaiCorePresence": core_presence,
+        "curatedRowsAdded": curated_added,
+        "homophoneReview": review[:100],
         "fatalIssueCount": len(fatal),
         "fatalIssues": fatal[:100]
     }
@@ -120,14 +143,16 @@ def main() -> int:
     text = out.read_text(encoding="utf-8")
     match, meta, tuples = parse_bundle(text)
     tuples, removed = dedupe_and_curate(tuples)
-    report = audit(tuples, removed)
+    core_keys = base.core_keys(base.fetch_text(base.URLS["core"]))
+    curated_added = ensure_curated(tuples, core_keys)
+    report = audit(tuples, removed, core_keys, curated_added)
     if report["fatalIssueCount"]:
         raise RuntimeError(f"Vocabulary audit failed: {report['fatalIssues'][:5]}")
 
     counts = Counter(row[0] for row in tuples if len(row) >= 5)
     meta["version"] = "prebuilt-20260826-v4-exact"
     meta["generatedCount"] = len(tuples)
-    meta["mergedUniqueAtBuild"] = int(meta.get("coreUniqueAtBuild") or 0) + len(tuples)
+    meta["mergedUniqueAtBuild"] = len(core_keys | {f"{row[1]}|{row[2] or row[1]}" for row in tuples if len(row) >= 5})
     meta["countsByLevel"] = {level: counts.get(level, 0) for level in ["N1", "N2", "N3", "N4", "N5"]}
     meta["meaningPolicy"] = "exact written-form match only; no reading/alternate-form semantic fallback"
     meta["levelPolicy"] = "JLPT Waller when available; otherwise exact written-form+reading subtitle-frequency estimate; curated exceptions keyed by reading+form"
@@ -142,7 +167,7 @@ def main() -> int:
     out.write_text(text, encoding="utf-8")
 
     report["generatedCount"] = len(tuples)
-    report["coreUniqueAtBuild"] = meta.get("coreUniqueAtBuild")
+    report["coreUniqueAtBuild"] = len(core_keys)
     report["mergedUniqueAtBuild"] = meta.get("mergedUniqueAtBuild")
     report["meaningSources"] = meta.get("meaningSources")
     audit_out = Path(base.ROOT) / "data" / "vocab_audit.json"
