@@ -1,4 +1,5 @@
 name: Rebuild audited vocabulary data
+# Manual review trigger: 2026-08-26 batch 3
 
 on:
   workflow_dispatch:
