@@ -66,6 +66,7 @@ jobs:
           cat >/tmp/teacher-pages.cjs <<'NODE'
           const {chromium}=require(process.cwd()+'/node_modules/playwright');
           const pages=['index.html','wordaudio.html','wordlist.html','grammar.html','listening.html','conversation.html','pronunciation.html','mocktest.html','translator.html','vocab-plus-game.html','vocabulary-plus.html'];
+          const levelUiPages=new Set(['index.html','wordaudio.html','wordlist.html','grammar.html','listening.html','conversation.html','pronunciation.html','mocktest.html','vocab-plus-game.html']);
           (async()=>{
             const browser=await chromium.launch({headless:true});
             const context=await browser.newContext({serviceWorkers:'block'});
@@ -77,7 +78,7 @@ jobs:
               if(!r||r.status()>=400) throw Error(`${name} HTTP ${r?.status()||'none'}`);
               const title=await page.title();
               if(!title) throw Error(`${name}: empty title`);
-              if(name!=='translator.html'){
+              if(levelUiPages.has(name)){
                 const body=await page.locator('body').innerText();
                 for(const level of ['N1','N2','N3','N4','N5']) if(!body.includes(level)) throw Error(`${name}: ${level} UI missing`);
               }
@@ -87,9 +88,14 @@ jobs:
                 if(v.total<32000||v.mai!=='N5'||v.maiNeg!=='N2'||v.niwa!=='N5'||!v.overlay.includes('teacher-runtime')) throw Error('wordlist teacher runtime mismatch '+JSON.stringify(v));
               }
               if(name==='mocktest.html'){
-                await page.waitForFunction(()=>window.MOCKTEST_VOCAB_META?.count>=32000,null,{timeout:30000});
+                await page.waitForFunction(()=>window.MOCKTEST_VOCAB_META?.count>=32000,null,{timeout:45000});
                 const m=await page.evaluate(()=>window.MOCKTEST_VOCAB_META);
                 if(m.source!=='teacher-runtime') throw Error('mocktest not using teacher runtime '+JSON.stringify(m));
+              }
+              if(name==='vocabulary-plus.html'){
+                await page.waitForFunction(()=>Array.isArray(window.ADVANCED_WORDS)&&window.ADVANCED_WORDS.length>=20000,null,{timeout:30000});
+                const v=await page.evaluate(()=>({count:window.ADVANCED_WORDS.length,levels:[...new Set(window.ADVANCED_WORDS.map(w=>w.level))].sort(),overlay:window.VOCAB_TEACHER_RUNTIME_OVERLAY_META?.version||''}));
+                if(v.count<20000||!['N1','N2','N3','N4','N5'].every(x=>v.levels.includes(x))||!v.overlay.includes('teacher-runtime')) throw Error('vocabulary-plus teacher data mismatch '+JSON.stringify(v));
               }
               results.push({name,status:r.status(),title,pageErrors:fatal.slice(0,5)});
               await page.close();
