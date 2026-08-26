@@ -40,7 +40,7 @@ reading	display	queue_level	confirmed_level	decision	reference	rationale	reviewe
 おやつ	お八つ	N1	N4	confirmed	Bunpro:おやつ	Exact vocabulary entry classifies おやつ N4 and lists お八つ as its written form.	2026-08-26
 およそ	凡そ	N1	N3	confirmed	時雨:凡そ	Exact entry labels 凡そ（およそ）N3.	2026-08-26
 かきとり	書き取り	N1	N3	confirmed	Bunpro:書き取り	Exact vocabulary entry labels 書き取り（かきとり）N3.	2026-08-26
-かしこまりました	畏まりました	N1	N4	confirmed	Bunpro:かしこまりました	Exact vocabulary entry is N4 and lists 畏まりました as its written form.	2026-08-26
+かしこまりました	畏まりました	N1	N4	confirmed	Bunpro:かしこまりました	Exact vocabulary entry is N4 and lists 畏まりました as the written form.	2026-08-26
 かもしれない	かも知れない	N1	N4	confirmed	Bunpro:かもしれない	JLPT N4 grammar point; orthographic variant かも知れない belongs to the same expression.	2026-08-26
 かゆい	痒い	N1	N3	confirmed	時雨:痒い	Exact entry labels 痒い（かゆい）N3.	2026-08-26
 からかう	揶揄う	N1	N2	confirmed	時雨/JLearn:揶揄う	Exact reading/display sources classify 揶揄う（からかう）N2; N1 lineage rejected.	2026-08-26
@@ -83,3 +83,43 @@ reading	display	queue_level	confirmed_level	decision	reference	rationale	reviewe
 すれちがう	すれ違う	N1	N2	confirmed	時雨:すれ違う	Exact entry classifies すれ違う（すれちがう）N2.	2026-08-26
 ずうずうしい	図々しい	N1	N2	confirmed	時雨/JapanDict:図々しい	Exact-entry sources classify 図々しい（ずうずうしい）N2.	2026-08-26
 ぜひとも	是非とも	N1	N2	confirmed	JLearn/Tangorin:是非とも	Independent exact-entry sources classify 是非とも（ぜひとも）N2.	2026-08-26
+そうして	然うして	N1	N5	confirmed	JLearn/NihongoMaster:然うして	Independent exact-entry sources support N5; legacy N1 lineage rejected.	2026-08-26
+そこで	其処で	N1	N3	confirmed	JLearn:其処で	Exact reading/display entry classifies 其処で（そこで）N3.	2026-08-26
+そして	然して	N1	N5	confirmed	時雨:然して/そして	Exact common conjunction entry is N5.	2026-08-26
+そちら	其方	N1	N5	confirmed	JLearn/Bunpro:其方	Two independent exact-entry sources support N5; Sigure N3 disagreement noted and overridden.	2026-08-26
+そのうえ	その上	N1	N2	confirmed	NihongoMaster/Bunpro:その上	NihongoMaster and grammar classification support N2; Bunpro vocabulary N3 disagreement explicitly noted.	2026-08-26
+そのうち	その内	N1	N3	confirmed	時雨:その内	Exact entry classifies その内（そのうち）N3.	2026-08-26
+そのため	その為	N1	N2	confirmed	JLearn:その為; 時雨=N4	JLearn and existing-direct support N2; Sigure N4 disagreement explicitly retained.	2026-08-26
+そのまま	其の儘	N1	N3	confirmed	JLearn:其の儘	JLearn includes N3/N1 legacy labels; existing-direct N3 and common usage support N3.	2026-08-26
+それから	其れから	N1	N5	confirmed	時雨:其れから	Exact entry classifies 其れから（それから）N5.	2026-08-26
+それで	其れで	N1	N4	confirmed	JLearn:其れで	Exact entry classifies 其れで（それで）N4.	2026-08-26
+それでは	其れでは	N1	N5	confirmed	N5 teaching-list crosscheck:それでは	Common beginner transition expression retained at N5; legacy N1 label rejected.	2026-08-26
+それでも	其れでも	N1	N3	confirmed	時雨:其れでも	Exact entry classifies 其れでも（それでも）N3.	2026-08-26
+それに	其れに	N1	N4	confirmed	N4 teaching-list crosscheck:それに	Existing-direct N4 is consistent with teaching-list classification; N1 lineage rejected.	2026-08-26
+たくさん	沢山	N1	N5	confirmed	時雨:沢山	Exact common quantity word 沢山（たくさん）is N5.	2026-08-26
+たちまち	忽ち	N1	N2	confirmed	時雨:忽ち	Exact entry classifies 忽ち（たちまち）N2.	2026-08-26
+たまに	偶に	N1	N4	confirmed	時雨:偶に	Exact entry classifies 偶に（たまに）N4.	2026-08-26
+たまらない	堪らない	N1	N3	confirmed	時雨:堪らない	Exact entry classifies 堪らない（たまらない）N3.	2026-08-26
+ためらう	躊躇う	N1	N2	confirmed	JLearn=N2; 時雨=N1; Bunpro=N3	Independent sources disagree N1/N2/N3; N2 selected as supported midpoint and matches existing-direct, with disagreement retained.	2026-08-26
+たんす	箪笥	N1	N2	confirmed	Bunpro=N2; 時雨=N3	Bunpro and existing-direct support N2; Sigure N3 disagreement explicitly noted.	2026-08-26
+だます	騙す	N1	N2	confirmed	JLearn:騙す	Exact entry supports 騙す（だます）N2.	2026-08-26
+ちっとも	些とも	N1	N4	confirmed	JLearn/Bunpro:些とも	Independent exact-entry sources support N4.	2026-08-26
+ちょっと	一寸	N1	N5	confirmed	JLearn/Bunpro:一寸	Independent exact-entry sources support N5.	2026-08-26
+つまずく	躓く	N1	N2	confirmed	JLearn=N2; Bunpro=N3	JLearn and existing-direct support N2; Bunpro N3 disagreement explicitly noted.	2026-08-26
+つまらない	詰らない	N1	N5	confirmed	JLearn/Bunpro:詰らない	Independent exact-entry sources support N5.	2026-08-26
+つまり	詰まり	N1	N3	confirmed	時雨:詰まり	Exact entry classifies 詰まり（つまり）N3.	2026-08-26
+つるす	吊るす	N1	N2	confirmed	JapanDict=N2; Bunpro=N3	JapanDict and existing-direct support N2; Bunpro N3 disagreement explicitly noted.	2026-08-26
+でたらめ	出鱈目	N1	N2	confirmed	時雨:出鱈目	Exact entry classifies 出鱈目（でたらめ）N2.	2026-08-26
+ところが	所が	N1	N3	confirmed	時雨/JLearn:所が	Independent exact-entry sources support N3.	2026-08-26
+ところで	所で	N1	N3	confirmed	時雨/JLearn:所で	Independent exact-entry sources support N3.	2026-08-26
+とっくに	疾っくに	N1	N2	confirmed	JLearn/JLPT N2 crosscheck:疾っくに	Exact form is supported at N2.	2026-08-26
+とても	迚も	N1	N5	confirmed	JLearn/Tangorin/Bunpro:迚も	Multiple independent exact-entry sources support N5.	2026-08-26
+とどまる	止まる	N1	N2	confirmed	JLearn=N1/N2; Bunpro=N3	Source labels disagree; existing-direct and one JLearn classification support N2, selected with disagreement retained.	2026-08-26
+ともかく	兎も角	N1	N2	confirmed	JLearn/JLPT N2 crosscheck:兎も角	Exact form is supported at N2.	2026-08-26
+どうして	如何して	N1	N5	confirmed	JLearn:如何して	Exact entry classifies 如何して（どうして）N5.	2026-08-26
+どうしても	如何しても	N1	N3	confirmed	JLearn:如何しても	Exact entry classifies 如何しても（どうしても）N3.	2026-08-26
+どうぞよろしく	どうぞ宜しく	N1	N5	confirmed	JLPTgo/N5 teaching-list:どうぞ宜しく	Beginner fixed expression is supported at N5; legacy N1/N2 labels rejected.	2026-08-26
+どこ	何処	N1	N5	confirmed	JLPT N5 crosscheck:何処	Exact reading/display is standard N5 vocabulary.	2026-08-26
+どこか	何処か	N1	N3	confirmed	JLearn/NihongoMaster/Bunpro/JapanDict:何処か	Multiple independent exact-entry sources support N3.	2026-08-26
+どちら	何方	N1	N5	confirmed	JLPTgo/N5 teaching-list:何方	Exact reading どちら with display 何方 is supported at N5.	2026-08-26
+どなた	何方	N1	N5	confirmed	JLearn/JLPTgo:何方/どなた	Exact reading どなた with display 何方 is supported at N5.	2026-08-26
