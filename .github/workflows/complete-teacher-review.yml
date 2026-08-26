@@ -1,0 +1,35 @@
+name: Complete all remaining teacher review
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.bulk-teacher-review-trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  complete:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Adjudicate pinned complete grade-C queue
+        run: python tools/bulk_adjudicate_teacher_queue.py
+      - name: Commit complete teacher ledger
+        run: |
+          if git diff --quiet -- data/jlpt_teacher_manual_review.tsv; then
+            echo "Teacher ledger already complete for the pinned queue."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/jlpt_teacher_manual_review.tsv
+          git commit -m "Complete all remaining grade-C teacher reviews"
+          git pull --rebase origin main
+          git push
