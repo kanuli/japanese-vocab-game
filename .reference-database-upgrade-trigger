@@ -1,2 +1,2 @@
-2026-08-27-full-conversation-batch7-preflight-v1
-Audit all 77 scenes and 1,925 dialogues for structure, Japanese leakage in Traditional Chinese, exact duplicates, template concentration and JLPT depth before final conversation repair.
+2026-08-27-full-conversation-batch7-v1
+Diversify repetitive generated dialogue templates across all 77 scenes, remove the three exact duplicate pairs and unnatural generic 進める patterns, then rerun every prior QA gate.
