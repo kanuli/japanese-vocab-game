@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-27-quality-depth-batch4-v1",
+  "version": "2026-08-27-full-conversation-batch7-v1",
   "policy": "data/CONTENT_REFERENCE_POLICY.md",
   "referenceMap": "data/content_reference_map.json",
   "expansions": {
@@ -70,5 +70,16 @@
     ],
     "audit": "data/full_listening_quality_batch4_report.json",
     "copyright": "Hanabira examples are evaluated in-memory for aggregate QA; the audit report stores metrics, not copied example text."
+  },
+  "qualityDepthBatch7": {
+    "scope": "all 77 conversation scenes / 1,925 dialogues",
+    "focus": [
+      "full-database template diversification",
+      "remove unnatural generic 進める templates",
+      "exact duplicate dialogue removal",
+      "preserve scene and JLPT counts"
+    ],
+    "script": "conversation-quality-batch7.js",
+    "audit": "data/full_conversation_batch7_report.json"
   }
 }

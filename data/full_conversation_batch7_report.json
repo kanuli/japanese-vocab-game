@@ -1,0 +1,86 @@
+{
+  "version": "2026-08-27-full-conversation-batch7-v1",
+  "sceneCount": 77,
+  "dialogueCount": 1925,
+  "structureErrors": 0,
+  "kanaZhCount": 0,
+  "exactDuplicatePairs": 0,
+  "patternCounts": {
+    "worldN5": 29,
+    "worldN4": 0,
+    "worldN3": 0,
+    "worldN2": 0,
+    "worldN1": 0,
+    "referenceN4": 0,
+    "referenceN3": 0,
+    "referenceN2": 0,
+    "referenceN1": 0
+  },
+  "awkwardGenericProgressionTemplates": 0,
+  "depth": {
+    "N1": 91.5,
+    "N2": 64.8,
+    "N3": 56.7,
+    "N4": 39.3,
+    "N5": 30.3
+  },
+  "suffixMax": {
+    "N1": {
+      "A": [
+        "外の方法で対応できるか確認したいです",
+        41
+      ],
+      "B": [
+        "伺ったうえで可能な手続きを確認します",
+        41
+      ]
+    },
+    "N2": {
+      "A": [
+        "すどのように対応すればいいでしょうか",
+        35
+      ],
+      "B": [
+        "変わるため先に条件を確認してください",
+        20
+      ]
+    },
+    "N3": {
+      "A": [
+        "める前に何を確認したらいいでしょうか",
+        7
+      ],
+      "B": [
+        "要項目を確認してから申請してください",
+        2
+      ]
+    },
+    "N4": {
+      "A": [
+        "をする前に必要なものを教えてください",
+        37
+      ],
+      "B": [
+        "はい入っています",
+        8
+      ]
+    },
+    "N5": {
+      "A": [
+        "したいのですがどこへ行けばいいですか",
+        30
+      ],
+      "B": [
+        "わかりました確認します",
+        20
+      ]
+    }
+  },
+  "batch7Meta": {
+    "rewritten": 1125,
+    "duplicateFixes": 3,
+    "awkwardFixes": 1
+  },
+  "failures": [],
+  "passed": true
+}
