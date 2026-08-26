@@ -5,8 +5,10 @@ import re
 html = Path('mocktest.html')
 s = html.read_text(encoding='utf-8')
 anchor = '<script src="./grammar-reference-expansion.js?v=20260826v1"></script>'
-loader = '<script src="./advanced_words.js?v=20260826v5teacher"></script>\n<script src="./wordaudio-data.js?v=20260825v2"></script>\n'
+loader = '<script src="./advanced_words.js?v=20260826v5teacher"></script>\n<script src="./wordaudio-data.js?v=20260827v3teacher"></script>\n'
 if loader not in s:
+    # Replace an earlier teacher loader version if present, otherwise insert it.
+    s = re.sub(r'<script src="\./advanced_words\.js\?v=[^"]+"></script>\s*<script src="\./wordaudio-data\.js\?v=[^"]+"></script>\s*', '', s, count=1)
     if anchor not in s:
         raise SystemExit('mocktest.html grammar script anchor not found')
     s = s.replace(anchor, loader + anchor, 1)
@@ -46,12 +48,14 @@ if 'const SPECIAL_LEVEL_FIXES=' not in s:
 
 old = '''async function fetchVocab(){let err;for(const u of VOCAB_URLS){try{const r=await fetchWithTimeout(u,{cache:"default"},6000);if(!r.ok)throw Error(`HTTP ${r.status}`);const rows=rowsToVocab(parseCSV(await r.text()));if(rows.length<1000)throw Error("詞彙資料不足");return rows}catch(e){err=e}}console.warn(err);return Object.entries(FALLBACK_VOCAB).flatMap(([level,rows],i)=>rows.map((x,j)=>({id:`fbv-${level}-${j}`,level,word:x[0],reading:x[1],meaning:x[2],sentence:"",pos:""})))}'''
 new = '''function teacherRuntimeVocab(){const words=Array.isArray(window.WA?.words)?window.WA.words:[];if(words.length<32000)return[];const out=[],seen=new Set;for(const w of words){const level=String(w.level||'').toUpperCase();const word=String(w.kanji||w.displayWord||w.reading||'').trim(),rd=String(w.reading||'').trim(),meaning=String(w.meaning||'').trim();if(!/^N[1-5]$/.test(level)||!word||!rd||!meaning||!kana(rd))continue;const k=`${level}|${word}|${rd}`;if(seen.has(k))continue;seen.add(k);out.push({id:`tv-${w.id||`${level}-${word}-${rd}`}`,level,word,reading:rd,meaning,sentence:String(w.sentence||w.example||''),pos:String(w.pos||''),levelSource:String(w.levelSource||'teacher-runtime')})}return out}
-async function waitTeacherRuntime(ms=5200){const started=Date.now();while(Date.now()-started<ms){const rows=teacherRuntimeVocab();if(rows.length>=32000)return rows;await new Promise(r=>setTimeout(r,80))}return teacherRuntimeVocab()}
+async function waitTeacherRuntime(ms=30000){const started=Date.now();if(typeof window.WA?.buildWords==='function'){try{await Promise.race([window.WA.buildWords(),new Promise(r=>setTimeout(r,Math.min(20000,ms)))])}catch(e){console.warn('Teacher vocabulary builder unavailable',e)}}while(Date.now()-started<ms){const rows=teacherRuntimeVocab();if(rows.length>=32000)return rows;await new Promise(r=>setTimeout(r,100))}return teacherRuntimeVocab()}
 async function fetchVocab(){let teacher=await waitTeacherRuntime();if(teacher.length>=32000){globalThis.MOCKTEST_VOCAB_META={source:'teacher-runtime',count:teacher.length};return teacher}let err;for(const u of VOCAB_URLS){try{const r=await fetchWithTimeout(u,{cache:"default"},6000);if(!r.ok)throw Error(`HTTP ${r.status}`);const rows=rowsToVocab(parseCSV(await r.text()));if(rows.length<1000)throw Error("詞彙資料不足");globalThis.MOCKTEST_VOCAB_META={source:'external-fallback',count:rows.length};return rows}catch(e){err=e}}console.warn(err);const rows=teacherAlignedFallbackVocab();globalThis.MOCKTEST_VOCAB_META={source:'built-in-fallback',count:rows.length};return rows}'''
 if old in s:
     s = s.replace(old, new, 1)
 elif 'function teacherRuntimeVocab()' not in s or "source:'teacher-runtime'" not in s:
     raise SystemExit('mocktest.js fetchVocab pattern not found')
+# Upgrade an already-integrated older wait function deterministically.
+s=re.sub(r'async function waitTeacherRuntime\(ms=\d+\)\{.*?\}\nasync function fetchVocab\(\)', new.split('\nasync function fetchVocab()')[0]+'\nasync function fetchVocab()', s, count=1, flags=re.S)
 s=s.replace('const rows=Object.entries(FALLBACK_VOCAB).flatMap(([level,rows],i)=>rows.map((x,j)=>({id:`fbv-${level}-${j}`,level,word:x[0],reading:x[1],meaning:x[2],sentence:"",pos:""})));globalThis.MOCKTEST_VOCAB_META={source:\'built-in-fallback\',count:rows.length};return rows}',
             'const rows=teacherAlignedFallbackVocab();globalThis.MOCKTEST_VOCAB_META={source:\'built-in-fallback\',count:rows.length};return rows}')
 js.write_text(s, encoding='utf-8')
