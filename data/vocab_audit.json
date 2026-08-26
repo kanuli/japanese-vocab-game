@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T15:57:46.660985+00:00",
+  "generated": "2026-08-26T17:39:54.027853+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
@@ -29,9 +29,9 @@
     "stage1ConflictingExactKeysSkipped": 8,
     "stage2StratifiedReviewQueue": 36,
     "jlptCountsCoreAdvanced": {
-      "N1": 5200,
-      "N2": 11174,
-      "N3": 10992,
+      "N1": 5164,
+      "N2": 11192,
+      "N3": 11010,
       "N4": 2496,
       "N5": 2649
     }
@@ -13473,165 +13473,41 @@
     "combinedCountsByLevel": {
       "N5": 2649,
       "N4": 2496,
-      "N3": 10992,
-      "N2": 11174,
-      "N1": 5200
+      "N3": 11010,
+      "N2": 11192,
+      "N1": 5164
     },
     "directCountsByLevel": {
-      "N3": 2514,
-      "N5": 1011,
-      "N4": 957,
-      "N2": 3575,
-      "N1": 5200
+      "N3": 2502,
+      "N5": 1024,
+      "N4": 977,
+      "N2": 3590,
+      "N1": 5164
     },
     "estimatedCountsByLevel": {
-      "N3": 8478,
-      "N4": 1539,
-      "N2": 7599,
-      "N5": 1638
+      "N3": 8508,
+      "N4": 1519,
+      "N2": 7602,
+      "N5": 1625
     },
     "teacherGradeCounts": {
       "B": 7587,
-      "C": 2733,
-      "A": 2937,
+      "A": 5670,
       "D": 19254
     },
     "teacherBasisCounts": {
       "core-exact": 5077,
-      "common-core-vs-waller-lineage-easier": 2547,
+      "manual-secondary-exact": 2905,
       "core+waller-lineage-corroborated": 2652,
       "independent-teacher-anchor": 113,
-      "manual-secondary-exact": 172,
-      "common-core-vs-internal-lineage-conflict-easier": 63,
-      "core-vs-waller-lineage-adjacent": 18,
-      "core-vs-waller-lineage-large": 6,
       "waller-lineage-exact": 2126,
-      "waller-lineage-vs-existing-conflict": 65,
-      "internal-waller-lineage-conflict-common-easier": 33,
       "existing-direct-exact-row": 384,
-      "internal-waller-lineage-conflict-existing-tiebreak": 1,
       "estimated": 19254
     },
     "directRows": 13257,
     "estimatedRows": 19254,
-    "directConflictRows": 2921,
+    "directConflictRows": 188,
     "directConflictSamples": [
-      {
-        "key": "こうこう|高校",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "まる|丸",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N2",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "とう|党",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N2",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "だい|台",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ちゅう|中",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ど|度",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "にち|日",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ああ|ああ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N1",
-          "waller-entry-context": "N1"
-        }
-      },
-      {
-        "key": "アイスクリーム|アイスクリーム",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
       {
         "key": "あたし|あたし",
         "selected": "N3",
@@ -13658,200 +13534,12 @@
         }
       },
       {
-        "key": "アメリカ|アメリカ",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "いっぱい|いっぱい",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
         "key": "いや|いや",
         "selected": "N4",
         "grade": "B",
         "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N4",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "うるさい|うるさい",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "おじいさん|おじいさん",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "おっしゃる|おっしゃる",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4"
-        }
-      },
-      {
-        "key": "おととい|おととい",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "おととし|おととし",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "かし|菓子",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "くださる|くださる",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4"
-        }
-      },
-      {
-        "key": "クリスマス|クリスマス",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N2",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ケーキ|ケーキ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "コピー|コピー",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "さあ|さあ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ジュース|ジュース",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "スキー|スキー",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
         }
@@ -13865,69 +13553,6 @@
           "core-deck-exact": "N5",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
-        }
-      },
-      {
-        "key": "すばらしい|すばらしい",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4"
-        }
-      },
-      {
-        "key": "ずらり|ずらり",
-        "selected": "N2",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N1",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "スリッパ|スリッパ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ゼロ|ゼロ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "センチ|センチ",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
         }
       },
       {
@@ -13956,30 +13581,6 @@
         }
       },
       {
-        "key": "だから|だから",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "ただ|ただ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
         "key": "タバコ|タバコ",
         "selected": "N4",
         "grade": "B",
@@ -13987,108 +13588,6 @@
         "evidence": {
           "core-deck-exact": "N4",
           "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "たぶん|たぶん",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ダンス|ダンス",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "チーズ|チーズ",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "テープ|テープ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "テキスト|テキスト",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "どんな|どんな",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "なる|なる",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "ネクタイ|ネクタイ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
         }
       },
       {
@@ -14103,313 +13602,6 @@
         }
       },
       {
-        "key": "はく|はく",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ハンカチ|ハンカチ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ビール|ビール",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N2",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ポスト|ポスト",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ボタン|ボタン",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N4"
-        }
-      },
-      {
-        "key": "まず|まず",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "マンション|マンション",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "ミルク|ミルク",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ゆっくり|ゆっくり",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ヨーロッパ|ヨーロッパ",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ラジカセ|ラジカセ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "わるい|悪い",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "いぜん|以前",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "いみ|意味",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "やさしい|易しい",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "いす|椅子",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "ちがう|違う",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "いちばん|一番",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "ひく|引く",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "うんどう|運動",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "えん|円",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "おす|押す",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "おく|億",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "おれ|俺",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N1",
-          "waller-exact": "N1",
-          "existing-direct": "N1",
-          "waller-entry-context": "N1"
-        }
-      },
-      {
         "key": "あたたかい|温かい",
         "selected": "N4",
         "grade": "B",
@@ -14418,365 +13610,6 @@
           "core-deck-exact": "N4",
           "existing-direct": "N5",
           "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "おんせん|温泉",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "へた|下手",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "なに|何",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "なにか|何か",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "うち|うち",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "かぐ|家具",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "かてい|家庭",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ひま|暇",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "あく|開く",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "まち|街",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "かど|角",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かかる|掛かる",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かける|掛ける",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かつどう|活動",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "すべる|滑る",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "かえり|帰り",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "すう|吸う",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "はし|橋",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かね|金",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "けっこう|結構",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "いや|嫌",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "きらい|嫌い",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "みる|見る",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かぎ|鍵",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "のど|喉",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "さす|差す",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "さらいしゅう|再来週",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N4"
-        }
-      },
-      {
-        "key": "さいご|最後",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
         }
       },
       {
@@ -14791,355 +13624,6 @@
         }
       },
       {
-        "key": "さく|咲く",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "とる|撮る",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "さら|皿",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "しぬ|死ぬ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "しけん|試験",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "とき|時",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "じこ|自己",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N1",
-          "waller-exact": "N1",
-          "existing-direct": "N1",
-          "waller-entry-context": "N1"
-        }
-      },
-      {
-        "key": "しゃかい|社会",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "よわい|弱い",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "まもる|守る",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "てあらい|手洗い",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "しゅるい|種類",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "さけ|酒",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "しゅう|週",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "でかける|出かける",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "しゅっちょう|出張",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "じょせい|女性",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "しょうがっこう|小学校",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "しょうがくせい|小学生",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "きえる|消える",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "わらう|笑う",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "ぞう|象",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "しんじる|信じる",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "しんごう|信号",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "まじめ|真面目",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N4"
-        }
-      },
-      {
-        "key": "かみ|神",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N2",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "おや|親",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
         "key": "つらい|つらい",
         "selected": "N4",
         "grade": "B",
@@ -15148,238 +13632,6 @@
           "core-deck-exact": "N4",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "にんげん|人間",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "にんき|人気",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ふく|吹く",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かず|数",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "こえ|声",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "さき|先",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "さきに|先に",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N1",
-          "waller-exact": "N1",
-          "existing-direct": "N1",
-          "waller-entry-context": "N1"
-        }
-      },
-      {
-        "key": "ふね|船",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N4"
-        }
-      },
-      {
-        "key": "えらぶ|選ぶ",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "そうじ|掃除",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "がわ|側",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "waller-exact": "N1",
-          "existing-direct": "N1",
-          "waller-entry-context": "N1"
-        }
-      },
-      {
-        "key": "むら|村",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かわり|代わり",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "だいがくせい|大学生",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "たいへん|大変",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "だれか|誰か",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ひく|弾く",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "あたたかい|暖かい",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
         }
       },
       {
@@ -15396,681 +13648,2017 @@
         }
       },
       {
-        "key": "ちゅうがく|中学",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "ちゅうがっこう|中学校",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "はる|貼る",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "てんこう|天候",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "key": "おまえ|お前",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N2",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
         }
       },
       {
-        "key": "いなか|田舎",
+        "key": "おる|おる",
         "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N4",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "おつり|お釣り",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
           "existing-direct": "N4",
           "waller-entry-context": "N4"
         }
       },
       {
-        "key": "のぼる|登る",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "key": "かむ|嚙[か]む",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5"
+          "core-deck-exact": "N3",
+          "existing-direct": "N4",
+          "core-deck-normalized": "N3",
+          "waller-entry-context": "N4"
         }
       },
       {
-        "key": "とし|都市",
+        "key": "こしょう|こしょう",
         "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
-          "core-deck-exact": "N2",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ごらんになる|ご覧になる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N4",
+          "waller-entry-context": "N4"
+        }
+      },
+      {
+        "key": "しまう|しまう",
+        "selected": "N4",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N4",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
         }
       },
       {
-        "key": "こたえ|答え",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "key": "ひっこし|引っ越し",
+        "selected": "N4",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N1",
-          "waller-exact": "N1",
+          "core-deck-exact": "N4",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "こたえ|応え",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
           "existing-direct": "N4"
         }
       },
       {
-        "key": "ぶたにく|豚肉",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ないよう|内容",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "はたち|二十歳",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "にほん|日本",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "こい|濃い",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "せ|背",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "はし|箸",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かみ|髪",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "かれ|彼",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "かのじょ|彼女",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "びょうき|病気",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "つける|付ける",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5"
-        }
-      },
-      {
-        "key": "おっと|夫",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "ふうとう|封筒",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ふろ|風呂",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ひらがな|平仮名",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "しまる|閉まる",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "しめる|閉める",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かたかな|片仮名",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "かえす|返す",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "べんとう|弁当",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "かた|方",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ほう|方",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ぼく|僕",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
-        }
-      },
-      {
-        "key": "ようちえん|幼稚園",
+        "key": "あたためる|温める",
         "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N3",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
           "existing-direct": "N2",
           "waller-entry-context": "N2"
         }
       },
       {
-        "key": "ゆかた|浴衣",
+        "key": "けんか|喧嘩[けんか]",
         "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N3",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
+          "existing-direct": "N4",
+          "core-deck-normalized": "N3",
+          "openjlpt-normalized": "N3",
+          "waller-normalized": "N4",
+          "waller-entry-context": "N4"
+        }
+      },
+      {
+        "key": "かみくず|紙くず",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
           "existing-direct": "N2",
           "waller-entry-context": "N2"
         }
       },
       {
-        "key": "たのむ|頼む",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "はく|履く",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "りっぱ|立派",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "すずしい|涼しい",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "なみだ|涙",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "れい|零",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "れんしゅう|練習",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-internal-lineage-conflict-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "ろうか|廊下",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N5",
-          "waller-exact": "N5",
-          "existing-direct": "N5",
-          "waller-entry-context": "N5"
-        }
-      },
-      {
-        "key": "かい|会",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N4",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "がく|学",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N3",
-          "waller-exact": "N3",
-          "existing-direct": "N3",
-          "waller-entry-context": "N3"
-        }
-      },
-      {
-        "key": "がくねん|学年",
-        "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
-        "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
-          "existing-direct": "N2",
-          "waller-entry-context": "N2"
-        }
-      },
-      {
-        "key": "く|区",
+        "key": "まことに|誠に",
         "selected": "N2",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N2",
-          "openjlpt-exact": "N1",
-          "waller-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
       },
       {
-        "key": "ご|後",
+        "key": "いりぐち|入り口",
+        "selected": "N4",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N4",
+          "existing-direct": "N5"
+        }
+      },
+      {
+        "key": "ひげ|髭[ひげ]",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N4",
+          "core-deck-normalized": "N1",
+          "openjlpt-normalized": "N2",
+          "waller-normalized": "N4",
+          "waller-entry-context": "N4"
+        }
+      },
+      {
+        "key": "あみもの|編み物",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "いつのまにか|いつの間にか",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2"
+        }
+      },
+      {
+        "key": "おい|甥[おい]",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N3",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "おじぎ|お辞儀",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "せい|せい",
         "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N5",
-          "waller-exact": "N3",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
         }
       },
       {
-        "key": "ねんせい|年生",
+        "key": "ぜいたく|贅[ぜい]沢",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N3",
+          "waller-normalized": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "せっかく|せっかく",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "そろう|そろう",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "たまたま|たまたま",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "ためる|ためる",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "つぐ|注[つ]ぐ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "core-deck-normalized": "N2",
+          "waller-normalized": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "つなぐ|つなぐ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "なでる|撫[な]でる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N3",
+          "openjlpt-normalized": "N2",
+          "waller-normalized": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "はやり|流行[はや]り",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N2",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "へこむ|へこむ",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "まとまる|まとまる",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "まとめる|まとめる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "もともと|もともと",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ものすごい|ものすごい",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "かかわる|関わる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "すでに|すでに",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "きづく|気づく",
         "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N4",
-          "openjlpt-exact": "N1",
-          "waller-exact": "N1",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "ちかづく|近づく",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
       },
       {
-        "key": "あげる|あげる",
-        "selected": "N5",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "key": "みかけ|見かけ",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
-          "core-deck-exact": "N5",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N5"
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
         }
       },
       {
-        "key": "アジア|アジア",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "key": "さらに|さらに",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
-          "core-deck-exact": "N3",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
-          "existing-direct": "N4",
-          "waller-entry-context": "N4"
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
         }
       },
       {
-        "key": "あちらこちら|あちらこちら",
+        "key": "さくじつ|昨日",
         "selected": "N3",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N3",
-          "openjlpt-exact": "N2",
-          "waller-exact": "N2",
+          "existing-direct": "N5",
+          "waller-entry-context": "N5"
+        }
+      },
+      {
+        "key": "ねずみ|ねずみ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "つく|点[つ]く",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N3",
+          "openjlpt-normalized": "N2",
+          "waller-normalized": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "むく|剝[む]く",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N3",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "あらわれる|表れる",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
           "existing-direct": "N3"
         }
       },
       {
-        "key": "アフリカ|アフリカ",
-        "selected": "N4",
-        "grade": "C",
-        "basis": "common-core-vs-waller-lineage-easier",
+        "key": "ほうちょう|包丁",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ほんの|ほんの",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
         "evidence": {
           "core-deck-exact": "N2",
-          "openjlpt-exact": "N4",
-          "waller-exact": "N4",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "おちつく|落ち着く",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "はなしかける|話しかける",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ほこり|埃[ほこり]",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N3",
+          "waller-normalized": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "しゃれ|しゃれ",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "おいて|おいて",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "おむつ|おむつ",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "かく|搔[か]く",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N3",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "さぼる|サボる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "しわ|しわ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "ずるい|ずるい",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ためいき|ため息",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "だるい|だるい",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "もむ|もむ",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "よる|よる",
+        "selected": "N5",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N5",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "たまる|たまる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "しまい|しまい",
+        "selected": "N4",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N4",
+          "existing-direct": "N3"
+        }
+      },
+      {
+        "key": "ひとさしゆび|人差し指",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "はやめる|速める",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "しまる|締まる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N5",
+          "waller-entry-context": "N5"
+        }
+      },
+      {
+        "key": "のぼり|登り",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "うりあげ|売り上げ",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "かぶせる|かぶせる",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ほほえむ|微[ほほ]笑む",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N3",
+          "core-deck-normalized": "N1",
+          "openjlpt-normalized": "N3",
+          "waller-normalized": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "きく|利く",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "くぎ|くぎ",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "さじ|さじ",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "なす|為[な]す",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N1",
+          "openjlpt-normalized": "N2",
+          "waller-normalized": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ひとごみ|人混み",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "わびる|詫[わ]びる",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N1",
+          "openjlpt-normalized": "N2",
+          "waller-normalized": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "わずか|わずか",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "くず|くず",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ことわざ|ことわざ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "しま|縞[しま]",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N1",
+          "openjlpt-normalized": "N2",
+          "waller-normalized": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "せいぜい|せいぜい",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "どける|どける",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "たんぼ|田んぼ",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "むしろ|むしろ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "はう|はう",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "めい|姪[めい]",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N3",
+          "openjlpt-normalized": "N2",
+          "waller-normalized": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "れんが|れんが",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ろうそく|ろうそく",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "ごく|極[ごく]",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N3",
+          "waller-normalized": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "よびかける|呼びかける",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "のち|のち",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "おもいつく|思いつく",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "つける|点[つ]ける",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N3",
+          "openjlpt-normalized": "N2",
+          "waller-normalized": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "はがす|剝がす",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2"
+        }
+      },
+      {
+        "key": "ばくだい|莫[ばく]大",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N3",
+          "waller-normalized": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "あきれる|呆[あき]れる",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "core-deck-normalized": "N1",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1"
+        }
+      },
+      {
+        "key": "めざまし|目覚まし",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "いためる|炒[いた]める",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N3",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "かすか|かすか",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "かつて|かつて",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "かなう|叶[かな]う",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "かなえる|叶[かな]える",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "くじびき|くじ引き",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "こつ|コツ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "しつけ|しつけ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "すくう|掬[すく]う",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "とりあえず|とりあえず",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "なめる|なめる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "なんと|なんと",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "にもかかわらず|にもかかわらず",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "ばか|ばか",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "ひねる|ひねる",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "まして|まして",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "めったに|めったに",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "もたらす|もたらす",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "わざわざ|わざわざ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "および|および",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "むすびつく|結びつく",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "むすびつける|結びつける",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "みつもり|見積もり",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "もてる|もてる",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "いたみ|傷み",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "いたむ|傷む",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "きずつく|傷つく",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "うむ|生む",
+        "selected": "N4",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N4",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "すすめる|薦める",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "ふさわしい|ふさわしい",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "うまる|埋まる",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "とどまる|とどまる",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2"
+        }
+      },
+      {
+        "key": "あえて|あえて",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "あらかじめ|あらかじめ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "ありのまま|ありのまま",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "いかに|いかに",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "おだてる|おだてる",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "おのずから|自[おの]ずから",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "かねて|かねて",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "しきたり|しきたり",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "たくましい|たくましい",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "たどりつく|たどり着く",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "たどる|たどる",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "たんぱくしつ|たんぱく質",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "つぶやく|つぶやく",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "とどめる|とどめる",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "とりわけ|とりわけ",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "はまる|はまる",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "はるか|はるか",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "ひいては|ひいては",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "ひたすら|ひたすら",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "もしくは|もしくは",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "もはや|もはや",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "よみがえる|よみがえる",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N2",
+          "waller-entry-context": "N2"
+        }
+      },
+      {
+        "key": "わび|詫[わ]び",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "そらす|そらす",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "みき|幹",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "うつろ|うつろ",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "おもいつき|思いつき",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "てすう|手数",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "うけみ|受け身",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "こうり|小売り",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "とうとい|尊い",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "はりがみ|貼り紙",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "よほど|よほど",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "いかにも|いかにも",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "しかしながら|しかしながら",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "そこら|そこら",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "もしかして|もしかして",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "よろしく|よろしく",
+        "selected": "N5",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N5",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "ちょう|蝶[ちょう]",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "core-deck-normalized": "N2",
+          "openjlpt-normalized": "N1",
+          "waller-normalized": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "ばんにん|万人",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "とりにく|鳥肉",
+        "selected": "N4",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N4",
+          "existing-direct": "N5",
+          "waller-entry-context": "N5"
+        }
+      },
+      {
+        "key": "みそ|みそ",
+        "selected": "N5",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N5",
+          "existing-direct": "N4",
+          "waller-entry-context": "N4"
+        }
+      },
+      {
+        "key": "どじ|どじ",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "はじめまして|初めまして",
+        "selected": "N5",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N5",
+          "existing-direct": "N2"
+        }
+      },
+      {
+        "key": "あったかい|あったかい",
+        "selected": "N1",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "existing-direct": "N5",
+          "waller-entry-context": "N5"
+        }
+      },
+      {
+        "key": "たずねる|訊[たず]ねる",
+        "selected": "N3",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N3",
+          "existing-direct": "N4",
+          "core-deck-normalized": "N3",
+          "waller-entry-context": "N4"
+        }
+      },
+      {
+        "key": "さみしい|さみしい",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
           "existing-direct": "N4",
           "waller-entry-context": "N4"
         }
       }
     ],
     "coreDeckExactEvidence": 10511,
-    "manualSecondaryExactConfigured": 182,
+    "manualSecondaryExactConfigured": 2917,
     "trainingCountsByLevel": {
-      "N3": 2514,
-      "N5": 1011,
-      "N4": 957,
-      "N2": 3575,
-      "N1": 5200
+      "N3": 2502,
+      "N5": 1024,
+      "N4": 977,
+      "N2": 3590,
+      "N1": 5164
     },
     "worldTargetCounts": {
       "N5": 2649,
@@ -16080,20 +15668,20 @@
       "N1": 13457
     },
     "residualQuotas": {
-      "N5": 1638,
-      "N4": 1539,
-      "N3": 8478,
-      "N2": 7599,
+      "N5": 1625,
+      "N4": 1519,
+      "N3": 8508,
+      "N2": 7602,
       "N1": 0
     },
     "modelRankLogMedians": {
-      "N5": 4.054613054556888,
-      "N4": 3.872272846224205,
-      "N3": 3.8287235195446243,
-      "N2": 4.019033163930999,
-      "N1": 4.038441320910511
+      "N5": 4.056313927505084,
+      "N4": 3.8885725968575997,
+      "N3": 3.8238652311358536,
+      "N2": 4.023931133548636,
+      "N1": 4.03596976823655
     },
-    "estimatedN1MinimumFrequencyRank": 10684,
+    "estimatedN1MinimumFrequencyRank": 10714,
     "estimatedN1WithoutRarityEvidence": 0,
     "duplicateExactKeys": 0,
     "teacherSentinels": {
@@ -17675,30 +17263,29 @@
     "countsByLevel": {
       "N5": 2652,
       "N4": 2507,
-      "N3": 11008,
-      "N2": 11238,
-      "N1": 5208
+      "N3": 11026,
+      "N2": 11256,
+      "N1": 5172
     },
     "gradeCounts": {
-      "C": 2735,
-      "A": 2937,
+      "A": 5672,
       "D": 19332,
       "B": 7609
     },
     "directSupplementRowsAdded": 24,
-    "conflictingDirectSupplementRowsAdded": 2,
+    "conflictingDirectSupplementRowsAdded": 0,
     "estimatedSupplementRowsAdded": 78,
     "estimatedN1": 0,
     "duplicateExactKeys": 0,
     "rankLogMediansUsed": {
-      "N5": 4.054613054556888,
-      "N4": 3.872272846224205,
-      "N3": 3.8287235195446243,
-      "N2": 4.019033163930999
+      "N5": 4.056313927505084,
+      "N4": 3.8885725968575997,
+      "N3": 3.8238652311358536,
+      "N2": 4.023931133548636
     },
     "overlay": {
       "version": "20260826-teacher-runtime-v2-lineage",
-      "generated": "2026-08-26T15:58:27.214577+00:00",
+      "generated": "2026-08-26T17:40:36.752317+00:00",
       "configuredKeys": 393,
       "rule": "apply v5 source-lineage-aware teacher level after all additive runtime supplements",
       "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated."
