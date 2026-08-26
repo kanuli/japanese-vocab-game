@@ -23,6 +23,7 @@ on:
       - 'tools/repair_listening_catalog_batch5_v2.py'
       - 'tools/repair_listening_catalog_batch5_v3.py'
       - 'tools/audit_listening_repair_batch5.py'
+      - 'tools/analyze_listening_length_batch6.py'
       - 'tools/fix_listening_gap_naturalness.py'
       - 'tools/audit_coverage_gaps.py'
       - 'tools/reconcile_coverage_report.py'
@@ -58,6 +59,8 @@ jobs:
         run: python tools/repair_listening_catalog_batch5_v2.py
       - name: Finalize batch 5 translated aliases and reuse cap
         run: python tools/repair_listening_catalog_batch5_v3.py
+      - name: Analyze Batch 6 answer-length outliers
+        run: python tools/analyze_listening_length_batch6.py
       - name: Audit batch 5 listening repair
         run: python tools/audit_listening_repair_batch5.py
       - name: Audit reference expansion
@@ -82,6 +85,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-original-catalog.json listening-gap-expansion.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json data/quality_depth_batch3_report.json data/full_listening_quality_batch4_report.json data/listening_repair_batch5_preflight.json data/listening_repair_batch5_report.json
-          git commit -m 'Repair Japanese listening catalog quality batch 5'
+          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-original-catalog.json listening-gap-expansion.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json data/quality_depth_batch3_report.json data/full_listening_quality_batch4_report.json data/listening_repair_batch5_preflight.json data/listening_repair_batch5_report.json data/listening_length_batch6_preflight.json
+          git commit -m 'Analyze Japanese listening length quality batch 6'
           git push
