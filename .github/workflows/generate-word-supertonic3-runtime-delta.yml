@@ -1,0 +1,161 @@
+name: Generate Word Supertonic 3 runtime delta — current full word list
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-supertonic3-runtime-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-supertonic3-runtime-v2
+  HF_DIR: word/supertonic3/runtime-v2
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build exact missing-key catalog from current teacher-audited runtime
+        run: python scripts/build_word_supertonic_runtime_delta_source.py
+      - name: Validate runtime delta source
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('word-supertonic3-runtime-delta-source.json'))
+          assert d['status']=='catalog'
+          assert d['runtimeWordCount']>=32000
+          assert d['wordCount']>0
+          assert d['alreadyHostedExactCount']+d['wordCount']==d['runtimeWordCount']
+          assert len(d['items'])==d['wordCount']==len(d['words'])
+          assert len(d['shardCounts'])==d['shardCount']==20 and min(d['shardCounts'])>0
+          print('Runtime:',d['runtimeWordCount'],'already hosted:',d['alreadyHostedExactCount'],'new:',d['wordCount'])
+          print('Shard counts:',d['shardCounts'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-runtime-delta-source
+          path: word-supertonic3-runtime-delta-source.json
+          retention-days: 3
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title 'Supertonic 3 current runtime vocabulary delta' --notes 'Server-pre-generated Supertonic 3 audio for exact current Word List keys not covered by the original 22,333-word library or the 713-key v1 delta. Ten voices; GitHub Releases primary, Hugging Face backup.'
+
+  generate:
+    needs: [catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        voice: [F1,F2,F3,F4,F5,M1,M2,M3,M4,M5]
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-runtime-delta-source
+          path: .
+      - name: Install Supertonic 3 and ffmpeg
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+      - name: Generate one runtime delta shard
+        env:
+          VOICE: ${{ matrix.voice }}
+          SHARD: ${{ matrix.shard }}
+          CATALOG: word-supertonic3-runtime-delta-source.json
+          OUT_DIR: word-supertonic-runtime-out
+        run: python scripts/generate_word_supertonic_shard.py
+      - name: Validate and publish shard
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          v,s=os.environ['V'],int(os.environ['S'])
+          src=json.load(open('word-supertonic3-runtime-delta-source.json'))
+          expected=sum(1 for x in src['items'] if int(x['shard'])==s)
+          m=json.load(open(f'word-supertonic-runtime-out/{v}-shard{s}.json'))
+          assert expected>0 and m['count']==expected and len(m['members'])==expected
+          p=Path('word-supertonic-runtime-out')/m['asset']; assert p.is_file() and p.stat().st_size>1000
+          with tarfile.open(p,'r:') as tf: assert len([x for x in tf.getmembers() if x.isfile()])==expected
+          print(v,s,expected,p.stat().st_size)
+          PY
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "word-supertonic-runtime-out/$V-shard$S.tar" "$HF_DIR/$V-shard$S.tar" --repo-type dataset --commit-message "Runtime Word Supertonic 3 $V shard $S"
+          gh release upload "$RELEASE_TAG" "word-supertonic-runtime-out/$V-shard$S.tar" --clobber
+          mkdir -p manifest-artifact && cp "word-supertonic-runtime-out/$V-shard$S.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-runtime-manifest-${{ matrix.voice }}-${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+
+  finalize:
+    needs: [catalog,generate]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-runtime-delta-source
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-runtime-manifest-*
+          path: word-supertonic-runtime-manifests
+          merge-multiple: true
+      - name: Build final runtime delta catalog and prove full exact-key coverage
+        run: |
+          test "$(find word-supertonic-runtime-manifests -name '*.json' | wc -l)" -eq 200
+          python scripts/build_word_supertonic_runtime_delta_catalog.py
+          python - <<'PY'
+          import csv,json
+          base=json.load(open('word-supertonic3-catalog.json'))
+          old=json.load(open('word-supertonic3-delta-catalog.json'))
+          new=json.load(open('word-supertonic3-runtime-delta-catalog.json'))
+          runtime=set()
+          with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
+              for r in csv.DictReader(f,delimiter='\t'):
+                  reading=(r.get('reading') or '').strip(); display=(r.get('display') or '').strip() or reading
+                  runtime.add(reading+'|'+display)
+          covered=set(base['words'])|set(old['words'])|set(new['words'])
+          missing=runtime-covered
+          assert not missing, list(sorted(missing))[:20]
+          assert len(runtime)==new['runtimeWordCount']
+          assert new['voiceCount']==10 and new['recordingCount']==new['wordCount']*10
+          for v in new['voices']:
+              x=json.load(open(f'word-supertonic3-runtime-delta-{v}-index.json'))
+              assert x['wordCount']==new['wordCount'] and len(x['bundles'])==new['shardCount']
+          print('FULL SERVER SUPERTONIC COVERAGE:',len(runtime),'exact current runtime words')
+          print('New delta recordings:',new['recordingCount'])
+          PY
+      - name: Commit lightweight runtime catalogs and indexes
+        run: |
+          git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-supertonic3-runtime-delta-catalog.json word-supertonic3-runtime-delta-*-index.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish full current Word List Supertonic server audio'; git pull --rebase origin main; git push origin main; fi
