@@ -1,10 +1,11 @@
 {
-  "version": "2026-08-27-gap-audit-v4",
+  "version": "2026-08-27-gap-audit-v5",
   "methodology": {
     "jlpt": "Official JLPT capability descriptions are the difficulty anchor; grammar matrix is diagnostic, not an official syllabus.",
     "jfStandard": "Conversation topic coverage uses the Japan Foundation JF Standard 15-topic framework as a diagnostic taxonomy.",
     "copyright": "External proprietary sites are reference-only and are not scraped or copied.",
-    "listeningDedup": "Listening subtype counts are reconciled from the QA-executed, sentence-deduplicated expansion pool; duplicate candidate templates are not counted as database growth."
+    "listeningDedup": "Listening subtype counts are reconciled from the QA-executed, sentence-deduplicated expansion pool; duplicate candidate templates are not counted as database growth.",
+    "batch2": "Batch 2 raises targeted listening subtypes to at least five unique examples and reconciles remaining conversation communicative-function gaps without increasing scene count."
   },
   "grammar": {
     "N5": {
@@ -512,7 +513,7 @@
           "apology": 2,
           "refusal": 0,
           "clarification": 2,
-          "change_reschedule": 0,
+          "change_reschedule": 4,
           "complaint_problem": 0,
           "negotiation_alternative": 0,
           "procedure": 0,
@@ -520,13 +521,10 @@
           "emergency": 1,
           "reason_explanation": 9,
           "exception": 0,
-          "recommendation": 0,
+          "recommendation": 2,
           "comparison": 0
         },
-        "weakExpected": [
-          "change_reschedule",
-          "recommendation"
-        ]
+        "weakExpected": []
       },
       "N3": {
         "signalCounts": {
@@ -538,7 +536,7 @@
           "change_reschedule": 2,
           "complaint_problem": 2,
           "negotiation_alternative": 0,
-          "procedure": 0,
+          "procedure": 6,
           "reporting": 1,
           "emergency": 0,
           "reason_explanation": 19,
@@ -546,9 +544,7 @@
           "recommendation": 3,
           "comparison": 4
         },
-        "weakExpected": [
-          "procedure"
-        ]
+        "weakExpected": []
       },
       "N2": {
         "signalCounts": {
@@ -564,13 +560,11 @@
           "reporting": 1,
           "emergency": 2,
           "reason_explanation": 27,
-          "exception": 0,
+          "exception": 4,
           "recommendation": 3,
           "comparison": 3
         },
-        "weakExpected": [
-          "exception"
-        ]
+        "weakExpected": []
       },
       "N1": {
         "signalCounts": {
@@ -798,5 +792,41 @@
         "language_culture"
       ]
     }
+  },
+  "batch2Validation": {
+    "listeningFloor": 5,
+    "conversationTargets": {
+      "N4": {
+        "change_reschedule": [
+          "変更",
+          "別の時間",
+          "改めて",
+          "振り替"
+        ],
+        "recommendation": [
+          "ほうがいい",
+          "おすすめ",
+          "したほう"
+        ]
+      },
+      "N3": {
+        "procedure": [
+          "手続",
+          "受付",
+          "申請",
+          "提出"
+        ]
+      },
+      "N2": {
+        "exception": [
+          "例外",
+          "今回に限り",
+          "通常の方法以外",
+          "事情がある場合"
+        ]
+      }
+    },
+    "failures": [],
+    "passed": true
   }
 }
