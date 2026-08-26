@@ -1,10 +1,10 @@
 {
-  "generated": "2026-08-26T09:09:43.720286+00:00",
+  "generated": "2026-08-26T09:14:55.095260+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
     "officialJlptNote": "No official post-2010 JLPT per-word vocabulary list exists; site levels are third-party learning labels or estimates.",
-    "coreRefinement": "Every original core fallback is reviewed against all exact form+reading Tomoshi/JMdict candidates. Automatic selection requires strong Traditional-Chinese semantic agreement and a clear margin. Mazii/MOJi/時雨 are secondary manual validation only; their proprietary dictionary text is not bulk-copied."
+    "coreRefinement": "Every original core fallback is reviewed against all safe exact-equivalent form+reading Tomoshi/JMdict candidates. Bracketed furigana notation, Unicode/Japanese glyph normalization and hiragana/katakana reading equivalence are allowed only when the raw exact lookup has no candidate. Automatic semantic selection still requires strong Traditional-Chinese agreement and a clear margin. Mazii/MOJi/時雨 are secondary manual validation only; their proprietary dictionary text is not bulk-copied."
   },
   "counts": {
     "core": 10511,
@@ -16,23 +16,25 @@
     "sameMeaningVariantGroups": 477,
     "sameMeaningVariantLevelConflicts": 66,
     "advancedMultiEntryExactKeys": 18,
-    "coreMeaningFallbackAfterRefinement": 212,
+    "coreMeaningFallbackAfterRefinement": 30,
     "coreSecondaryCrosschecksApplied": 16,
-    "coreSemanticResolvedPairs": 107,
+    "coreSemanticResolvedPairs": 108,
+    "coreNormalizedFormReadingRecoveredPairs": 182,
     "orthographicVariantLevelDifferencesForReview": 66
   },
   "coreAudit": {
     "total": 10511,
-    "exactEntryResolved": 10304,
-    "ambiguousPairs": 317,
-    "unresolvedPairs": 207,
-    "tomoshiMeaningsApplied": 10298,
-    "originalMeaningFallback": 212,
-    "meaningChanged": 10003,
-    "levelChanged": 2812,
-    "semanticResolvedPairs": 107,
+    "exactEntryResolved": 10486,
+    "ambiguousPairs": 320,
+    "unresolvedPairs": 25,
+    "tomoshiMeaningsApplied": 10480,
+    "originalMeaningFallback": 30,
+    "meaningChanged": 10176,
+    "levelChanged": 2845,
+    "semanticResolvedPairs": 108,
     "manualSecondaryCrosscheckApplied": 16,
-    "semanticCandidatesReviewed": 129
+    "semanticCandidatesReviewed": 130,
+    "normalizedFormReadingRecoveredPairs": 182
   },
   "coreAmbiguousSamples": [
     {
@@ -543,106 +545,36 @@
     }
   ],
   "coreUnresolvedSamples": [
-    "あめ|飴[あめ]",
-    "からおけ|カラオケ",
-    "せっけん|石鹸[けん]",
     "そう|そう",
-    "そば|蕎麦[そば]",
     "だけ|だけ",
     "ない|ない",
-    "ちゃわん|茶碗[わん]",
-    "うそ|嘘[うそ]",
-    "かむ|嚙[か]む",
     "ごくごく|ごくごく",
-    "せき|咳[せき]",
-    "ぬれる|濡[ぬ]れる",
-    "のり|海苔[のり]",
     "ぱらぱら|ぱらぱら",
-    "わん|椀[わん]",
-    "けんか|喧嘩[けんか]",
-    "ひげ|髭[ひげ]",
-    "うわさ|噂[うわさ]",
-    "おい|甥[おい]",
-    "ぜいたく|贅[ぜい]沢",
-    "たたく|叩[たた]く",
-    "つぐ|注[つ]ぐ",
-    "なでる|撫[な]でる",
-    "はやり|流行[はや]り",
     "ようやく|ようやく",
     "おえる|終える",
-    "とがる|尖[とが]る",
-    "つく|点[つ]く",
-    "むく|剝[む]く",
-    "ひも|紐[ひも]",
     "めんきょ|免許",
-    "ほこり|埃[ほこり]",
     "しゅ|手",
     "あと|あと",
-    "かかる|罹[かか]る",
-    "かく|搔[か]く",
-    "がん|癌[がん]",
-    "さらだゆ|サラダ油",
     "で|で",
     "もくもく|もくもく",
     "より|より(副)",
-    "はぶらし|歯ブラシ",
-    "ほほえむ|微[ほほ]笑む",
-    "なす|為[な]す",
-    "わびる|詫[わ]びる",
     "いわば|いわば",
-    "しま|縞[しま]",
-    "あいづち|相槌[づち]",
-    "ぬらす|濡[ぬ]らす",
-    "めい|姪[めい]",
-    "はやる|流行[はや]る",
     "くわえる|くわえる",
-    "いんせき|隕[いん]石",
-    "ごく|極[ごく]",
-    "せりふ|台詞[せりふ]",
-    "つける|点[つ]ける",
     "にじ|虹",
-    "ばくだい|莫[ばく]大",
-    "あきれる|呆[あき]れる",
-    "ほえる|吠[ほ]える",
     "きる|きる",
-    "あり|蟻[あり]",
-    "いためる|炒[いた]める",
-    "うそつき|嘘[うそ]つき",
-    "かなう|叶[かな]う",
-    "かなえる|叶[かな]える",
-    "きずな|絆[きずな]",
-    "きぜん|毅[き]然",
-    "さび|錆[さび]",
-    "しこう|嗜[し]好",
-    "すくう|掬[すく]う",
-    "すずめ|雀[すずめ]",
-    "ふち|淵[ふち]",
-    "むける|剝[む]ける",
-    "あっせん|斡旋[あっせん]",
-    "おのずから|自[おの]ずから",
-    "かさばる|嵩張[かさば]る",
-    "さえる|冴[さ]える",
-    "つづる|綴[つづ]る",
-    "はせる|馳[は]せる",
-    "ぼうぜん|茫[ぼう]然",
-    "ぼうぜん|呆[ぼう]然",
-    "よしあし|善し悪[あ]し",
-    "わび|詫[わ]び",
-    "あおむけ|仰[あお]向け",
-    "かなづち|金槌[づち]",
     "かける|駆ける",
     "ごさ|誤差",
-    "ささげる|捧[ささ]げる",
-    "りゅうちょう|流暢[ちょう]",
     "み|味",
-    "あいきょう|愛嬌[きょう]",
-    "あらわ|顕[あら]わ",
-    "うのみ|鵜呑[うの]み",
-    "おきて|掟[おきて]",
-    "おっくう|億劫[おっくう]",
-    "おのずと|自[おの]ずと",
-    "かみあう|嚙[か]み合う",
-    "どんぞこ|どん底"
+    "どんぞこ|どん底",
+    "はいはい|はいはい",
+    "かられる|駆られる",
+    "たたえる|たたえる",
+    "ウエア|ウエア",
+    "ゆがみ|ゆがみ",
+    "ぜんだま|善玉",
+    "こがねいろ|こがね色",
+    "とろみ|とろみ",
+    "さきのばし|先延ばし"
   ],
   "advancedMeaningSources": {
     "tomoshi-entry-id": 12492,
@@ -3155,28 +3087,9 @@
   "fatalIssues": [],
   "coreUnresolvedAll": [
     {
-      "key": "あめ|飴[あめ]",
-      "originalMeaning": "糖果",
-      "level": "N4",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "からおけ|カラオケ",
-      "originalMeaning": "卡拉OK，KTV",
-      "level": "N4",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "せっけん|石鹸[けん]",
-      "originalMeaning": "肥皂",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "そう|そう",
+      "lookupDisplay": "そう",
+      "lookupReading": "そう",
       "originalMeaning": "（表示同意、肯定）對，嗯；（突然想到）啊；那樣，那麼",
       "level": "N5",
       "candidateCount": 36,
@@ -3304,14 +3217,9 @@
       ]
     },
     {
-      "key": "そば|蕎麦[そば]",
-      "originalMeaning": "蕎麥麵",
-      "level": "N4",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "だけ|だけ",
+      "lookupDisplay": "だけ",
+      "lookupReading": "だけ",
       "originalMeaning": "只，僅",
       "level": "N5",
       "candidateCount": 2,
@@ -3340,6 +3248,8 @@
     },
     {
       "key": "ない|ない",
+      "lookupDisplay": "ない",
+      "lookupReading": "ない",
       "originalMeaning": "沒有，缺少",
       "level": "N5",
       "candidateCount": 6,
@@ -3407,28 +3317,9 @@
       ]
     },
     {
-      "key": "ちゃわん|茶碗[わん]",
-      "originalMeaning": "碗，茶杯，飯碗",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うそ|嘘[うそ]",
-      "originalMeaning": "謊言，假話",
-      "level": "N4",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かむ|嚙[か]む",
-      "originalMeaning": "嚼，咬",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "ごくごく|ごくごく",
+      "lookupDisplay": "ごくごく",
+      "lookupReading": "ごくごく",
       "originalMeaning": "咕嘟咕嘟地大口喝水時發出的聲音",
       "level": "N2",
       "candidateCount": 2,
@@ -3456,28 +3347,9 @@
       ]
     },
     {
-      "key": "せき|咳[せき]",
-      "originalMeaning": "咳嗽",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ぬれる|濡[ぬ]れる",
-      "originalMeaning": "淋溼，弄溼",
-      "level": "N4",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "のり|海苔[のり]",
-      "originalMeaning": "海苔；紫菜",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "ぱらぱら|ぱらぱら",
+      "lookupDisplay": "ぱらぱら",
+      "lookupReading": "ぱらぱら",
       "originalMeaning": "（雨滴、眼淚等較輕的顆粒狀物體）連續掉落狀①；快速翻頁時發出的聲音①；稀稀落落⓪",
       "level": "N1",
       "candidateCount": 2,
@@ -3505,77 +3377,9 @@
       ]
     },
     {
-      "key": "わん|椀[わん]",
-      "originalMeaning": "碗，木碗",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "けんか|喧嘩[けんか]",
-      "originalMeaning": "吵架，打架",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ひげ|髭[ひげ]",
-      "originalMeaning": "鬍子；（動物的）須",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うわさ|噂[うわさ]",
-      "originalMeaning": "在背後議論別人；傳聞，風言風語",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "おい|甥[おい]",
-      "originalMeaning": "外甥，侄子",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ぜいたく|贅[ぜい]沢",
-      "originalMeaning": "奢侈，浪費；過分的要求，奢望",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "たたく|叩[たた]く",
-      "originalMeaning": "敲打；指責",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "つぐ|注[つ]ぐ",
-      "originalMeaning": "倒入，注入",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "なでる|撫[な]でる",
-      "originalMeaning": "撫摸",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "はやり|流行[はや]り",
-      "originalMeaning": "流行，時髦；（疾病）流行",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "ようやく|ようやく",
+      "lookupDisplay": "ようやく",
+      "lookupReading": "ようやく",
       "originalMeaning": "總算",
       "level": "N3",
       "candidateCount": 4,
@@ -3624,55 +3428,26 @@
     },
     {
       "key": "おえる|終える",
+      "lookupDisplay": "終える",
+      "lookupReading": "おえる",
       "originalMeaning": "做完，完成",
       "level": "N4",
       "candidateCount": 1,
       "candidates": []
     },
     {
-      "key": "とがる|尖[とが]る",
-      "originalMeaning": "尖；緊張；不高興，發火",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "つく|点[つ]く",
-      "originalMeaning": "點著；（燈）開著",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "むく|剝[む]く",
-      "originalMeaning": "剝",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ひも|紐[ひも]",
-      "originalMeaning": "帶子，細繩",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "めんきょ|免許",
+      "lookupDisplay": "免許",
+      "lookupReading": "めんきょ",
       "originalMeaning": "許可；執照",
       "level": "N3",
       "candidateCount": 1,
       "candidates": []
     },
     {
-      "key": "ほこり|埃[ほこり]",
-      "originalMeaning": "塵埃，灰塵",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "しゅ|手",
+      "lookupDisplay": "手",
+      "lookupReading": "しゅ",
       "originalMeaning": "（負責某項工作的人）……員",
       "level": "N5",
       "candidateCount": 0,
@@ -3680,6 +3455,8 @@
     },
     {
       "key": "あと|あと",
+      "lookupDisplay": "あと",
+      "lookupReading": "あと",
       "originalMeaning": "還有，另外",
       "level": "N5",
       "candidateCount": 2,
@@ -3707,35 +3484,9 @@
       ]
     },
     {
-      "key": "かかる|罹[かか]る",
-      "originalMeaning": "患（病），遭（災）",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かく|搔[か]く",
-      "originalMeaning": "搔；扒；出（汗）",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "がん|癌[がん]",
-      "originalMeaning": "癌症；禍害",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "さらだゆ|サラダ油",
-      "originalMeaning": "沙拉油",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "で|で",
+      "lookupDisplay": "で",
+      "lookupReading": "で",
       "originalMeaning": "（催促對方往下說）那麼",
       "level": "N2",
       "candidateCount": 4,
@@ -3784,6 +3535,8 @@
     },
     {
       "key": "もくもく|もくもく",
+      "lookupDisplay": "もくもく",
+      "lookupReading": "もくもく",
       "originalMeaning": "（濃煙、濃霧等）滾滾狀",
       "level": "N1",
       "candidateCount": 2,
@@ -3812,41 +3565,17 @@
     },
     {
       "key": "より|より(副)",
+      "lookupDisplay": "より(副)",
+      "lookupReading": "より",
       "originalMeaning": "更加，進一步",
       "level": "N2",
       "candidateCount": 0,
       "candidates": []
     },
     {
-      "key": "はぶらし|歯ブラシ",
-      "originalMeaning": "牙刷",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ほほえむ|微[ほほ]笑む",
-      "originalMeaning": "微笑；花蕾綻放",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "なす|為[な]す",
-      "originalMeaning": "做，為",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "わびる|詫[わ]びる",
-      "originalMeaning": "道歉，謝罪",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "いわば|いわば",
+      "lookupDisplay": "いわば",
+      "lookupReading": "いわば",
       "originalMeaning": "說起來，可謂是",
       "level": "N2",
       "candidateCount": 2,
@@ -3874,42 +3603,9 @@
       ]
     },
     {
-      "key": "しま|縞[しま]",
-      "originalMeaning": "條紋，格紋；條紋花樣",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あいづち|相槌[づち]",
-      "originalMeaning": "隨聲附和，幫腔",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ぬらす|濡[ぬ]らす",
-      "originalMeaning": "沾溼，弄溼",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "めい|姪[めい]",
-      "originalMeaning": "侄女，外甥女",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "はやる|流行[はや]る",
-      "originalMeaning": "流行；（疾病等）蔓延；繁榮，興旺",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "くわえる|くわえる",
+      "lookupDisplay": "くわえる",
+      "lookupReading": "くわえる",
       "originalMeaning": "銜，叼",
       "level": "N3",
       "candidateCount": 2,
@@ -3937,35 +3633,9 @@
       ]
     },
     {
-      "key": "いんせき|隕[いん]石",
-      "originalMeaning": "隕石",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ごく|極[ごく]",
-      "originalMeaning": "極其，非常；（強調普通的樣子）極其，非常",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "せりふ|台詞[せりふ]",
-      "originalMeaning": "臺詞；說法",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "つける|点[つ]ける",
-      "originalMeaning": "點燃；打開（電源）",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "にじ|虹",
+      "lookupDisplay": "虹",
+      "lookupReading": "にじ",
       "originalMeaning": "彩虹",
       "level": "N2",
       "candidateCount": 2,
@@ -3993,28 +3663,9 @@
       ]
     },
     {
-      "key": "ばくだい|莫[ばく]大",
-      "originalMeaning": "形容程度、數量等非常大的樣子",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あきれる|呆[あき]れる",
-      "originalMeaning": "嚇呆",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ほえる|吠[ほ]える",
-      "originalMeaning": "叫，吼",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "きる|きる",
+      "lookupDisplay": "きる",
+      "lookupReading": "きる",
       "originalMeaning": "……完",
       "level": "N2",
       "candidateCount": 7,
@@ -4092,182 +3743,9 @@
       ]
     },
     {
-      "key": "あり|蟻[あり]",
-      "originalMeaning": "螞蟻",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "いためる|炒[いた]める",
-      "originalMeaning": "炒（菜）",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うそつき|嘘[うそ]つき",
-      "originalMeaning": "說謊，說謊的人",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かなう|叶[かな]う",
-      "originalMeaning": "實現，達到",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かなえる|叶[かな]える",
-      "originalMeaning": "實現",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "きずな|絆[きずな]",
-      "originalMeaning": "紐帶，羈絆",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "きぜん|毅[き]然",
-      "originalMeaning": "毅然，堅決",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "さび|錆[さび]",
-      "originalMeaning": "鏽",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "しこう|嗜[し]好",
-      "originalMeaning": "嗜好，愛好",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "すくう|掬[すく]う",
-      "originalMeaning": "撈，舀；抄起",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "すずめ|雀[すずめ]",
-      "originalMeaning": "麻雀",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ふち|淵[ふち]",
-      "originalMeaning": "淵，潭；深淵",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "むける|剝[む]ける",
-      "originalMeaning": "表皮脫落",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あっせん|斡旋[あっせん]",
-      "originalMeaning": "介紹，斡旋；斡旋，居中調解",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "おのずから|自[おの]ずから",
-      "originalMeaning": "自然地，自動地",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かさばる|嵩張[かさば]る",
-      "originalMeaning": "體積大，佔地方",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "さえる|冴[さ]える",
-      "originalMeaning": "冷峭；清澈；（頭腦）清醒；精巧，靈敏",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "つづる|綴[つづ]る",
-      "originalMeaning": "（用線）裝訂，縫上；寫，作；拼寫",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "はせる|馳[は]せる",
-      "originalMeaning": "驅車，策馬；馳名",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ぼうぜん|茫[ぼう]然",
-      "originalMeaning": "茫然；發呆",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ぼうぜん|呆[ぼう]然",
-      "originalMeaning": "愕然，吃驚，目瞪口呆",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "よしあし|善し悪[あ]し",
-      "originalMeaning": "好壞，善惡；有好也有壞，有利也有弊",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "わび|詫[わ]び",
-      "originalMeaning": "道歉，賠罪",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あおむけ|仰[あお]向け",
-      "originalMeaning": "仰面朝天",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かなづち|金槌[づち]",
-      "originalMeaning": "鐵鎚；（すぐ水に沈むことから）不會游泳的人",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "かける|駆ける",
+      "lookupDisplay": "駆ける",
+      "lookupReading": "かける",
       "originalMeaning": "快跑，飛奔",
       "level": "N3",
       "candidateCount": 2,
@@ -4296,27 +3774,17 @@
     },
     {
       "key": "ごさ|誤差",
+      "lookupDisplay": "誤差",
+      "lookupReading": "ごさ",
       "originalMeaning": "誤差；差錯",
       "level": "N1",
       "candidateCount": 1,
       "candidates": []
     },
     {
-      "key": "ささげる|捧[ささ]げる",
-      "originalMeaning": "捧舉；獻上；獻出",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "りゅうちょう|流暢[ちょう]",
-      "originalMeaning": "流暢，流利",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "み|味",
+      "lookupDisplay": "味",
+      "lookupReading": "み",
       "originalMeaning": "表示藥品或食材的種類",
       "level": "N1",
       "candidateCount": 2,
@@ -4344,56 +3812,9 @@
       ]
     },
     {
-      "key": "あいきょう|愛嬌[きょう]",
-      "originalMeaning": "可愛之處，魅力；好感，親切",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あらわ|顕[あら]わ",
-      "originalMeaning": "顯露，表露；公然，公開；露骨，顯然",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うのみ|鵜呑[うの]み",
-      "originalMeaning": "囫圇吞棗",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "おきて|掟[おきて]",
-      "originalMeaning": "法律，戒令；成規，規章",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "おっくう|億劫[おっくう]",
-      "originalMeaning": "嫌麻煩，懶得",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "おのずと|自[おの]ずと",
-      "originalMeaning": "自然而然地",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かみあう|嚙[か]み合う",
-      "originalMeaning": "咬合；吻合",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "どんぞこ|どん底",
+      "lookupDisplay": "どん底",
+      "lookupReading": "どんぞこ",
       "originalMeaning": "底層，最下層，最差的狀態",
       "level": "N1",
       "candidateCount": 2,
@@ -4421,14 +3842,9 @@
       ]
     },
     {
-      "key": "なじみ|馴[な]染み",
-      "originalMeaning": "熟悉，熟人",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "はいはい|はいはい",
+      "lookupDisplay": "はいはい",
+      "lookupReading": "はいはい",
       "originalMeaning": "（幼兒用語）爬",
       "level": "N1",
       "candidateCount": 2,
@@ -4456,105 +3872,18 @@
       ]
     },
     {
-      "key": "ひいき|贔屓[ひいき]",
-      "originalMeaning": "偏愛，偏袒，袒護",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "めでる|愛[め]でる",
-      "originalMeaning": "欣賞；疼愛",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ゆえん|所以[ゆえん]",
-      "originalMeaning": "原因，理由",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "れとるとしょくひん|レトルト食品",
-      "originalMeaning": "真空包裝食品，即食食品",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あんど|安堵[ど]",
-      "originalMeaning": "放心，安心",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ひとめぼれ|一目惚[ぼ]れ",
-      "originalMeaning": "一見鍾情",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かき|牡蠣[かき]",
-      "originalMeaning": "牡蠣，生蠔",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "きゅうきょ|急遽[きょ]",
-      "originalMeaning": "匆忙，倉皇",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "かられる|駆られる",
+      "lookupDisplay": "駆られる",
+      "lookupReading": "かられる",
       "originalMeaning": "受……驅使",
       "level": "N2",
       "candidateCount": 1,
       "candidates": []
     },
     {
-      "key": "こんぽう|梱[こん]包",
-      "originalMeaning": "包裝並捆紮，打包",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ちり|塵[ちり]",
-      "originalMeaning": "灰塵，汙垢，垃圾；少許，絲毫（不）",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ひな|雛[ひな]",
-      "originalMeaning": "雛鳥；（三月三日女兒節陳列的）古裝玩偶；小而可愛",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "そうざい|惣[そう]菜",
-      "originalMeaning": "家常的熟食",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "のっとる|則[のっと]る",
-      "originalMeaning": "遵守，遵照，遵循",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "たたえる|たたえる",
+      "lookupDisplay": "たたえる",
+      "lookupReading": "たたえる",
       "originalMeaning": "裝滿；洋溢",
       "level": "N1",
       "candidateCount": 2,
@@ -4582,140 +3911,9 @@
       ]
     },
     {
-      "key": "ちょう|蝶[ちょう]",
-      "originalMeaning": "蝴蝶，蝶類",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かなう|敵[かな]う",
-      "originalMeaning": "匹敵，並肩",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かなう|適[かな]う",
-      "originalMeaning": "符合，合乎",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "とうかん|投函[かん]",
-      "originalMeaning": "投遞，投入郵筒，寄出",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "まゆをひそめる|眉を顰[ひそ]める",
-      "originalMeaning": "緊鎖眉頭",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "たいじ|対峙[じ]",
-      "originalMeaning": "對峙，相持",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "きっこう|拮[きっ]抗",
-      "originalMeaning": "較量，對抗",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かくらん|攪[かく]乱",
-      "originalMeaning": "攪亂，搗亂，擾亂",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "けいれん|痙攣[けいれん]",
-      "originalMeaning": "痙攣，抽搐，抽筋",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ろか|濾[ろ]過",
-      "originalMeaning": "過濾",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ちゅうちょ|躊躇[ちゅうちょ]",
-      "originalMeaning": "躊躇，猶豫",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "へんさん|編纂[さん]",
-      "originalMeaning": "編纂",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ろうえい|漏洩[えい]",
-      "originalMeaning": "洩漏",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "まいしん|邁[まい]進",
-      "originalMeaning": "邁進，挺進",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "おうか|謳[おう]歌",
-      "originalMeaning": "謳歌，歌頌",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かに|蟹[かに]",
-      "originalMeaning": "蟹，螃蟹",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "にんげんどっく|人間ドック",
-      "originalMeaning": "綜合體檢",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "わな|罠[わな]",
-      "originalMeaning": "陷阱；圈套",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "はちゅうるい|爬[は]虫類",
-      "originalMeaning": "爬行動物",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "ウエア|ウエア",
+      "lookupDisplay": "ウエア",
+      "lookupReading": "うえあ",
       "originalMeaning": "衣著，衣服",
       "level": "N1",
       "candidateCount": 2,
@@ -4743,385 +3941,9 @@
       ]
     },
     {
-      "key": "がくぜん|愕[がく]然",
-      "originalMeaning": "愕然",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "こんとん|混沌[とん]",
-      "originalMeaning": "混沌，混亂",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "すうせい|趨[すう]勢",
-      "originalMeaning": "趨勢，趨向，動向，傾向",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ちまた|巷[ちまた]",
-      "originalMeaning": "岔道；繁華街；場所；社會",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "すいせい|彗[すい]星",
-      "originalMeaning": "彗星",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "こけん|沽[こ]券",
-      "originalMeaning": "人品，體面，身價，尊嚴",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "じかどうちゃく|自家撞[どう]着",
-      "originalMeaning": "自相矛盾",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ひのき|檜[ひのき]",
-      "originalMeaning": "絲柏，扁柏，檜木",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かいしょう|甲斐[かい]性",
-      "originalMeaning": "有志氣，要強，出息",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "たぬき|狸[たぬき]",
-      "originalMeaning": "貉，狸",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "だいごみ|醍醐[だいご]味",
-      "originalMeaning": "深奧的妙趣，樂趣",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "さじん|砂塵[じん]",
-      "originalMeaning": "沙塵",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "こっとう|骨董[とう]",
-      "originalMeaning": "古董，骨董，古玩",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "くい|杭[くい]",
-      "originalMeaning": "樁子",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ちゃーはん|チャーハン",
-      "originalMeaning": "炒飯",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ささい|些[さ]細",
-      "originalMeaning": "細微，瑣細，微不足道",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うせる|失[う]せる",
-      "originalMeaning": "消失",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うさんくさい|胡散[うさん]臭い",
-      "originalMeaning": "形跡可疑，奇怪，蹊蹺",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かえる|蛙[かえる]",
-      "originalMeaning": "青蛙，蛤蟆",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "が|蛾[が]",
-      "originalMeaning": "蛾",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "つばめ|燕[つばめ]",
-      "originalMeaning": "燕子",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "びょうぶ|屏[びょう]風",
-      "originalMeaning": "屏風",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "なまもの|生物[なまもの]",
-      "originalMeaning": "生鮮食品",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かなえる|適[かな]える",
-      "originalMeaning": "使……合適",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "たずねる|訊[たず]ねる",
-      "originalMeaning": "（以強硬的語氣）詢問",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うかつ|迂闊[うかつ]",
-      "originalMeaning": "稀裡糊塗，粗心大意，馬虎",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "そしゃく|咀嚼[そしゃく]",
-      "originalMeaning": "咀嚼；理解，體會",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うたう|謳[うた]う",
-      "originalMeaning": "讚美，歌頌；主張，強調",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "しょくだい|燭[しょく]台",
-      "originalMeaning": "燭台，蠟台",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ばすてい|バス停",
-      "originalMeaning": "公車站",
-      "level": "N5",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "よわい|齢[よわい]",
-      "originalMeaning": "年齡，年紀",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かみつく|嚙[か]み付く",
-      "originalMeaning": "咬住；猛烈地反駁",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ひけつ|秘訣[けつ]",
-      "originalMeaning": "秘訣，竅門",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "さけ|鮭[さけ]",
-      "originalMeaning": "鮭魚，大麻哈魚，三文魚",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ふくろう|梟[ふくろう]",
-      "originalMeaning": "貓頭鷹",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "さんご|珊瑚[さんご]",
-      "originalMeaning": "珊瑚",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うたぐりぶかい|疑[うたぐ]り深い",
-      "originalMeaning": "多疑",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "せき|堰[せき]",
-      "originalMeaning": "攔河壩，堰堤",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "いちょう|銀杏[いちょう]",
-      "originalMeaning": "銀杏",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "うぐいす|鶯[うぐいす]",
-      "originalMeaning": "鶯；歌喉好的人",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "がん|雁[がん]",
-      "originalMeaning": "雁，大雁",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "けいもう|啓蒙[もう]",
-      "originalMeaning": "啟蒙，啟發",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かえる|孵[かえ]る",
-      "originalMeaning": "孵化",
-      "level": "N3",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かじとり|舵[かじ]取り",
-      "originalMeaning": "掌舵（的人）；領導、指揮（的人）",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "まくあい|幕間[あい]",
-      "originalMeaning": "（戲劇的）幕間（休息）",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あまのじゃく|天の邪鬼[じゃく]",
-      "originalMeaning": "脾氣彆扭（的人），性情乖僻（的人）",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "こす|濾[こ]す",
-      "originalMeaning": "濾，過濾",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かえす|孵[かえ]す",
-      "originalMeaning": "孵，孵化",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "いるか|海豚[いるか]",
-      "originalMeaning": "海豚",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かいり|乖[かい]離",
-      "originalMeaning": "乖離，背離",
-      "level": "N2",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "そうせい|叢[そう]生",
-      "originalMeaning": "簇生，叢生",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "きょうえん|饗[きょう]宴",
-      "originalMeaning": "饗宴，盛宴",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "えんせい|厭[えん]世",
-      "originalMeaning": "厭世，悲觀",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "こうぼう|光芒[ぼう]",
-      "originalMeaning": "光芒",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "ゆがみ|ゆがみ",
+      "lookupDisplay": "ゆがみ",
+      "lookupReading": "ゆがみ",
       "originalMeaning": "（物體）歪斜；（內心）不直爽，古怪",
       "level": "N2",
       "candidateCount": 2,
@@ -5149,14 +3971,9 @@
       ]
     },
     {
-      "key": "けんろう|堅牢[ろう]",
-      "originalMeaning": "堅牢，堅固，牢固",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "ぜんだま|善玉",
+      "lookupDisplay": "善玉",
+      "lookupReading": "ぜんだま",
       "originalMeaning": "好人，正派角色",
       "level": "N1",
       "candidateCount": 1,
@@ -5164,34 +3981,17 @@
     },
     {
       "key": "こがねいろ|こがね色",
+      "lookupDisplay": "こがね色",
+      "lookupReading": "こがねいろ",
       "originalMeaning": "金黃色",
       "level": "N1",
       "candidateCount": 0,
       "candidates": []
     },
     {
-      "key": "すみわけ|棲[す]み分け",
-      "originalMeaning": "分棲，生境分化；（有競爭關係的事物）各佔一席，錯位發展",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ごびゅう|誤謬[びゅう]",
-      "originalMeaning": "錯誤，謬誤",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あきれはてる|呆[あき]れ果てる",
-      "originalMeaning": "十分驚訝，驚訝到極點",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "とろみ|とろみ",
+      "lookupDisplay": "とろみ",
+      "lookupReading": "とろみ",
       "originalMeaning": "（勾芡後的）黏稠狀（湯汁）",
       "level": "N1",
       "candidateCount": 2,
@@ -5219,100 +4019,19 @@
       ]
     },
     {
-      "key": "あふれかえる|溢[あふ]れ返る",
-      "originalMeaning": "充滿，擠滿",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "けげん|怪訝[けげん]",
-      "originalMeaning": "奇怪，詫異，疑惑",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あだ|仇[あだ]",
-      "originalMeaning": "仇人；仇恨；報復；危害",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "けんさん|研鑽[さん]",
-      "originalMeaning": "鑽研，研究",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "しゅんげん|峻[しゅん]厳",
-      "originalMeaning": "嚴峻，嚴厲",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
       "key": "さきのばし|先延ばし",
+      "lookupDisplay": "先延ばし",
+      "lookupReading": "さきのばし",
       "originalMeaning": "拖延，擱置",
       "level": "N1",
       "candidateCount": 1,
-      "candidates": []
-    },
-    {
-      "key": "もののけ|物の怪[け]",
-      "originalMeaning": "妖怪，鬼怪",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ふかん|俯瞰[ふかん]",
-      "originalMeaning": "俯瞰，俯視",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "やゆ|揶揄[やゆ]",
-      "originalMeaning": "嘲弄，譏諷，揶揄",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "ぼうばく|茫[ぼう]漠",
-      "originalMeaning": "廣漠，遼闊；模糊，渺茫",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あつれき|軋轢[あつれき]",
-      "originalMeaning": "齟齬，摩擦，衝突",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "かったつ|闊[かっ]達",
-      "originalMeaning": "豁達，開闊",
-      "level": "N1",
-      "candidateCount": 0,
-      "candidates": []
-    },
-    {
-      "key": "あいろ|隘[あい]路",
-      "originalMeaning": "隘路，狹路；難關，障礙",
-      "level": "N1",
-      "candidateCount": 0,
       "candidates": []
     }
   ],
   "coreSemanticResolved": [
     {
       "key": "なす|なす",
+      "lookupDisplay": "なす",
       "originalMeaning": "茄子",
       "anchorMeaning": "茄子",
       "selectedEntryId": "1195240",
@@ -5391,6 +4110,7 @@
     },
     {
       "key": "あ|あ",
+      "lookupDisplay": "あ",
       "originalMeaning": "（吃驚、感動）啊，呀；（打招呼）喂",
       "anchorMeaning": "（吃驚、感動）啊，呀；（打招呼）喂",
       "selectedEntryId": "2394370",
@@ -5449,6 +4169,7 @@
     },
     {
       "key": "ああ|ああ",
+      "lookupDisplay": "ああ",
       "originalMeaning": "（悲傷、快樂或驚訝時）啊，哎呀；（答應時）啊",
       "anchorMeaning": "（悲傷、快樂或驚訝時）啊，哎呀；（答應時）啊",
       "selectedEntryId": "1565440",
@@ -5487,6 +4208,7 @@
     },
     {
       "key": "あなた|あなた",
+      "lookupDisplay": "あなた",
       "originalMeaning": "你",
       "anchorMeaning": "你；您",
       "selectedEntryId": "1223615",
@@ -5515,6 +4237,7 @@
     },
     {
       "key": "ある|ある",
+      "lookupDisplay": "ある",
       "originalMeaning": "（無生命物體）存在；有；發生；處於某種狀態",
       "anchorMeaning": "有；在",
       "selectedEntryId": "1296400",
@@ -5543,6 +4266,7 @@
     },
     {
       "key": "あれ|あれ",
+      "lookupDisplay": "あれ",
       "originalMeaning": "（表示離雙方都有距離的）那個；（指之前發生過的，你和對方都熟悉的事情）那時",
       "anchorMeaning": "那個、那；咦、欸（依語境）",
       "selectedEntryId": "1000580",
@@ -5601,6 +4325,7 @@
     },
     {
       "key": "いくら|いくら",
+      "lookupDisplay": "いくら",
       "originalMeaning": "（數量或價錢）多少；即使……也……",
       "anchorMeaning": "多少（錢）；無論怎樣",
       "selectedEntryId": "1219980",
@@ -5629,6 +4354,7 @@
     },
     {
       "key": "いつ|いつ",
+      "lookupDisplay": "いつ",
       "originalMeaning": "什麼時候",
       "anchorMeaning": "何時；什麼時候",
       "selectedEntryId": "1188760",
@@ -5687,6 +4413,7 @@
     },
     {
       "key": "いっぱい|いっぱい",
+      "lookupDisplay": "いっぱい",
       "originalMeaning": "⓪（いっぱい）充滿，很多；①一杯，一碗",
       "anchorMeaning": "⓪（いっぱい）充滿，很多；①一杯，一碗",
       "selectedEntryId": "1165670",
@@ -5715,6 +4442,7 @@
     },
     {
       "key": "いや|いや",
+      "lookupDisplay": "いや",
       "originalMeaning": "不，不是",
       "anchorMeaning": "不，不是",
       "selectedEntryId": "2857380",
@@ -5763,6 +4491,7 @@
     },
     {
       "key": "いる|いる",
+      "lookupDisplay": "いる",
       "originalMeaning": "（有生命的物體的）存在，有",
       "anchorMeaning": "（有生命的物體的）存在，有",
       "selectedEntryId": "1577980",
@@ -5871,6 +4600,7 @@
     },
     {
       "key": "うん|うん",
+      "lookupDisplay": "うん",
       "originalMeaning": "是，是的",
       "anchorMeaning": "嗯；是的；好",
       "selectedEntryId": "1001090",
@@ -5919,6 +4649,7 @@
     },
     {
       "key": "おじ|おじ",
+      "lookupDisplay": "おじ",
       "originalMeaning": "（伯父）父母的哥哥；（叔父）父母的弟弟",
       "anchorMeaning": "伯父；叔父；叔叔",
       "selectedEntryId": "1607070",
@@ -5967,6 +4698,7 @@
     },
     {
       "key": "おば|おば",
+      "lookupDisplay": "おば",
       "originalMeaning": "（伯母）父母的姊姊；（叔母）父母的妹妹",
       "anchorMeaning": "伯母；叔母；阿姨",
       "selectedEntryId": "1607100",
@@ -6005,6 +4737,7 @@
     },
     {
       "key": "コート|コート",
+      "lookupDisplay": "コート",
       "originalMeaning": "外套，大衣",
       "anchorMeaning": "外套，大衣",
       "selectedEntryId": "1049000",
@@ -6033,6 +4766,7 @@
     },
     {
       "key": "ここ|ここ",
+      "lookupDisplay": "ここ",
       "originalMeaning": "（指代自己附近的事物）這裡；（自己所指的地方）這裡",
       "anchorMeaning": "這裡；此處",
       "selectedEntryId": "1288810",
@@ -6091,6 +4825,7 @@
     },
     {
       "key": "じゃ|じゃ",
+      "lookupDisplay": "じゃ",
       "originalMeaning": "那麼",
       "anchorMeaning": "那麼",
       "selectedEntryId": "1005900",
@@ -6139,6 +4874,7 @@
     },
     {
       "key": "する|する",
+      "lookupDisplay": "する",
       "originalMeaning": "做",
       "anchorMeaning": "做；進行；執行",
       "selectedEntryId": "1157170",
@@ -6197,6 +4933,7 @@
     },
     {
       "key": "そこ|そこ",
+      "lookupDisplay": "そこ",
       "originalMeaning": "（指代對方附近）那裡；指剛才提及的事情或狀態",
       "anchorMeaning": "那裡；那邊",
       "selectedEntryId": "1006670",
@@ -6225,6 +4962,7 @@
     },
     {
       "key": "その|その",
+      "lookupDisplay": "その",
       "originalMeaning": "（指代對方附近的物品）那個",
       "anchorMeaning": "那；那個",
       "selectedEntryId": "1006830",
@@ -6253,6 +4991,7 @@
     },
     {
       "key": "そば|そば",
+      "lookupDisplay": "そば",
       "originalMeaning": "旁邊，附近",
       "anchorMeaning": "旁邊，附近",
       "selectedEntryId": "1403830",
@@ -6281,6 +5020,7 @@
     },
     {
       "key": "だいぶ|だいぶ",
+      "lookupDisplay": "だいぶ",
       "originalMeaning": "很，相當",
       "anchorMeaning": "很，相當",
       "selectedEntryId": "1414830",
@@ -6319,6 +5059,7 @@
     },
     {
       "key": "ちょうど|ちょうど",
+      "lookupDisplay": "ちょうど",
       "originalMeaning": "正好，恰好",
       "anchorMeaning": "正好，恰好",
       "selectedEntryId": "1427340",
@@ -6357,6 +5098,7 @@
     },
     {
       "key": "どう|どう",
+      "lookupDisplay": "どう",
       "originalMeaning": "怎麼樣",
       "anchorMeaning": "如何；怎麼；怎樣",
       "selectedEntryId": "1008910",
@@ -6485,6 +5227,7 @@
     },
     {
       "key": "どの|どの",
+      "lookupDisplay": "どの",
       "originalMeaning": "哪一個",
       "anchorMeaning": "哪個；哪一個",
       "selectedEntryId": "1920240",
@@ -6513,6 +5256,7 @@
     },
     {
       "key": "なる|なる",
+      "lookupDisplay": "なる",
       "originalMeaning": "變成，成為；當",
       "anchorMeaning": "變成，成為；當",
       "selectedEntryId": "1375610",
@@ -6561,6 +5305,7 @@
     },
     {
       "key": "のり|のり",
+      "lookupDisplay": "のり",
       "originalMeaning": "漿糊，黏著劑",
       "anchorMeaning": "漿糊，黏著劑",
       "selectedEntryId": "1267400",
@@ -6609,6 +5354,7 @@
     },
     {
       "key": "はい|はい",
+      "lookupDisplay": "はい",
       "originalMeaning": "是的，對的",
       "anchorMeaning": "是的，對的",
       "selectedEntryId": "1010080",
@@ -6757,6 +5503,7 @@
     },
     {
       "key": "はく|はく",
+      "lookupDisplay": "はく",
       "originalMeaning": "穿（下身衣物）",
       "anchorMeaning": "穿（下身衣物）",
       "selectedEntryId": "1607260",
@@ -6895,6 +5642,7 @@
     },
     {
       "key": "ボタン|ボタン",
+      "lookupDisplay": "ボタン",
       "originalMeaning": "鈕扣；按鈕",
       "anchorMeaning": "鈕扣；按鈕",
       "selectedEntryId": "1123880",
@@ -6923,6 +5671,7 @@
     },
     {
       "key": "また|また",
+      "lookupDisplay": "また",
       "originalMeaning": "另外；又，再",
       "anchorMeaning": "另外；又，再",
       "selectedEntryId": "1524930",
@@ -6961,6 +5710,7 @@
     },
     {
       "key": "うち|うち",
+      "lookupDisplay": "うち",
       "originalMeaning": "家，家庭，自己家（家人）",
       "anchorMeaning": "家，家庭，自己家（家人）",
       "selectedEntryId": "1191740",
@@ -6999,6 +5749,7 @@
     },
     {
       "key": "みかん|みかん",
+      "lookupDisplay": "みかん",
       "originalMeaning": "橘子，柑橘",
       "anchorMeaning": "橘子，柑橘",
       "selectedEntryId": "1528410",
@@ -7037,6 +5788,7 @@
     },
     {
       "key": "えび|えび",
+      "lookupDisplay": "えび",
       "originalMeaning": "蝦",
       "anchorMeaning": "蝦",
       "selectedEntryId": "1588720",
@@ -7065,6 +5817,7 @@
     },
     {
       "key": "おる|おる",
+      "lookupDisplay": "おる",
       "originalMeaning": "在",
       "anchorMeaning": "在",
       "selectedEntryId": "1577985",
@@ -7103,6 +5856,7 @@
     },
     {
       "key": "ガム|ガム",
+      "lookupDisplay": "ガム",
       "originalMeaning": "口香糖",
       "anchorMeaning": "口香糖",
       "selectedEntryId": "1040350",
@@ -7131,6 +5885,7 @@
     },
     {
       "key": "クラブ|クラブ",
+      "lookupDisplay": "クラブ",
       "originalMeaning": "俱樂部；酒吧",
       "anchorMeaning": "俱樂部；酒吧",
       "selectedEntryId": "1243910",
@@ -7169,6 +5924,7 @@
     },
     {
       "key": "くれる|くれる",
+      "lookupDisplay": "くれる",
       "originalMeaning": "給（我）",
       "anchorMeaning": "給（我）",
       "selectedEntryId": "1269130",
@@ -7197,6 +5953,7 @@
     },
     {
       "key": "こう|こう",
+      "lookupDisplay": "こう",
       "originalMeaning": "這樣，這麼",
       "anchorMeaning": "這樣，這麼",
       "selectedEntryId": "1004310",
@@ -7715,6 +6472,7 @@
     },
     {
       "key": "こしょう|こしょう",
+      "lookupDisplay": "こしょう",
       "originalMeaning": "胡椒",
       "anchorMeaning": "胡椒",
       "selectedEntryId": "1267600",
@@ -7823,6 +6581,7 @@
     },
     {
       "key": "さっき|さっき",
+      "lookupDisplay": "さっき",
       "originalMeaning": "剛才，方才",
       "anchorMeaning": "剛才，方才",
       "selectedEntryId": "1005180",
@@ -7891,6 +6650,7 @@
     },
     {
       "key": "たいてい|たいてい",
+      "lookupDisplay": "たいてい",
       "originalMeaning": "一般；大概，大致；（不）一般",
       "anchorMeaning": "一般；大概，大致；（不）一般",
       "selectedEntryId": "1414580",
@@ -7929,6 +6689,7 @@
     },
     {
       "key": "とうとう|とうとう",
+      "lookupDisplay": "とうとう",
       "originalMeaning": "終於，終究",
       "anchorMeaning": "終於，終究",
       "selectedEntryId": "1449890",
@@ -8007,6 +6768,7 @@
     },
     {
       "key": "ボール|ボール",
+      "lookupDisplay": "ボール",
       "originalMeaning": "球",
       "anchorMeaning": "球",
       "selectedEntryId": "1123550",
@@ -8045,6 +6807,7 @@
     },
     {
       "key": "ほら|ほら",
+      "lookupDisplay": "ほら",
       "originalMeaning": "（用於提醒）喏，瞧",
       "anchorMeaning": "（用於提醒）喏，瞧",
       "selectedEntryId": "1011710",
@@ -8083,6 +6846,7 @@
     },
     {
       "key": "もし|もし",
+      "lookupDisplay": "もし",
       "originalMeaning": "如果，假如",
       "anchorMeaning": "如果，假如",
       "selectedEntryId": "1012500",
@@ -8121,6 +6885,7 @@
     },
     {
       "key": "よく|よく",
+      "lookupDisplay": "よく",
       "originalMeaning": "好好地；經常",
       "anchorMeaning": "好好地；經常",
       "selectedEntryId": "1605870",
@@ -8169,6 +6934,7 @@
     },
     {
       "key": "やめる|やめる",
+      "lookupDisplay": "やめる",
       "originalMeaning": "停止，放棄，取消；戒掉",
       "anchorMeaning": "停止，放棄，取消；戒掉",
       "selectedEntryId": "1310680",
@@ -8207,6 +6973,7 @@
     },
     {
       "key": "ぶどう|ぶどう",
+      "lookupDisplay": "ぶどう",
       "originalMeaning": "葡萄",
       "anchorMeaning": "葡萄",
       "selectedEntryId": "1499230",
@@ -8255,6 +7022,7 @@
     },
     {
       "key": "おごる|おごる",
+      "lookupDisplay": "おごる",
       "originalMeaning": "奢侈；請客",
       "anchorMeaning": "奢侈；請客",
       "selectedEntryId": "1565940",
@@ -8283,6 +7051,7 @@
     },
     {
       "key": "かび|かび",
+      "lookupDisplay": "かび",
       "originalMeaning": "黴",
       "anchorMeaning": "黴",
       "selectedEntryId": "1575380",
@@ -8321,6 +7090,7 @@
     },
     {
       "key": "カラー|カラー",
+      "lookupDisplay": "カラー",
       "originalMeaning": "色彩；彩色；顏料；特色",
       "anchorMeaning": "色彩；彩色；顏料；特色",
       "selectedEntryId": "1038500",
@@ -8359,6 +7129,7 @@
     },
     {
       "key": "せい|せい",
+      "lookupDisplay": "せい",
       "originalMeaning": "（不好結果的）原因",
       "anchorMeaning": "（不好結果的）原因",
       "selectedEntryId": "1610040",
@@ -8557,6 +7328,7 @@
     },
     {
       "key": "どうか|どうか",
+      "lookupDisplay": "どうか",
       "originalMeaning": "請多加；總算，設法；不知為何，不正常",
       "anchorMeaning": "請多加；總算，設法；不知為何，不正常",
       "selectedEntryId": "1632200",
@@ -8635,6 +7407,7 @@
     },
     {
       "key": "ホーム|ホーム",
+      "lookupDisplay": "ホーム",
       "originalMeaning": "家；療養院，招待所",
       "anchorMeaning": "家；療養院，招待所",
       "selectedEntryId": "2855797",
@@ -8663,6 +7436,7 @@
     },
     {
       "key": "ホール|ホール",
+      "lookupDisplay": "ホール",
       "originalMeaning": "大廳；會場",
       "anchorMeaning": "大廳；會場",
       "selectedEntryId": "1122130",
@@ -8701,6 +7475,7 @@
     },
     {
       "key": "まく|まく",
+      "lookupDisplay": "まく",
       "originalMeaning": "播種",
       "anchorMeaning": "播種",
       "selectedEntryId": "2611890",
@@ -8759,6 +7534,7 @@
     },
     {
       "key": "ママ|ママ",
+      "lookupDisplay": "ママ",
       "originalMeaning": "（兒童用語）媽媽；女老闆，媽媽桑",
       "anchorMeaning": "（兒童用語）媽媽；女老闆，媽媽桑",
       "selectedEntryId": "1129240",
@@ -8787,6 +7563,7 @@
     },
     {
       "key": "ライト|ライト",
+      "lookupDisplay": "ライト",
       "originalMeaning": "光，燈；輕的；（顏色）明亮的，淡的",
       "anchorMeaning": "光，燈；輕的；（顏色）明亮的，淡的",
       "selectedEntryId": "1137950",
@@ -8815,6 +7592,7 @@
     },
     {
       "key": "とける|解ける",
+      "lookupDisplay": "解ける",
       "originalMeaning": "鬆了；（情緒等）紓解；解開",
       "anchorMeaning": "鬆了；（情緒等）紓解；解開",
       "selectedEntryId": "1198910",
@@ -8843,6 +7621,7 @@
     },
     {
       "key": "おいて|おいて",
+      "lookupDisplay": "おいて",
       "originalMeaning": "在……，於……",
       "anchorMeaning": "在……，於……",
       "selectedEntryId": "1178920",
@@ -8891,6 +7670,7 @@
     },
     {
       "key": "なんか|なんか",
+      "lookupDisplay": "なんか",
       "originalMeaning": "之類，等",
       "anchorMeaning": "之類，等",
       "selectedEntryId": "1009500",
@@ -8969,6 +7749,7 @@
     },
     {
       "key": "よる|よる",
+      "lookupDisplay": "よる",
       "originalMeaning": "由於；根據；取決於",
       "anchorMeaning": "由於；根據；取決於",
       "selectedEntryId": "1168660",
@@ -9047,6 +7828,7 @@
     },
     {
       "key": "ひとで|人手",
+      "lookupDisplay": "人手",
       "originalMeaning": "人為，人工；人手，勞力；別人的幫忙；他人之手",
       "anchorMeaning": "人為，人工；人手，勞力；別人的幫忙；他人之手",
       "selectedEntryId": "2825953",
@@ -9075,6 +7857,7 @@
     },
     {
       "key": "とかす|解かす",
+      "lookupDisplay": "解かす",
       "originalMeaning": "梳理",
       "anchorMeaning": "梳理",
       "selectedEntryId": "1598660",
@@ -9103,6 +7886,7 @@
     },
     {
       "key": "くぎ|くぎ",
+      "lookupDisplay": "くぎ",
       "originalMeaning": "釘子",
       "anchorMeaning": "釘子",
       "selectedEntryId": "1436840",
@@ -9151,6 +7935,7 @@
     },
     {
       "key": "くず|くず",
+      "lookupDisplay": "くず",
       "originalMeaning": "碎屑；廢物",
       "anchorMeaning": "碎屑；廢物",
       "selectedEntryId": "1246510",
@@ -9179,6 +7964,7 @@
     },
     {
       "key": "もっとも|もっとも",
+      "lookupDisplay": "もっとも",
       "originalMeaning": "話雖如此，可是；合理，正當",
       "anchorMeaning": "話雖如此，可是；合理，正當",
       "selectedEntryId": "1535810",
@@ -9207,6 +7993,7 @@
     },
     {
       "key": "れんが|れんが",
+      "lookupDisplay": "れんが",
       "originalMeaning": "磚，磚塊",
       "anchorMeaning": "磚，磚塊",
       "selectedEntryId": "1559090",
@@ -9255,6 +8042,7 @@
     },
     {
       "key": "ほうき|ほうき",
+      "lookupDisplay": "ほうき",
       "originalMeaning": "掃帚",
       "anchorMeaning": "掃帚",
       "selectedEntryId": "1566500",
@@ -9353,6 +8141,7 @@
     },
     {
       "key": "グランド|グランド",
+      "lookupDisplay": "グランド",
       "originalMeaning": "宏大，盛大",
       "anchorMeaning": "宏大，盛大",
       "selectedEntryId": "1046840",
@@ -9381,6 +8170,7 @@
     },
     {
       "key": "くらい|位",
+      "lookupDisplay": "位",
       "originalMeaning": "身份，地位；等級，品味；位數",
       "anchorMeaning": "身份，地位；等級，品味；位數",
       "selectedEntryId": "1155400",
@@ -9409,6 +8199,7 @@
     },
     {
       "key": "いったん|いったん",
+      "lookupDisplay": "いったん",
       "originalMeaning": "暫時；一旦",
       "anchorMeaning": "暫時；一旦",
       "selectedEntryId": "1164650",
@@ -9457,6 +8248,7 @@
     },
     {
       "key": "きばん|基盤",
+      "lookupDisplay": "基盤",
       "originalMeaning": "根基，基礎",
       "anchorMeaning": "根基，基礎",
       "selectedEntryId": "1219170",
@@ -9485,6 +8277,7 @@
     },
     {
       "key": "ただす|正す",
+      "lookupDisplay": "正す",
       "originalMeaning": "訂正，改正，糾正；端正",
       "anchorMeaning": "訂正，改正，糾正；端正",
       "selectedEntryId": "1376630",
@@ -9523,6 +8316,7 @@
     },
     {
       "key": "よそ|よそ",
+      "lookupDisplay": "よそ",
       "originalMeaning": "別處；不顧，漠不關心；別人家",
       "anchorMeaning": "別處；不顧，漠不關心；別人家",
       "selectedEntryId": "1605940",
@@ -9551,6 +8345,7 @@
     },
     {
       "key": "くじ|くじ",
+      "lookupDisplay": "くじ",
       "originalMeaning": "籤，抽籤",
       "anchorMeaning": "籤，抽籤",
       "selectedEntryId": "1570360",
@@ -9619,6 +8414,7 @@
     },
     {
       "key": "たとえ|たとえ",
+      "lookupDisplay": "たとえ",
       "originalMeaning": "即使",
       "anchorMeaning": "即使",
       "selectedEntryId": "1597125",
@@ -9647,6 +8443,7 @@
     },
     {
       "key": "ほぼ|ほぼ",
+      "lookupDisplay": "ほぼ",
       "originalMeaning": "幾乎，大概",
       "anchorMeaning": "幾乎，大概",
       "selectedEntryId": "1551940",
@@ -9675,6 +8472,7 @@
     },
     {
       "key": "および|および",
+      "lookupDisplay": "および",
       "originalMeaning": "以及",
       "anchorMeaning": "以及",
       "selectedEntryId": "1228140",
@@ -9713,6 +8511,7 @@
     },
     {
       "key": "おおむね|おおむね",
+      "lookupDisplay": "おおむね",
       "originalMeaning": "梗概；大致",
       "anchorMeaning": "梗概；大致",
       "selectedEntryId": "1204410",
@@ -9741,6 +8540,7 @@
     },
     {
       "key": "かい|かい",
+      "lookupDisplay": "かい",
       "originalMeaning": "價值，意義",
       "anchorMeaning": "價值，意義",
       "selectedEntryId": "1280250",
@@ -10029,6 +8829,7 @@
     },
     {
       "key": "シート|シート",
+      "lookupDisplay": "シート",
       "originalMeaning": "座位，席位",
       "anchorMeaning": "座位，席位",
       "selectedEntryId": "1059450",
@@ -10057,6 +8858,7 @@
     },
     {
       "key": "ベスト|ベスト",
+      "lookupDisplay": "ベスト",
       "originalMeaning": "最好；全力",
       "anchorMeaning": "最好；全力",
       "selectedEntryId": "1119530",
@@ -10084,7 +8886,37 @@
       ]
     },
     {
+      "key": "ぼうぜん|茫[ぼう]然",
+      "lookupDisplay": "茫然",
+      "originalMeaning": "茫然；發呆",
+      "anchorMeaning": "茫然；發呆",
+      "selectedEntryId": "2835317",
+      "candidates": [
+        {
+          "entryId": "2835317",
+          "meaning": "茫然；模糊",
+          "semantic": 0.98,
+          "score": 1.035,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        },
+        {
+          "entryId": "1515610",
+          "meaning": "呆然；目瞪口呆；驚愕不已；茫然若失",
+          "semantic": 0.8,
+          "score": 0.855,
+          "candidateLevel": "N1",
+          "levelMatch": true,
+          "formCommon": false,
+          "entryCommon": false
+        }
+      ]
+    },
+    {
       "key": "ぼける|ぼける",
+      "lookupDisplay": "ぼける",
       "originalMeaning": "（頭腦）遲鈍",
       "anchorMeaning": "（頭腦）遲鈍",
       "selectedEntryId": "1288490",
@@ -10113,6 +8945,7 @@
     },
     {
       "key": "やつ|やつ",
+      "lookupDisplay": "やつ",
       "originalMeaning": "傢伙，那小子；那個",
       "anchorMeaning": "傢伙，那小子；那個",
       "selectedEntryId": "1445640",
@@ -10151,6 +8984,7 @@
     },
     {
       "key": "リード|リード",
+      "lookupDisplay": "リード",
       "originalMeaning": "領導；領先",
       "anchorMeaning": "領導；領先",
       "selectedEntryId": "1140710",
@@ -10199,6 +9033,7 @@
     },
     {
       "key": "レバー|レバー",
+      "lookupDisplay": "レバー",
       "originalMeaning": "控制桿，操縱桿",
       "anchorMeaning": "控制桿，操縱桿",
       "selectedEntryId": "2855138",
@@ -10227,6 +9062,7 @@
     },
     {
       "key": "おろか|おろか",
+      "lookupDisplay": "おろか",
       "originalMeaning": "（「AはおろかB…」の形で）不用說",
       "anchorMeaning": "（「AはおろかB…」の形で）不用說",
       "selectedEntryId": "2832535",
@@ -10255,6 +9091,7 @@
     },
     {
       "key": "キャリア|キャリア",
+      "lookupDisplay": "キャリア",
       "originalMeaning": "履歷，經驗；職業生涯",
       "anchorMeaning": "履歷，經驗；職業生涯",
       "selectedEntryId": "1041980",
@@ -10283,6 +9120,7 @@
     },
     {
       "key": "いとう|いとう",
+      "lookupDisplay": "いとう",
       "originalMeaning": "討厭，嫌棄；珍重，保重",
       "anchorMeaning": "討厭，嫌棄；珍重，保重",
       "selectedEntryId": "1175420",
@@ -10321,6 +9159,7 @@
     },
     {
       "key": "もも|もも",
+      "lookupDisplay": "もも",
       "originalMeaning": "大腿",
       "anchorMeaning": "大腿",
       "selectedEntryId": "1605310",
@@ -10359,6 +9198,7 @@
     },
     {
       "key": "つぼ|つぼ",
+      "lookupDisplay": "つぼ",
       "originalMeaning": "罐，壇；要害，要點",
       "anchorMeaning": "罐，壇；要害，要點",
       "selectedEntryId": "1433870",
@@ -10397,6 +9237,7 @@
     },
     {
       "key": "おばさん|おばさん",
+      "lookupDisplay": "おばさん",
       "originalMeaning": "嬸嬸，阿姨；對其他成年女性的暱稱",
       "anchorMeaning": "嬸嬸，阿姨；對其他成年女性的暱稱",
       "selectedEntryId": "2261510",
@@ -10425,6 +9266,7 @@
     },
     {
       "key": "みそ|みそ",
+      "lookupDisplay": "みそ",
       "originalMeaning": "醬，味噌",
       "anchorMeaning": "醬，味噌",
       "selectedEntryId": "1527040",
@@ -10473,6 +9315,7 @@
     },
     {
       "key": "すすぐ|すすぐ",
+      "lookupDisplay": "すすぐ",
       "originalMeaning": "涮，洗濯；漱口；（不好的評價）洗掉，雪除",
       "anchorMeaning": "涮，洗濯；漱口；（不好的評價）洗掉，雪除",
       "selectedEntryId": "2827411",
@@ -10501,6 +9344,7 @@
     },
     {
       "key": "ひだ|ひだ",
+      "lookupDisplay": "ひだ",
       "originalMeaning": "褶，襞",
       "anchorMeaning": "褶，襞",
       "selectedEntryId": "1572480",
@@ -10529,6 +9373,7 @@
     },
     {
       "key": "いとも|いとも",
+      "lookupDisplay": "いとも",
       "originalMeaning": "非常，十分，很",
       "anchorMeaning": "非常，十分，很",
       "selectedEntryId": "2007350",
@@ -10557,6 +9402,7 @@
     },
     {
       "key": "いちご|いちご",
+      "lookupDisplay": "いちご",
       "originalMeaning": "草莓",
       "anchorMeaning": "草莓",
       "selectedEntryId": "1571460",
@@ -10595,6 +9441,7 @@
     },
     {
       "key": "ロック|ロック",
+      "lookupDisplay": "ロック",
       "originalMeaning": "鎖",
       "anchorMeaning": "鎖",
       "selectedEntryId": "1147600",
@@ -10633,6 +9480,7 @@
     },
     {
       "key": "さばく|さばく",
+      "lookupDisplay": "さばく",
       "originalMeaning": "銷售，推銷；理整齊，弄好；妥善料理，出色地處理，操縱",
       "anchorMeaning": "銷售，推銷；理整齊，弄好；妥善料理，出色地處理，操縱",
       "selectedEntryId": "1299630",
@@ -10681,6 +9529,7 @@
     },
     {
       "key": "キャップ|キャップ",
+      "lookupDisplay": "キャップ",
       "originalMeaning": "無邊帽；筆蓋；瓶蓋",
       "anchorMeaning": "無邊帽；筆蓋；瓶蓋",
       "selectedEntryId": "1041620",
@@ -10709,6 +9558,7 @@
     },
     {
       "key": "かす|かす",
+      "lookupDisplay": "かす",
       "originalMeaning": "沉澱，渣滓；無用的東西，人渣",
       "anchorMeaning": "沉澱，渣滓；無用的東西，人渣",
       "selectedEntryId": "1568780",
@@ -10787,6 +9637,7 @@
     },
     {
       "key": "すら|すら",
+      "lookupDisplay": "すら",
       "originalMeaning": "連，甚至，尚且",
       "anchorMeaning": "連，甚至，尚且",
       "selectedEntryId": "2827091",
@@ -10815,6 +9666,7 @@
     },
     {
       "key": "さえ|さえ",
+      "lookupDisplay": "さえ",
       "originalMeaning": "連，甚至；除了……外，不僅……而且；只要……（就……）",
       "anchorMeaning": "連，甚至；除了……外，不僅……而且；只要……（就……）",
       "selectedEntryId": "1005120",
@@ -10843,6 +9695,7 @@
     },
     {
       "key": "さわら|さわら",
+      "lookupDisplay": "さわら",
       "originalMeaning": "馬鮫魚，鰆魚",
       "anchorMeaning": "馬鮫魚，鰆魚",
       "selectedEntryId": "1574930",
@@ -10871,6 +9724,7 @@
     },
     {
       "key": "ストール|ストール",
+      "lookupDisplay": "ストール",
       "originalMeaning": "（女用）披肩，圍巾",
       "anchorMeaning": "（女用）披肩，圍巾",
       "selectedEntryId": "1070860",
