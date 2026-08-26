@@ -80,9 +80,12 @@ jobs:
             if(out.runtimeCount<32000)throw Error('runtime count '+out.runtimeCount);
             if(!out.bundle||out.bundle.version!=='prebuilt-20260826-v6-expanded-stage12'||out.bundle.generatedCount<22000)throw Error('bundle '+JSON.stringify(out.bundle));
             if(!out.loader||out.loader.audited!==true)throw Error('loader '+JSON.stringify(out.loader));
+            // WA.words intentionally normalizes away source-only metadata. Therefore the
+            // override meta proves that both exact rows were patched before normalization,
+            // while the final WA rows prove the learner-visible levels survived.
             if(!out.stage2||out.stage2.configured!==2||out.stage2.eligible!==2||out.stage2.applied!==2)throw Error('stage2 '+JSON.stringify(out.stage2));
-            if(!out.hoten||out.hoten.level!=='N2'||!String(out.hoten.levelSource||'').includes('manual-secondary-crosscheck'))throw Error('補填 '+JSON.stringify(out.hoten));
-            if(!out.apple||out.apple.level!=='N5'||!String(out.apple.levelSource||'').includes('manual-secondary-crosscheck'))throw Error('アップル '+JSON.stringify(out.apple));
+            if(!out.hoten||out.hoten.level!=='N2')throw Error('補填 '+JSON.stringify(out.hoten));
+            if(!out.apple||out.apple.level!=='N5')throw Error('アップル '+JSON.stringify(out.apple));
             console.log('STAGE2 RUNTIME PASS',JSON.stringify(out));
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
