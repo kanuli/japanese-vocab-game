@@ -33,6 +33,14 @@ def patch_grammar():
         s = s.replace(anchor, 'const BUILTIN=[...(window.REFERENCE_GRAMMAR_EXPANSION||[]),{', 1)
     s = s.replace('助詞・副詞・接続詞・文法表現｜Web 題庫 + ふりがな',
                   '助詞・副詞・接続詞・文法表現｜Web 題庫 + 原創 cross-reference coverage + ふりがな')
+    s = s.replace('60 題原創繁體中文解說，Web 無法載入時仍可使用。',
+                  '156 題本站原創繁體中文題目（原有 60 + cross-reference 96），Web 無法載入時仍可使用。')
+    s = s.replace('BUILTIN.forEach((x,i)=>{x.id="built-"+i;x.source="built";x.mode="fill"});',
+                  'BUILTIN.forEach((x,i)=>{x.id=x.id||("built-"+i);x.source=x.source||"built";x.mode=x.mode||"fill"});')
+    s = s.replace('$("#aSource").textContent=q.source==="manual"?"手動題目":"內置繁中題庫";',
+                  '$("#aSource").textContent=q.source==="manual"?"手動題目":q.source==="project-original-cross-reference"?"本站原創 cross-reference 題庫":"內置繁中題庫";')
+    s = s.replace('ふりがな由本地 Kuromoji 字典產生。JLPT 等級為學習用分類，並非官方固定文法清單。</div>',
+                  'ふりがな由本地 Kuromoji 字典產生。另加入本站原創 cross-reference 文法 coverage，參考官方 JLPT 能力描述及多來源學習分類，但不複製外部教材例句。JLPT 等級為學習用分類，並非官方固定文法清單。</div>')
     write_if_changed(path, s)
 
 
