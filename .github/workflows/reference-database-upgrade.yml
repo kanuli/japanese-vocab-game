@@ -6,9 +6,13 @@ on:
     paths:
       - '.reference-database-upgrade-trigger'
       - 'grammar-reference-expansion.js'
+      - 'grammar-gap-expansion.js'
       - 'listening-reference-expansion.js'
+      - 'listening-gap-expansion.js'
       - 'conversation-reference-expansion.js'
+      - 'conversation-gap-expansion.js'
       - 'tools/apply_reference_database_upgrade.py'
+      - 'tools/fix_listening_gap_naturalness.py'
       - 'tools/audit_coverage_gaps.py'
       - '.github/scripts/audit_reference_expansion.mjs'
       - 'data/CONTENT_REFERENCE_POLICY.md'
@@ -25,6 +29,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Fix generated Japanese inflections
+        run: python tools/fix_listening_gap_naturalness.py
       - name: Apply deterministic integration patch
         run: python tools/apply_reference_database_upgrade.py
       - name: Audit reference expansion
@@ -41,6 +47,6 @@ jobs:
           fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add grammar.html listening.html conversation.html mocktest.html mocktest.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json
-          git commit -m 'Audit Japanese database coverage gaps'
+          git add grammar.html listening.html conversation.html mocktest.html mocktest.js listening-gap-expansion.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json data/coverage_gap_audit.json
+          git commit -m 'Apply targeted Japanese coverage gap expansion'
           git push
