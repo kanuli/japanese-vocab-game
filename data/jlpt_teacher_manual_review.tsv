@@ -40,6 +40,46 @@ reading	display	queue_level	confirmed_level	decision	reference	rationale	reviewe
 おやつ	お八つ	N1	N4	confirmed	Bunpro:おやつ	Exact vocabulary entry classifies おやつ N4 and lists お八つ as its written form.	2026-08-26
 およそ	凡そ	N1	N3	confirmed	時雨:凡そ	Exact entry labels 凡そ（およそ）N3.	2026-08-26
 かきとり	書き取り	N1	N3	confirmed	Bunpro:書き取り	Exact vocabulary entry labels 書き取り（かきとり）N3.	2026-08-26
-かしこまりました	畏まりました	N1	N4	confirmed	Bunpro:かしこまりました	Exact vocabulary entry is N4 and lists 畏まりました as the written form.	2026-08-26
+かしこまりました	畏まりました	N1	N4	confirmed	Bunpro:かしこまりました	Exact vocabulary entry is N4 and lists 畏まりました as its written form.	2026-08-26
 かもしれない	かも知れない	N1	N4	confirmed	Bunpro:かもしれない	JLPT N4 grammar point; orthographic variant かも知れない belongs to the same expression.	2026-08-26
 かゆい	痒い	N1	N3	confirmed	時雨:痒い	Exact entry labels 痒い（かゆい）N3.	2026-08-26
+からかう	揶揄う	N1	N2	confirmed	時雨/JLearn:揶揄う	Exact reading/display sources classify 揶揄う（からかう）N2; N1 lineage rejected.	2026-08-26
+かわいい	可愛い	N1	N5	confirmed	時雨:可愛い	Exact common adjective 可愛い（かわいい）is N5.	2026-08-26
+かわいがる	可愛がる	N1	N3	confirmed	時雨:可愛がる	Exact entry classifies 可愛がる（かわいがる）N3; old existing-direct N2 overridden.	2026-08-26
+かわいそう	可哀想	N1	N3	confirmed	時雨/JLearn:可哀想	Multiple exact-entry sources support N3.	2026-08-26
+かわいらしい	可愛らしい	N1	N3	confirmed	時雨:可愛らしい	Exact entry classifies 可愛らしい（かわいらしい）N3.	2026-08-26
+かん	管	N1	N3	confirmed	Bunpro:管	Exact vocabulary entry classifies 管（かん）N3.	2026-08-26
+きっと	屹度	N1	N4	confirmed	時雨:屹度	Exact entry classifies 屹度（きっと）N4.	2026-08-26
+くしゃみ	嚏	N1	N2	confirmed	JLearn/JLPTgo:嚏	Exact 嚏（くしゃみ） appears on N2 lists and JLearn exact dictionary N2.	2026-08-26
+くたびれる	草臥れる	N1	N2	confirmed	JLearn/JapanDict:草臥れる	Independent exact-entry sources classify 草臥れる（くたびれる）N2.	2026-08-26
+くだらない	下らない	N1	N2	confirmed	JapanDict:下らない	Exact entry classifies 下らない（くだらない）N2.	2026-08-26
+くっつく	くっ付く	N1	N2	confirmed	JLPT N2 crosscheck:くっ付く	Exact orthographic form is supported at N2.	2026-08-26
+くっつける	くっ付ける	N1	N2	confirmed	JLPT N2 crosscheck:くっ付ける	Exact orthographic form is supported at N2.	2026-08-26
+くどい	諄い	N1	N2	confirmed	時雨:諄い	Exact entry classifies 諄い（くどい）N2.	2026-08-26
+くるむ	包む	N1	N2	confirmed	時雨:包む/くるむ	Exact reading くるむ for 包む is classified N2; distinguish other reading senses.	2026-08-26
+こしらえる	拵える	N1	N2	confirmed	JLearn/JapanDict:拵える	Multiple exact-entry sources classify 拵える（こしらえる）N2.	2026-08-26
+こぼす	零す	N1	N2	confirmed	JLearn:零す	Exact entry classifies 零す（こぼす）N2.	2026-08-26
+こんにちは	今日は	N1	N5	confirmed	Bunpro:こんにちは	N5 exact vocabulary entry lists 今日は as an orthographic form; N1/N3 legacy labels rejected.	2026-08-26
+こんばんは	今晩は	N1	N5	confirmed	時雨:今晩は	Exact greeting 今晩は（こんばんは）is N5.	2026-08-26
+ごくろうさま	ご苦労様	N1	N2	confirmed	Bunpro/JLearn:ご苦労様	Exact-entry sources support N2.	2026-08-26
+ごちそう	ご馳走	N1	N3	confirmed	時雨:ご馳走	Teacher-oriented exact entry classifies ご馳走（ごちそう）N3; legacy/JapanDict N4 disagreement noted and overridden.	2026-08-26
+ごぶさた	ご無沙汰	N1	N2	confirmed	時雨:ご無沙汰	Exact entry classifies ご無沙汰（ごぶさた）N2.	2026-08-26
+ごめんなさい	御免なさい	N1	N5	confirmed	時雨:御免なさい	Exact common apology 御免なさい（ごめんなさい）is N5.	2026-08-26
+さて	偖	N1	N3	confirmed	Bunpro/JLearn/JapanDict:さて	Multiple exact sources classify さて N3 and list 偖 as the same written form.	2026-08-26
+さようなら	左様なら	N1	N5	confirmed	Bunpro/時雨:さようなら	Exact N5 greeting entry includes 左様なら as its written form.	2026-08-26
+しあさって	明々後日	N1	N2	confirmed	JapanDict/JLearn:明々後日; 時雨:Bunpro=N3	Independent dictionary sources plus existing-direct support N2; teacher sources differ at N3, so conflict is explicitly retained in rationale.	2026-08-26
+しきりに	頻りに	N1	N3	confirmed	JLPTgo:頻りに	Exact form is classified N3.	2026-08-26
+しっかり	確り	N1	N4	confirmed	Bunpro/JLearn:確り	Exact-entry sources classify 確り（しっかり）N4.	2026-08-26
+しばらく	暫く	N1	N4	confirmed	JLPT N4 crosscheck:暫く	Exact form 暫く（しばらく）is supported at N4.	2026-08-26
+しびれる	痺れる	N1	N3	confirmed	時雨:痺れる	Exact entry classifies 痺れる（しびれる）N3; old existing-direct N2 overridden.	2026-08-26
+しぼむ	萎む	N1	N2	confirmed	時雨:萎む	Exact entry classifies 萎む（しぼむ）N2.	2026-08-26
+しまった	しまった	N1	N4	confirmed	時雨:しまった	Exact entry classifies しまった N4; old existing-direct N3 overridden.	2026-08-26
+しゃべる	喋る	N1	N3	confirmed	時雨:喋る	Exact entry classifies 喋る（しゃべる）N3.	2026-08-26
+しーん	しーん	N1	N2	confirmed	Wiktionary/JLPT N2 crosscheck:しーん	Independent N2 vocabulary-list evidence supports the exact kana form.	2026-08-26
+じゃんけん	じゃん拳	N1	N2	confirmed	JLearn/JapanDict:じゃん拳	Multiple exact-entry sources support N2.	2026-08-26
+すなわち	即ち	N1	N2	confirmed	時雨:即ち	Exact entry classifies 即ち（すなわち）N2; old existing-direct N3 overridden.	2026-08-26
+すまない	済まない	N1	N2	confirmed	JLearn/NihongoMaster:済まない; Bunpro=N3	Two exact dictionary sources and existing-direct support N2; Bunpro N3 disagreement explicitly noted.	2026-08-26
+すみません	済みません	N1	N5	confirmed	時雨:済みません	Exact common apology entry is N5; old existing-direct N3 overridden.	2026-08-26
+すれちがう	すれ違う	N1	N2	confirmed	時雨:すれ違う	Exact entry classifies すれ違う（すれちがう）N2.	2026-08-26
+ずうずうしい	図々しい	N1	N2	confirmed	時雨/JapanDict:図々しい	Exact-entry sources classify 図々しい（ずうずうしい）N2.	2026-08-26
+ぜひとも	是非とも	N1	N2	confirmed	JLearn/Tangorin:是非とも	Independent exact-entry sources classify 是非とも（ぜひとも）N2.	2026-08-26
