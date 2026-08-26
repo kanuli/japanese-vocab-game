@@ -1,0 +1,191 @@
+name: V5 vocabulary runtime regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/v5-vocab-runtime-regression.yml'
+      - 'advanced_words.js'
+      - 'core_vocab_fetch_patch.js'
+      - 'data/vocab_core_verified.js'
+      - 'data/vocab_external_crosscheck.js'
+      - 'data/advanced_vocab.js'
+      - 'data/vocab_teacher_runtime_overlay.js'
+      - 'data/vocab_audit.json'
+      - 'data/jlpt_teacher_audit.tsv'
+      - 'data/vocab_common_fixups.js'
+      - 'wordlist.html'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: v5-vocab-runtime-regression
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+
+      - name: Verify v5 teacher audit artifacts
+        run: |
+          node --check advanced_words.js
+          node --check core_vocab_fetch_patch.js
+          node --check data/vocab_core_verified.js
+          node --check data/vocab_external_crosscheck.js
+          node --check data/advanced_vocab.js
+          node --check data/vocab_teacher_runtime_overlay.js
+          python tools/check_vocab_sentinels.py
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+
+          audit=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
+          base=audit.get('jlptRecalibration',{})
+          runtime=audit.get('runtimeTeacherAudit',{})
+          assert audit.get('fatalIssueCount')==0, audit.get('fatalIssues')
+          assert audit.get('refinementFatalIssueCount',0)==0
+          assert audit.get('expansionFatalIssueCount',0)==0
+          assert audit['counts']['runtimeUnique']>=32000, audit['counts']
+          assert audit['coreAudit']['originalMeaningFallback']==0, audit['coreAudit']
+          assert audit['counts']['coreMeaningFallbackAfterRefinement']==0, audit['counts']
+          assert base.get('version')=='20260826-teacher-v5-source-lineage', base
+          assert base.get('policyRevision')=='v5-source-lineage', base
+          assert base.get('rowCount',0)>=32511, base
+          assert base.get('independentTeacherAnchors',0)>=100, base
+          assert base.get('estimatedN1WithoutRarityEvidence')==0, base
+          assert 'never counted as independent votes' in base.get('sourceIndependence',''), base
+          assert runtime.get('version')=='20260826-teacher-runtime-v2-lineage', runtime
+          assert runtime.get('policyRevision')=='v5-source-lineage', runtime
+          assert runtime.get('rowCount',0)>=32613, runtime
+          assert runtime.get('supplementConfiguredUniqueKeys',0)>=393, runtime
+          assert runtime.get('estimatedN1')==0, runtime
+          assert runtime.get('duplicateExactKeys')==0, runtime
+          assert 'never counted as independent votes' in runtime.get('sourceIndependence',''), runtime
+
+          sent=base.get('teacherSentinels',{})
+          expected={
+            'まい|まい':'N2','まい|舞':'N2','まい|枚':'N5','まい|毎':'N5',
+            'すいか|西瓜':'N5','ぎん|銀':'N5','けいかん|警官':'N5','こうちょう|校長':'N5',
+            'じしん|地震':'N4','じてん|辞典':'N4','つる|釣る':'N4','どろぼう|泥棒':'N4',
+            'れいぼう|冷房':'N3','レコード|レコード':'N3','がいこう|外交':'N2','きんゆう|金融':'N2',
+            'したぎ|下着':'N5','ちり|地理':'N4','ちじ|知事':'N1'
+          }
+          for key,level in expected.items():
+            assert sent.get(key,{}).get('level')==level,(key,sent.get(key))
+
+          with Path('data/jlpt_teacher_audit.tsv').open(encoding='utf-8',newline='') as f:
+            rows=list(csv.DictReader(f,delimiter='\t'))
+          assert len(rows)==runtime['rowCount'],(len(rows),runtime['rowCount'])
+          keys={(r['reading'],r['display']) for r in rows}
+          assert len(keys)==len(rows),'duplicate exact teacher-audit keys'
+          assert not [r for r in rows if r['level']=='N1' and r['status'].startswith('estimated')], 'estimated N1 found'
+          assert all(r['grade'] in {'A','B','C','D'} and r['basis'] for r in rows)
+          print('STATIC V5 AUDIT PASS',json.dumps({
+            'rows':len(rows),'baseVersion':base['version'],'runtimeVersion':runtime['version'],
+            'anchors':base['independentTeacherAnchors'],'runtimeSupplements':runtime['supplementConfiguredUniqueKeys']
+          },ensure_ascii=False))
+          PY
+
+      - name: Install Chromium
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Chromium runtime acceptance
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/v5-vocab-http.log 2>&1 &
+          echo $! >/tmp/v5-vocab-http.pid
+          trap 'kill $(cat /tmp/v5-vocab-http.pid) 2>/dev/null || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/wordlist.html >/dev/null && break; sleep 1; done
+          cat >/tmp/v5-vocab-regression.cjs <<'NODE'
+          const {chromium}=require(process.cwd()+'/node_modules/playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({serviceWorkers:'block'});
+            const page=await context.newPage();
+            const errors=[];
+            page.on('pageerror',e=>errors.push(String(e)));
+            const r=await page.goto('http://127.0.0.1:4173/wordlist.html?v5='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            if(!r||r.status()>=400)throw Error('wordlist HTTP '+(r?.status()||'none'));
+            await page.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>30000,null,{timeout:30000});
+            await page.waitForFunction(()=>window.VOCAB_TEACHER_RUNTIME_OVERLAY_META?.version==='20260826-teacher-runtime-v2-lineage',null,{timeout:15000});
+            const check=await page.evaluate(()=>{
+              const words=window.WA.words;
+              const display=w=>w.kanji||w.displayWord||w.reading;
+              const find=(reading,kanji)=>words.find(w=>w.reading===reading&&display(w)===kanji);
+              const sentinels=[
+                ['にわ','庭','N5'],
+                ['まい','まい','N2'],['まい','舞','N2'],['まい','枚','N5'],['まい','毎','N5'],
+                ['すいか','西瓜','N5'],['ぎん','銀','N5'],['けいかん','警官','N5'],['こうちょう','校長','N5'],
+                ['じしん','地震','N4'],['じてん','辞典','N4'],['つる','釣る','N4'],['どろぼう','泥棒','N4'],
+                ['れいぼう','冷房','N3'],['レコード','レコード','N3'],['がいこう','外交','N2'],['きんゆう','金融','N2'],
+                ['したぎ','下着','N5'],['ちり','地理','N4'],['ちじ','知事','N1']
+              ];
+              return {
+                total:words.length,
+                unique:new Set(words.map(w=>`${w.reading}|${display(w)}`)).size,
+                overlay:window.VOCAB_TEACHER_RUNTIME_OVERLAY_META||null,
+                corePatch:window.VOCAB_CORE_RUNTIME_PATCH_META||null,
+                external:window.VOCAB_EXTERNAL_CROSSCHECK_META||null,
+                estimatedN1:words.filter(w=>w.level==='N1'&&w.estimated===true).map(w=>`${w.reading}|${display(w)}`).slice(0,20),
+                sentinels:sentinels.map(([reading,kanji,expected])=>({reading,kanji,expected,actual:find(reading,kanji)?.level||null,meaning:find(reading,kanji)?.meaning||null}))
+              };
+            });
+            if(errors.length)throw Error('page errors '+errors.join(' | '));
+            if(check.total<32000)throw Error('runtime vocabulary too small '+JSON.stringify(check));
+            if(check.unique<32000)throw Error('runtime unique vocabulary too small '+JSON.stringify({total:check.total,unique:check.unique}));
+            if(!check.overlay||check.overlay.version!=='20260826-teacher-runtime-v2-lineage'||check.overlay.configuredKeys<393||check.overlay.appliedRows<350)throw Error('v5 runtime overlay not fully applied '+JSON.stringify(check.overlay));
+            if(!check.corePatch||check.corePatch.verifiedRows<10000)throw Error('core patch not verified '+JSON.stringify(check.corePatch));
+            if(!check.external||check.external.applied<46||check.external.configured<46)throw Error('manual external layer incomplete '+JSON.stringify(check.external));
+            if(check.estimatedN1.length)throw Error('estimated N1 visible at runtime '+JSON.stringify(check.estimatedN1));
+            const bad=check.sentinels.filter(x=>x.actual!==x.expected);
+            if(bad.length)throw Error('teacher sentinel mismatch '+JSON.stringify(bad));
+            const suika=check.sentinels.find(x=>x.reading==='すいか'&&x.kanji==='西瓜');
+            if(!suika||!String(suika.meaning).includes('西瓜')||String(suika.meaning).includes('天邊一朵雲'))throw Error('西瓜 semantic regression '+JSON.stringify(suika));
+            console.log('CHROMIUM V5 RUNTIME PASS',JSON.stringify(check));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          node /tmp/v5-vocab-regression.cjs
+
+      - name: Publish v5 runtime status
+        if: always()
+        env:
+          RESULT: ${{ job.status }}
+        run: |
+          python - <<'PY'
+          import json,os
+          from datetime import datetime,timezone
+          from pathlib import Path
+          out={
+            'version':1,
+            'policy':'v5-source-lineage',
+            'runtimeOverlay':'20260826-teacher-runtime-v2-lineage',
+            'status':os.environ.get('RESULT','unknown'),
+            'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
+            'runId':os.environ.get('GITHUB_RUN_ID'),
+            'headSha':os.environ.get('GITHUB_SHA'),
+            'checks':[
+              'v5-source-independence','32613-plus-teacher-audit-rows','zero-duplicate-exact-keys',
+              'zero-estimated-N1','393-plus-runtime-overlay-keys','chromium-32000-plus-runtime-words',
+              'teacher-sentinels','mai-homophone-separation','suika-semantic-sentinel','niwa-N5-current-teacher-level'
+            ]
+          }
+          Path('v5-vocab-runtime-audit-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+kanuli@users.noreply.github.com'
+          git add v5-vocab-runtime-audit-status.json
+          git commit -m 'Update v5 vocabulary runtime audit status' || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
