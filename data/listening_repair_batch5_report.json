@@ -120,19 +120,11 @@
   },
   "currentBeforeRun": {
     "count": 6690,
-    "qualityEligible": 6504,
-    "rejected": 186,
-    "eligibleRate": 97.2,
-    "rejectedByLevel": {
-      "N1": 14,
-      "N2": 86,
-      "N3": 8,
-      "N4": 12,
-      "N5": 66
-    },
-    "reasons": {
-      "lengthTwoPlusOutlier": 186
-    },
+    "qualityEligible": 6690,
+    "rejected": 0,
+    "eligibleRate": 100.0,
+    "rejectedByLevel": {},
+    "reasons": {},
     "kanaChoiceCount": 0,
     "kanaSamples": [],
     "maxWrongTripleReuse": 32,
@@ -189,19 +181,11 @@
   },
   "after": {
     "count": 6690,
-    "qualityEligible": 6504,
-    "rejected": 186,
-    "eligibleRate": 97.2,
-    "rejectedByLevel": {
-      "N1": 14,
-      "N2": 86,
-      "N3": 8,
-      "N4": 12,
-      "N5": 66
-    },
-    "reasons": {
-      "lengthTwoPlusOutlier": 186
-    },
+    "qualityEligible": 6690,
+    "rejected": 0,
+    "eligibleRate": 100.0,
+    "rejectedByLevel": {},
+    "reasons": {},
     "kanaChoiceCount": 0,
     "kanaSamples": [],
     "maxWrongTripleReuse": 32,
@@ -275,19 +259,11 @@
   ],
   "afterCompositeCleanup": {
     "count": 6690,
-    "qualityEligible": 6504,
-    "rejected": 186,
-    "eligibleRate": 97.2,
-    "rejectedByLevel": {
-      "N1": 14,
-      "N2": 86,
-      "N3": 8,
-      "N4": 12,
-      "N5": 66
-    },
-    "reasons": {
-      "lengthTwoPlusOutlier": 186
-    },
+    "qualityEligible": 6690,
+    "rejected": 0,
+    "eligibleRate": 100.0,
+    "rejectedByLevel": {},
+    "reasons": {},
     "kanaChoiceCount": 0,
     "kanaSamples": [],
     "maxWrongTripleReuse": 32,
@@ -344,19 +320,11 @@
   },
   "afterAliasCleanup": {
     "count": 6690,
-    "qualityEligible": 6504,
-    "rejected": 186,
-    "eligibleRate": 97.2,
-    "rejectedByLevel": {
-      "N1": 14,
-      "N2": 86,
-      "N3": 8,
-      "N4": 12,
-      "N5": 66
-    },
-    "reasons": {
-      "lengthTwoPlusOutlier": 186
-    },
+    "qualityEligible": 6690,
+    "rejected": 0,
+    "eligibleRate": 100.0,
+    "rejectedByLevel": {},
+    "reasons": {},
     "kanaChoiceCount": 0,
     "kanaSamples": [],
     "maxWrongTripleReuse": 32,
