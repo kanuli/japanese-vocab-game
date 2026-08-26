@@ -26,7 +26,7 @@ document.write('<script src="./data/vocab_common_fixups.js?v=20260826v3"><\/scri
 document.write('<script src="./data/vocab_teacher_runtime_overlay.js?v=20260826v2lineage"><\/script>');
 // Hosted-audio delta overlay. It waits for wordaudio-multivoice.js before installing,
 // so non-audio vocabulary pages simply ignore it.
-document.write('<script src="./wordaudio-delta-voices.js?v=20260821v1"><\/script>');
+document.write('<script src="./wordaudio-delta-voices.js?v=20260827v2"><\/script>');
 
 // Pronunciation fix: always speak the explicit kana reading shown in the answer sheet.
 // This prevents browser TTS from guessing an incorrect reading from kanji such as 白粉（おしろい）.
