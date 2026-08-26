@@ -9,6 +9,9 @@ on:
       - 'site-health.js'
       - 'pronunciation-furigana.js'
       - 'advanced_words.js'
+      - 'core_vocab_fetch_patch.js'
+      - 'data/vocab_core_verified.js'
+      - 'data/advanced_vocab.js'
       - 'data/vocab_common_fixups.js'
       - 'index.html'
       - 'wordaudio.html'
@@ -41,7 +44,11 @@ jobs:
           node --check site-health.js
           node --check pronunciation-furigana.js
           node --check advanced_words.js
+          node --check core_vocab_fetch_patch.js
+          node --check data/vocab_core_verified.js
+          node --check data/advanced_vocab.js
           node --check data/vocab_common_fixups.js
+          python tools/check_vocab_sentinels.py
           python - <<'PY'
           import json
           from pathlib import Path
@@ -105,11 +112,29 @@ jobs:
             await audio.close();
 
             const wl=await context.newPage();
-            await wl.goto('http://127.0.0.1:4173/wordlist.html?niwa='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
-            await wl.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>0,null,{timeout:30000});
-            const niwa=await wl.evaluate(()=>window.WA.words.find(w=>w.kanji==='庭'&&w.reading==='にわ'));
-            if(!niwa||niwa.level!=='N4')throw Error('庭/にわ N4 missing '+JSON.stringify(niwa));
-            console.log('VOCAB PASS 庭 にわ',JSON.stringify(niwa));
+            await wl.goto('http://127.0.0.1:4173/wordlist.html?vocab='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            await wl.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>10000,null,{timeout:30000});
+            const vocabCheck=await wl.evaluate(()=>{
+              const words=window.WA.words;
+              const find=(reading,display)=>words.find(w=>w.reading===reading&&(w.kanji||w.displayWord||w.reading)===display);
+              return {
+                runtimePatch:window.VOCAB_CORE_RUNTIME_PATCH_META||null,
+                niwa:find('にわ','庭'),
+                suika:find('すいか','西瓜'),
+                mai:find('まい','まい'),
+                dance:find('まい','舞'),
+                counter:find('まい','枚'),
+                every:find('まい','毎')
+              };
+            });
+            if(!vocabCheck.runtimePatch||vocabCheck.runtimePatch.patchedRows<10000||vocabCheck.runtimePatch.verifiedRows<10000)throw Error('core overlay not applied '+JSON.stringify(vocabCheck.runtimePatch));
+            if(!vocabCheck.niwa||vocabCheck.niwa.level!=='N4')throw Error('庭/にわ N4 missing '+JSON.stringify(vocabCheck.niwa));
+            if(!vocabCheck.suika||!String(vocabCheck.suika.meaning).includes('西瓜')||String(vocabCheck.suika.meaning).includes('天邊一朵雲'))throw Error('西瓜/すいか corrupted '+JSON.stringify(vocabCheck.suika));
+            if(!vocabCheck.mai||vocabCheck.mai.level!=='N2'||!String(vocabCheck.mai.meaning).includes('不會'))throw Error('まい semantic failure '+JSON.stringify(vocabCheck.mai));
+            if(!vocabCheck.dance||vocabCheck.dance.level!=='N2'||!String(vocabCheck.dance.meaning).includes('舞'))throw Error('舞 semantic failure '+JSON.stringify(vocabCheck.dance));
+            if(!vocabCheck.counter||vocabCheck.counter.level!=='N5'||!String(vocabCheck.counter.meaning).includes('枚'))throw Error('枚 semantic failure '+JSON.stringify(vocabCheck.counter));
+            if(!vocabCheck.every||vocabCheck.every.level!=='N5'||!String(vocabCheck.every.meaning).includes('每'))throw Error('毎 semantic failure '+JSON.stringify(vocabCheck.every));
+            console.log('VOCAB RUNTIME PASS',JSON.stringify(vocabCheck));
             await wl.close();
 
             const pr=await context.newPage();
@@ -135,7 +160,7 @@ jobs:
           from datetime import datetime,timezone
           from pathlib import Path
           out={
-            'version':1,
+            'version':2,
             'status':os.environ.get('RESULT','unknown'),
             'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
             'runId':os.environ.get('GITHUB_RUN_ID'),
@@ -143,6 +168,7 @@ jobs:
             'checks':[
               'default-all-N1-N5-seven-pages','conversation-pronunciation-range-presets',
               'wordaudio-repeat-gap-options','wordaudio-quantity-options','vocab-niwa-N4',
+              'vocab-core-overlay-10000-plus','vocab-suika-meaning','vocab-mai-homophones',
               'pronunciation-9month-8day-furigana','grammar-quality-zero-failures',
               'listening-mock-quality-zero-failures'
             ]
@@ -151,7 +177,7 @@ jobs:
           print(json.dumps(out,ensure_ascii=False,indent=2))
           PY
           git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.email '41898282+kanuli@users.noreply.github.com'
           git add targeted-ui-audit-status.json
           git commit -m 'Update targeted UI audit status' || exit 0
           git pull --rebase origin main
