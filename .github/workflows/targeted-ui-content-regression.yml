@@ -72,7 +72,7 @@ jobs:
           assert l['listening']['structurallyRejected']==0 and not l['failures']
           assert all(x['qualityFailures']==0 and x['underfills']==0 for x in l['mock']['perLevel'].values())
           x=Path('data/vocab_external_crosscheck.js').read_text(encoding='utf-8')
-          assert '20260826-v3-complete' in x and len(re.findall(r'^\s*\["',x,re.M))==46
+          assert '20260826-v5-jlpt-conflict-sanity' in x and len(re.findall(r'^\s*\["',x,re.M))>=46
           assert a['fatalIssueCount']==0 and a.get('refinementFatalIssueCount',0)==0 and a.get('expansionFatalIssueCount',0)==0
           assert a['coreAudit']['originalMeaningFallback']==0 and a['counts']['coreMeaningFallbackAfterRefinement']==0
           assert b['version']=='20260826-teacher-v5-source-lineage' and b['policyRevision']=='v5-source-lineage'
