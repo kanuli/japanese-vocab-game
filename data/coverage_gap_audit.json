@@ -1,0 +1,978 @@
+{
+  "version": "2026-08-27-gap-audit-v2",
+  "methodology": {
+    "jlpt": "Official JLPT capability descriptions are the difficulty anchor; grammar matrix is diagnostic, not an official syllabus.",
+    "jfStandard": "Conversation topic coverage uses the Japan Foundation JF Standard 15-topic framework as a diagnostic taxonomy.",
+    "copyright": "External proprietary sites are reference-only and are not scraped or copied."
+  },
+  "grammar": {
+    "N5": {
+      "signals": 154,
+      "covered": [
+        "request",
+        "permission",
+        "prohibition",
+        "desire",
+        "invitation",
+        "proposal",
+        "reason",
+        "sequence",
+        "examples"
+      ],
+      "missing": [],
+      "coveragePct": 100.0
+    },
+    "N4": {
+      "signals": 142,
+      "covered": [
+        "experience",
+        "preparation",
+        "possibility",
+        "appearance",
+        "purpose",
+        "condition",
+        "concession",
+        "simultaneous",
+        "excess",
+        "ease",
+        "difficulty",
+        "change_state",
+        "potential"
+      ],
+      "missing": [
+        "passive"
+      ],
+      "coveragePct": 92.9
+    },
+    "N3": {
+      "signals": 150,
+      "covered": [
+        "decision",
+        "external_decision",
+        "rule",
+        "habit_effort",
+        "change_state",
+        "every_time",
+        "while_state",
+        "positive_cause",
+        "negative_cause",
+        "topic",
+        "source",
+        "comparison",
+        "target_contrast",
+        "result_discovery",
+        "reasoning",
+        "despite",
+        "occasion"
+      ],
+      "missing": [],
+      "coveragePct": 100.0
+    },
+    "N2": {
+      "signals": 209,
+      "covered": [
+        "partial_negation",
+        "impossibility",
+        "certainty",
+        "no_need",
+        "concession",
+        "change_parallel",
+        "according_to",
+        "accompanying",
+        "domain",
+        "target_contrast",
+        "unavoidable",
+        "risk",
+        "polite_impossible",
+        "basis",
+        "limit",
+        "after_considering",
+        "not_only",
+        "far_from",
+        "not_always"
+      ],
+      "missing": [],
+      "coveragePct": 100.0
+    },
+    "N1": {
+      "signals": 265,
+      "covered": [
+        "let_alone",
+        "not_limited",
+        "starting_with",
+        "as_of_by",
+        "in_line_with",
+        "inevitable_effect",
+        "no_need",
+        "extreme",
+        "cannot_suppress",
+        "up_to",
+        "if_special_case",
+        "as_soon_as",
+        "again_and_again",
+        "without",
+        "forced",
+        "unbearable_worthy",
+        "not_even_one",
+        "must_not",
+        "almost_as_if",
+        "while_also"
+      ],
+      "missing": [],
+      "coveragePct": 100.0
+    }
+  },
+  "hanabiraRemoteStatus": {
+    "N5": 136,
+    "N4": 124,
+    "N3": 132,
+    "N2": 191,
+    "N1": 245
+  },
+  "listening": {
+    "N5": {
+      "count": 1468,
+      "distinctTypes": 12,
+      "topTypes": [
+        [
+          "即時應答",
+          294
+        ],
+        [
+          "重點理解",
+          291
+        ],
+        [
+          "任務理解",
+          291
+        ],
+        [
+          "概要理解",
+          291
+        ],
+        [
+          "推論／意圖理解",
+          291
+        ],
+        [
+          "時間理解",
+          2
+        ],
+        [
+          "交通理解",
+          2
+        ],
+        [
+          "行動理解",
+          2
+        ],
+        [
+          "資訊理解",
+          1
+        ],
+        [
+          "數量理解",
+          1
+        ],
+        [
+          "地點理解",
+          1
+        ],
+        [
+          "人物關係",
+          1
+        ]
+      ],
+      "underrepresented": [
+        [
+          "人物關係",
+          1
+        ],
+        [
+          "地點理解",
+          1
+        ],
+        [
+          "數量理解",
+          1
+        ],
+        [
+          "資訊理解",
+          1
+        ],
+        [
+          "交通理解",
+          2
+        ],
+        [
+          "時間理解",
+          2
+        ],
+        [
+          "行動理解",
+          2
+        ]
+      ]
+    },
+    "N4": {
+      "count": 1518,
+      "distinctTypes": 14,
+      "topTypes": [
+        [
+          "即時應答",
+          302
+        ],
+        [
+          "概要理解",
+          302
+        ],
+        [
+          "重點理解",
+          301
+        ],
+        [
+          "任務理解",
+          301
+        ],
+        [
+          "推論／意圖理解",
+          301
+        ],
+        [
+          "原因結果",
+          2
+        ],
+        [
+          "條件理解",
+          2
+        ],
+        [
+          "順序理解",
+          1
+        ],
+        [
+          "目的理解",
+          1
+        ],
+        [
+          "指示理解",
+          1
+        ],
+        [
+          "準備理解",
+          1
+        ],
+        [
+          "方向理解",
+          1
+        ],
+        [
+          "可能性理解",
+          1
+        ],
+        [
+          "特徵理解",
+          1
+        ]
+      ],
+      "underrepresented": [
+        [
+          "可能性理解",
+          1
+        ],
+        [
+          "指示理解",
+          1
+        ],
+        [
+          "方向理解",
+          1
+        ],
+        [
+          "準備理解",
+          1
+        ],
+        [
+          "特徵理解",
+          1
+        ],
+        [
+          "目的理解",
+          1
+        ],
+        [
+          "順序理解",
+          1
+        ],
+        [
+          "原因結果",
+          2
+        ],
+        [
+          "條件理解",
+          2
+        ]
+      ]
+    },
+    "N3": {
+      "count": 1484,
+      "distinctTypes": 16,
+      "topTypes": [
+        [
+          "即時應答",
+          295
+        ],
+        [
+          "重點理解",
+          295
+        ],
+        [
+          "任務理解",
+          294
+        ],
+        [
+          "概要理解",
+          294
+        ],
+        [
+          "推論／意圖理解",
+          294
+        ],
+        [
+          "細節理解",
+          2
+        ],
+        [
+          "變更理解",
+          1
+        ],
+        [
+          "習慣理解",
+          1
+        ],
+        [
+          "課題理解",
+          1
+        ],
+        [
+          "變化理解",
+          1
+        ],
+        [
+          "資訊來源",
+          1
+        ],
+        [
+          "意圖理解",
+          1
+        ],
+        [
+          "決定理解",
+          1
+        ],
+        [
+          "順序理解",
+          1
+        ],
+        [
+          "範圍理解",
+          1
+        ]
+      ],
+      "underrepresented": [
+        [
+          "意圖理解",
+          1
+        ],
+        [
+          "決定理解",
+          1
+        ],
+        [
+          "理由理解",
+          1
+        ],
+        [
+          "範圍理解",
+          1
+        ],
+        [
+          "習慣理解",
+          1
+        ],
+        [
+          "課題理解",
+          1
+        ],
+        [
+          "變化理解",
+          1
+        ],
+        [
+          "變更理解",
+          1
+        ],
+        [
+          "資訊來源",
+          1
+        ],
+        [
+          "順序理解",
+          1
+        ],
+        [
+          "細節理解",
+          2
+        ]
+      ]
+    },
+    "N2": {
+      "count": 1248,
+      "distinctTypes": 16,
+      "topTypes": [
+        [
+          "即時應答",
+          248
+        ],
+        [
+          "重點理解",
+          247
+        ],
+        [
+          "任務理解",
+          247
+        ],
+        [
+          "概要理解",
+          247
+        ],
+        [
+          "推論／意圖理解",
+          247
+        ],
+        [
+          "範圍理解",
+          2
+        ],
+        [
+          "程序理解",
+          1
+        ],
+        [
+          "變化理解",
+          1
+        ],
+        [
+          "課題理解",
+          1
+        ],
+        [
+          "原因結果",
+          1
+        ],
+        [
+          "原因推論",
+          1
+        ],
+        [
+          "指示理解",
+          1
+        ],
+        [
+          "否定推論",
+          1
+        ],
+        [
+          "建議理解",
+          1
+        ],
+        [
+          "趨勢理解",
+          1
+        ]
+      ],
+      "underrepresented": [
+        [
+          "原因推論",
+          1
+        ],
+        [
+          "原因結果",
+          1
+        ],
+        [
+          "否定推論",
+          1
+        ],
+        [
+          "建議理解",
+          1
+        ],
+        [
+          "指示理解",
+          1
+        ],
+        [
+          "程序理解",
+          1
+        ],
+        [
+          "課題理解",
+          1
+        ],
+        [
+          "變化理解",
+          1
+        ],
+        [
+          "趨勢理解",
+          1
+        ],
+        [
+          "風險推論",
+          1
+        ],
+        [
+          "範圍理解",
+          2
+        ]
+      ]
+    },
+    "N1": {
+      "count": 1032,
+      "distinctTypes": 14,
+      "topTypes": [
+        [
+          "即時應答",
+          204
+        ],
+        [
+          "重點理解",
+          204
+        ],
+        [
+          "任務理解",
+          204
+        ],
+        [
+          "概要理解",
+          204
+        ],
+        [
+          "推論／意圖理解",
+          204
+        ],
+        [
+          "正式公告",
+          2
+        ],
+        [
+          "論理理解",
+          2
+        ],
+        [
+          "範圍理解",
+          2
+        ],
+        [
+          "判斷理解",
+          1
+        ],
+        [
+          "時間關係",
+          1
+        ],
+        [
+          "展開理解",
+          1
+        ],
+        [
+          "逆接理解",
+          1
+        ],
+        [
+          "評價理解",
+          1
+        ],
+        [
+          "結論推論",
+          1
+        ]
+      ],
+      "underrepresented": [
+        [
+          "判斷理解",
+          1
+        ],
+        [
+          "展開理解",
+          1
+        ],
+        [
+          "時間關係",
+          1
+        ],
+        [
+          "結論推論",
+          1
+        ],
+        [
+          "評價理解",
+          1
+        ],
+        [
+          "逆接理解",
+          1
+        ],
+        [
+          "正式公告",
+          2
+        ],
+        [
+          "範圍理解",
+          2
+        ],
+        [
+          "論理理解",
+          2
+        ]
+      ]
+    }
+  },
+  "conversation": {
+    "sceneCount": 71,
+    "topicCounts": {
+      "travel_transport": 8,
+      "shopping": 8,
+      "food": 2,
+      "health": 5,
+      "work": 4,
+      "relationships": 4,
+      "housing": 5,
+      "society": 7,
+      "life_lifecycle": 6,
+      "science_technology": 2,
+      "education": 2,
+      "leisure": 3,
+      "self_family": 2,
+      "language_culture": 1,
+      "nature_environment": 1
+    },
+    "weakTopics": [
+      "nature_environment",
+      "language_culture"
+    ],
+    "levelFunctions": {
+      "N5": {
+        "counts": {
+          "request": 12,
+          "permission": 0,
+          "apology": 3,
+          "refusal": 0,
+          "clarification": 0,
+          "change_reschedule": 1,
+          "complaint_problem": 0,
+          "negotiation_alternative": 0,
+          "procedure": 1,
+          "reporting": 0,
+          "emergency": 0,
+          "reason_explanation": 0,
+          "exception": 0,
+          "recommendation": 0,
+          "comparison": 0
+        },
+        "weakExpected": [
+          "permission",
+          "clarification"
+        ]
+      },
+      "N4": {
+        "counts": {
+          "request": 10,
+          "permission": 1,
+          "apology": 1,
+          "refusal": 0,
+          "clarification": 1,
+          "change_reschedule": 0,
+          "complaint_problem": 0,
+          "negotiation_alternative": 0,
+          "procedure": 0,
+          "reporting": 0,
+          "emergency": 1,
+          "reason_explanation": 8,
+          "exception": 0,
+          "recommendation": 0,
+          "comparison": 0
+        },
+        "weakExpected": [
+          "permission",
+          "apology",
+          "clarification",
+          "change_reschedule",
+          "recommendation"
+        ]
+      },
+      "N3": {
+        "counts": {
+          "request": 9,
+          "permission": 0,
+          "apology": 3,
+          "refusal": 0,
+          "clarification": 3,
+          "change_reschedule": 2,
+          "complaint_problem": 2,
+          "negotiation_alternative": 0,
+          "procedure": 0,
+          "reporting": 1,
+          "emergency": 0,
+          "reason_explanation": 18,
+          "exception": 0,
+          "recommendation": 3,
+          "comparison": 4
+        },
+        "weakExpected": [
+          "change_reschedule",
+          "complaint_problem",
+          "procedure",
+          "reporting"
+        ]
+      },
+      "N2": {
+        "counts": {
+          "request": 9,
+          "permission": 2,
+          "apology": 2,
+          "refusal": 0,
+          "clarification": 1,
+          "change_reschedule": 2,
+          "complaint_problem": 9,
+          "negotiation_alternative": 2,
+          "procedure": 5,
+          "reporting": 1,
+          "emergency": 2,
+          "reason_explanation": 26,
+          "exception": 0,
+          "recommendation": 3,
+          "comparison": 3
+        },
+        "weakExpected": [
+          "apology",
+          "refusal",
+          "clarification",
+          "change_reschedule",
+          "negotiation_alternative",
+          "reporting",
+          "exception"
+        ]
+      },
+      "N1": {
+        "counts": {
+          "request": 12,
+          "permission": 2,
+          "apology": 3,
+          "refusal": 2,
+          "clarification": 2,
+          "change_reschedule": 7,
+          "complaint_problem": 5,
+          "negotiation_alternative": 1,
+          "procedure": 8,
+          "reporting": 3,
+          "emergency": 5,
+          "reason_explanation": 40,
+          "exception": 7,
+          "recommendation": 3,
+          "comparison": 3
+        },
+        "weakExpected": [
+          "refusal",
+          "clarification",
+          "negotiation_alternative"
+        ]
+      }
+    },
+    "sceneTopics": {
+      "station": [
+        "travel_transport"
+      ],
+      "train": [
+        "travel_transport"
+      ],
+      "bus": [
+        "travel_transport"
+      ],
+      "taxi": [
+        "travel_transport"
+      ],
+      "airport": [
+        "travel_transport"
+      ],
+      "supermarket": [
+        "shopping"
+      ],
+      "convenience": [
+        "shopping"
+      ],
+      "restaurant": [
+        "food"
+      ],
+      "cafe": [
+        "shopping",
+        "food"
+      ],
+      "hotel": [
+        "shopping"
+      ],
+      "shopping": [
+        "shopping"
+      ],
+      "electronics": [
+        "shopping"
+      ],
+      "directions": [],
+      "tourism": [
+        "travel_transport"
+      ],
+      "hospital": [
+        "health"
+      ],
+      "pharmacy": [
+        "health"
+      ],
+      "workplace": [
+        "work"
+      ],
+      "phone": [],
+      "friends": [
+        "relationships"
+      ],
+      "apartment": [
+        "housing",
+        "relationships"
+      ],
+      "delivery": [],
+      "postoffice": [],
+      "bank": [
+        "society"
+      ],
+      "police": [
+        "society"
+      ],
+      "emergency": [],
+      "cityhall": [
+        "life_lifecycle",
+        "society"
+      ],
+      "immigration": [
+        "life_lifecycle",
+        "society"
+      ],
+      "realestate": [
+        "housing"
+      ],
+      "moving": [
+        "housing"
+      ],
+      "utilities": [
+        "housing"
+      ],
+      "garbage": [
+        "housing"
+      ],
+      "internet": [
+        "science_technology"
+      ],
+      "salon": [
+        "shopping"
+      ],
+      "laundry": [],
+      "library": [
+        "education"
+      ],
+      "gym": [
+        "leisure"
+      ],
+      "onsen": [],
+      "school": [
+        "education"
+      ],
+      "childcare": [
+        "self_family"
+      ],
+      "jobhunt": [],
+      "hr": [
+        "life_lifecycle"
+      ],
+      "meeting": [
+        "work"
+      ],
+      "worksafety": [],
+      "dentist": [
+        "health"
+      ],
+      "eyeclinic": [],
+      "insurance": [
+        "health",
+        "society"
+      ],
+      "taxpension": [],
+      "bicycle": [],
+      "rentalcar": [],
+      "parking": [],
+      "trafficaccident": [
+        "travel_transport"
+      ],
+      "ferry": [
+        "travel_transport"
+      ],
+      "cinema": [
+        "leisure"
+      ],
+      "event": [
+        "leisure"
+      ],
+      "shrine": [
+        "language_culture"
+      ],
+      "evacuation": [
+        "nature_environment"
+      ],
+      "petvet": [
+        "health"
+      ],
+      "pregnancy": [],
+      "community": [
+        "life_lifecycle",
+        "relationships"
+      ],
+      "marriage": [
+        "self_family",
+        "life_lifecycle"
+      ],
+      "embassy": [],
+      "reservation-change": [],
+      "retail-return-exchange": [
+        "shopping"
+      ],
+      "delivery-redelivery": [],
+      "repair-service": [],
+      "workplace-reporting": [
+        "work",
+        "relationships"
+      ],
+      "business-phone": [
+        "work"
+      ],
+      "customer-complaint": [],
+      "digital-account-support": [
+        "science_technology"
+      ],
+      "municipal-form-support": [
+        "life_lifecycle",
+        "society"
+      ],
+      "insurance-claim": [
+        "society"
+      ]
+    }
+  }
+}
