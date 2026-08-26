@@ -14,8 +14,14 @@ on:
       - tools/recalibrate_jlpt_world_v3.py
       - tools/recalibrate_jlpt_teacher_v4.py
       - tools/run_teacher_jlpt_audit.py
+      - tools/audit_runtime_supplements.py
       - tools/classify_vocab_audit.py
       - tools/check_vocab_sentinels.py
+      - advanced_words_curated.js
+      - data/coverage_deferred_manual.js
+      - data/coverage_sourcecheck_manual.js
+      - data/coverage_postreview_manual.js
+      - data/vocab_common_fixups.js
       - data/vocab_external_crosscheck.js
       - data/vocab_stage2_external_validation.json
       - large_vocab_sources.js
@@ -42,7 +48,7 @@ jobs:
         run: |
           curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
           zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
-      - name: Build, refine, expand, teacher-audit and classify all vocabulary data
+      - name: Build, refine, expand, teacher-audit and classify generated vocabulary
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
           VOCAB_ADVANCED_TARGET: '22000'
@@ -59,7 +65,7 @@ jobs:
           python tools/expand_advanced_vocab_stage12.py
           python tools/run_teacher_jlpt_audit.py
           python tools/classify_vocab_audit.py
-      - name: Verify full teacher JLPT audit and coverage
+      - name: Verify generated core and advanced teacher audit
         run: |
           python - <<'PY'
           import csv,json
@@ -106,28 +112,56 @@ jobs:
           for key,level in expected.items():
             assert s.get(key,{}).get('level')==level,(key,s.get(key))
           path=Path('data/jlpt_teacher_audit.tsv')
-          assert path.exists(), 'missing full teacher audit artifact'
+          assert path.exists(), 'missing base teacher audit artifact'
           with path.open(encoding='utf-8',newline='') as f:
             rows=list(csv.DictReader(f,delimiter='\t'))
           assert len(rows)==r['rowCount'],(len(rows),r['rowCount'])
           assert all(x['level'] in {'N1','N2','N3','N4','N5'} for x in rows)
           assert all(x['grade'] in {'A','B','C','D'} for x in rows)
           assert all(x['basis'] for x in rows)
-          print('TEACHER JLPT AUDIT PASS',json.dumps(c,ensure_ascii=False))
+          print('BASE TEACHER JLPT AUDIT PASS',json.dumps(c,ensure_ascii=False))
           print('rows=',len(rows),'grades=',json.dumps(r.get('teacherGradeCounts',{}),ensure_ascii=False))
-          print('directConflicts=',r.get('directConflictRows'),'estimated=',r.get('estimatedRows'))
-          print('sentinels=',json.dumps(s,ensure_ascii=False))
+          PY
+      - name: Extend teacher audit through every additive runtime vocabulary layer
+        env:
+          TOMOSHI_DB: /tmp/tomoshi.db
+        run: python tools/audit_runtime_supplements.py
+      - name: Verify complete runtime teacher audit
+        run: |
+          node --check data/vocab_teacher_runtime_overlay.js
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          audit=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
+          base=audit['jlptRecalibration']
+          r=audit.get('runtimeTeacherAudit',{})
+          assert r.get('status')=='complete',r
+          assert r.get('version')=='20260826-teacher-runtime-v1',r
+          assert r.get('rowCount',0)>=base['rowCount'],(r,base['rowCount'])
+          assert r.get('supplementConfiguredUniqueKeys',0)>=200,r
+          assert r.get('supplementUniqueKeysAddedToAudit',0)>0,r
+          assert r.get('estimatedN1')==0,r
+          assert r.get('duplicateExactKeys')==0,r
+          assert r.get('overlay',{}).get('configuredKeys')==r.get('supplementConfiguredUniqueKeys'),r
+          path=Path('data/jlpt_teacher_audit.tsv')
+          with path.open(encoding='utf-8',newline='') as f:
+            rows=list(csv.DictReader(f,delimiter='\t'))
+          assert len(rows)==r['rowCount'],(len(rows),r['rowCount'])
+          assert len({(x['reading'],x['display']) for x in rows})==len(rows)
+          assert not [x for x in rows if x['level']=='N1' and x['status'].startswith('estimated')]
+          assert all(x['grade'] in {'A','B','C','D'} and x['basis'] for x in rows)
+          print('FULL RUNTIME TEACHER AUDIT PASS',json.dumps(r,ensure_ascii=False))
           PY
       - name: Verify blocking semantic sentinels
         run: python tools/check_vocab_sentinels.py
       - name: Commit regenerated teacher-audited vocabulary
         run: |
-          if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv; then
+          if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js; then
             echo "Vocabulary data already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv
-          git commit -m "Rebuild teacher-audited JLPT vocabulary data"
+          git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js
+          git commit -m "Rebuild complete runtime teacher-audited JLPT data"
           git push
