@@ -1,26 +1,31 @@
 {
-  "generated": "2026-08-26T09:21:42.594894+00:00",
+  "generated": "2026-08-26T10:01:54.343936+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
     "officialJlptNote": "No official post-2010 JLPT per-word vocabulary list exists; site levels are third-party learning labels or estimates.",
-    "coreRefinement": "Every original core fallback is reviewed against all safe exact-equivalent form+reading Tomoshi/JMdict candidates. Bracketed furigana notation, Unicode/Japanese glyph normalization and hiragana/katakana reading equivalence are allowed only when the raw exact lookup has no candidate. Automatic semantic selection still requires strong Traditional-Chinese agreement and a clear margin. Mazii/MOJi/時雨 are secondary manual validation only; their proprietary dictionary text is not bulk-copied."
+    "coreRefinement": "Every original core fallback is reviewed against all safe exact-equivalent form+reading Tomoshi/JMdict candidates. Bracketed furigana notation, Unicode/Japanese glyph normalization and hiragana/katakana reading equivalence are allowed only when the raw exact lookup has no candidate. Automatic semantic selection still requires strong Traditional-Chinese agreement and a clear margin. Mazii/MOJi/時雨 are secondary manual validation only; their proprietary dictionary text is not bulk-copied.",
+    "advancedExpansion": "Full Tomoshi/JMdict open corpus; prior 12.5k preserved; new canonical rows require reusable zh-TW plus learner evidence. Exact lexical ambiguity is skipped. Proprietary web dictionaries are validation-only."
   },
   "counts": {
     "core": 10511,
-    "advanced": 12500,
-    "runtimeUnique": 23011,
+    "advanced": 22000,
+    "runtimeUnique": 32511,
     "tomoshiZhRowsTotal": 217261,
     "tomoshiZhUsable": 217241,
     "tomoshiJlptRows": 7747,
-    "sameMeaningVariantGroups": 477,
-    "sameMeaningVariantLevelConflicts": 66,
+    "sameMeaningVariantGroups": 1214,
+    "sameMeaningVariantLevelConflicts": 192,
     "advancedMultiEntryExactKeys": 18,
     "coreMeaningFallbackAfterRefinement": 0,
     "coreSecondaryCrosschecksApplied": 46,
     "coreSemanticResolvedPairs": 123,
     "coreNormalizedFormReadingRecoveredPairs": 182,
-    "orthographicVariantLevelDifferencesForReview": 66
+    "orthographicVariantLevelDifferencesForReview": 66,
+    "stage1AdvancedAddedVs12500": 9500,
+    "stage1SafeCandidatePool": 22266,
+    "stage1ConflictingExactKeysSkipped": 8,
+    "stage2StratifiedReviewQueue": 36
   },
   "coreAudit": {
     "total": 10511,
@@ -546,13 +551,15 @@
   ],
   "coreUnresolvedSamples": [],
   "advancedMeaningSources": {
-    "tomoshi-entry-id": 12492,
-    "curated-exact": 8
+    "baseline-audited-tomoshi": 12500,
+    "tomoshi-entry-id-full-corpus": 9500
   },
   "advancedLevelSources": {
     "jlpt-waller": 2437,
     "curated-exact": 8,
-    "exact-frequency-estimate": 10055
+    "exact-frequency-estimate": 10055,
+    "tomoshi-waller": 296,
+    "tomoshi-priority-frequency-estimate": 9204
   },
   "advancedMultiEntrySamples": [
     {
@@ -9595,6 +9602,3593 @@
     }
   ],
   "refinementFatalIssueCount": 0,
+  "stage1Expansion": {
+    "baselineAdvanced": 12500,
+    "targetAdvanced": 22000,
+    "selectedAdvanced": 22000,
+    "addedVsBaseline": 9500,
+    "runtimeUnique": 32511,
+    "safeSupplementCandidatePool": 9766,
+    "qualityTierSelected": {
+      "BASELINE-audited": 12500,
+      "A-JLPT+common": 296,
+      "B-common+frequency": 9204
+    },
+    "qualityTierAdded": {
+      "A-JLPT+common": 296,
+      "B-common+frequency": 9204
+    },
+    "sourceStats": {
+      "tomoshiZhRowsTotal": 217261,
+      "tomoshiZhUsable": 217241,
+      "tomoshiJlptRows": 7747,
+      "frequency": {
+        "columns": [
+          "entry_id",
+          "rank"
+        ],
+        "usable": true,
+        "rows": 30164
+      },
+      "excludedOpenDictionaryOnly": 182693,
+      "rawEvidenceCandidates": 9782,
+      "excludedExistingKey": 21415,
+      "excludedAllLowValueSenses": 3351,
+      "excludedNoZh": 297,
+      "excludedConflictingExactKeys": 8,
+      "safeSupplementCandidates": 9766
+    },
+    "selectionRule": "preserve prior audited 12.5k; append canonical Tomoshi/JMdict rows with zh-TW and JLPT/common/frequency evidence; skip conflicting exact keys",
+    "boundary": {
+      "key": "アフェア|アフェア",
+      "rank": 29986,
+      "qualityTier": "B-common+frequency",
+      "level": "N1"
+    }
+  },
+  "stage2ExternalValidation": {
+    "status": "review-queue-generated",
+    "policy": "Mazii/MOJi/時雨 are secondary manual validation only. No automated scraping/copying. Validate indexed presence, reading, learner level where visible, and sense direction; runtime meanings remain reusable Tomoshi/JMdict data.",
+    "references": [
+      "Mazii",
+      "MOJi辞書",
+      "時雨日中辭典"
+    ],
+    "reviewSample": [
+      {
+        "addedIndex": 0,
+        "key": "あし|脚",
+        "reading": "あし",
+        "display": "脚",
+        "meaning": "腳；爪；腕（章魚、烏賊等的）；腿；步態；步法",
+        "level": "N5",
+        "pos": "noun",
+        "entryId": "1404630",
+        "rank": 305,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 1,
+        "key": "うた|唄",
+        "reading": "うた",
+        "display": "唄",
+        "meaning": "歌曲；歌唱；古典日本詩歌（尤指短歌）；現代詩歌",
+        "level": "N5",
+        "pos": "noun",
+        "entryId": "1193180",
+        "rank": 523,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 2,
+        "key": "じゅうぶん|充分",
+        "reading": "じゅうぶん",
+        "display": "充分",
+        "meaning": "充分；足夠；充裕；適當；令人滿意；充分地；完全地；徹底地；好好地；十等分；分成十份",
+        "level": "N4",
+        "pos": "verb",
+        "entryId": "1335080",
+        "rank": 696,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 3,
+        "key": "ひとり|1人",
+        "reading": "ひとり",
+        "display": "1人",
+        "meaning": "一個人；獨身；孤身；單身；未婚",
+        "level": "N5",
+        "pos": "verb",
+        "entryId": "1576150",
+        "rank": 953,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 4,
+        "key": "てつづき|手続",
+        "reading": "てつづき",
+        "display": "手続",
+        "meaning": "手續；程式；辦理過程；手續辦理",
+        "level": "N2",
+        "pos": "noun",
+        "entryId": "1598350",
+        "rank": 974,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 5,
+        "key": "きかい|器械",
+        "reading": "きかい",
+        "display": "器械",
+        "meaning": "機器；機械裝置；儀器；器具；裝置",
+        "level": "N3",
+        "pos": "noun",
+        "entryId": "1220810",
+        "rank": 1049,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 6,
+        "key": "うりあげ|売上",
+        "reading": "うりあげ",
+        "display": "売上",
+        "meaning": "銷售額；銷售收入；收益；進賬；營業額",
+        "level": "N2",
+        "pos": "noun",
+        "entryId": "1588500",
+        "rank": 1444,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 7,
+        "key": "きっかけ|切掛",
+        "reading": "きっかけ",
+        "display": "切掛",
+        "meaning": "機會；契機；開端；藉口；動機；誘因；場合",
+        "level": "N2",
+        "pos": "noun",
+        "entryId": "1591290",
+        "rank": 1446,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 8,
+        "key": "しはらい|支払",
+        "reading": "しはらい",
+        "display": "支払",
+        "meaning": "支付；付款",
+        "level": "N3",
+        "pos": "noun",
+        "entryId": "1594480",
+        "rank": 1452,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 9,
+        "key": "はなしあい|話合い",
+        "reading": "はなしあい",
+        "display": "話合い",
+        "meaning": "討論；談話；面對面會談；會議",
+        "level": "N2",
+        "pos": "verb",
+        "entryId": "1600910",
+        "rank": 1458,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 10,
+        "key": "こたえ|答",
+        "reading": "こたえ",
+        "display": "答",
+        "meaning": "答案；回答；應答；答案；解答；結果",
+        "level": "N4",
+        "pos": "noun",
+        "entryId": "1449530",
+        "rank": 1794,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 11,
+        "key": "もうしこみ|申込",
+        "reading": "もうしこみ",
+        "display": "申込",
+        "meaning": "申請；報名；請求；訂閱；提供；提議；初步接觸；挑戰",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1605140",
+        "rank": 1949,
+        "qualityTier": 0,
+        "qualityTierLabel": "A-JLPT+common",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-waller"
+      },
+      {
+        "addedIndex": 4744,
+        "key": "はっけい|八景",
+        "reading": "はっけい",
+        "display": "八景",
+        "meaning": "八景；八處風景名勝",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1680810",
+        "rank": 19120,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4745,
+        "key": "きゅうつい|急追",
+        "reading": "きゅうつい",
+        "display": "急追",
+        "meaning": "緊迫追捕；緊追不捨",
+        "level": "N1",
+        "pos": "verb",
+        "entryId": "1683560",
+        "rank": 19121,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4746,
+        "key": "とおりそうば|通り相場",
+        "reading": "とおりそうば",
+        "display": "通り相場",
+        "meaning": "時價；慣例；行情",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1687320",
+        "rank": 19122,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4747,
+        "key": "ひせんとういん|非戦闘員",
+        "reading": "ひせんとういん",
+        "display": "非戦闘員",
+        "meaning": "非戰鬥員；平民",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1688880",
+        "rank": 19123,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4748,
+        "key": "はいすいりょう|排水量",
+        "reading": "はいすいりょう",
+        "display": "排水量",
+        "meaning": "排水量（船舶等的）；廢水量",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1688930",
+        "rank": 19124,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4749,
+        "key": "ひきげき|悲喜劇",
+        "reading": "ひきげき",
+        "display": "悲喜劇",
+        "meaning": "悲喜劇",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1689060",
+        "rank": 19125,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4750,
+        "key": "ほてん|補填",
+        "reading": "ほてん",
+        "display": "補填",
+        "meaning": "彌補（虧損、赤字等）；補足；補償；補充",
+        "level": "N1",
+        "pos": "verb",
+        "entryId": "1690280",
+        "rank": 19126,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4751,
+        "key": "なげわざ|投げ技",
+        "reading": "なげわざ",
+        "display": "投げ技",
+        "meaning": "投擲技術；摔技",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1692590",
+        "rank": 19127,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4752,
+        "key": "ちゅうしょうろん|抽象論",
+        "reading": "ちゅうしょうろん",
+        "display": "抽象論",
+        "meaning": "抽象論證；抽象議論",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1695000",
+        "rank": 19128,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4753,
+        "key": "ゆしゅつちょうか|輸出超過",
+        "reading": "ゆしゅつちょうか",
+        "display": "輸出超過",
+        "meaning": "出口超量；出口過多",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1695460",
+        "rank": 19129,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4754,
+        "key": "うちいり|討ち入り",
+        "reading": "うちいり",
+        "display": "討ち入り",
+        "meaning": "(對敵方城堡等的)突襲；攻擊；奇襲",
+        "level": "N1",
+        "pos": "verb",
+        "entryId": "1697580",
+        "rank": 19130,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 4755,
+        "key": "そんかい|村会",
+        "reading": "そんかい",
+        "display": "村会",
+        "meaning": "村議會；村民大會",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1700390",
+        "rank": 19131,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9488,
+        "key": "アチーブ|アチーブ",
+        "reading": "アチーブ",
+        "display": "アチーブ",
+        "meaning": "成就測試",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1016520",
+        "rank": 29975,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9489,
+        "key": "アップル|アップル",
+        "reading": "アップル",
+        "display": "アップル",
+        "meaning": "蘋果",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1016700",
+        "rank": 29976,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9490,
+        "key": "アテスト|アテスト",
+        "reading": "アテスト",
+        "display": "アテスト",
+        "meaning": "證明（記分卡）；簽署",
+        "level": "N1",
+        "pos": "verb",
+        "entryId": "1016730",
+        "rank": 29977,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9491,
+        "key": "アディオス|アディオス",
+        "reading": "アディオス",
+        "display": "アディオス",
+        "meaning": "再見；拜拜",
+        "level": "N1",
+        "pos": "other",
+        "entryId": "1016760",
+        "rank": 29978,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9492,
+        "key": "アト|アト",
+        "reading": "アト",
+        "display": "アト",
+        "meaning": "阿託；10^-18（SI詞頭）",
+        "level": "N1",
+        "pos": "other",
+        "entryId": "1016820",
+        "rank": 29979,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9493,
+        "key": "アドバルーン|アドバルーン",
+        "reading": "アドバルーン",
+        "display": "アドバルーン",
+        "meaning": "廣告氣球；宣傳氣球",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1017100",
+        "rank": 29980,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9494,
+        "key": "アナーキー|アナーキー",
+        "reading": "アナーキー",
+        "display": "アナーキー",
+        "meaning": "無政府狀態；混亂狀態",
+        "level": "N1",
+        "pos": "adj",
+        "entryId": "1017300",
+        "rank": 29981,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9495,
+        "key": "アニーリング|アニーリング",
+        "reading": "アニーリング",
+        "display": "アニーリング",
+        "meaning": "退火；燜火",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1017540",
+        "rank": 29982,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9496,
+        "key": "アパッチ|アパッチ",
+        "reading": "アパッチ",
+        "display": "アパッチ",
+        "meaning": "阿帕奇人",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1017810",
+        "rank": 29983,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9497,
+        "key": "アパルトヘイト|アパルトヘイト",
+        "reading": "アパルトヘイト",
+        "display": "アパルトヘイト",
+        "meaning": "種族隔離制度",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1017820",
+        "rank": 29984,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9498,
+        "key": "アビタシオン|アビタシオン",
+        "reading": "アビタシオン",
+        "display": "アビタシオン",
+        "meaning": "住所；居住地；住宅",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1017840",
+        "rank": 29985,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9499,
+        "key": "アフェア|アフェア",
+        "reading": "アフェア",
+        "display": "アフェア",
+        "meaning": "事務；事件；事情",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1017890",
+        "rank": 29986,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      }
+    ],
+    "validatedSample": [],
+    "blockingConflicts": 0
+  },
+  "expansionReviewIssueCount": 192,
+  "expansionReviewIssues": [
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "なす",
+      "meaning": "茄子；茄",
+      "forms": [
+        {
+          "display": "なす",
+          "level": "N3"
+        },
+        {
+          "display": "茄子",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かい",
+      "meaning": "成效；價值；用處；益處",
+      "forms": [
+        {
+          "display": "かい",
+          "level": "N3"
+        },
+        {
+          "display": "甲斐",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おじ",
+      "meaning": "叔父；伯父；舅父",
+      "forms": [
+        {
+          "display": "叔父",
+          "level": "N1"
+        },
+        {
+          "display": "伯父",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おにぎり",
+      "meaning": "飯糰；米飯糰（通常為三角形，有時包有餡料並用海苔包裹）",
+      "forms": [
+        {
+          "display": "おにぎり",
+          "level": "N5"
+        },
+        {
+          "display": "お握り",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おば",
+      "meaning": "姑母；姑媽；阿姨",
+      "forms": [
+        {
+          "display": "叔母",
+          "level": "N5"
+        },
+        {
+          "display": "伯母",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "コップ",
+      "meaning": "玻璃杯；平底杯；杯花色（紙牌花色之一）",
+      "forms": [
+        {
+          "display": "コップ",
+          "level": "N5"
+        },
+        {
+          "display": "洋杯",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ごみばこ",
+      "meaning": "垃圾桶；垃圾箱；廢物箱",
+      "forms": [
+        {
+          "display": "ごみ箱",
+          "level": "N4"
+        },
+        {
+          "display": "ゴミ箱",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "すいか",
+      "meaning": "西瓜",
+      "forms": [
+        {
+          "display": "すいか",
+          "level": "N5"
+        },
+        {
+          "display": "西瓜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ずつ",
+      "meaning": "每個；各自；逐個；一次；逐次；分批",
+      "forms": [
+        {
+          "display": "ずつ",
+          "level": "N4"
+        },
+        {
+          "display": "宛",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ただいま",
+      "meaning": "我回來了；我回來了啊；現在；目前；此刻；剛才；方才；片刻前",
+      "forms": [
+        {
+          "display": "ただ今",
+          "level": "N5"
+        },
+        {
+          "display": "只今",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ながら",
+      "meaning": "同時；期間；當；在...的時候；雖然；儘管；雖說；儘管如此；全部；兩者都",
+      "forms": [
+        {
+          "display": "ながら",
+          "level": "N5"
+        },
+        {
+          "display": "乍ら",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "のり",
+      "meaning": "海苔；紫菜；食用海藻（通常為壇紫菜或甘紫菜，多曬乾壓制成片狀）",
+      "forms": [
+        {
+          "display": "海苔[のり]",
+          "level": "N3"
+        },
+        {
+          "display": "海苔",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ふるさと",
+      "meaning": "故鄉；家鄉；出生地；原籍；遺蹟；歷史遺留；古蹟",
+      "forms": [
+        {
+          "display": "ふるさと",
+          "level": "N3"
+        },
+        {
+          "display": "故郷",
+          "level": "N1"
+        },
+        {
+          "display": "古里",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ボタン",
+      "meaning": "紐扣；衣釦；按鈕；按鍵",
+      "forms": [
+        {
+          "display": "ボタン",
+          "level": "N4"
+        },
+        {
+          "display": "釦",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "みそしる",
+      "meaning": "味噌湯",
+      "forms": [
+        {
+          "display": "みそ汁",
+          "level": "N4"
+        },
+        {
+          "display": "味噌汁",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "りんご",
+      "meaning": "蘋果；蘋果樹",
+      "forms": [
+        {
+          "display": "りんご",
+          "level": "N5"
+        },
+        {
+          "display": "林檎",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "うち",
+      "meaning": "自己的家；自己的家庭；自己的家族；自己的家戶；房子；住宅",
+      "forms": [
+        {
+          "display": "うち",
+          "level": "N5"
+        },
+        {
+          "display": "家",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "さけ",
+      "meaning": "鮭魚；秋鮭；狗鮭",
+      "forms": [
+        {
+          "display": "鮭[さけ]",
+          "level": "N2"
+        },
+        {
+          "display": "鮭",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "すし",
+      "meaning": "壽司；用醋飯配合魚、蔬菜、雞蛋等製成的日本料理",
+      "forms": [
+        {
+          "display": "すし",
+          "level": "N5"
+        },
+        {
+          "display": "寿司",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "にじゅう",
+      "meaning": "二十；20",
+      "forms": [
+        {
+          "display": "二十",
+          "level": "N5"
+        },
+        {
+          "display": "20",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "みかん",
+      "meaning": "蜜柑；橘子；柑橘；溫州蜜柑；柑橘屬植物",
+      "forms": [
+        {
+          "display": "みかん",
+          "level": "N5"
+        },
+        {
+          "display": "蜜柑",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いくつか",
+      "meaning": "幾個；一些；若干",
+      "forms": [
+        {
+          "display": "いくつか",
+          "level": "N3"
+        },
+        {
+          "display": "幾つか",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "イタリア",
+      "meaning": "義大利",
+      "forms": [
+        {
+          "display": "イタリア",
+          "level": "N3"
+        },
+        {
+          "display": "伊太利",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "インド",
+      "meaning": "印度",
+      "forms": [
+        {
+          "display": "インド",
+          "level": "N3"
+        },
+        {
+          "display": "印度",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "えび",
+      "meaning": "蝦；對蝦",
+      "forms": [
+        {
+          "display": "えび",
+          "level": "N3"
+        },
+        {
+          "display": "海老",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きゅうり",
+      "meaning": "黃瓜",
+      "forms": [
+        {
+          "display": "きゅうり",
+          "level": "N3"
+        },
+        {
+          "display": "胡瓜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "それなら",
+      "meaning": "如果是那樣的話；既然如此；那樣的話",
+      "forms": [
+        {
+          "display": "それなら",
+          "level": "N4"
+        },
+        {
+          "display": "其れなら",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ドイツ",
+      "meaning": "德國",
+      "forms": [
+        {
+          "display": "ドイツ",
+          "level": "N3"
+        },
+        {
+          "display": "独乙",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どのよう",
+      "meaning": "什麼樣的；什麼種類的",
+      "forms": [
+        {
+          "display": "どのよう",
+          "level": "N3"
+        },
+        {
+          "display": "どの様",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "まだまだ",
+      "meaning": "仍然；還；尚未；還有很長的路要走；還遠得很；還沒到位",
+      "forms": [
+        {
+          "display": "まだまだ",
+          "level": "N4"
+        },
+        {
+          "display": "未だ未だ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "まま",
+      "meaning": "保持原狀；依然；照舊；保持（閉眼、亮燈等）狀態；處於（站立、活著等）狀態；照著；隨意；按照；聽憑",
+      "forms": [
+        {
+          "display": "まま",
+          "level": "N4"
+        },
+        {
+          "display": "侭",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "やってくる",
+      "meaning": "來到；出現；來臨；走到今天；達到目前狀態；持續做某事（一段時間）",
+      "forms": [
+        {
+          "display": "やってくる",
+          "level": "N2"
+        },
+        {
+          "display": "やって来る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "やりがい",
+      "meaning": "做某事的價值；值得做的感覺；有成就感；滿足感",
+      "forms": [
+        {
+          "display": "やりがい",
+          "level": "N2"
+        },
+        {
+          "display": "遣り甲斐",
+          "level": "N1"
+        },
+        {
+          "display": "やり甲斐",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "レモン",
+      "meaning": "檸檬",
+      "forms": [
+        {
+          "display": "レモン",
+          "level": "N3"
+        },
+        {
+          "display": "檸檬",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "さんか",
+      "meaning": "讚歌；頌歌；讚美詩；頌詞",
+      "forms": [
+        {
+          "display": "賛歌",
+          "level": "N2"
+        },
+        {
+          "display": "讃歌",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ばら",
+      "meaning": "玫瑰",
+      "forms": [
+        {
+          "display": "ばら",
+          "level": "N3"
+        },
+        {
+          "display": "薔薇",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おごる",
+      "meaning": "請客；招待；請（某人）吃飯/喝酒等；奢侈；揮霍；鋪張浪費",
+      "forms": [
+        {
+          "display": "おごる",
+          "level": "N2"
+        },
+        {
+          "display": "奢る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "オフ",
+      "meaning": "關閉；斷開；淡季；非賽季；偏移；補償",
+      "forms": [
+        {
+          "display": "オフ",
+          "level": "N2"
+        },
+        {
+          "display": "OFF",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "カタログ",
+      "meaning": "目錄；商品目錄",
+      "forms": [
+        {
+          "display": "カタログ",
+          "level": "N3"
+        },
+        {
+          "display": "型録",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ぎりぎり",
+      "meaning": "勉強；僅僅；剛好；極限狀態；最後一刻",
+      "forms": [
+        {
+          "display": "ぎりぎり",
+          "level": "N2"
+        },
+        {
+          "display": "限り限り",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "これまで",
+      "meaning": "迄今為止；到目前為止；向來；就到這裡；到此為止",
+      "forms": [
+        {
+          "display": "これまで",
+          "level": "N4"
+        },
+        {
+          "display": "是迄",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ついでに",
+      "meaning": "順便；趁機；順路；附帶說一下；在做某事的同時",
+      "forms": [
+        {
+          "display": "ついでに",
+          "level": "N3"
+        },
+        {
+          "display": "序に",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ドル",
+      "meaning": "美元；金錢；現金",
+      "forms": [
+        {
+          "display": "ドル",
+          "level": "N3"
+        },
+        {
+          "display": "弗",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "フランス",
+      "meaning": "法國",
+      "forms": [
+        {
+          "display": "フランス",
+          "level": "N3"
+        },
+        {
+          "display": "仏蘭西",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "むける",
+      "meaning": "剝落；脫落；被剝去",
+      "forms": [
+        {
+          "display": "剝[む]ける",
+          "level": "N2"
+        },
+        {
+          "display": "剥ける",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "あしもと",
+      "meaning": "腳下；腳邊；步態；步伐；最近的；當前的；眼下的",
+      "forms": [
+        {
+          "display": "足下",
+          "level": "N2"
+        },
+        {
+          "display": "足元",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おお",
+      "meaning": "大；巨大；重大；嚴重；響亮；年長；資深；前輩；最終；極限；最後",
+      "forms": [
+        {
+          "display": "おお",
+          "level": "N3"
+        },
+        {
+          "display": "大",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かっこいい",
+      "meaning": "帥氣；好看；時髦；酷；瀟灑；整潔；很棒",
+      "forms": [
+        {
+          "display": "かっこいい",
+          "level": "N4"
+        },
+        {
+          "display": "格好いい",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きのこ",
+      "meaning": "蘑菇；菌類",
+      "forms": [
+        {
+          "display": "きのこ",
+          "level": "N2"
+        },
+        {
+          "display": "茸",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こういう",
+      "meaning": "這樣的；這種；像這樣的",
+      "forms": [
+        {
+          "display": "こういう",
+          "level": "N5"
+        },
+        {
+          "display": "こう言う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どこまでも",
+      "meaning": "任何地方；永遠；到天涯海角；不管艱難險阻；無論如何；堅持到底；竭盡全力；堅持不懈；固執己見",
+      "forms": [
+        {
+          "display": "どこまでも",
+          "level": "N2"
+        },
+        {
+          "display": "何処までも",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "なぜか",
+      "meaning": "不知為何；莫名其妙地；出於某種原因",
+      "forms": [
+        {
+          "display": "なぜか",
+          "level": "N3"
+        },
+        {
+          "display": "何故か",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "バーベキュー",
+      "meaning": "燒烤；烤肉",
+      "forms": [
+        {
+          "display": "バーベキュー",
+          "level": "N2"
+        },
+        {
+          "display": "BBQ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ハワイ",
+      "meaning": "夏威夷",
+      "forms": [
+        {
+          "display": "ハワイ",
+          "level": "N2"
+        },
+        {
+          "display": "布哇",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "やりとり",
+      "meaning": "往來；交換；互相問答；來回應酬",
+      "forms": [
+        {
+          "display": "やりとり",
+          "level": "N2"
+        },
+        {
+          "display": "やり取り",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひかれる",
+      "meaning": "被吸引；被迷住；對……著迷；被……所打動",
+      "forms": [
+        {
+          "display": "引かれる",
+          "level": "N2"
+        },
+        {
+          "display": "惹かれる",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かこう",
+      "meaning": "河口；河口灣",
+      "forms": [
+        {
+          "display": "河口",
+          "level": "N1"
+        },
+        {
+          "display": "川口",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かき",
+      "meaning": "牡蠣；蠔殼",
+      "forms": [
+        {
+          "display": "牡蠣[かき]",
+          "level": "N3"
+        },
+        {
+          "display": "牡蠣",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "にんじん",
+      "meaning": "胡蘿蔔；人參",
+      "forms": [
+        {
+          "display": "にんじん",
+          "level": "N4"
+        },
+        {
+          "display": "人参",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しりあう",
+      "meaning": "相識；結識；互相認識",
+      "forms": [
+        {
+          "display": "知り合う",
+          "level": "N3"
+        },
+        {
+          "display": "知合う",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "とびあがる",
+      "meaning": "跳起；躍起；蹦起；飛起；騰空；起飛；跳過；跨過",
+      "forms": [
+        {
+          "display": "飛び上がる",
+          "level": "N2"
+        },
+        {
+          "display": "跳び上がる",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ふじゅうぶん",
+      "meaning": "不充分；不足；不完善",
+      "forms": [
+        {
+          "display": "不十分",
+          "level": "N2"
+        },
+        {
+          "display": "不充分",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "うなずく",
+      "meaning": "點頭；低頭同意；贊同",
+      "forms": [
+        {
+          "display": "うなずく",
+          "level": "N2"
+        },
+        {
+          "display": "頷く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きんこ",
+      "meaning": "禁錮；監禁；關押",
+      "forms": [
+        {
+          "display": "禁錮",
+          "level": "N1"
+        },
+        {
+          "display": "禁固",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "せりふ",
+      "meaning": "臺詞；對白；評論；言論；措辭；話語；套話；老套的話；陳詞濫調",
+      "forms": [
+        {
+          "display": "台詞[せりふ]",
+          "level": "N2"
+        },
+        {
+          "display": "台詞",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "わり",
+      "meaning": "比率；比例；比重；十分之一；百分之十；（相對的）利潤；收益",
+      "forms": [
+        {
+          "display": "割り",
+          "level": "N2"
+        },
+        {
+          "display": "割",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "あり",
+      "meaning": "螞蟻",
+      "forms": [
+        {
+          "display": "蟻[あり]",
+          "level": "N2"
+        },
+        {
+          "display": "蟻",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ありがち",
+      "meaning": "常見的；頻繁的",
+      "forms": [
+        {
+          "display": "ありがち",
+          "level": "N2"
+        },
+        {
+          "display": "有りがち",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いろんな",
+      "meaning": "各種各樣的；多種多樣的；形形色色的",
+      "forms": [
+        {
+          "display": "いろんな",
+          "level": "N4"
+        },
+        {
+          "display": "色んな",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "うつむく",
+      "meaning": "低頭；向下看",
+      "forms": [
+        {
+          "display": "うつむく",
+          "level": "N2"
+        },
+        {
+          "display": "俯く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かばう",
+      "meaning": "保護；照顧；保衛；包庇；維護",
+      "forms": [
+        {
+          "display": "かばう",
+          "level": "N2"
+        },
+        {
+          "display": "庇う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "くじ",
+      "meaning": "抽籤；抽獎；搖獎；彩票",
+      "forms": [
+        {
+          "display": "くじ",
+          "level": "N2"
+        },
+        {
+          "display": "籤",
+          "level": "N1"
+        },
+        {
+          "display": "籖",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "くみとる",
+      "meaning": "汲取；舀取；抽取；領會；體察；推測；體諒",
+      "forms": [
+        {
+          "display": "くみ取る",
+          "level": "N2"
+        },
+        {
+          "display": "汲み取る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ささやか",
+      "meaning": "小的；微小的；微不足道的；卑微的；樸素的；微薄的",
+      "forms": [
+        {
+          "display": "ささやか",
+          "level": "N2"
+        },
+        {
+          "display": "細やか",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "そもそも",
+      "meaning": "本來；原本；起初；從一開始；畢竟；總之；實際上；究竟；開始；起始",
+      "forms": [
+        {
+          "display": "そもそも",
+          "level": "N2"
+        },
+        {
+          "display": "抑",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "それとなく",
+      "meaning": "間接地；轉彎抹角地；含蓄地；暗示地；繞彎子地；隨便地",
+      "forms": [
+        {
+          "display": "それとなく",
+          "level": "N2"
+        },
+        {
+          "display": "それと無く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どれだけ",
+      "meaning": "多少；到什麼程度",
+      "forms": [
+        {
+          "display": "どれだけ",
+          "level": "N3"
+        },
+        {
+          "display": "何れ丈",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "めくる",
+      "meaning": "翻動；翻頁；翻閱（書等）；撕下；剝去；脫去；拉下（如被子）；掀起（如地板）；撕碎",
+      "forms": [
+        {
+          "display": "めくる",
+          "level": "N2"
+        },
+        {
+          "display": "捲る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "もとより",
+      "meaning": "從一開始；自始至終；素來；當然；自然；不用說；更不用說；何況",
+      "forms": [
+        {
+          "display": "もとより",
+          "level": "N2"
+        },
+        {
+          "display": "元より",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "よくも",
+      "meaning": "竟然敢；怎麼敢；令人驚訝地；出人意料地",
+      "forms": [
+        {
+          "display": "よくも",
+          "level": "N2"
+        },
+        {
+          "display": "善くも",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひきつづき",
+      "meaning": "連續；不間斷；持續；隨後；接著；之後",
+      "forms": [
+        {
+          "display": "引き続き",
+          "level": "N2"
+        },
+        {
+          "display": "引続き",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きめつける",
+      "meaning": "武斷地認定；獨斷地下結論；責罵；訓斥",
+      "forms": [
+        {
+          "display": "決めつける",
+          "level": "N2"
+        },
+        {
+          "display": "決め付ける",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かたがき",
+      "meaning": "頭銜；職稱；職位；學位；身份；等級",
+      "forms": [
+        {
+          "display": "肩書き",
+          "level": "N1"
+        },
+        {
+          "display": "肩書",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "とりかかる",
+      "meaning": "開始；著手；動手",
+      "forms": [
+        {
+          "display": "取りかかる",
+          "level": "N2"
+        },
+        {
+          "display": "取り掛かる",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ねんぱい",
+      "meaning": "年紀；歲數；上了年紀的；年長的；年邁的；年長於；年長的",
+      "forms": [
+        {
+          "display": "年配",
+          "level": "N1"
+        },
+        {
+          "display": "年輩",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いやいや",
+      "meaning": "不；不不；不，一點也不",
+      "forms": [
+        {
+          "display": "いやいや",
+          "level": "N2"
+        },
+        {
+          "display": "否々",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "なじむ",
+      "meaning": "熟悉；習慣；適應；親近；友好；相配；協調；相稱；匹配；融合；和諧",
+      "forms": [
+        {
+          "display": "なじむ",
+          "level": "N2"
+        },
+        {
+          "display": "馴染む",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "めど",
+      "meaning": "目標；目的；眉目；頭緒",
+      "forms": [
+        {
+          "display": "めど",
+          "level": "N1"
+        },
+        {
+          "display": "目処",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "やつ",
+      "meaning": "傢伙；小子；哥們；東西；玩意兒；他；她",
+      "forms": [
+        {
+          "display": "やつ",
+          "level": "N2"
+        },
+        {
+          "display": "奴",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "あおむけ",
+      "meaning": "仰面朝上；面朝上",
+      "forms": [
+        {
+          "display": "仰[あお]向け",
+          "level": "N2"
+        },
+        {
+          "display": "仰向け",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "みどころ",
+      "meaning": "值得注意的地方；精彩之處；亮點；前景；希望；潛力",
+      "forms": [
+        {
+          "display": "見どころ",
+          "level": "N1"
+        },
+        {
+          "display": "見所",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ふりこみ",
+      "meaning": "銀行轉賬；匯款；點炮；放炮",
+      "forms": [
+        {
+          "display": "振り込み",
+          "level": "N3"
+        },
+        {
+          "display": "振込",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "たいじ",
+      "meaning": "相對而立；面對面矗立（如山峰、建築物等）；對峙；對陣；相持；與……抗衡",
+      "forms": [
+        {
+          "display": "対峙[じ]",
+          "level": "N1"
+        },
+        {
+          "display": "対峙",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ていけい",
+      "meaning": "固定形；規則形；標準郵件；普通郵件",
+      "forms": [
+        {
+          "display": "定形",
+          "level": "N2"
+        },
+        {
+          "display": "定型",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "てっぺん",
+      "meaning": "頂部；頂端；峰頂；午夜十二點；子夜；頭頂；頭皮；頭蓋骨頂部",
+      "forms": [
+        {
+          "display": "てっぺん",
+          "level": "N1"
+        },
+        {
+          "display": "天辺",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "りゅうちょう",
+      "meaning": "流暢；流利",
+      "forms": [
+        {
+          "display": "流暢[ちょう]",
+          "level": "N1"
+        },
+        {
+          "display": "流暢",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "とめ",
+      "meaning": "止擋；卯榫；筆畫終點；留局待領；待領；四十五度角",
+      "forms": [
+        {
+          "display": "止め",
+          "level": "N3"
+        },
+        {
+          "display": "留め",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "あいきょう",
+      "meaning": "魅力；吸引力；可愛；討人喜歡；殷勤；獻媚；奉承；娛樂；消遣；趣味",
+      "forms": [
+        {
+          "display": "愛嬌[きょう]",
+          "level": "N1"
+        },
+        {
+          "display": "愛嬌",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "あいつ",
+      "meaning": "他；她；那傢伙；那個；那一個；那東西",
+      "forms": [
+        {
+          "display": "あいつ",
+          "level": "N2"
+        },
+        {
+          "display": "彼奴",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "アルファ",
+      "meaning": "α（希臘字母第一個字母）；阿爾法",
+      "forms": [
+        {
+          "display": "アルファ",
+          "level": "N2"
+        },
+        {
+          "display": "Α",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おきて",
+      "meaning": "法律；法規；規則；規範；條約；協議；契約；立法",
+      "forms": [
+        {
+          "display": "掟[おきて]",
+          "level": "N2"
+        },
+        {
+          "display": "掟",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かなわない",
+      "meaning": "不是對手；無法匹敵；力不能及；無法忍受；難以承受；令人難堪；無法做到；做不了；不可能",
+      "forms": [
+        {
+          "display": "かなわない",
+          "level": "N2"
+        },
+        {
+          "display": "敵わない",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こなす",
+      "meaning": "消化；分解；粉碎；碾碎；能夠使用；擅長；掌握",
+      "forms": [
+        {
+          "display": "こなす",
+          "level": "N2"
+        },
+        {
+          "display": "熟す",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "そのもの",
+      "meaning": "其物本身；那物本身",
+      "forms": [
+        {
+          "display": "そのもの",
+          "level": "N2"
+        },
+        {
+          "display": "その物",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ちなみに",
+      "meaning": "順便說一下；另外；插一句；順便提一下",
+      "forms": [
+        {
+          "display": "ちなみに",
+          "level": "N3"
+        },
+        {
+          "display": "因みに",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どろどろ",
+      "meaning": "粘稠的；糊狀的；漿狀的；濃稠的；黏滑的；糖漿狀的；黏膩的；泥汙的；油膩的；沾滿汙垢（油脂等）的；（感情、關係等）糾纏混亂；渾濁；齷齪",
+      "forms": [
+        {
+          "display": "どろどろ",
+          "level": "N2"
+        },
+        {
+          "display": "泥々",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "なぞらえる",
+      "meaning": "比作；比喻為；仿照；模仿；效法",
+      "forms": [
+        {
+          "display": "なぞらえる",
+          "level": "N2"
+        },
+        {
+          "display": "準える",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "まんざら",
+      "meaning": "並非完全；並非全然",
+      "forms": [
+        {
+          "display": "まんざら",
+          "level": "N2"
+        },
+        {
+          "display": "満更",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ゆえに",
+      "meaning": "因此；所以；故此",
+      "forms": [
+        {
+          "display": "ゆえに",
+          "level": "N2"
+        },
+        {
+          "display": "故に",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "わきまえる",
+      "meaning": "辨別；區分；識別；懂得；明白；記住",
+      "forms": [
+        {
+          "display": "わきまえる",
+          "level": "N2"
+        },
+        {
+          "display": "弁える",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きゅうきょ",
+      "meaning": "匆忙；倉促；急速；突然；急遽",
+      "forms": [
+        {
+          "display": "急遽[きょ]",
+          "level": "N1"
+        },
+        {
+          "display": "急遽",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こんぽう",
+      "meaning": "包裝；裝箱；打包",
+      "forms": [
+        {
+          "display": "梱[こん]包",
+          "level": "N2"
+        },
+        {
+          "display": "梱包",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "そうざい",
+      "meaning": "家常小菜；配菜",
+      "forms": [
+        {
+          "display": "惣[そう]菜",
+          "level": "N2"
+        },
+        {
+          "display": "惣菜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おおがかり",
+      "meaning": "大規模；大陣仗",
+      "forms": [
+        {
+          "display": "大がかり",
+          "level": "N1"
+        },
+        {
+          "display": "大掛かり",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "とうかん",
+      "meaning": "郵寄；投遞",
+      "forms": [
+        {
+          "display": "投函[かん]",
+          "level": "N2"
+        },
+        {
+          "display": "投函",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "みちのり",
+      "meaning": "距離；路程；旅程；道路；路線；過程；方式；途徑",
+      "forms": [
+        {
+          "display": "道のり",
+          "level": "N1"
+        },
+        {
+          "display": "道程",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "とらわれる",
+      "meaning": "被捕獲；被俘虜；被逮捕；被拘留；被（恐懼等）所困；被奴役；執著於；堅持；受（某事物）影響",
+      "forms": [
+        {
+          "display": "捕らわれる",
+          "level": "N2"
+        },
+        {
+          "display": "捕われる",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しんと",
+      "meaning": "信徒；教徒；信仰者；追隨者；平信徒",
+      "forms": [
+        {
+          "display": "しんと",
+          "level": "N2"
+        },
+        {
+          "display": "信徒",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しずめる",
+      "meaning": "使（小孩、人群等）安靜；使安靜；平復（自己的情緒、興奮等）；鎮定；安撫（某人的憤怒）；平息；平定（如糾紛）；鎮壓（反抗、暴動、火災等）；平定；控制",
+      "forms": [
+        {
+          "display": "鎮める",
+          "level": "N2"
+        },
+        {
+          "display": "静める",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ねぎ",
+      "meaning": "蔥；小蔥；大蔥；青蔥",
+      "forms": [
+        {
+          "display": "ねぎ",
+          "level": "N2"
+        },
+        {
+          "display": "葱",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かわら",
+      "meaning": "乾涸的河床；河灘",
+      "forms": [
+        {
+          "display": "河原",
+          "level": "N1"
+        },
+        {
+          "display": "川原",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どあい",
+      "meaning": "程度；幅度",
+      "forms": [
+        {
+          "display": "度合い",
+          "level": "N1"
+        },
+        {
+          "display": "度合",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "すいせい",
+      "meaning": "彗星",
+      "forms": [
+        {
+          "display": "彗[すい]星",
+          "level": "N1"
+        },
+        {
+          "display": "彗星",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "とりきめ",
+      "meaning": "協議；約定；決定",
+      "forms": [
+        {
+          "display": "取り決め",
+          "level": "N1"
+        },
+        {
+          "display": "取決め",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おくゆき",
+      "meaning": "深度；縱深",
+      "forms": [
+        {
+          "display": "奥行き",
+          "level": "N1"
+        },
+        {
+          "display": "奥行",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どういう",
+      "meaning": "什麼樣的；什麼型別的；什麼",
+      "forms": [
+        {
+          "display": "どういう",
+          "level": "N5"
+        },
+        {
+          "display": "どう言う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こいつ",
+      "meaning": "他；這傢伙；這小子；這個人；這；這個；這東西；嘿，你！；你這混蛋！；該死的你！",
+      "forms": [
+        {
+          "display": "こいつ",
+          "level": "N2"
+        },
+        {
+          "display": "此奴",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ぬいぐるみ",
+      "meaning": "毛絨玩具；填充玩具；軟體玩具",
+      "forms": [
+        {
+          "display": "ぬいぐるみ",
+          "level": "N2"
+        },
+        {
+          "display": "縫いぐるみ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "わがくに",
+      "meaning": "我國；我們的國家；自己的國家",
+      "forms": [
+        {
+          "display": "我が国",
+          "level": "N2"
+        },
+        {
+          "display": "わが国",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いちご",
+      "meaning": "草莓；一萬五千日元",
+      "forms": [
+        {
+          "display": "いちご",
+          "level": "N5"
+        },
+        {
+          "display": "苺",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひきがね",
+      "meaning": "（槍等的）扳機；觸發因素；直接原因",
+      "forms": [
+        {
+          "display": "引き金",
+          "level": "N1"
+        },
+        {
+          "display": "引金",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "まちなみ",
+      "meaning": "街景；街道（商店和住宅）；街邊店鋪和房屋的景觀",
+      "forms": [
+        {
+          "display": "町並み",
+          "level": "N2"
+        },
+        {
+          "display": "町並",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "といかける",
+      "meaning": "提問；詢問；開始提問",
+      "forms": [
+        {
+          "display": "問いかける",
+          "level": "N2"
+        },
+        {
+          "display": "問い掛ける",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "たんぽぽ",
+      "meaning": "蒲公英",
+      "forms": [
+        {
+          "display": "たんぽぽ",
+          "level": "N2"
+        },
+        {
+          "display": "蒲公英",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひとごと",
+      "meaning": "他人的事；與自己無關的事",
+      "forms": [
+        {
+          "display": "他人事",
+          "level": "N1"
+        },
+        {
+          "display": "人事",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どういたしまして",
+      "meaning": "不用謝；別客氣；哪裡哪裡；不敢當",
+      "forms": [
+        {
+          "display": "どういたしまして",
+          "level": "N5"
+        },
+        {
+          "display": "どう致しまして",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "そしゃく",
+      "meaning": "咀嚼；咬嚼；消化；吸收；領會；品味",
+      "forms": [
+        {
+          "display": "咀嚼[そしゃく]",
+          "level": "N2"
+        },
+        {
+          "display": "咀嚼",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ニューヨーク",
+      "meaning": "紐約",
+      "forms": [
+        {
+          "display": "ニューヨーク",
+          "level": "N2"
+        },
+        {
+          "display": "紐約",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "やきとり",
+      "meaning": "烤雞串；烤雞肉串；烤鳥；烤麻雀；半局未勝；一局無和",
+      "forms": [
+        {
+          "display": "焼き鳥",
+          "level": "N2"
+        },
+        {
+          "display": "焼鳥",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひきかえ",
+      "meaning": "交換；兌換",
+      "forms": [
+        {
+          "display": "引き換え",
+          "level": "N2"
+        },
+        {
+          "display": "引換え",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かれき",
+      "meaning": "枯樹；枯木；無葉樹；光禿樹",
+      "forms": [
+        {
+          "display": "枯れ木",
+          "level": "N2"
+        },
+        {
+          "display": "枯木",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ふくろう",
+      "meaning": "貓頭鷹；烏林鴞",
+      "forms": [
+        {
+          "display": "梟[ふくろう]",
+          "level": "N2"
+        },
+        {
+          "display": "梟",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おりがみ",
+      "meaning": "摺紙；紙折藝術；標誌；真偽鑑定書",
+      "forms": [
+        {
+          "display": "折り紙",
+          "level": "N4"
+        },
+        {
+          "display": "折紙",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しんずい",
+      "meaning": "精髓；精要；靈魂；核心",
+      "forms": [
+        {
+          "display": "神髄",
+          "level": "N2"
+        },
+        {
+          "display": "真髄",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "はやあし",
+      "meaning": "快步；快速行進；快速行軍；小跑（馬的步態）",
+      "forms": [
+        {
+          "display": "早足",
+          "level": "N2"
+        },
+        {
+          "display": "速足",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いるか",
+      "meaning": "海豚（及鼠海豚、白鯨等小型齒鯨的統稱）",
+      "forms": [
+        {
+          "display": "海豚[いるか]",
+          "level": "N2"
+        },
+        {
+          "display": "いるか",
+          "level": "N1"
+        },
+        {
+          "display": "海豚",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かいり",
+      "meaning": "乖離；異化；偏離；疏遠；分離；脫離",
+      "forms": [
+        {
+          "display": "乖[かい]離",
+          "level": "N2"
+        },
+        {
+          "display": "乖離",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いまひとつ",
+      "meaning": "再一個；又一個；不太；不夠；不完全；有些欠缺",
+      "forms": [
+        {
+          "display": "今一つ",
+          "level": "N2"
+        },
+        {
+          "display": "今ひとつ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひらめく",
+      "meaning": "閃爍；閃耀；閃亮；發光；飄動；搖曳；波動；閃現；突然想到；靈光一現",
+      "forms": [
+        {
+          "display": "ひらめく",
+          "level": "N2"
+        },
+        {
+          "display": "閃く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひとりあるき",
+      "meaning": "（謠言等）獨自流傳；自行傳播；不脛而走；獨自行走；單獨散步；獨立行走；無需攙扶地行走",
+      "forms": [
+        {
+          "display": "独り歩き",
+          "level": "N1"
+        },
+        {
+          "display": "一人歩き",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かなた",
+      "meaning": "那邊；彼岸；遠方；對岸",
+      "forms": [
+        {
+          "display": "かなた",
+          "level": "N2"
+        },
+        {
+          "display": "彼方",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ぶらんこ",
+      "meaning": "鞦韆",
+      "forms": [
+        {
+          "display": "ぶらんこ",
+          "level": "N3"
+        },
+        {
+          "display": "鞦韆",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ロシア",
+      "meaning": "俄羅斯",
+      "forms": [
+        {
+          "display": "ロシア",
+          "level": "N5"
+        },
+        {
+          "display": "露西亜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ぞんじ",
+      "meaning": "知道；瞭解；認識",
+      "forms": [
+        {
+          "display": "存知",
+          "level": "N5"
+        },
+        {
+          "display": "存じ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しょうさん",
+      "meaning": "讚美；讚揚；稱讚；喝彩",
+      "forms": [
+        {
+          "display": "賞賛",
+          "level": "N4"
+        },
+        {
+          "display": "称賛",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "シリア",
+      "meaning": "敘利亞",
+      "forms": [
+        {
+          "display": "シリア",
+          "level": "N4"
+        },
+        {
+          "display": "叙利亜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "とりしらべ",
+      "meaning": "調查；審查；詢問",
+      "forms": [
+        {
+          "display": "取り調べ",
+          "level": "N4"
+        },
+        {
+          "display": "取調べ",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "シアトル",
+      "meaning": "西雅圖",
+      "forms": [
+        {
+          "display": "シアトル",
+          "level": "N4"
+        },
+        {
+          "display": "舎路",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "つまさき",
+      "meaning": "腳趾；腳尖；鞋尖；襪尖",
+      "forms": [
+        {
+          "display": "つま先",
+          "level": "N4"
+        },
+        {
+          "display": "爪先",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "アヒル",
+      "meaning": "家鴨；鴨子",
+      "forms": [
+        {
+          "display": "アヒル",
+          "level": "N4"
+        },
+        {
+          "display": "鶩",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "セルビア",
+      "meaning": "塞爾維亞",
+      "forms": [
+        {
+          "display": "セルビア",
+          "level": "N3"
+        },
+        {
+          "display": "塞爾維",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "リビア",
+      "meaning": "利比亞",
+      "forms": [
+        {
+          "display": "リビア",
+          "level": "N3"
+        },
+        {
+          "display": "利比亜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "マレーシア",
+      "meaning": "馬來西亞",
+      "forms": [
+        {
+          "display": "マレーシア",
+          "level": "N3"
+        },
+        {
+          "display": "馬来西亜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "まんびき",
+      "meaning": "商店行竊；商店扒手",
+      "forms": [
+        {
+          "display": "万引き",
+          "level": "N3"
+        },
+        {
+          "display": "万引",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "シベリア",
+      "meaning": "西伯利亞；紅豆沙夾心海綿蛋糕",
+      "forms": [
+        {
+          "display": "シベリア",
+          "level": "N3"
+        },
+        {
+          "display": "西伯利",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひきつぎ",
+      "meaning": "接班；交接；移交；傳遞",
+      "forms": [
+        {
+          "display": "引き継ぎ",
+          "level": "N3"
+        },
+        {
+          "display": "引継ぎ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ブルガリア",
+      "meaning": "保加利亞",
+      "forms": [
+        {
+          "display": "ブルガリア",
+          "level": "N3"
+        },
+        {
+          "display": "勃牙利",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ぬいめ",
+      "meaning": "縫線；針腳；縫合線",
+      "forms": [
+        {
+          "display": "縫い目",
+          "level": "N3"
+        },
+        {
+          "display": "縫目",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "エクアドル",
+      "meaning": "厄瓜多",
+      "forms": [
+        {
+          "display": "エクアドル",
+          "level": "N3"
+        },
+        {
+          "display": "厄瓜多",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "そよかぜ",
+      "meaning": "微風；和風；輕風；柔風",
+      "forms": [
+        {
+          "display": "そよ風",
+          "level": "N3"
+        },
+        {
+          "display": "微風",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "うらないし",
+      "meaning": "占卜師；算命師；相士",
+      "forms": [
+        {
+          "display": "占い師",
+          "level": "N3"
+        },
+        {
+          "display": "占師",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "したじき",
+      "meaning": "墊板；寫字墊；襯墊；被壓在下面；被卡在下面；被埋在下面；被壓住；模板；樣板；模式",
+      "forms": [
+        {
+          "display": "下敷き",
+          "level": "N3"
+        },
+        {
+          "display": "下敷",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "インドネシア",
+      "meaning": "印度尼西亞",
+      "forms": [
+        {
+          "display": "インドネシア",
+          "level": "N3"
+        },
+        {
+          "display": "印度尼西亜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "つりあい",
+      "meaning": "平衡；均衡；相稱",
+      "forms": [
+        {
+          "display": "釣り合い",
+          "level": "N3"
+        },
+        {
+          "display": "釣合",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "グアム",
+      "meaning": "關島",
+      "forms": [
+        {
+          "display": "グアム",
+          "level": "N3"
+        },
+        {
+          "display": "瓜姆",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "アンモニア",
+      "meaning": "氨",
+      "forms": [
+        {
+          "display": "アンモニア",
+          "level": "N3"
+        },
+        {
+          "display": "安母尼亜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ふりつけ",
+      "meaning": "編舞；舞蹈創作；舞蹈指導",
+      "forms": [
+        {
+          "display": "振り付け",
+          "level": "N2"
+        },
+        {
+          "display": "振付け",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "のりば",
+      "meaning": "乘車站；車站；公交車站；火車站臺；計程車站；碼頭；停靠點",
+      "forms": [
+        {
+          "display": "乗り場",
+          "level": "N2"
+        },
+        {
+          "display": "乗場",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しょいん",
+      "meaning": "職員；站員；官員",
+      "forms": [
+        {
+          "display": "署員",
+          "level": "N2"
+        },
+        {
+          "display": "所員",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "チュニジア",
+      "meaning": "突尼西亞",
+      "forms": [
+        {
+          "display": "チュニジア",
+          "level": "N2"
+        },
+        {
+          "display": "突尼斯",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひょうだい",
+      "meaning": "標題；標頭；題目；標題行",
+      "forms": [
+        {
+          "display": "表題",
+          "level": "N2"
+        },
+        {
+          "display": "標題",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ウルグアイ",
+      "meaning": "烏拉圭",
+      "forms": [
+        {
+          "display": "ウルグアイ",
+          "level": "N2"
+        },
+        {
+          "display": "宇柳具",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ニカラグア",
+      "meaning": "尼加拉瓜",
+      "forms": [
+        {
+          "display": "ニカラグア",
+          "level": "N2"
+        },
+        {
+          "display": "尼加拉瓦",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "リベリア",
+      "meaning": "賴比瑞亞",
+      "forms": [
+        {
+          "display": "リベリア",
+          "level": "N2"
+        },
+        {
+          "display": "利比利亜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "そとづけ",
+      "meaning": "外接的（硬碟、磁碟驅動器等）",
+      "forms": [
+        {
+          "display": "外付け",
+          "level": "N2"
+        },
+        {
+          "display": "外付",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "つゆいり",
+      "meaning": "進入梅雨季；梅雨季開始",
+      "forms": [
+        {
+          "display": "梅雨入り",
+          "level": "N2"
+        },
+        {
+          "display": "入梅",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こがらし",
+      "meaning": "寒風；冬風",
+      "forms": [
+        {
+          "display": "木枯らし",
+          "level": "N2"
+        },
+        {
+          "display": "木枯し",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "なにわ",
+      "meaning": "難波（大阪地區的古稱）",
+      "forms": [
+        {
+          "display": "難波",
+          "level": "N2"
+        },
+        {
+          "display": "浪速",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いっかい",
+      "meaning": "一樓；底層；一層；一級；一個等級",
+      "forms": [
+        {
+          "display": "一階",
+          "level": "N1"
+        },
+        {
+          "display": "1階",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きょうどうくみあい",
+      "meaning": "合作社；協會；合夥組織",
+      "forms": [
+        {
+          "display": "協同組合",
+          "level": "N1"
+        },
+        {
+          "display": "共同組合",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こうりてん",
+      "meaning": "零售店；零售商店",
+      "forms": [
+        {
+          "display": "小売り店",
+          "level": "N1"
+        },
+        {
+          "display": "小売店",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しきぶとん",
+      "meaning": "鋪在地板上的被褥；日式床墊；床褥墊",
+      "forms": [
+        {
+          "display": "敷き布団",
+          "level": "N1"
+        },
+        {
+          "display": "敷布団",
+          "level": "N2"
+        }
+      ]
+    }
+  ],
+  "expansionFatalIssueCount": 0,
+  "advancedConflictingExactKeySamples": [
+    {
+      "key": "スイート|スイート",
+      "entryIds": [
+        "1067080",
+        "2862667"
+      ],
+      "meanings": [
+        "甜的；甜味的；甜的（酒類）；甜蜜的；悅耳的；宜人的；令人愉快的",
+        "（酒店的）套房；套房"
+      ]
+    },
+    {
+      "key": "パー|パー",
+      "entryIds": [
+        "1100380",
+        "2397590"
+      ],
+      "meanings": [
+        "平價；標準桿數；等值；面值；平價；平衡",
+        "布（剪刀石頭布遊戲中）；完全消失；化為烏有；一無所有；愚蠢；笨拙"
+      ]
+    },
+    {
+      "key": "ファースト|ファースト",
+      "entryIds": [
+        "1107460",
+        "2858155"
+      ],
+      "meanings": [
+        "第一；首位；一壘；一壘手",
+        "快速的；迅速的"
+      ]
+    },
+    {
+      "key": "マスト|マスト",
+      "entryIds": [
+        "1128080",
+        "2842054"
+      ],
+      "meanings": [
+        "桅杆；桅",
+        "必需的；不可或缺的；必備的；強制性的"
+      ]
+    },
+    {
+      "key": "モード|モード",
+      "entryIds": [
+        "1134620",
+        "2851234"
+      ],
+      "meanings": [
+        "模式；設定；方式；方法；狀態；心態；模式；感受；時尚；流行風格",
+        "時尚；流行"
+      ]
+    },
+    {
+      "key": "ラム|ラム",
+      "entryIds": [
+        "1139820",
+        "2842178"
+      ],
+      "meanings": [
+        "羊羔；小羊；羊羔肉",
+        "朗姆酒"
+      ]
+    },
+    {
+      "key": "リーディング|リーディング",
+      "entryIds": [
+        "1140650",
+        "2860890"
+      ],
+      "meanings": [
+        "閱讀",
+        "領先的；主導的"
+      ]
+    },
+    {
+      "key": "ロード|ロード",
+      "entryIds": [
+        "1146580",
+        "2860924"
+      ],
+      "meanings": [
+        "道路；路",
+        "負荷；載荷；載入；裝入（程式或資料至記憶體）"
+      ]
+    }
+  ],
   "reviewIssues": [
     {
       "type": "orthographic_variant_level_difference",
