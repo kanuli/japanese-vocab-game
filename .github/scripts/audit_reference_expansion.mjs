@@ -34,7 +34,8 @@ if((grammarPerLevel.N4||0)<30)failures.push('grammar: N4 targeted passive top-up
 
 const lwBase=runFile('listening-reference-expansion.js');
 const lwGap=runFile('listening-gap-expansion.js',{REFERENCE_LISTENING_EXPANSION:[...(lwBase.REFERENCE_LISTENING_EXPANSION||[])]});
-const lw=runFile('listening-gap-topup.js',{REFERENCE_LISTENING_EXPANSION:[...(lwGap.REFERENCE_LISTENING_EXPANSION||[])]});
+const lwTop=runFile('listening-gap-topup.js',{REFERENCE_LISTENING_EXPANSION:[...(lwGap.REFERENCE_LISTENING_EXPANSION||[])]});
+const lw=runFile('listening-gap-topup-batch2.js',{REFERENCE_LISTENING_EXPANSION:[...(lwTop.REFERENCE_LISTENING_EXPANSION||[])]});
 const listening=lw.REFERENCE_LISTENING_EXPANSION||[];
 const listeningPerLevel={}, listeningTypeCounts={};
 for(const l of levels){
@@ -63,14 +64,15 @@ const targetedTypes={
  N2:['程序理解','變化理解','課題理解','原因結果','原因推論','指示理解','否定推論','建議理解','趨勢理解','風險推論','範圍理解'],
  N1:['正式公告','論理理解','範圍理解','判斷理解','時間關係','展開理解','逆接理解','評價理解','結論推論']
 };
-if(listening.length<242)failures.push(`listening: unique expansion pool too small (${listening.length})`);
+if(listening.length<270)failures.push(`listening: unique expansion pool too small (${listening.length})`);
 for(const l of levels){
-  if((listeningPerLevel[l]||0)<40)failures.push(`listening: ${l} unique expansion pool too small`);
-  for(const t of targetedTypes[l])if((listeningTypeCounts[l]?.[t]||0)<3)failures.push(`listening: ${l}/${t} still under-covered`);
+  if((listeningPerLevel[l]||0)<50)failures.push(`listening: ${l} unique expansion pool too small`);
+  for(const t of targetedTypes[l])if((listeningTypeCounts[l]?.[t]||0)<5)failures.push(`listening: ${l}/${t} below five unique expansion examples`);
 }
 
 const cwBase=runFile('conversation-reference-expansion.js',{SITUATION_SCENES:[]});
-const cw=runFile('conversation-gap-expansion.js',{SITUATION_SCENES:[...(cwBase.SITUATION_SCENES||[])]});
+const cwGap=runFile('conversation-gap-expansion.js',{SITUATION_SCENES:[...(cwBase.SITUATION_SCENES||[])]});
+const cw=runFile('conversation-function-topup.js',{SITUATION_SCENES:[...(cwGap.SITUATION_SCENES||[])]});
 const scenes=cw.SITUATION_SCENES||[];
 const dialogueCount=scenes.reduce((n,s)=>n+(s.items||[]).length,0);
 const sceneIds=new Set();
@@ -86,21 +88,29 @@ for(const s of scenes){
   }
 }
 for(const id of ['dietary-restrictions','cooking-substitution','weather-warning','outdoor-nature','japanese-learning','culture-manners'])if(!sceneIds.has(id))failures.push(`conversation: targeted scene missing ${id}`);
+const conversationTextByLevel={};
+for(const l of levels)conversationTextByLevel[l]=scenes.flatMap(s=>(s.items||[]).filter(x=>x.level===l).flatMap(x=>(x.lines||[]).map(y=>y.jp))).join(' ');
+const functionChecks={
+ N4:{change_reschedule:['変更','別の時間'],recommendation:['ほうがいい']},
+ N3:{procedure:['手続','受付','申請','提出']},
+ N2:{exception:['今回に限り','通常の方法以外','事情がある場合']}
+};
+for(const [level,checks] of Object.entries(functionChecks))for(const [fn,keys] of Object.entries(checks))if(!keys.some(k=>conversationTextByLevel[level].includes(k)))failures.push(`conversation: ${level}/${fn} function top-up missing`);
 
 const grammarHtml=fs.readFileSync('grammar.html','utf8'), listeningHtml=fs.readFileSync('listening.html','utf8'), conversationHtml=fs.readFileSync('conversation.html','utf8'), mockHtml=fs.readFileSync('mocktest.html','utf8'), mockJs=fs.readFileSync('mocktest.js','utf8');
 const pageChecks={
   grammar: grammarHtml.includes('grammar-reference-expansion.js')&&grammarHtml.includes('grammar-gap-expansion.js'),
-  listening: listeningHtml.includes('listening-reference-expansion.js')&&listeningHtml.includes('listening-gap-expansion.js')&&listeningHtml.includes('listening-gap-topup.js'),
-  conversation: conversationHtml.includes('conversation-reference-expansion.js')&&conversationHtml.includes('conversation-gap-expansion.js'),
+  listening: listeningHtml.includes('listening-reference-expansion.js')&&listeningHtml.includes('listening-gap-expansion.js')&&listeningHtml.includes('listening-gap-topup.js')&&listeningHtml.includes('listening-gap-topup-batch2.js'),
+  conversation: conversationHtml.includes('conversation-reference-expansion.js')&&conversationHtml.includes('conversation-gap-expansion.js')&&conversationHtml.includes('conversation-function-topup.js'),
   mocktest: mockHtml.includes('grammar-reference-expansion.js')&&mockHtml.includes('grammar-gap-expansion.js')&&mockJs.includes('mock-ref-grammar')
 };
 for(const [k,v] of Object.entries(pageChecks))if(!v)failures.push(`integration: ${k} not wired`);
 
 const report={
-  version:'2026-08-27-gap-v3',
+  version:'2026-08-27-gap-v4',
   grammar:{count:grammar.length,perLevel:grammarPerLevel,targetedGap:'N4 passive'},
-  listening:{count:listening.length,perLevel:listeningPerLevel,typeCounts:listeningTypeCounts,targetedGap:'underrepresented listening subtypes',note:'Candidate templates are sentence-deduplicated; explicit top-ups bring every targeted sparse subtype to at least three unique expansion examples.'},
-  conversation:{newScenes:scenes.length,newDialogues:dialogueCount,perScene:25,targetedGap:'JF food + nature/environment + language/culture'},
+  listening:{count:listening.length,perLevel:listeningPerLevel,typeCounts:listeningTypeCounts,targetedGap:'underrepresented listening subtypes',note:'Batch 2 requires at least five unique expansion examples for every targeted subtype after sentence deduplication.'},
+  conversation:{newScenes:scenes.length,newDialogues:dialogueCount,perScene:25,targetedGap:'JF topics plus N4 reschedule/recommendation, N3 procedure and N2 exception functions'},
   pageChecks,
   failures,
   passed:failures.length===0
