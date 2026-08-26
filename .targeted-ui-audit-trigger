@@ -1,2 +1,2 @@
-2026-08-26T16:35+08:00
-External dictionary cross-check regression: validate あなた／いくら／ある／あの／その／おじ／おば／する in browser runtime, plus audited core overlay >=10,000 rows, 西瓜（すいか）, まい／舞／枚／毎, word-audio controls, grammar, listening and pronunciation regressions.
+2026-08-26T16:42+08:00
+External dictionary cross-check regression batch 2: validate あれ／いつ／いい／うん／ここ／そこ／どう／どの plus prior 8 cross-checks in browser runtime; also preserve audited core overlay >=10,000 rows, 西瓜（すいか）, まい／舞／枚／毎, word-audio controls, grammar, listening and pronunciation regressions.
