@@ -71,6 +71,9 @@ def patch_listening():
     s = add_after_once(s,
         '<script src="./listening-gap-expansion.js?v=20260827v1"></script>',
         '<script src="./listening-gap-topup.js?v=20260827v1"></script>', path)
+    s = add_after_once(s,
+        '<script src="./listening-gap-topup.js?v=20260827v1"></script>',
+        '<script src="./listening-gap-topup-batch2.js?v=20260827v2"></script>', path)
     if '...reference]' not in s:
         anchor = 'items=[...base,...original];'
         require(s, anchor, path)
@@ -102,6 +105,9 @@ def patch_conversation():
     s = add_after_once(s,
         '<script src="./conversation-reference-expansion.js?v=20260826v1"></script>',
         '<script src="./conversation-gap-expansion.js?v=20260827v1"></script>', path)
+    s = add_after_once(s,
+        '<script src="./conversation-gap-expansion.js?v=20260827v1"></script>',
+        '<script src="./conversation-function-topup.js?v=20260827v2"></script>', path)
     s = s.replace('N1–N5｜61 個真實生活場景｜1,525 組會話｜每個場景每級 5 組｜聽力・跟讀・聽寫',
                   'N1–N5｜77 個真實生活場景｜1,925 組會話｜每個場景每級 5 組｜聽力・跟讀・聽寫')
     s = s.replace('日本語・場面別會話 v2.0｜61 場景 × 每場景 25 組 = 1,525 組會話',
@@ -136,13 +142,13 @@ def patch_mocktest():
 def update_manifest():
     path = 'data/reference_upgrade_manifest.json'
     data = {
-        'version': '2026-08-27-gap-v2',
+        'version': '2026-08-27-gap-v3',
         'policy': 'data/CONTENT_REFERENCE_POLICY.md',
         'referenceMap': 'data/content_reference_map.json',
         'expansions': {
             'grammar': ['grammar-reference-expansion.js','grammar-gap-expansion.js'],
-            'listening': ['listening-reference-expansion.js','listening-gap-expansion.js','listening-gap-topup.js'],
-            'conversation': ['conversation-reference-expansion.js','conversation-gap-expansion.js']
+            'listening': ['listening-reference-expansion.js','listening-gap-expansion.js','listening-gap-topup.js','listening-gap-topup-batch2.js'],
+            'conversation': ['conversation-reference-expansion.js','conversation-gap-expansion.js','conversation-function-topup.js']
         },
         'integratedPages': ['grammar.html', 'listening.html', 'conversation.html', 'mocktest.html', 'mocktest.js'],
         'sharedPagesReviewed': {
@@ -153,8 +159,8 @@ def update_manifest():
         'notes': [
             'Vocabulary pages continue using the shared world-evidence calibration layer instead of a new duplicate level system.',
             'Targeted grammar gap: N4 passive coverage.',
-            'Targeted listening gaps use candidate templates plus explicit top-ups; sentence deduplication determines actual database growth, and every targeted sparse subtype must retain at least three unique expansion examples.',
-            'Targeted conversation gaps: six JF-topic scenes for food, nature/environment, and language/culture.',
+            'Listening batch 2 raises every targeted sparse subtype to at least five unique expansion examples after sentence deduplication.',
+            'Conversation batch 2 fills N4 change/reschedule and recommendation, N3 procedure, and N2 exception communicative-function gaps without increasing scene count.',
             'Pronunciation inherits verified readings; raw count is not expanded independently.',
             'Translator remains a utility and is not treated as a JLPT database.'
         ]
