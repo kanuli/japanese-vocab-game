@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-27-gap-v3",
+  "version": "2026-08-27-quality-depth-batch3-v1",
   "policy": "data/CONTENT_REFERENCE_POLICY.md",
   "referenceMap": "data/content_reference_map.json",
   "expansions": {
@@ -11,12 +11,14 @@
       "listening-reference-expansion.js",
       "listening-gap-expansion.js",
       "listening-gap-topup.js",
-      "listening-gap-topup-batch2.js"
+      "listening-gap-topup-batch2.js",
+      "listening-quality-batch3.js"
     ],
     "conversation": [
       "conversation-reference-expansion.js",
       "conversation-gap-expansion.js",
-      "conversation-function-topup.js"
+      "conversation-function-topup.js",
+      "conversation-quality-batch3.js"
     ]
   },
   "integratedPages": [
@@ -48,5 +50,15 @@
     "Conversation batch 2 fills N4 change/reschedule and recommendation, N3 procedure, and N2 exception communicative-function gaps without increasing scene count.",
     "Pronunciation inherits verified readings; raw count is not expanded independently.",
     "Translator remains a utility and is not treated as a JLPT database."
-  ]
+  ],
+  "qualityDepthBatch3": {
+    "focus": [
+      "near-miss listening distractors",
+      "JLPT cognitive-load progression",
+      "conversation template diversity",
+      "duplicate-dialogue prevention"
+    ],
+    "audit": "data/quality_depth_batch3_report.json",
+    "copyright": "All new wording is project-original; external sites remain reference-only."
+  }
 }

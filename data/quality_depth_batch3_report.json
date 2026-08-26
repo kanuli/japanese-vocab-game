@@ -1,0 +1,92 @@
+{
+  "version": "2026-08-27-quality-depth-batch3-v1",
+  "method": "Original-content quality audit; no external copyrighted examples are copied.",
+  "grammarDepth": {
+    "N1": {
+      "count": 24,
+      "avgSentenceChars": 22,
+      "choiceErrors": 0
+    },
+    "N2": {
+      "count": 18,
+      "avgSentenceChars": 20.6,
+      "choiceErrors": 0
+    },
+    "N3": {
+      "count": 18,
+      "avgSentenceChars": 21.1,
+      "choiceErrors": 0
+    },
+    "N4": {
+      "count": 30,
+      "avgSentenceChars": 15.8,
+      "choiceErrors": 0
+    },
+    "N5": {
+      "count": 18,
+      "avgSentenceChars": 13.1,
+      "choiceErrors": 0
+    }
+  },
+  "listening": {
+    "batch2Targets": 28,
+    "qualityTagged": 28,
+    "extremeDistractorRate": 0,
+    "nearMissFailures": 0,
+    "lengthFailures": 0,
+    "depth": {
+      "N1": {
+        "count": 8,
+        "avgSentenceChars": 41.1
+      },
+      "N2": {
+        "count": 12,
+        "avgSentenceChars": 37
+      },
+      "N3": {
+        "count": 4,
+        "avgSentenceChars": 30
+      },
+      "N4": {
+        "count": 4,
+        "avgSentenceChars": 26.8
+      }
+    }
+  },
+  "conversation": {
+    "targetScenes": 6,
+    "targetDialogues": 150,
+    "qualityRewritten": 105,
+    "legacyTemplateCounts": {
+      "N4": 8,
+      "N3": 7,
+      "N2": 7,
+      "N1": 8
+    },
+    "depth": {
+      "N1": {
+        "count": 30,
+        "avgDialogueChars": 122.9
+      },
+      "N2": {
+        "count": 30,
+        "avgDialogueChars": 93.6
+      },
+      "N3": {
+        "count": 30,
+        "avgDialogueChars": 85.8
+      },
+      "N4": {
+        "count": 30,
+        "avgDialogueChars": 76.8
+      },
+      "N5": {
+        "count": 30,
+        "avgDialogueChars": 37.1
+      }
+    },
+    "duplicatePairs": 0
+  },
+  "failures": [],
+  "passed": true
+}
