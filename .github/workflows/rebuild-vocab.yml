@@ -16,6 +16,7 @@ on:
       - tools/recalibrate_jlpt_teacher_v4.py
       - tools/teacher_jlpt_policy_v5.py
       - tools/teacher_manual_review.py
+      - tools/bulk_adjudicate_teacher_queue.py
       - tools/run_teacher_jlpt_audit.py
       - tools/audit_runtime_supplements.py
       - tools/run_runtime_supplement_audit.py
@@ -54,6 +55,8 @@ jobs:
         run: |
           curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
           zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
+      - name: Apply pinned complete teacher adjudication
+        run: python tools/bulk_adjudicate_teacher_queue.py
       - name: Build, refine, expand, teacher-audit and classify generated vocabulary
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
@@ -187,13 +190,13 @@ jobs:
           PY
       - name: Commit regenerated teacher-audited vocabulary
         run: |
-          if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json; then
-            echo "Vocabulary data and review queue already current."
+          if git diff --quiet -- data/jlpt_teacher_manual_review.tsv data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json; then
+            echo "Vocabulary data, teacher ledger and review queue already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json
+          git add data/jlpt_teacher_manual_review.tsv data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json
           git commit -m "Rebuild v5 source-lineage teacher-audited JLPT data"
           git pull --rebase origin main
           git push
