@@ -34,7 +34,7 @@ jobs:
           PY
       - name: Commit review queue
         run: |
-          if git diff --quiet -- data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json; then
+          if [ -z "$(git status --porcelain -- data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json)" ]; then
             echo 'Review queue already current.'
             exit 0
           fi
