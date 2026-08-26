@@ -6,14 +6,20 @@ on:
     branches: [main]
     paths:
       - '.targeted-ui-audit-trigger'
+      - '.github/workflows/targeted-ui-content-regression.yml'
       - 'site-health.js'
       - 'pronunciation-furigana.js'
       - 'advanced_words.js'
+      - 'advanced_words_curated.js'
+      - 'data/advanced_words_field_normalizer.js'
       - 'core_vocab_fetch_patch.js'
       - 'data/vocab_core_verified.js'
       - 'data/vocab_external_crosscheck.js'
       - 'data/advanced_vocab.js'
       - 'data/vocab_common_fixups.js'
+      - 'data/vocab_teacher_runtime_overlay.js'
+      - 'data/vocab_audit.json'
+      - 'data/jlpt_teacher_audit.tsv'
       - 'index.html'
       - 'wordaudio.html'
       - 'wordlist.html'
@@ -40,32 +46,44 @@ jobs:
         with:
           ref: main
 
-      - name: Static content and syntax checks
+      - name: Static v5 content and syntax checks
         run: |
           node --check site-health.js
           node --check pronunciation-furigana.js
           node --check advanced_words.js
+          node --check advanced_words_curated.js
+          test ! -f data/advanced_words_field_normalizer.js || node --check data/advanced_words_field_normalizer.js
           node --check core_vocab_fetch_patch.js
           node --check data/vocab_core_verified.js
           node --check data/vocab_external_crosscheck.js
           node --check data/advanced_vocab.js
           node --check data/vocab_common_fixups.js
+          node --check data/vocab_teacher_runtime_overlay.js
           python tools/check_vocab_sentinels.py
           python - <<'PY'
-          import json,re
+          import csv,json,re
           from pathlib import Path
           g=json.loads(Path('data/grammar_quality_v27_runtime_report.json').read_text(encoding='utf-8'))
           l=json.loads(Path('data/listening_mock_quality_v3_report.json').read_text(encoding='utf-8'))
+          a=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
+          b=a['jlptRecalibration']; r=a['runtimeTeacherAudit']
           assert g['totals']['failures']==0 and g['totals']['usageTargetLeakFailures']==0
           assert g['douiuRegression']['allGeneratedUsageChoicesContainSameAnchor'] is True
           assert l['listening']['structurallyRejected']==0 and not l['failures']
           assert all(x['qualityFailures']==0 and x['underfills']==0 for x in l['mock']['perLevel'].values())
-          s=Path('data/vocab_common_fixups.js').read_text(encoding='utf-8')
-          assert "level:'N4'" in s and "reading:'にわ'" in s and "kanji:'庭'" in s
           x=Path('data/vocab_external_crosscheck.js').read_text(encoding='utf-8')
-          assert '20260826-v3-complete' in x
-          assert len(re.findall(r'^\s*\["',x,re.M))==46
-          print('Static targeted regression checks PASS')
+          assert '20260826-v3-complete' in x and len(re.findall(r'^\s*\["',x,re.M))==46
+          assert a['fatalIssueCount']==0 and a.get('refinementFatalIssueCount',0)==0 and a.get('expansionFatalIssueCount',0)==0
+          assert a['coreAudit']['originalMeaningFallback']==0 and a['counts']['coreMeaningFallbackAfterRefinement']==0
+          assert b['version']=='20260826-teacher-v5-source-lineage' and b['policyRevision']=='v5-source-lineage'
+          assert b['rowCount']>=32511 and b['independentTeacherAnchors']>=100 and b['estimatedN1WithoutRarityEvidence']==0
+          assert 'never counted as independent votes' in b['sourceIndependence']
+          assert r['version']=='20260826-teacher-runtime-v2-lineage' and r['policyRevision']=='v5-source-lineage'
+          assert r['rowCount']>=32613 and r['supplementConfiguredUniqueKeys']>=393 and r['estimatedN1']==0 and r['duplicateExactKeys']==0
+          with Path('data/jlpt_teacher_audit.tsv').open(encoding='utf-8',newline='') as f: rows=list(csv.DictReader(f,delimiter='\t'))
+          assert len(rows)==r['rowCount'] and len({(z['reading'],z['display']) for z in rows})==len(rows)
+          assert not [z for z in rows if z['level']=='N1' and z['status'].startswith('estimated')]
+          print('STATIC TARGETED V5 PASS',json.dumps({'rows':len(rows),'anchors':b['independentTeacherAnchors']},ensure_ascii=False))
           PY
 
       - name: Install Chromium browser runtime
@@ -75,7 +93,7 @@ jobs:
           npm install --silent "playwright@$PW_VERSION"
           npx playwright install --with-deps chromium >/dev/null
 
-      - name: Browser-check requested defaults and semantic fixes
+      - name: Browser-check v5 runtime and requested UI
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/targeted-http.log 2>&1 &
           echo $! >/tmp/targeted-http.pid
@@ -89,98 +107,46 @@ jobs:
             const browser=await chromium.launch({headless:true});
             const context=await browser.newContext({serviceWorkers:'block'});
             for(const name of pages){
-              const page=await context.newPage();
-              const errors=[];page.on('pageerror',e=>errors.push(String(e)));
+              const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(String(e)));
               const r=await page.goto('http://127.0.0.1:4173/'+name+'?targeted='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
               if(!r||r.status()>=400)throw Error(name+' HTTP '+(r?.status()||'none'));
-              await page.waitForTimeout(800);
-              const levels=await page.evaluate(()=>[...document.querySelectorAll('.levels .level input[type="checkbox"]')].filter(x=>/^N[1-5]$/i.test(x.value)).filter(x=>x.checked).map(x=>x.value.toUpperCase()).sort());
+              await page.waitForTimeout(700);
+              const levels=await page.evaluate(()=>[...document.querySelectorAll('.levels .level input[type="checkbox"]')].filter(x=>/^N[1-5]$/i.test(x.value)&&x.checked).map(x=>x.value.toUpperCase()).sort());
               if(JSON.stringify(levels)!==JSON.stringify(expected))throw Error(name+' default levels '+JSON.stringify(levels));
-              if(['conversation.html','pronunciation.html'].includes(name)){
-                const presets=await page.locator('[data-jlpt-range-presets]').count();
-                if(presets!==1)throw Error(name+' missing shared JLPT range presets');
-              }
+              if(['conversation.html','pronunciation.html'].includes(name)&&await page.locator('[data-jlpt-range-presets]').count()!==1)throw Error(name+' missing range presets');
               if(errors.length)throw Error(name+' page errors '+errors.join(' | '));
-              console.log('DEFAULT PASS',name,levels.join(','));
               await page.close();
             }
-
             const audio=await context.newPage();
             await audio.goto('http://127.0.0.1:4173/wordaudio.html?controls='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
-            const controls=await audio.evaluate(()=>({
-              repeatGap:[...document.querySelectorAll('#repeatGap option')].map(x=>x.value),
-              limit:[...document.querySelectorAll('#limit option')].map(x=>x.value)
-            }));
+            const controls=await audio.evaluate(()=>({repeatGap:[...document.querySelectorAll('#repeatGap option')].map(x=>x.value),limit:[...document.querySelectorAll('#limit option')].map(x=>x.value)}));
             if(JSON.stringify(controls.repeatGap)!==JSON.stringify(['1','2','3','5']))throw Error('wordaudio repeatGap '+JSON.stringify(controls));
             if(JSON.stringify(controls.limit)!==JSON.stringify(['10','20','30','50','100','500','0']))throw Error('wordaudio limit '+JSON.stringify(controls));
-            console.log('WORD AUDIO CONTROLS PASS',JSON.stringify(controls));
             await audio.close();
 
             const wl=await context.newPage();
             await wl.goto('http://127.0.0.1:4173/wordlist.html?vocab='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
-            await wl.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>10000,null,{timeout:30000});
-            const vocabCheck=await wl.evaluate(()=>{
-              const words=window.WA.words;
-              const find=(reading,display)=>words.find(w=>w.reading===reading&&(w.kanji||w.displayWord||w.reading)===display);
-              return {
-                runtimePatch:window.VOCAB_CORE_RUNTIME_PATCH_META||null,
-                externalMeta:window.VOCAB_EXTERNAL_CROSSCHECK_META||null,
-                niwa:find('にわ','庭'), suika:find('すいか','西瓜'),
-                mai:find('まい','まい'), dance:find('まい','舞'), counter:find('まい','枚'), every:find('まい','毎'),
-                anata:find('あなた','あなた'), suru:find('する','する'), itsu:find('いつ','いつ'), dou:find('どう','どう'),
-                sou:find('そう','そう'), dake:find('だけ','だけ'), nai:find('ない','ない'),
-                para:find('ぱらぱら','ぱらぱら'), youyaku:find('ようやく','ようやく'), oeru:find('おえる','終える'),
-                menkyo:find('めんきょ','免許'), yori:find('より','より(副)'), iwaba:find('いわば','いわば'),
-                kuwaeru:find('くわえる','くわえる'), niji:find('にじ','虹'), kiru:find('きる','きる'),
-                mi:find('み','味'), haihai:find('はいはい','はいはい'), kar:find('かられる','駆られる'),
-                tataeru:find('たたえる','たたえる'), wear:find('ウエア','ウエア'), yugami:find('ゆがみ','ゆがみ'),
-                toromi:find('とろみ','とろみ'), saki:find('さきのばし','先延ばし')
-              };
+            await wl.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>30000,null,{timeout:30000});
+            await wl.waitForFunction(()=>window.VOCAB_TEACHER_RUNTIME_OVERLAY_META?.version==='20260826-teacher-runtime-v2-lineage',null,{timeout:15000});
+            const v=await wl.evaluate(()=>{
+              const words=window.WA.words,display=w=>w.kanji||w.displayWord||w.reading,find=(r,d)=>words.find(w=>w.reading===r&&display(w)===d);
+              const specs=[['にわ','庭','N5'],['まい','まい','N2'],['まい','舞','N2'],['まい','枚','N5'],['まい','毎','N5'],['すいか','西瓜','N5'],['ぎん','銀','N5'],['けいかん','警官','N5'],['こうちょう','校長','N5'],['じしん','地震','N4'],['じてん','辞典','N4'],['つる','釣る','N4'],['どろぼう','泥棒','N4'],['れいぼう','冷房','N3'],['レコード','レコード','N3'],['がいこう','外交','N2'],['きんゆう','金融','N2'],['したぎ','下着','N5'],['ちり','地理','N4'],['ちじ','知事','N1']];
+              return {total:words.length,unique:new Set(words.map(w=>`${w.reading}|${display(w)}`)).size,overlay:window.VOCAB_TEACHER_RUNTIME_OVERLAY_META||null,core:window.VOCAB_CORE_RUNTIME_PATCH_META||null,external:window.VOCAB_EXTERNAL_CROSSCHECK_META||null,estimatedN1:words.filter(w=>w.level==='N1'&&w.estimated===true).map(w=>`${w.reading}|${display(w)}`).slice(0,50),sentinels:specs.map(([r,d,e])=>({r,d,e,a:find(r,d)?.level||null,m:find(r,d)?.meaning||''}))};
             });
-            if(!vocabCheck.runtimePatch||vocabCheck.runtimePatch.patchedRows<10000||vocabCheck.runtimePatch.verifiedRows<10000)throw Error('core overlay not applied '+JSON.stringify(vocabCheck.runtimePatch));
-            if(!vocabCheck.externalMeta||vocabCheck.externalMeta.applied!==46||vocabCheck.externalMeta.configured!==46)throw Error('external cross-check layer not complete '+JSON.stringify(vocabCheck.externalMeta));
-            if(!vocabCheck.niwa||vocabCheck.niwa.level!=='N4')throw Error('庭/にわ N4 missing '+JSON.stringify(vocabCheck.niwa));
-            if(!vocabCheck.suika||!String(vocabCheck.suika.meaning).includes('西瓜')||String(vocabCheck.suika.meaning).includes('天邊一朵雲'))throw Error('西瓜/すいか corrupted '+JSON.stringify(vocabCheck.suika));
-            if(!vocabCheck.mai||!String(vocabCheck.mai.meaning).includes('不會'))throw Error('まい semantic failure '+JSON.stringify(vocabCheck.mai));
-            if(!vocabCheck.dance||!String(vocabCheck.dance.meaning).includes('舞'))throw Error('舞 semantic failure '+JSON.stringify(vocabCheck.dance));
-            if(!vocabCheck.counter||!String(vocabCheck.counter.meaning).includes('枚'))throw Error('枚 semantic failure '+JSON.stringify(vocabCheck.counter));
-            if(!vocabCheck.every||!String(vocabCheck.every.meaning).includes('每'))throw Error('毎 semantic failure '+JSON.stringify(vocabCheck.every));
-            if(!vocabCheck.anata||!String(vocabCheck.anata.meaning).includes('你'))throw Error('あなた cross-check failure '+JSON.stringify(vocabCheck.anata));
-            if(!vocabCheck.suru||!String(vocabCheck.suru.meaning).includes('做'))throw Error('する cross-check failure '+JSON.stringify(vocabCheck.suru));
-            if(!vocabCheck.itsu||!String(vocabCheck.itsu.meaning).includes('什麼時候'))throw Error('いつ cross-check failure '+JSON.stringify(vocabCheck.itsu));
-            if(!vocabCheck.dou||!String(vocabCheck.dou.meaning).includes('如何'))throw Error('どう cross-check failure '+JSON.stringify(vocabCheck.dou));
-            if(!vocabCheck.sou||!String(vocabCheck.sou.meaning).includes('那樣'))throw Error('そう cross-check failure '+JSON.stringify(vocabCheck.sou));
-            if(!vocabCheck.dake||!String(vocabCheck.dake.meaning).includes('只'))throw Error('だけ cross-check failure '+JSON.stringify(vocabCheck.dake));
-            if(!vocabCheck.nai||!String(vocabCheck.nai.meaning).includes('沒有'))throw Error('ない cross-check failure '+JSON.stringify(vocabCheck.nai));
-            if(!vocabCheck.para||!String(vocabCheck.para.meaning).includes('翻頁'))throw Error('ぱらぱら cross-check failure '+JSON.stringify(vocabCheck.para));
-            if(!vocabCheck.youyaku||!String(vocabCheck.youyaku.meaning).includes('終於'))throw Error('ようやく cross-check failure '+JSON.stringify(vocabCheck.youyaku));
-            if(!vocabCheck.oeru||!String(vocabCheck.oeru.meaning).includes('完成'))throw Error('終える cross-check failure '+JSON.stringify(vocabCheck.oeru));
-            if(!vocabCheck.menkyo||!String(vocabCheck.menkyo.meaning).includes('執照'))throw Error('免許 cross-check failure '+JSON.stringify(vocabCheck.menkyo));
-            if(!vocabCheck.yori||!String(vocabCheck.yori.meaning).includes('更加'))throw Error('より(副) cross-check failure '+JSON.stringify(vocabCheck.yori));
-            if(!vocabCheck.iwaba||!String(vocabCheck.iwaba.meaning).includes('可以說'))throw Error('いわば cross-check failure '+JSON.stringify(vocabCheck.iwaba));
-            if(!vocabCheck.kuwaeru||!String(vocabCheck.kuwaeru.meaning).includes('叼'))throw Error('くわえる cross-check failure '+JSON.stringify(vocabCheck.kuwaeru));
-            if(!vocabCheck.niji||!String(vocabCheck.niji.meaning).includes('彩虹'))throw Error('虹 cross-check failure '+JSON.stringify(vocabCheck.niji));
-            if(!vocabCheck.kiru||!String(vocabCheck.kiru.meaning).includes('做到最後'))throw Error('きる suffix cross-check failure '+JSON.stringify(vocabCheck.kiru));
-            if(!vocabCheck.mi||!String(vocabCheck.mi.meaning).includes('藥品'))throw Error('味/み counter cross-check failure '+JSON.stringify(vocabCheck.mi));
-            if(!vocabCheck.haihai||!String(vocabCheck.haihai.meaning).includes('爬行'))throw Error('はいはい crawling cross-check failure '+JSON.stringify(vocabCheck.haihai));
-            if(!vocabCheck.kar||!String(vocabCheck.kar.meaning).includes('驅使'))throw Error('駆られる cross-check failure '+JSON.stringify(vocabCheck.kar));
-            if(!vocabCheck.tataeru||!String(vocabCheck.tataeru.meaning).includes('充滿'))throw Error('たたえる fill-sense cross-check failure '+JSON.stringify(vocabCheck.tataeru));
-            if(!vocabCheck.wear||!String(vocabCheck.wear.meaning).includes('衣服'))throw Error('ウエア cross-check failure '+JSON.stringify(vocabCheck.wear));
-            if(!vocabCheck.yugami||!String(vocabCheck.yugami.meaning).includes('扭曲'))throw Error('ゆがみ cross-check failure '+JSON.stringify(vocabCheck.yugami));
-            if(!vocabCheck.toromi||!String(vocabCheck.toromi.meaning).includes('黏稠'))throw Error('とろみ cross-check failure '+JSON.stringify(vocabCheck.toromi));
-            if(!vocabCheck.saki||!String(vocabCheck.saki.meaning).includes('拖延'))throw Error('先延ばし cross-check failure '+JSON.stringify(vocabCheck.saki));
-            console.log('VOCAB RUNTIME PASS',JSON.stringify(vocabCheck));
-            await wl.close();
+            if(v.total<32000||v.unique<32000)throw Error('runtime vocabulary coverage '+JSON.stringify({total:v.total,unique:v.unique}));
+            if(!v.overlay||v.overlay.version!=='20260826-teacher-runtime-v2-lineage'||v.overlay.configuredKeys<393||v.overlay.appliedRows<350)throw Error('runtime overlay '+JSON.stringify(v.overlay));
+            if(!v.core||v.core.verifiedRows<10000)throw Error('core patch '+JSON.stringify(v.core));
+            if(!v.external||v.external.applied<46||v.external.configured<46)throw Error('external layer '+JSON.stringify(v.external));
+            if(v.estimatedN1.length)throw Error('estimated N1 at runtime '+JSON.stringify(v.estimatedN1));
+            const bad=v.sentinels.filter(x=>x.a!==x.e);if(bad.length)throw Error('teacher sentinel mismatch '+JSON.stringify(bad));
+            const suika=v.sentinels.find(x=>x.r==='すいか'&&x.d==='西瓜');if(!suika.m.includes('西瓜')||suika.m.includes('天邊一朵雲'))throw Error('西瓜 semantic regression '+JSON.stringify(suika));
+            console.log('VOCAB V5 RUNTIME PASS',JSON.stringify(v));await wl.close();
 
-            const pr=await context.newPage();
-            await pr.goto('http://127.0.0.1:4173/pronunciation.html?date='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            const pr=await context.newPage();await pr.goto('http://127.0.0.1:4173/pronunciation.html?date='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
             await pr.waitForFunction(()=>window.PronunciationFurigana?.rubyHTML,null,{timeout:15000});
             const date=await pr.evaluate(async()=>({day:PronunciationFurigana.dayReading(8),html:await PronunciationFurigana.rubyHTML('今日は9月8日です。')}));
             if(date.day!=='ようか'||!date.html.includes('くがつ')||!date.html.includes('ようか'))throw Error('date furigana '+JSON.stringify(date));
-            console.log('DATE FURIGANA PASS',JSON.stringify(date));
-            await pr.close();
-
-            await browser.close();
+            await pr.close();await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
           node /tmp/targeted-regression.cjs
@@ -194,23 +160,8 @@ jobs:
           import json,os
           from datetime import datetime,timezone
           from pathlib import Path
-          out={
-            'version':5,
-            'status':os.environ.get('RESULT','unknown'),
-            'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
-            'runId':os.environ.get('GITHUB_RUN_ID'),
-            'headSha':os.environ.get('GITHUB_SHA'),
-            'checks':[
-              'default-all-N1-N5-seven-pages','conversation-pronunciation-range-presets',
-              'wordaudio-repeat-gap-options','wordaudio-quantity-options','vocab-niwa-N4',
-              'vocab-core-overlay-10000-plus','vocab-suika-meaning','vocab-mai-homophones',
-              'vocab-external-crosschecks-46','vocab-core-fallback-zero-runtime-set',
-              'pronunciation-9month-8day-furigana','grammar-quality-zero-failures',
-              'listening-mock-quality-zero-failures'
-            ]
-          }
-          Path('targeted-ui-audit-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          print(json.dumps(out,ensure_ascii=False,indent=2))
+          out={'version':6,'policy':'v5-source-lineage','runtimeOverlay':'20260826-teacher-runtime-v2-lineage','status':os.environ.get('RESULT','unknown'),'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'runId':os.environ.get('GITHUB_RUN_ID'),'headSha':os.environ.get('GITHUB_SHA'),'checks':['default-all-N1-N5-seven-pages','conversation-pronunciation-range-presets','wordaudio-controls','v5-source-independence','32613-plus-teacher-audit-rows','zero-estimated-N1-runtime','393-plus-runtime-overlay','teacher-sentinels','vocab-suika-meaning','vocab-mai-homophones','niwa-N5-current-teacher-level','pronunciation-9month-8day-furigana','grammar-quality-zero-failures','listening-mock-quality-zero-failures']}
+          Path('targeted-ui-audit-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');print(json.dumps(out,ensure_ascii=False,indent=2))
           PY
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+kanuli@users.noreply.github.com'
