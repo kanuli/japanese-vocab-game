@@ -40,7 +40,10 @@ jobs:
       - name: Build, refine, expand and classify all vocabulary data
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
-          VOCAB_ADVANCED_TARGET: '30000'
+          # Full-corpus evidence scan found ~9.8k safe supplements beyond the
+          # audited 12.5k baseline. 22k stays below that evidence ceiling and
+          # deliberately excludes the dictionary-only tail.
+          VOCAB_ADVANCED_TARGET: '22000'
         run: |
           set +e
           python tools/build_vocab_bundle_exact.py
@@ -63,10 +66,10 @@ jobs:
           assert audit.get('refinementFatalIssueCount', 0) == 0
           assert audit.get('expansionFatalIssueCount', 0) == 0
           assert audit['counts']['core'] >= 10000, audit['counts']
-          assert audit['counts']['advanced'] >= 30000, audit['counts']
-          assert audit['counts']['runtimeUnique'] >= 40000, audit['counts']
-          assert audit['counts']['stage1AdvancedAddedVs12500'] >= 17000, audit['counts']
-          assert audit['counts']['stage1SafeCandidatePool'] >= 30000, audit['counts']
+          assert audit['counts']['advanced'] >= 22000, audit['counts']
+          assert audit['counts']['runtimeUnique'] >= 32000, audit['counts']
+          assert audit['counts']['stage1AdvancedAddedVs12500'] >= 9500, audit['counts']
+          assert audit['counts']['stage1SafeCandidatePool'] >= 22000, audit['counts']
           assert audit['coreAudit']['tomoshiMeaningsApplied'] >= 10000, audit['coreAudit']
           assert audit['coreAudit']['manualSecondaryCrosscheckApplied'] >= 46, audit['coreAudit']
           assert audit['coreAudit']['originalMeaningFallback'] == 0, audit['coreAudit']
