@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-function run(path,seed={}){const sandbox={console,window:{...seed}};vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path,'utf8'),sandbox,{filename:path,timeout:5000});return sandbox.window}
+function run(path,seed={}){const sandbox={console,window:{...seed},document:{querySelector:()=>null}};vm.createContext(sandbox);vm.runInContext(fs.readFileSync(path,'utf8'),sandbox,{filename:path,timeout:5000});return sandbox.window}
 const norm=s=>String(s??'').normalize('NFKC').replace(/[\s　。、，,.！？!?「」『』【】（）()：:；;]/g,'');
 const jpLen=s=>[...String(s??'').replace(/[\s　。、，,.！？!?「」『』【】（）()]/g,'')].length;
 const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
