@@ -1,2 +1,2 @@
-2026-08-27-listening-repair-batch5-v3
-Finalize the two remaining Japanese action aliases and lower repeated wrong-choice triples below the Batch 5 cap, then run the complete QA chain.
+2026-08-27-listening-length-batch6-preflight-v1
+Analyze every remaining answer-length quality outlier after Batch 5 before deterministic repair; keep all prior quality gates binding.
