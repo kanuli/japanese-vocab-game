@@ -1,16 +1,15 @@
 // Load the curated supplement and validated repo-hosted expansion before the game initializes.
 document.write('<script src="./advanced_words_curated.js?v=20260821v1"><\/script>');
-// Full-database audit outputs. Load the core overlay before any page fetches notes.csv,
-// then apply conservative secondary dictionary cross-checks to exact ambiguous keys.
-document.write('<script src="./data/vocab_core_verified.js?v=20260826v1"><\/script>');
+// Full-database audit outputs. The core overlay now carries the world-evidence JLPT
+// recalibration; exact manual secondary cross-checks remain layered after it.
+document.write('<script src="./data/vocab_core_verified.js?v=20260826v2worldjlpt"><\/script>');
 document.write('<script src="./data/vocab_external_crosscheck.js?v=20260826v4jlpt"><\/script>');
 document.write('<script src="./core_vocab_fetch_patch.js?v=20260826v2"><\/script>');
-// Stage 1 evidence-gated expanded prebuilt bundle. Cache token is pinned to this
-// audited bundle contract so browsers cannot reuse the old 12.5k file.
-document.write('<script src="./data/advanced_vocab.js?v=20260826v2stage12"><\/script>');
-// Stage 2 exact-form validation and conservative JLPT recalibration. Frequency-only
-// N1 is prohibited: missing/rare frequency is not evidence that a word is N1.
-document.write('<script src="./data/vocab_stage2_level_overrides.js?v=20260826v2jlpt"><\/script>');
+// World-evidence recalibrated 22k advanced bundle. Cache token is pinned so browsers
+// cannot reuse the old frequency-heavy N1 classification.
+document.write('<script src="./data/advanced_vocab.js?v=20260826v3worldjlpt"><\/script>');
+// Exact-only Stage 2 safeguards. Broad JLPT reassignment is generated in CI, never here.
+document.write('<script src="./data/vocab_stage2_level_overrides.js?v=20260826v3exact"><\/script>');
 // Strict surface-form completion layer: the 185 direct-reviewed forms that were
 // previously deferred only because the automatic sources had no reliable TC meaning.
 document.write('<script src="./data/coverage_deferred_manual.js?v=20260821v1"><\/script>');
@@ -21,7 +20,7 @@ document.write('<script src="./data/coverage_deferred_manual.js?v=20260821v1"><\
 document.write('<script src="./data/coverage_sourcecheck_manual.js?v=20260821v1"><\/script>');
 // Final residual cleanup discovered by the post-completion strict audit.
 document.write('<script src="./data/coverage_postreview_manual.js?v=20260821v1"><\/script>');
-document.write('<script src="./large_vocab_loader.js?v=20260826v2stage12"><\/script>');
+document.write('<script src="./large_vocab_loader.js?v=20260826v3worldjlpt"><\/script>');
 // Direct-reviewed common words that must remain present even if an upstream deck changes.
 document.write('<script src="./data/vocab_common_fixups.js?v=20260825v2"><\/script>');
 // Hosted-audio delta overlay. It waits for wordaudio-multivoice.js before installing,
