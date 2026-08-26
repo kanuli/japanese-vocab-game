@@ -1,0 +1,146 @@
+{
+  "version": "2026-08-26-v1",
+  "principle": "Reference structure and evidence; do not copy proprietary content.",
+  "authoritativeAnchor": {
+    "name": "JLPT official linguistic competence descriptions",
+    "url": "https://www.jlpt.jp/e/about/levelsummary.html",
+    "use": ["reading difficulty", "listening difficulty", "breadth of situations", "speed expectation", "inference and discourse complexity"]
+  },
+  "secondaryReferences": [
+    {
+      "name": "Mazii",
+      "url": "https://mazii.net/zh-TW",
+      "roles": ["lexical sense cross-check", "part-of-speech cross-check", "learner-level evidence"],
+      "runtimeCopy": false
+    },
+    {
+      "name": "MOJi Dictionary",
+      "url": "https://www.mojidict.com/",
+      "roles": ["lexical sense cross-check", "written-form cross-check", "learner-level evidence"],
+      "runtimeCopy": false
+    },
+    {
+      "name": "時雨日中辭典",
+      "url": "https://www.sigure.tw/dict/jp/",
+      "roles": ["Traditional-Chinese sense cross-check", "usage distinction cross-check"],
+      "runtimeCopy": false
+    },
+    {
+      "name": "U-biq",
+      "url": "https://study.u-biq.org/",
+      "roles": ["curriculum progression", "grammar-function coverage", "communicative-situation taxonomy"],
+      "runtimeCopy": false
+    },
+    {
+      "name": "時雨の町",
+      "url": "https://www.sigure.tw/",
+      "roles": ["grammar coverage cross-check", "conjugation taxonomy", "Traditional-Chinese learner taxonomy", "secondary JLPT-style evidence"],
+      "runtimeCopy": false
+    }
+  ],
+  "additionalEvidence": [
+    {
+      "name": "OpenJLPT",
+      "url": "https://github.com/evanclan/OpenJLPT",
+      "roles": ["open labelled vocabulary/kanji/grammar evidence", "cross-source comparison"],
+      "note": "One evidence set, never sole truth. Respect repository licence and attribution."
+    },
+    {
+      "name": "JMdict / EDRDG",
+      "url": "https://www.jmdict.org/",
+      "roles": ["lexical identity", "reading", "sense and part-of-speech evidence"],
+      "note": "Respect EDRDG licence."
+    },
+    {
+      "name": "Tatoeba",
+      "url": "https://tatoeba.org/",
+      "roles": ["licensed corpus evidence", "naturalness comparison"],
+      "note": "Text is generally CC BY 2.0 FR with some CC0; audio licences vary. Prefer project-original sentences unless attribution/provenance is retained."
+    },
+    {
+      "name": "Hanabira",
+      "roles": ["existing grammar point and example coverage"],
+      "note": "Already used by the project; preserve existing provenance/licence controls."
+    }
+  ],
+  "levelModel": {
+    "N5": {
+      "reading": "typical short expressions; kana and basic kanji; concrete familiar information",
+      "listening": "short familiar conversations spoken slowly; pick out necessary information",
+      "generation": ["direct intent", "one main proposition", "basic particles/conjugations", "little inference"]
+    },
+    "N4": {
+      "reading": "familiar daily passages with basic vocabulary and kanji",
+      "listening": "daily-life conversations generally understood when spoken slowly",
+      "generation": ["basic subordinate clauses", "conditions/permission/ability/experience", "explicit cause and sequence"]
+    },
+    "N3": {
+      "reading": "specific everyday content and main points of somewhat difficult daily writing",
+      "listening": "coherent everyday conversations at near-natural speed including relationships",
+      "generation": ["multi-clause discourse", "change/decision/reporting", "speaker relationship", "moderate inference"]
+    },
+    "N2": {
+      "reading": "clear material on a variety of general topics; follow narratives and intent",
+      "listening": "coherent conversations/news at nearly natural speed across broader settings",
+      "generation": ["indirectness", "formal/general-topic register", "denser clause relations", "reasoned inference"]
+    },
+    "N1": {
+      "reading": "logically complex or abstract material and profound content across varied topics",
+      "listening": "natural-speed coherent conversations/news/lectures in broad settings with logical structure and intent",
+      "generation": ["abstract/logical structure", "nuanced formal register", "compressed expressions", "subtle inference"],
+      "guardrail": "Never classify unknown residual items as N1 merely because lower levels lack evidence."
+    }
+  },
+  "pages": {
+    "index.html": {
+      "databaseRole": "vocabulary practice",
+      "improvement": "shared world-evidence vocabulary calibration",
+      "directReferenceExpansion": false
+    },
+    "wordlist.html": {
+      "databaseRole": "vocabulary list",
+      "improvement": "inherit the same verified meanings/readings/levels; no separate labels",
+      "directReferenceExpansion": false
+    },
+    "wordaudio.html": {
+      "databaseRole": "vocabulary listening",
+      "improvement": "inherit calibrated vocabulary and verified readings; improve voice coverage instead of duplicating lexical data",
+      "directReferenceExpansion": false
+    },
+    "grammar.html": {
+      "databaseRole": "grammar questions",
+      "improvement": "cross-source grammar-function coverage plus independently written questions",
+      "directReferenceExpansion": true
+    },
+    "listening.html": {
+      "databaseRole": "listening questions",
+      "improvement": "original scripts balanced by communicative function, grammar, discourse complexity and level",
+      "directReferenceExpansion": true
+    },
+    "conversation.html": {
+      "databaseRole": "situational dialogues",
+      "improvement": "communicative-function and real-life-situation expansion with genuinely different N1-N5 discourse",
+      "directReferenceExpansion": true
+    },
+    "pronunciation.html": {
+      "databaseRole": "pronunciation practice",
+      "improvement": "reuse verified readings and high-quality original sentence prompts; prioritize correctness over raw count",
+      "directReferenceExpansion": false
+    },
+    "mocktest.html": {
+      "databaseRole": "JLPT-style simulation",
+      "improvement": "consume the same calibrated grammar/vocabulary pools and level anchors; avoid a second level system",
+      "directReferenceExpansion": true
+    },
+    "translator.html": {
+      "databaseRole": "translation/voice utility",
+      "improvement": "no artificial count expansion; benefit indirectly from verified reading/lexical layers",
+      "directReferenceExpansion": false
+    },
+    "vocab-plus-game.html": {
+      "databaseRole": "extended vocabulary practice",
+      "improvement": "inherit world-evidence vocabulary calibration and shared sense corrections",
+      "directReferenceExpansion": false
+    }
+  }
+}
