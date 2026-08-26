@@ -1,9 +1,9 @@
 {
   "version": 5,
   "status": "failure",
-  "checkedAt": "2026-08-26T11:13:12Z",
-  "runId": "32962196279",
-  "headSha": "f26951aa1c6f3725da2ea534bbb23e6daded47f3",
+  "checkedAt": "2026-08-26T11:40:45Z",
+  "runId": "32964518138",
+  "headSha": "c749052fd5e596c8067082ade0ede28399616d2a",
   "checks": [
     "default-all-N1-N5-seven-pages",
     "conversation-pronunciation-range-presets",
