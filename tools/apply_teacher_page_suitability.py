@@ -21,8 +21,6 @@ html.write_text(s, encoding='utf-8')
 js = Path('mocktest.js')
 s = js.read_text(encoding='utf-8')
 
-# The old emergency fallback was written before the full teacher audit. Preserve the
-# simple offline safety net, but make its effective levels obey the canonical teacher TSV.
 if 'const FALLBACK_LEVEL_FIXES=' not in s:
     marker='const FALLBACK_GRAMMAR={'
     if marker not in s: raise SystemExit('mocktest.js FALLBACK_GRAMMAR marker missing')
@@ -32,13 +30,12 @@ if 'const FALLBACK_LEVEL_FIXES=' not in s:
 "はあく|把握":"N2","ちくせき|蓄積":"N2","すいそく|推測":"N2","みとおし|見通し":"N2","おおむね|おおむね":"N2"
 };
 const FALLBACK_EXTRA={N1:[
-["甚だしい","はなはだしい","非常、甚為"],["顧みる","かえりみる","回顧、顧及"],["乏しい","とぼしい","缺乏、貧乏"],["損なう","そこなう","損害、損失"],["遂げる","とげる","完成、達成"]
+["顧みる","かえりみる","回顧、顧及"],["遂げる","とげる","完成、達成"],["侮る","あなどる","輕視、蔑視"],["覆す","くつがえす","推翻、顛覆"],["滞る","とどこおる","停滯、拖延"],["携わる","たずさわる","參與、從事"],["潔い","いさぎよい","乾脆、潔白"]
 ]};
 function teacherAlignedFallbackVocab(){const out=[],seen=new Set;for(const [declared,rows] of Object.entries(FALLBACK_VOCAB)){for(const x of rows){const level=FALLBACK_LEVEL_FIXES[`${x[1]}|${x[0]}`]||declared,k=`${level}|${x[0]}|${x[1]}`;if(!seen.has(k)){seen.add(k);out.push({id:`fbv-${level}-${out.length}`,level,word:x[0],reading:x[1],meaning:x[2],sentence:"",pos:""})}}}for(const [level,rows] of Object.entries(FALLBACK_EXTRA)){for(const x of rows){const k=`${level}|${x[0]}|${x[1]}`;if(!seen.has(k)){seen.add(k);out.push({id:`fbx-${level}-${out.length}`,level,word:x[0],reading:x[1],meaning:x[2],sentence:"",pos:""})}}}return out}
 '''
     s=s.replace(marker,helper+marker,1)
 
-# Effective level overrides for manually authored SPECIAL vocabulary questions.
 if 'const SPECIAL_LEVEL_FIXES=' not in s:
     marker='const QUICK_RESPONSE={'
     if marker not in s: raise SystemExit('mocktest.js QUICK_RESPONSE marker missing')
@@ -55,7 +52,6 @@ if old in s:
     s = s.replace(old, new, 1)
 elif 'function teacherRuntimeVocab()' not in s or "source:'teacher-runtime'" not in s:
     raise SystemExit('mocktest.js fetchVocab pattern not found')
-# If an earlier generated version exists, ensure its final built-in path uses teacher-aligned rows.
 s=s.replace('const rows=Object.entries(FALLBACK_VOCAB).flatMap(([level,rows],i)=>rows.map((x,j)=>({id:`fbv-${level}-${j}`,level,word:x[0],reading:x[1],meaning:x[2],sentence:"",pos:""})));globalThis.MOCKTEST_VOCAB_META={source:\'built-in-fallback\',count:rows.length};return rows}',
             'const rows=teacherAlignedFallbackVocab();globalThis.MOCKTEST_VOCAB_META={source:\'built-in-fallback\',count:rows.length};return rows}')
 js.write_text(s, encoding='utf-8')
