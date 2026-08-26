@@ -8,7 +8,8 @@
     "advancedGenerated": 10919,
     "uniqueKeys": 10919,
     "duplicateRowsRemoved": 8,
-    "sameMeaningHomophoneGroupsForReview": 2,
+    "sameMeaningVariantGroups": 2,
+    "sameMeaningVariantLevelConflicts": 0,
     "curatedRowsAdded": 3
   },
   "sentinelMai": {
@@ -52,7 +53,7 @@
     "まい|枚",
     "まい|毎"
   ],
-  "homophoneReview": [
+  "variantGroups": [
     {
       "reading": "とりにく",
       "meaning": "雞肉",
@@ -63,13 +64,13 @@
         },
         {
           "display": "とり肉",
-          "level": "N1"
+          "level": "N5"
         }
       ]
     },
     {
       "reading": "ばからしい",
-      "meaning": "④【イ形】愚蠢的；無聊的",
+      "meaning": "愚蠢的；無聊的；荒唐的",
       "forms": [
         {
           "display": "馬鹿らしい",
@@ -77,11 +78,12 @@
         },
         {
           "display": "ばからしい",
-          "level": "N1"
+          "level": "N2"
         }
       ]
     }
   ],
+  "levelConflicts": [],
   "fatalIssueCount": 0,
   "fatalIssues": [],
   "generatedCount": 10919,
