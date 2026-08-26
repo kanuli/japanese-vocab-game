@@ -9,6 +9,7 @@ on:
       - 'grammar-gap-expansion.js'
       - 'listening-reference-expansion.js'
       - 'listening-gap-expansion.js'
+      - 'listening-gap-topup.js'
       - 'conversation-reference-expansion.js'
       - 'conversation-gap-expansion.js'
       - 'tools/apply_reference_database_upgrade.py'
