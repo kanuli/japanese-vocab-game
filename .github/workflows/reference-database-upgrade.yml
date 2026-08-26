@@ -1,0 +1,43 @@
+name: Reference database upgrade
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.reference-database-upgrade-trigger'
+      - 'grammar-reference-expansion.js'
+      - 'listening-reference-expansion.js'
+      - 'conversation-reference-expansion.js'
+      - 'tools/apply_reference_database_upgrade.py'
+      - '.github/scripts/audit_reference_expansion.mjs'
+      - 'data/CONTENT_REFERENCE_POLICY.md'
+      - 'data/content_reference_map.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  integrate-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply deterministic integration patch
+        run: python tools/apply_reference_database_upgrade.py
+      - name: Audit reference expansion
+        run: node .github/scripts/audit_reference_expansion.mjs
+      - name: Check patch whitespace
+        run: git diff --check
+      - name: Commit integrated database upgrade
+        run: |
+          if git diff --quiet; then
+            echo 'No integration changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add grammar.html listening.html conversation.html mocktest.html mocktest.js data/reference_upgrade_manifest.json data/reference_expansion_quality_report.json
+          git commit -m 'Integrate cross-reference Japanese database expansion'
+          git push
