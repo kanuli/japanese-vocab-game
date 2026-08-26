@@ -1,2 +1,2 @@
-2026-08-27-gap-audit-v2
-Run corrected JLPT/JF Standard coverage-gap audit and commit the generated report.
+2026-08-27-gap-expansion-v1
+Apply N4 passive, listening subtype and JF topic coverage gaps; run combined QA and coverage audit.
