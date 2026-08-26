@@ -1,11 +1,12 @@
 {
-  "generated": "2026-08-26T10:01:54.343936+00:00",
+  "generated": "2026-08-26T11:05:50.005904+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
     "officialJlptNote": "No official post-2010 JLPT per-word vocabulary list exists; site levels are third-party learning labels or estimates.",
     "coreRefinement": "Every original core fallback is reviewed against all safe exact-equivalent form+reading Tomoshi/JMdict candidates. Bracketed furigana notation, Unicode/Japanese glyph normalization and hiragana/katakana reading equivalence are allowed only when the raw exact lookup has no candidate. Automatic semantic selection still requires strong Traditional-Chinese agreement and a clear margin. Mazii/MOJi/時雨 are secondary manual validation only; their proprietary dictionary text is not bulk-copied.",
-    "advancedExpansion": "Full Tomoshi/JMdict open corpus; prior 12.5k preserved; new canonical rows require reusable zh-TW plus learner evidence. Exact lexical ambiguity is skipped. Proprietary web dictionaries are validation-only."
+    "advancedExpansion": "Full Tomoshi/JMdict open corpus; prior 12.5k preserved; new canonical rows require reusable zh-TW plus learner evidence. Exact lexical ambiguity is skipped. Proprietary web dictionaries are validation-only.",
+    "jlptLevel": "Direct evidence is fixed first. Residual words are difficulty-ranked by a model trained on direct labels, then distribution-calibrated to the average Waller/OpenJLPT level proportions. Missing frequency never implies N1; estimated N1 requires observed frequency."
   },
   "counts": {
     "core": 10511,
@@ -25,7 +26,14 @@
     "stage1AdvancedAddedVs12500": 9500,
     "stage1SafeCandidatePool": 22266,
     "stage1ConflictingExactKeysSkipped": 8,
-    "stage2StratifiedReviewQueue": 36
+    "stage2StratifiedReviewQueue": 36,
+    "jlptCountsCoreAdvanced": {
+      "N1": 13457,
+      "N2": 7045,
+      "N3": 6864,
+      "N4": 2496,
+      "N5": 2649
+    }
   },
   "coreAudit": {
     "total": 10511,
@@ -9647,8 +9655,8 @@
     }
   },
   "stage2ExternalValidation": {
-    "status": "review-queue-generated",
-    "policy": "Mazii/MOJi/時雨 are secondary manual validation only. No automated scraping/copying. Validate indexed presence, reading, learner level where visible, and sense direction; runtime meanings remain reusable Tomoshi/JMdict data.",
+    "status": "complete",
+    "policy": "Runtime meanings remain reusable Tomoshi/JMdict zh-TW data. External sites are secondary manual references. A missing search-engine result means not independently indexed, not that a dictionary lacks the word. External JLPT labels are non-official; direct Waller/Tomoshi level evidence is retained when sources disagree. An external level may override a frequency-only estimate when the exact form+reading and sense are confirmed.",
     "references": [
       "Mazii",
       "MOJi辞書",
@@ -10196,8 +10204,268 @@
         "levelSource": "tomoshi-priority-frequency-estimate"
       }
     ],
-    "validatedSample": [],
-    "blockingConflicts": 0
+    "validatedSample": [
+      {
+        "key": "じゅうぶん|充分",
+        "stratum": "start",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "agree-N4",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "visibleLevel": "N4",
+          "reference": "https://www.sigure.tw/dict/jp/%E5%85%85%E5%88%86"
+        },
+        "moji": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "reference": "https://www.mojidict.com/details/198965301"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      },
+      {
+        "key": "てつづき|手続",
+        "stratum": "start",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "nonblocking-source-difference-Waller-N2-vs-Sigure-N3",
+        "sigure": {
+          "status": "exact-confirmed-as-variant-of-手続き",
+          "readingMatch": true,
+          "visibleLevel": "N3",
+          "reference": "https://www.sigure.tw/dict/jp/%E6%89%8B%E7%B6%9A%E3%81%8D"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "usage-confirmed",
+          "readingMatch": true,
+          "reference": "https://mazii.net/es-ES/news/c7461382d9651865e5a7e4a58b76532f"
+        }
+      },
+      {
+        "key": "うりあげ|売上",
+        "stratum": "start",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "agree-N2",
+        "sigure": {
+          "status": "exact-confirmed-as-variant-of-売り上げ",
+          "readingMatch": true,
+          "visibleLevel": "N2",
+          "reference": "https://www.sigure.tw/dict/jp/%E5%A3%B2%E4%B8%8A"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      },
+      {
+        "key": "もうしこみ|申込",
+        "stratum": "start",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "nonblocking-source-difference-Waller-N1-vs-Sigure-N3",
+        "sigure": {
+          "status": "exact-confirmed-as-variant-of-申し込み",
+          "readingMatch": true,
+          "visibleLevel": "N3",
+          "reference": "https://www.sigure.tw/dict/jp/%E7%94%B3%E8%BE%BC"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      },
+      {
+        "key": "はっけい|八景",
+        "stratum": "middle",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "no-external-level-shown",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "reference": "https://www.sigure.tw/dict/jp/%E3%81%AF%E3%81%A3%E3%81%91%E3%81%84"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      },
+      {
+        "key": "きゅうつい|急追",
+        "stratum": "middle",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "no-external-level-shown",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "reference": "https://www.sigure.tw/dict/jp/%E3%81%8D%E3%82%85%E3%81%86%E3%81%A4%E3%81%84"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      },
+      {
+        "key": "ほてん|補填",
+        "stratum": "middle",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "frequency-estimate-N1-overridden-by-external-N2",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "visibleLevel": "N2",
+          "reference": "https://www.sigure.tw/dict/jp/%E8%A3%9C%E5%A1%AB"
+        },
+        "moji": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "reference": "https://www.mojidict.com/details/1989103348"
+        },
+        "mazii": {
+          "status": "usage-confirmed",
+          "readingMatch": true,
+          "reference": "https://mazii.net/en-US/news/c841d46c3835d6457a48fc3b6ac06d36"
+        }
+      },
+      {
+        "key": "ひきげき|悲喜劇",
+        "stratum": "middle",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "no-external-level-shown",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "reference": "https://www.sigure.tw/dict/jp/%E6%82%B2%E5%96%9C%E5%8A%87"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      },
+      {
+        "key": "はいすいりょう|排水量",
+        "stratum": "middle",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "no-external-level-shown",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "reference": "https://www.sigure.tw/dict/jp/%E3%81%AF%E3%81%84%E3%81%99%E3%81%84%E3%82%8A%E3%82%87%E3%81%86"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      },
+      {
+        "key": "アップル|アップル",
+        "stratum": "boundary",
+        "overall": "pass",
+        "senseDirection": "agree-apple-fruit; brand usage separately observed",
+        "levelReview": "frequency-estimate-N1-overridden-by-external-N5",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "visibleLevel": "N5",
+          "reference": "https://www.sigure.tw/dict/jp/%E3%82%A2%E3%83%83%E3%83%97%E3%83%AB"
+        },
+        "moji": {
+          "status": "usage-confirmed",
+          "readingMatch": true,
+          "reference": "https://m.mojidict.com/article/ii89Ui2WhY"
+        },
+        "mazii": {
+          "status": "usage-confirmed",
+          "readingMatch": true,
+          "reference": "https://mazii.net/es-ES/news/74eee36ba5efd42aa58242132a452ab5"
+        }
+      },
+      {
+        "key": "アドバルーン|アドバルーン",
+        "stratum": "boundary",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "no-external-level-shown",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "reference": "https://www.sigure.tw/dict/jp/%E3%82%A2%E3%83%89%E3%83%90%E3%83%AB%E3%83%BC%E3%83%B3"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      },
+      {
+        "key": "アナーキー|アナーキー",
+        "stratum": "boundary",
+        "overall": "pass",
+        "senseDirection": "agree",
+        "levelReview": "no-external-level-shown",
+        "sigure": {
+          "status": "exact-confirmed",
+          "readingMatch": true,
+          "reference": "https://www.sigure.tw/dict/jp/%E3%82%A2%E3%83%8A%E3%83%BC%E3%82%AD%E3%83%BC"
+        },
+        "moji": {
+          "status": "not-independently-indexed-in-review"
+        },
+        "mazii": {
+          "status": "not-independently-indexed-in-review"
+        }
+      }
+    ],
+    "blockingConflicts": 0,
+    "generated": "2026-08-26T10:12:00Z",
+    "bundleVersion": "prebuilt-20260826-v6-expanded-stage12",
+    "sampleMethod": "12-row stratified manual cross-check across Stage 1 start/middle/boundary; Mazii/MOJi/時雨 used only for indexed presence, reading, visible learner level, and sense-direction validation. No bulk scraping or proprietary definition copying.",
+    "sampleCount": 12,
+    "levelOverrides": {
+      "ほてん|補填": {
+        "level": "N2",
+        "reason": "exact reading+sense confirmed by 時雨 and MOJi; prior level was frequency-only estimate"
+      },
+      "アップル|アップル": {
+        "level": "N5",
+        "reason": "exact fruit sense and reading confirmed by 時雨; prior level was frequency-only estimate"
+      }
+    },
+    "counts": {
+      "pass": 12,
+      "review": 0,
+      "blocking": 0,
+      "sigureExactConfirmed": 12,
+      "mojiExactConfirmed": 2,
+      "mojiUsageConfirmed": 1,
+      "maziiUsageConfirmed": 3,
+      "frequencyOnlyLevelOverrides": 2,
+      "nonblockingDirectLevelSourceDifferences": 2
+    }
   },
   "expansionReviewIssueCount": 192,
   "expansionReviewIssues": [
@@ -13189,6 +13457,793 @@
       ]
     }
   ],
+  "jlptRecalibration": {
+    "status": "complete",
+    "version": "20260826-world-v2-distribution-calibrated",
+    "sources": [
+      "existing core/Waller/Tomoshi direct labels",
+      "Japanese Language Data Waller/Tanos CC-BY-SA",
+      "OpenJLPT CC-BY-SA",
+      "Mazii/MOJi/時雨 exact manual secondary cross-check layer",
+      "Tomoshi/JMdict frequency/commonness for residual difficulty features"
+    ],
+    "policy": "Direct evidence is fixed first. Residual words are difficulty-ranked by a model trained on direct labels, then distribution-calibrated to the average Waller/OpenJLPT level proportions. Missing frequency never implies N1; estimated N1 requires observed frequency.",
+    "trainingDirectRows": 13257,
+    "trainingCountsByLevel": {
+      "N3": 2240,
+      "N4": 794,
+      "N2": 3301,
+      "N1": 6027,
+      "N5": 895
+    },
+    "directCountsByLevel": {
+      "N3": 2240,
+      "N4": 794,
+      "N2": 3301,
+      "N1": 6027,
+      "N5": 895
+    },
+    "estimatedCountsByLevel": {
+      "N3": 4624,
+      "N5": 1754,
+      "N4": 1702,
+      "N1": 7430,
+      "N2": 3744
+    },
+    "combinedCountsByLevel": {
+      "N3": 6864,
+      "N4": 2496,
+      "N2": 7045,
+      "N1": 13457,
+      "N5": 2649
+    },
+    "worldTargetCounts": {
+      "N5": 2649,
+      "N4": 2496,
+      "N3": 6864,
+      "N2": 7045,
+      "N1": 13457
+    },
+    "residualQuotas": {
+      "N5": 1754,
+      "N4": 1702,
+      "N3": 4624,
+      "N2": 3744,
+      "N1": 7430
+    },
+    "newDirectEvidence": {
+      "manual-secondary": 49,
+      "openjlpt": 1,
+      "waller+openjlpt": 1
+    },
+    "wallerPublishedCounts": {
+      "N5": 684,
+      "N4": 640,
+      "N3": 1730,
+      "N2": 1812,
+      "N1": 3427
+    },
+    "openJlptPublishedCounts": {
+      "N5": 672,
+      "N4": 638,
+      "N3": 1784,
+      "N2": 1795,
+      "N1": 3463
+    },
+    "modelRankLogMedians": {
+      "N5": 4.01573687447745,
+      "N4": 3.9638113982407246,
+      "N3": 3.7423321685394373,
+      "N2": 4.086466605438728,
+      "N1": 4.012752879300751
+    },
+    "modelN1RankLogFloor": 4.049609742369739,
+    "estimatedN1WithoutObservedRank": 0,
+    "worldEvidenceConflictCount": 435,
+    "worldEvidenceConflictSamples": [
+      {
+        "key": "ああ|ああ",
+        "kept": "N1",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N4"
+      },
+      {
+        "key": "うるさい|うるさい",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "おじいさん|おじいさん",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "おととい|おととい",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "おととし|おととし",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "コピー|コピー",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "これ|これ",
+        "kept": "N1",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N5"
+      },
+      {
+        "key": "それ|それ",
+        "kept": "N1",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N5"
+      },
+      {
+        "key": "だんだん|だんだん",
+        "kept": "N1",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N5"
+      },
+      {
+        "key": "ボタン|ボタン",
+        "kept": "N4",
+        "source": "core-deck",
+        "waller": "N5",
+        "openjlpt": "N5"
+      },
+      {
+        "key": "ゆっくり|ゆっくり",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "いす|椅子",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "いちばん|一番",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "うんどう|運動",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "なに|何",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "うち|うち",
+        "kept": "N5",
+        "source": "core-deck",
+        "waller": null,
+        "openjlpt": "N4"
+      },
+      {
+        "key": "まち|街",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "かかる|掛かる",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "かける|掛ける",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N4"
+      },
+      {
+        "key": "みる|見る",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "かぎ|鍵",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "のど|喉",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "さらいげつ|再来月",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "さらいしゅう|再来週",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "さらいねん|再来年",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "さんぽ|散歩",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "おわる|終わる",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "たて|縦",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "まじめ|真面目",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "ふね|船",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "そうじ|掃除",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "たいへん|大変",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "だれか|誰か",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "はる|張る",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "こたえ|答え",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "はし|箸",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "つける|付ける",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "ふろ|風呂",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "べんきょう|勉強",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "ほう|方",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "あかるい|明るい",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "おもしろい|面白い",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "はく|履く",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "りっぱ|立派",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "れんしゅう|練習",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N5",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "あげる|あげる",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N4"
+      },
+      {
+        "key": "あちらこちら|あちらこちら",
+        "kept": "N3",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "いただく|頂く",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "このあいだ|この間",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "すごい|すごい",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "なかなか|なかなか",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "びっくり|びっくり",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "みな|皆",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N4"
+      },
+      {
+        "key": "もし|もし",
+        "kept": "N1",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N4"
+      },
+      {
+        "key": "あいさつ|挨拶",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "あんない|案内",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "いっさくじつ|一昨日",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "いっさくねん|一昨年",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "うんてん|運転",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "えんりょ|遠慮",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "なぐる|殴る",
+        "kept": "N2",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "さがる|下がる",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "おりる|下りる",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N4"
+      },
+      {
+        "key": "かっこう|格好",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "たのしむ|楽しむ",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "おこす|起こす",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "まがる|曲がる",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "かねもち|金持ち",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "あく|空く",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N4"
+      },
+      {
+        "key": "けいけん|経験",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "けいかく|計画",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "きまる|決まる",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "つき|月",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "かたい|堅い",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "かたい|硬い",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "さんせい|賛成",
+        "kept": "N3",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "すっぱい|酸っぱい",
+        "kept": "N2",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "うかがう|伺う",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "じゃま|邪魔",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "あつまる|集まる",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "しゅっせき|出席",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "でいりぐち|出入り口",
+        "kept": "N2",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "しゅっぱつ|出発",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "じゅんび|準備",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "すくなくとも|少なくとも",
+        "kept": "N2",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "しょうち|承知",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "あがる|上がる",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "のりかえ|乗り換え",
+        "kept": "N2",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "しょくじ|食事",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "しんぱい|心配",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "まんなか|真ん中",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "ずいぶん|随分",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N3",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "せわ|世話",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "せいさん|生産",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "あかちゃん|赤ちゃん",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      },
+      {
+        "key": "ぜんぜん|全然",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "そうだん|相談",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N3"
+      },
+      {
+        "key": "つくる|造る",
+        "kept": "N5",
+        "source": "jlpt-waller",
+        "waller": "N2",
+        "openjlpt": null
+      },
+      {
+        "key": "たいいん|退院",
+        "kept": "N4",
+        "source": "jlpt-waller",
+        "waller": "N4",
+        "openjlpt": "N2"
+      },
+      {
+        "key": "かわる|代わる",
+        "kept": "N2",
+        "source": "jlpt-waller",
+        "waller": "N1",
+        "openjlpt": "N1"
+      }
+    ],
+    "manualSecondaryExactConfigured": 49
+  },
   "reviewIssues": [
     {
       "type": "orthographic_variant_level_difference",
