@@ -4,7 +4,9 @@
 // keep the already-loaded curated/core layers and surface a clear warning instead.
 (function(){"use strict";
 const REQUIRED="prebuilt-20260826-v6-expanded-stage12";
-const MIN=30000;
+// Full Tomoshi/JMdict evidence scan supports ~22k advanced rows without entering
+// the no-JLPT/no-common/no-frequency dictionary-only tail.
+const MIN=22000;
 const prebuilt=window.ADVANCED_WORDS_BUNDLE_META;
 if(prebuilt&&prebuilt.version===REQUIRED&&Number(prebuilt.generatedCount||prebuilt.loadedCount||0)>=MIN){
   window.ADVANCED_WORDS_META={...prebuilt,prebuilt:true,audited:true};
