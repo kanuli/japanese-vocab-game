@@ -1,98 +1,4092 @@
 {
+  "generated": "2026-08-26T08:15:40.642394+00:00",
   "policy": {
-    "meaning": "exact written-form match only; kana/alternate-form fallback forbidden",
-    "level": "JLPT Waller when available; otherwise exact written-form+reading frequency only; curated exceptions are keyed by reading+written form",
-    "officialJlptNote": "Estimated levels are not an official JLPT vocabulary list."
+    "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
+    "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
+    "officialJlptNote": "No official post-2010 JLPT per-word vocabulary list exists; site levels are third-party learning labels or estimates."
   },
   "counts": {
-    "advancedGenerated": 10919,
-    "uniqueKeys": 10919,
-    "duplicateRowsRemoved": 8,
-    "sameMeaningVariantGroups": 2,
-    "sameMeaningVariantLevelConflicts": 0,
-    "curatedRowsAdded": 3
+    "core": 10511,
+    "advanced": 12500,
+    "runtimeUnique": 23011,
+    "tomoshiZhRowsTotal": 217261,
+    "tomoshiZhUsable": 217241,
+    "tomoshiJlptRows": 7747,
+    "sameMeaningVariantGroups": 477,
+    "sameMeaningVariantLevelConflicts": 66,
+    "advancedMultiEntryExactKeys": 18,
+    "orthographicVariantLevelDifferencesForReview": 66
   },
+  "coreAudit": {
+    "total": 10511,
+    "exactEntryResolved": 10197,
+    "ambiguousPairs": 317,
+    "unresolvedPairs": 314,
+    "tomoshiMeaningsApplied": 10191,
+    "originalMeaningFallback": 320,
+    "meaningChanged": 9898,
+    "levelChanged": 2776
+  },
+  "coreAmbiguousSamples": [
+    {
+      "key": "なす|なす",
+      "candidateEntryIds": [
+        "1157130",
+        "1195240",
+        "1563800",
+        "2824590",
+        "2842197",
+        "2861111",
+        "2864469"
+      ],
+      "selected": null
+    },
+    {
+      "key": "ど|度",
+      "candidateEntryIds": [
+        "1445160",
+        "2252690"
+      ],
+      "selected": "1445160"
+    },
+    {
+      "key": "あ|あ",
+      "candidateEntryIds": [
+        "1149990",
+        "1196670",
+        "2220160",
+        "2394370",
+        "2844412"
+      ],
+      "selected": null
+    },
+    {
+      "key": "ああ|ああ",
+      "candidateEntryIds": [
+        "1565440",
+        "2085080",
+        "2252550"
+      ],
+      "selected": null
+    },
+    {
+      "key": "あなた|あなた",
+      "candidateEntryIds": [
+        "1223615",
+        "1483180"
+      ],
+      "selected": null
+    },
+    {
+      "key": "あの|あの",
+      "candidateEntryIds": [
+        "1000420",
+        "1000430"
+      ],
+      "selected": null
+    },
+    {
+      "key": "ある|ある",
+      "candidateEntryIds": [
+        "1296400",
+        "1586840"
+      ],
+      "selected": null
+    },
+    {
+      "key": "あれ|あれ",
+      "candidateEntryIds": [
+        "1000580",
+        "1196670",
+        "1857320",
+        "2847612",
+        "2859257"
+      ],
+      "selected": null
+    },
+    {
+      "key": "いい|いい",
+      "candidateEntryIds": [
+        "2571360",
+        "2672300",
+        "2672310",
+        "2672320",
+        "2672330",
+        "2820690",
+        "2846378",
+        "2846386"
+      ],
+      "selected": "2820690"
+    },
+    {
+      "key": "いくら|いくら",
+      "candidateEntryIds": [
+        "1021180",
+        "1219980"
+      ],
+      "selected": null
+    },
+    {
+      "key": "いつ|いつ",
+      "candidateEntryIds": [
+        "1188760",
+        "1268060",
+        "1585390",
+        "2837668",
+        "2843147"
+      ],
+      "selected": null
+    },
+    {
+      "key": "いっぱい|いっぱい",
+      "candidateEntryIds": [
+        "1165660",
+        "1165670"
+      ],
+      "selected": null
+    },
+    {
+      "key": "いや|いや",
+      "candidateEntryIds": [
+        "1587610",
+        "2580180",
+        "2830360",
+        "2857380"
+      ],
+      "selected": null
+    },
+    {
+      "key": "いる|いる",
+      "candidateEntryIds": [
+        "1322180",
+        "1391500",
+        "1465580",
+        "1546640",
+        "1577980",
+        "1587780",
+        "2209310",
+        "2729170",
+        "2851105",
+        "2851106"
+      ],
+      "selected": null
+    },
+    {
+      "key": "うん|うん",
+      "candidateEntryIds": [
+        "1001090",
+        "1172610",
+        "1957130",
+        "2759530"
+      ],
+      "selected": null
+    },
+    {
+      "key": "おじ|おじ",
+      "candidateEntryIds": [
+        "1396840",
+        "1561020",
+        "1607070",
+        "2140540"
+      ],
+      "selected": null
+    },
+    {
+      "key": "おば|おば",
+      "candidateEntryIds": [
+        "1396860",
+        "1607100",
+        "2140630"
+      ],
+      "selected": null
+    },
+    {
+      "key": "かばん|かばん",
+      "candidateEntryIds": [
+        "1186150",
+        "1208910",
+        "2856280"
+      ],
+      "selected": "1208910"
+    },
+    {
+      "key": "コート|コート",
+      "candidateEntryIds": [
+        "1049000",
+        "2842174"
+      ],
+      "selected": null
+    },
+    {
+      "key": "ここ|ここ",
+      "candidateEntryIds": [
+        "1288810",
+        "1578150",
+        "1593190",
+        "1639930",
+        "1955390"
+      ],
+      "selected": null
+    },
+    {
+      "key": "こっち|こっち",
+      "candidateEntryIds": [
+        "1004500",
+        "2843401"
+      ],
+      "selected": "1004500"
+    },
+    {
+      "key": "コップ|コップ",
+      "candidateEntryIds": [
+        "1050390",
+        "2846389",
+        "5000045"
+      ],
+      "selected": "1050390"
+    },
+    {
+      "key": "この|この",
+      "candidateEntryIds": [
+        "1578150",
+        "1582920"
+      ],
+      "selected": "1578150"
+    },
+    {
+      "key": "これ|これ",
+      "candidateEntryIds": [
+        "1628530",
+        "2216120"
+      ],
+      "selected": "1628530"
+    },
+    {
+      "key": "サッカー|サッカー",
+      "candidateEntryIds": [
+        "1056700",
+        "2853762",
+        "2859258"
+      ],
+      "selected": "1056700"
+    },
+    {
+      "key": "しかし|しかし",
+      "candidateEntryIds": [
+        "1505990",
+        "2586170"
+      ],
+      "selected": "1505990"
+    },
+    {
+      "key": "じゃ|じゃ",
+      "candidateEntryIds": [
+        "1005900",
+        "1323350",
+        "2842999",
+        "2851029"
+      ],
+      "selected": null
+    },
+    {
+      "key": "ジュース|ジュース",
+      "candidateEntryIds": [
+        "1065950",
+        "2843595"
+      ],
+      "selected": "1065950"
+    },
+    {
+      "key": "すいか|すいか",
+      "candidateEntryIds": [
+        "1370930",
+        "1371340",
+        "1380890",
+        "1619450",
+        "1736780",
+        "1854160",
+        "2854545"
+      ],
+      "selected": "1380890"
+    },
+    {
+      "key": "すぐ|すぐ",
+      "candidateEntryIds": [
+        "1430610",
+        "2783560"
+      ],
+      "selected": "1430610"
+    },
+    {
+      "key": "する|する",
+      "candidateEntryIds": [
+        "1157170",
+        "1298670",
+        "1567440",
+        "1581900",
+        "1595910"
+      ],
+      "selected": null
+    },
+    {
+      "key": "そう|そう",
+      "candidateEntryIds": [
+        "1006610",
+        "1176700",
+        "1241450",
+        "1272690",
+        "1290810",
+        "1375190",
+        "1398030",
+        "1398670",
+        "1399250",
+        "1399540",
+        "1399590",
+        "1399990",
+        "1400810",
+        "1401470",
+        "1440810",
+        "1581200",
+        "2027990",
+        "2033880",
+        "2077160",
+        "2137720",
+        "2249280",
+        "2253390",
+        "2406720",
+        "2414580",
+        "2414600",
+        "2609760",
+        "2639080",
+        "2681340",
+        "2843362",
+        "2843365",
+        "2843386",
+        "2843387",
+        "2843388",
+        "2843390",
+        "2843391",
+        "2844287"
+      ],
+      "selected": null
+    },
+    {
+      "key": "そうだ|そうだ",
+      "candidateEntryIds": [
+        "1006650",
+        "1400120"
+      ],
+      "selected": "1006650"
+    },
+    {
+      "key": "そこ|そこ",
+      "candidateEntryIds": [
+        "1006670",
+        "1436050"
+      ],
+      "selected": null
+    },
+    {
+      "key": "その|その",
+      "candidateEntryIds": [
+        "1006830",
+        "1176240"
+      ],
+      "selected": null
+    },
+    {
+      "key": "そば|そば",
+      "candidateEntryIds": [
+        "1238460",
+        "1403830"
+      ],
+      "selected": null
+    },
+    {
+      "key": "それ|それ",
+      "candidateEntryIds": [
+        "1006970",
+        "2216210"
+      ],
+      "selected": "1006970"
+    },
+    {
+      "key": "だいぶ|だいぶ",
+      "candidateEntryIds": [
+        "1414830",
+        "1414920",
+        "2061160"
+      ],
+      "selected": null
+    },
+    {
+      "key": "だけ|だけ",
+      "candidateEntryIds": [
+        "1007340",
+        "1207210"
+      ],
+      "selected": null
+    },
+    {
+      "key": "ただ|ただ",
+      "candidateEntryIds": [
+        "1538900",
+        "2406710"
+      ],
+      "selected": "1538900"
+    },
+    {
+      "key": "たぶん|たぶん",
+      "candidateEntryIds": [
+        "1407360",
+        "1407980",
+        "2854432"
+      ],
+      "selected": "1407980"
+    },
+    {
+      "key": "だんだん|だんだん",
+      "candidateEntryIds": [
+        "1597350",
+        "2546180"
+      ],
+      "selected": "1597350"
+    },
+    {
+      "key": "ちょうど|ちょうど",
+      "candidateEntryIds": [
+        "1427340",
+        "1429280",
+        "2229500"
+      ],
+      "selected": null
+    },
+    {
+      "key": "できる|できる",
+      "candidateEntryIds": [
+        "1339500",
+        "1340450"
+      ],
+      "selected": "1340450"
+    },
+    {
+      "key": "では|では",
+      "candidateEntryIds": [
+        "1008450",
+        "1580130"
+      ],
+      "selected": "1008450"
+    },
+    {
+      "key": "どう|どう",
+      "candidateEntryIds": [
+        "1000050",
+        "1008910",
+        "1451160",
+        "1451730",
+        "1453640",
+        "1454010",
+        "1582390",
+        "2158900",
+        "2252690",
+        "2255350",
+        "2271820",
+        "2844351"
+      ],
+      "selected": null
+    },
+    {
+      "key": "どの|どの",
+      "candidateEntryIds": [
+        "1442500",
+        "1920240"
+      ],
+      "selected": null
+    },
+    {
+      "key": "ない|ない",
+      "candidateEntryIds": [
+        "1518450",
+        "1529520",
+        "2098290",
+        "2257550",
+        "2861097",
+        "2862777"
+      ],
+      "selected": null
+    },
+    {
+      "key": "なる|なる",
+      "candidateEntryIds": [
+        "1375610",
+        "1532910",
+        "1611000",
+        "2138260"
+      ],
+      "selected": null
+    },
+    {
+      "key": "ねえ|ねえ",
+      "candidateEntryIds": [
+        "2029080",
+        "2266990",
+        "2841117"
+      ],
+      "selected": "2029080"
+    }
+  ],
+  "coreUnresolvedSamples": [
+    "なす|なす",
+    "あ|あ",
+    "ああ|ああ",
+    "あなた|あなた",
+    "あの|あの",
+    "あめ|飴[あめ]",
+    "ある|ある",
+    "あれ|あれ",
+    "いくら|いくら",
+    "いつ|いつ",
+    "いっぱい|いっぱい",
+    "いや|いや",
+    "いる|いる",
+    "うん|うん",
+    "おじ|おじ",
+    "おば|おば",
+    "からおけ|カラオケ",
+    "コート|コート",
+    "ここ|ここ",
+    "じゃ|じゃ",
+    "する|する",
+    "せっけん|石鹸[けん]",
+    "そう|そう",
+    "そこ|そこ",
+    "その|その",
+    "そば|蕎麦[そば]",
+    "そば|そば",
+    "だいぶ|だいぶ",
+    "だけ|だけ",
+    "ちょうど|ちょうど",
+    "どう|どう",
+    "どの|どの",
+    "ない|ない",
+    "なる|なる",
+    "のり|のり",
+    "はい|はい",
+    "はく|はく",
+    "ボタン|ボタン",
+    "また|また",
+    "うち|うち",
+    "ちゃわん|茶碗[わん]",
+    "みかん|みかん",
+    "うそ|嘘[うそ]",
+    "えび|えび",
+    "おる|おる",
+    "かむ|嚙[か]む",
+    "ガム|ガム",
+    "クラブ|クラブ",
+    "くれる|くれる",
+    "こう|こう"
+  ],
+  "advancedMeaningSources": {
+    "tomoshi-entry-id": 12492,
+    "curated-exact": 8
+  },
+  "advancedLevelSources": {
+    "jlpt-waller": 2437,
+    "curated-exact": 8,
+    "exact-frequency-estimate": 10055
+  },
+  "advancedMultiEntrySamples": [
+    {
+      "key": "ウェア|ウェア",
+      "entryIds": [
+        "1025730",
+        "2869280"
+      ]
+    },
+    {
+      "key": "クロス|クロス",
+      "entryIds": [
+        "1045630",
+        "2845215"
+      ]
+    },
+    {
+      "key": "グー|グー",
+      "entryIds": [
+        "1046070",
+        "2138180"
+      ]
+    },
+    {
+      "key": "シリアル|シリアル",
+      "entryIds": [
+        "1062960",
+        "2860960"
+      ]
+    },
+    {
+      "key": "スイート|スイート",
+      "entryIds": [
+        "1067080",
+        "2862667"
+      ]
+    },
+    {
+      "key": "ダイヤ|ダイヤ",
+      "entryIds": [
+        "1076860",
+        "2855660"
+      ]
+    },
+    {
+      "key": "パー|パー",
+      "entryIds": [
+        "1100380",
+        "2397590"
+      ]
+    },
+    {
+      "key": "ピン|ピン",
+      "entryIds": [
+        "1107060",
+        "2855585"
+      ]
+    },
+    {
+      "key": "ファースト|ファースト",
+      "entryIds": [
+        "1107460",
+        "2858155"
+      ]
+    },
+    {
+      "key": "ボルト|ボルト",
+      "entryIds": [
+        "1124390",
+        "2853387"
+      ]
+    },
+    {
+      "key": "マスト|マスト",
+      "entryIds": [
+        "1128080",
+        "2842054"
+      ]
+    },
+    {
+      "key": "モード|モード",
+      "entryIds": [
+        "1134620",
+        "2851234"
+      ]
+    },
+    {
+      "key": "ライター|ライター",
+      "entryIds": [
+        "1137880",
+        "2844121"
+      ]
+    },
+    {
+      "key": "ラム|ラム",
+      "entryIds": [
+        "1139820",
+        "2842178"
+      ]
+    },
+    {
+      "key": "リーディング|リーディング",
+      "entryIds": [
+        "1140650",
+        "2860890"
+      ]
+    },
+    {
+      "key": "レア|レア",
+      "entryIds": [
+        "1144510",
+        "2857557"
+      ]
+    },
+    {
+      "key": "ロード|ロード",
+      "entryIds": [
+        "1146580",
+        "2860924"
+      ]
+    },
+    {
+      "key": "ちゃう|ちゃう",
+      "entryIds": [
+        "2013800",
+        "2013805"
+      ]
+    }
+  ],
   "sentinelMai": {
     "まい": [
       {
         "meaning": "不會～；不打算～；恐怕不～（否定推量／否定意志）",
         "level": "N2",
-        "location": "advanced"
+        "source": "advanced"
       }
     ],
     "舞": [
       {
         "meaning": "舞；舞蹈",
         "level": "N2",
-        "location": "advanced"
+        "source": "advanced"
       }
     ],
     "枚": [
       {
         "meaning": "張、枚（計算薄而平物件的量詞）",
         "level": "N5",
-        "location": "advanced"
+        "source": "advanced"
       }
     ],
     "毎": [
       {
         "meaning": "每～；每一～",
         "level": "N5",
-        "location": "advanced"
+        "source": "advanced"
       }
     ]
   },
-  "sentinelMaiCorePresence": {
-    "まい": false,
-    "舞": false,
-    "枚": false,
-    "毎": false
-  },
-  "curatedRowsAdded": [
-    "まい|舞",
-    "まい|枚",
-    "まい|毎"
-  ],
   "variantGroups": [
     {
-      "reading": "とりにく",
-      "meaning": "雞肉",
+      "reading": "うやむや",
+      "meaning": "含糊其辭；模糊不清；不明確；懸而未決；搖擺不定",
       "forms": [
         {
-          "display": "鶏肉",
+          "display": "うやむや",
+          "level": "N1"
+        },
+        {
+          "display": "有耶無耶",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "あさって",
+      "meaning": "後天；錯誤的；不對的",
+      "forms": [
+        {
+          "display": "あさって",
           "level": "N5"
         },
         {
-          "display": "とり肉",
+          "display": "明後日",
           "level": "N5"
         }
       ]
     },
     {
-      "reading": "ばからしい",
-      "meaning": "愚蠢的；無聊的；荒唐的",
+      "reading": "あたし",
+      "meaning": "我；我（女性或年長者用語）",
       "forms": [
         {
-          "display": "馬鹿らしい",
+          "display": "あたし",
+          "level": "N1"
+        },
+        {
+          "display": "私",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "あまり",
+      "meaning": "剩餘；殘餘；剩下的；餘數；盈餘；飯菜剩餘；不很；不太；不怎麼；太；過於；過分",
+      "forms": [
+        {
+          "display": "あまり",
+          "level": "N5"
+        },
+        {
+          "display": "余り",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "いくつ",
+      "meaning": "多少；幾個；幾歲；多大",
+      "forms": [
+        {
+          "display": "いくつ",
+          "level": "N5"
+        },
+        {
+          "display": "幾つ",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "いつも",
+      "meaning": "總是；一直；始終；從不；從來不；慣常的；通常的；平時的",
+      "forms": [
+        {
+          "display": "いつも",
+          "level": "N5"
+        },
+        {
+          "display": "何時も",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "いろいろ",
+      "meaning": "各種；多種多樣；各式各樣；各種各樣地；以多種方式；形形色色地；各種各樣的事物；林林總總",
+      "forms": [
+        {
+          "display": "いろいろ",
+          "level": "N5"
+        },
+        {
+          "display": "色々",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "うるさい",
+      "meaning": "吵鬧；嘈雜；煩人；麻煩；令人厭煩；糾纏不休；挑剔；講究；愛挑剔；愛嘮叨；嚴格要求",
+      "forms": [
+        {
+          "display": "うるさい",
+          "level": "N5"
+        },
+        {
+          "display": "煩い",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "おいしい",
+      "meaning": "美味的；好吃的；可口的；誘人的；吸引人的；有利的；划算的",
+      "forms": [
+        {
+          "display": "おいしい",
+          "level": "N5"
+        },
+        {
+          "display": "美味しい",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "おじいさん",
+      "meaning": "祖父；爺爺；老年男性；老頭兒",
+      "forms": [
+        {
+          "display": "おじいさん",
+          "level": "N5"
+        },
+        {
+          "display": "お祖父さん",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "おじさん",
+      "meaning": "伯父；叔父；老人；大叔；老兄；多帶副緋鯉",
+      "forms": [
+        {
+          "display": "おじさん",
+          "level": "N5"
+        },
+        {
+          "display": "伯父さん",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "おっしゃる",
+      "meaning": "說；講；告訴；被稱為；名叫",
+      "forms": [
+        {
+          "display": "おっしゃる",
+          "level": "N4"
+        },
+        {
+          "display": "仰る",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "おととい",
+      "meaning": "前天",
+      "forms": [
+        {
+          "display": "おととい",
+          "level": "N5"
+        },
+        {
+          "display": "一昨日",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "おととし",
+      "meaning": "前年",
+      "forms": [
+        {
+          "display": "おととし",
+          "level": "N5"
+        },
+        {
+          "display": "一昨年",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "おなか",
+      "meaning": "腹部；肚子；胃",
+      "forms": [
+        {
+          "display": "おなか",
+          "level": "N5"
+        },
+        {
+          "display": "お腹",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "おばあさん",
+      "meaning": "祖母；奶奶；外婆；老婦人；老年女性",
+      "forms": [
+        {
+          "display": "おばあさん",
+          "level": "N5"
+        },
+        {
+          "display": "お祖母さん",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "かばん",
+      "meaning": "包；手提包；公文包；籃子",
+      "forms": [
+        {
+          "display": "かばん",
+          "level": "N5"
+        },
+        {
+          "display": "鞄",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "かわいい",
+      "meaning": "可愛；討人喜歡；迷人；漂亮；親愛的；珍貴的；寶貝；心愛的；天真；孩子氣；幼稚；惹人憐愛",
+      "forms": [
+        {
+          "display": "かわいい",
+          "level": "N5"
+        },
+        {
+          "display": "可愛い",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "きれい",
+      "meaning": "漂亮；可愛；美麗；秀麗；乾淨；清潔；純淨；整潔；整齊；徹底；完全",
+      "forms": [
+        {
+          "display": "きれい",
+          "level": "N5"
+        },
+        {
+          "display": "綺麗",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "くださる",
+      "meaning": "給予；賜予；賞賜；好心地為某人做；幫忙；惠助",
+      "forms": [
+        {
+          "display": "くださる",
+          "level": "N4"
+        },
+        {
+          "display": "下さる",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "コーヒー",
+      "meaning": "咖啡",
+      "forms": [
+        {
+          "display": "コーヒー",
+          "level": "N5"
+        },
+        {
+          "display": "珈琲",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "ごみばこ",
+      "meaning": "垃圾桶；垃圾箱；廢物箱",
+      "forms": [
+        {
+          "display": "ごみ箱",
+          "level": "N4"
+        },
+        {
+          "display": "ゴミ箱",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "しょうゆ",
+      "meaning": "醬油；豉油",
+      "forms": [
+        {
+          "display": "しょうゆ",
+          "level": "N5"
+        },
+        {
+          "display": "醤油",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "すいか",
+      "meaning": "西瓜",
+      "forms": [
+        {
+          "display": "すいか",
+          "level": "N5"
+        },
+        {
+          "display": "西瓜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "すぐ",
+      "meaning": "立即；馬上；直接；很快；不久；短期內；輕易；容易；毫不費力",
+      "forms": [
+        {
+          "display": "すぐ",
+          "level": "N1"
+        },
+        {
+          "display": "直ぐ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "すばらしい",
+      "meaning": "精彩的；壯麗的；了不起的；驚人的；卓越的；過分的；難以置信的；非凡的；顯著的；極大的",
+      "forms": [
+        {
+          "display": "すばらしい",
+          "level": "N4"
+        },
+        {
+          "display": "素晴らしい",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "せっけん",
+      "meaning": "肥皂",
+      "forms": [
+        {
+          "display": "石鹸[けん]",
           "level": "N2"
         },
         {
-          "display": "ばからしい",
+          "display": "石鹸",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "たくさん",
+      "meaning": "許多；大量；很多；眾多；足夠；充分；足夠；過多；太多",
+      "forms": [
+        {
+          "display": "たくさん",
+          "level": "N5"
+        },
+        {
+          "display": "沢山",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "ただ",
+      "meaning": "普通；常見；平常；免費；無償；未受影響；原樣；安全",
+      "forms": [
+        {
+          "display": "ただ",
+          "level": "N3"
+        },
+        {
+          "display": "只",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "ただいま",
+      "meaning": "我回來了；我回來了啊；現在；目前；此刻；剛才；方才；片刻前",
+      "forms": [
+        {
+          "display": "ただ今",
+          "level": "N5"
+        },
+        {
+          "display": "只今",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "タバコ",
+      "meaning": "菸草；香菸；雪茄；菸草植物",
+      "forms": [
+        {
+          "display": "タバコ",
+          "level": "N5"
+        },
+        {
+          "display": "煙草",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "たぶん",
+      "meaning": "可能；大概；或許；也許；許多；大量；不少；相當多",
+      "forms": [
+        {
+          "display": "たぶん",
+          "level": "N5"
+        },
+        {
+          "display": "多分",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "だんだん",
+      "meaning": "逐漸；一點一點；越來越；日益；臺階；樓梯；階梯；梯田",
+      "forms": [
+        {
+          "display": "だんだん",
+          "level": "N1"
+        },
+        {
+          "display": "段々",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "つまらない",
+      "meaning": "乏味；無趣；枯燥；沉悶；微不足道；不重要；瑣碎；無足輕重；荒唐；愚蠢；可笑；糊塗",
+      "forms": [
+        {
+          "display": "つまらない",
+          "level": "N5"
+        },
+        {
+          "display": "詰らない",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "できる",
+      "meaning": "能夠；可以；被允許（做某事）；擅長；做得好；精通；有能力；出現；形成；產生；（事情）發生；誕生；結交（朋友）；獲得（女朋友、空閒時間等）",
+      "forms": [
+        {
+          "display": "できる",
+          "level": "N5"
+        },
+        {
+          "display": "出来る",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "どこ",
+      "meaning": "哪裡；什麼地方；多長；多遠；到什麼程度",
+      "forms": [
+        {
+          "display": "どこ",
+          "level": "N5"
+        },
+        {
+          "display": "何処",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "どなた",
+      "meaning": "誰；哪位",
+      "forms": [
+        {
+          "display": "どなた",
+          "level": "N5"
+        },
+        {
+          "display": "何方",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "なぜ",
+      "meaning": "為什麼；怎樣；何以",
+      "forms": [
+        {
+          "display": "なぜ",
+          "level": "N5"
+        },
+        {
+          "display": "何故",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "など",
+      "meaning": "等等；及其他；之類的；或是什麼的；或者說；之類；之流",
+      "forms": [
+        {
+          "display": "など",
+          "level": "N5"
+        },
+        {
+          "display": "等",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "にぎやか",
+      "meaning": "熱鬧；繁華；興隆；熱鬧；響亮；歡快；熱烈",
+      "forms": [
+        {
+          "display": "にぎやか",
+          "level": "N5"
+        },
+        {
+          "display": "賑やか",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "ぬるい",
+      "meaning": "溫熱的；不冷不熱的；微溫的；寬鬆的；寬容的；不嚴厲的",
+      "forms": [
+        {
+          "display": "ぬるい",
+          "level": "N5"
+        },
+        {
+          "display": "温い",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "ふるさと",
+      "meaning": "故鄉；家鄉；出生地；原籍；遺蹟；歷史遺留；古蹟",
+      "forms": [
+        {
+          "display": "ふるさと",
+          "level": "N3"
+        },
+        {
+          "display": "故郷",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ページ",
+      "meaning": "頁；頁碼；第…頁",
+      "forms": [
+        {
+          "display": "ページ",
+          "level": "N5"
+        },
+        {
+          "display": "頁",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "まず",
+      "meaning": "首先；第一；首要地；大概；很可能；幾乎肯定；實際上；尚可；總體上；大體上",
+      "forms": [
+        {
+          "display": "まず",
+          "level": "N4"
+        },
+        {
+          "display": "先ず",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "まずい",
+      "meaning": "味道差；難吃；令人不快；糟糕；不熟練；笨拙；生疏；手藝差；醜陋；不好看；相貌平平",
+      "forms": [
+        {
+          "display": "まずい",
+          "level": "N5"
+        },
+        {
+          "display": "不味い",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "まだ",
+      "meaning": "仍然；還是；仍舊；還沒有；尚未；更加；更為",
+      "forms": [
+        {
+          "display": "まだ",
+          "level": "N5"
+        },
+        {
+          "display": "未だ",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "まっすぐ",
+      "meaning": "筆直；直接；豎直；筆立；坦率；誠實；率直",
+      "forms": [
+        {
+          "display": "まっすぐ",
+          "level": "N5"
+        },
+        {
+          "display": "真っ直ぐ",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "みそしる",
+      "meaning": "味噌湯",
+      "forms": [
+        {
+          "display": "みそ汁",
+          "level": "N4"
+        },
+        {
+          "display": "味噌汁",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ゆうべ",
+      "meaning": "昨晚；昨天傍晚",
+      "forms": [
+        {
+          "display": "ゆうべ",
+          "level": "N5"
+        },
+        {
+          "display": "昨夜",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "りんご",
+      "meaning": "蘋果；蘋果樹",
+      "forms": [
+        {
+          "display": "りんご",
+          "level": "N5"
+        },
+        {
+          "display": "林檎",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "あたたかい",
+      "meaning": "溫暖；溫和；（令人舒適的）炎熱；體貼；親切；和藹；（顏色）溫暖的；柔和的",
+      "forms": [
+        {
+          "display": "温かい",
+          "level": "N5"
+        },
+        {
+          "display": "暖かい",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "あう",
+      "meaning": "相遇；碰面；見面；遭遇；經歷不幸",
+      "forms": [
+        {
+          "display": "会う",
+          "level": "N5"
+        },
+        {
+          "display": "遭う",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "あく",
+      "meaning": "開啟；開啟（如門等）；開張；開業（如商店等）；空著；閒置",
+      "forms": [
+        {
+          "display": "開く",
+          "level": "N5"
+        },
+        {
+          "display": "空く",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "あける",
+      "meaning": "開啟（門等）；拆開（包裹等）；解鎖；開門營業；開業；清空；騰出；留出空間",
+      "forms": [
+        {
+          "display": "開ける",
+          "level": "N5"
+        },
+        {
+          "display": "明ける",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "まち",
+      "meaning": "城鎮；街區；鄰近地區；市中心；主幹街道；街道；道路",
+      "forms": [
+        {
+          "display": "街",
+          "level": "N5"
+        },
+        {
+          "display": "町",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "かえる",
+      "meaning": "替換；轉換；改變；交換；互換；更新；替代（人員、職員、選手等）",
+      "forms": [
+        {
+          "display": "換える",
+          "level": "N3"
+        },
+        {
+          "display": "替える",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "いつか",
+      "meaning": "（每月的）5日；5號；五天；5天",
+      "forms": [
+        {
+          "display": "五日",
+          "level": "N5"
+        },
+        {
+          "display": "いつか",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "おりる",
+      "meaning": "下降；下來；降下；下車；下船；下馬；離開；下臺；退職；放棄；退出；認輸",
+      "forms": [
+        {
+          "display": "降りる",
+          "level": "N5"
+        },
+        {
+          "display": "下りる",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "つくる",
+      "meaning": "製造；生產；製作；建造；建設；烹飪；釀造；養育；種植；栽培；訓練",
+      "forms": [
+        {
+          "display": "作る",
+          "level": "N5"
+        },
+        {
+          "display": "造る",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "とまる",
+      "meaning": "停止；停下來；停止；中止；暫停；被中止；被暫停；降落；棲息於",
+      "forms": [
+        {
+          "display": "止まる",
+          "level": "N5"
+        },
+        {
+          "display": "留まる",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "すし",
+      "meaning": "壽司；用醋飯配合魚、蔬菜、雞蛋等製成的日本料理",
+      "forms": [
+        {
+          "display": "すし",
+          "level": "N5"
+        },
+        {
+          "display": "寿司",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "はる",
+      "meaning": "貼上；貼上；粘附；拉伸；展開；繃緊；張開；搭建；形成（如池塘結冰）",
+      "forms": [
+        {
+          "display": "張る",
+          "level": "N5"
+        },
+        {
+          "display": "貼る",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "あげる",
+      "meaning": "抬起；提高；移到高處；放到（如架子）上；提高（價格、質量、地位等）；漲（工資）",
+      "forms": [
+        {
+          "display": "上げる",
+          "level": "N5"
+        },
+        {
+          "display": "あげる",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "つらい",
+      "meaning": "痛苦的；苦澀的；令人心碎的；（情感上）難以承受的；艱難的；困難的；嚴峻的；殘忍的；嚴酷的；冷酷的",
+      "forms": [
+        {
+          "display": "つらい",
+          "level": "N3"
+        },
+        {
+          "display": "辛い",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "はやい",
+      "meaning": "快；迅速；敏捷；高速；早；儘早；比平時更早；過早；為時尚早",
+      "forms": [
+        {
+          "display": "早い",
+          "level": "N5"
+        },
+        {
+          "display": "速い",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "だめ",
+      "meaning": "不好；沒用；壞掉的；失效的；沒希望；徒勞；白費；無意義；不可以；不能；不允許",
+      "forms": [
+        {
+          "display": "だめ",
+          "level": "N4"
+        },
+        {
+          "display": "駄目",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "さがす",
+      "meaning": "尋找；查詢；搜尋；搜查；翻找；搜尋",
+      "forms": [
+        {
+          "display": "探す",
+          "level": "N4"
+        },
+        {
+          "display": "捜す",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "あさごはん",
+      "meaning": "早餐；早飯",
+      "forms": [
+        {
+          "display": "朝ご飯",
+          "level": "N5"
+        },
+        {
+          "display": "朝ごはん",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "のぼる",
+      "meaning": "上升；登上；攀登；（自然過程）升起；上升；上京；進京",
+      "forms": [
+        {
+          "display": "登る",
+          "level": "N5"
+        },
+        {
+          "display": "昇る",
+          "level": "N5"
+        },
+        {
+          "display": "上る",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "こたえ",
+      "meaning": "答案；回答；應答；答案；解答；結果",
+      "forms": [
+        {
+          "display": "答え",
+          "level": "N4"
+        },
+        {
+          "display": "応え",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "ばんごはん",
+      "meaning": "晚餐；晚飯",
+      "forms": [
+        {
+          "display": "晩ご飯",
+          "level": "N5"
+        },
+        {
+          "display": "晩御飯",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "かぶる",
+      "meaning": "戴上；穿上；套在頭上；加冕；被覆蓋；潑灑；進水；承擔；承受；負責；肩負",
+      "forms": [
+        {
+          "display": "かぶる",
+          "level": "N3"
+        },
+        {
+          "display": "被る",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "とぶ",
+      "meaning": "飛；翱翔；跳躍；跳起；彈起；蹦跳；飛濺；散落；濺射；飛出",
+      "forms": [
+        {
+          "display": "飛ぶ",
+          "level": "N5"
+        },
+        {
+          "display": "跳ぶ",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "きく",
+      "meaning": "有效；起效；有益；起作用；執行良好；可以；能夠",
+      "forms": [
+        {
+          "display": "効く",
+          "level": "N3"
+        },
+        {
+          "display": "利く",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "しまる",
+      "meaning": "關閉；閉合；緊實；結實；被鎖上；鎖定",
+      "forms": [
+        {
+          "display": "閉まる",
+          "level": "N5"
+        },
+        {
+          "display": "締まる",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "たつ",
+      "meaning": "割斷；切斷；壓制；消滅；根絕；戒除；放棄",
+      "forms": [
+        {
+          "display": "絶つ",
+          "level": "N1"
+        },
+        {
+          "display": "断つ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "いかが",
+      "meaning": "怎樣；怎麼；怎麼樣；可疑的；值得懷疑的",
+      "forms": [
+        {
+          "display": "いかが",
+          "level": "N5"
+        },
+        {
+          "display": "如何",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "いくつか",
+      "meaning": "幾個；一些；若干",
+      "forms": [
+        {
+          "display": "いくつか",
+          "level": "N3"
+        },
+        {
+          "display": "幾つか",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "いつでも",
+      "meaning": "隨時；一直；總是；任何時候；隨時；想什麼時候就什麼時候",
+      "forms": [
+        {
+          "display": "いつでも",
+          "level": "N3"
+        },
+        {
+          "display": "何時でも",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "いつまでも",
+      "meaning": "永遠；永久；無限期地；隨心所欲地；無盡地；長久",
+      "forms": [
+        {
+          "display": "いつまでも",
+          "level": "N3"
+        },
+        {
+          "display": "何時までも",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "インド",
+      "meaning": "印度",
+      "forms": [
+        {
+          "display": "インド",
+          "level": "N3"
+        },
+        {
+          "display": "印度",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "うまい",
+      "meaning": "熟練的；靈巧的；高明的；巧妙的；恰當的；美味的；好吃的；划算的；有利的；幸運的；成功的；令人滿意的",
+      "forms": [
+        {
+          "display": "うまい",
+          "level": "N4"
+        },
+        {
+          "display": "上手い",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "おいでになる",
+      "meaning": "在；存在；來；前來；去；前往",
+      "forms": [
+        {
+          "display": "おいでになる",
+          "level": "N4"
+        },
+        {
+          "display": "お出でになる",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "おかげ",
+      "meaning": "神恩；佛恩；祝福；幫助；援助；協助；影響；作用；效果",
+      "forms": [
+        {
+          "display": "おかげ",
+          "level": "N4"
+        },
+        {
+          "display": "お陰",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "おかしい",
+      "meaning": "滑稽；可笑；好笑；奇怪；古怪；異常；不合適；不得體；不妥",
+      "forms": [
+        {
+          "display": "おかしい",
+          "level": "N4"
+        },
+        {
+          "display": "可笑しい",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "かわいそう",
+      "meaning": "可憐的；令人憐憫的；可悲的；值得同情的",
+      "forms": [
+        {
+          "display": "かわいそう",
+          "level": "N3"
+        },
+        {
+          "display": "可哀想",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "きゅうり",
+      "meaning": "黃瓜",
+      "forms": [
+        {
+          "display": "きゅうり",
+          "level": "N3"
+        },
+        {
+          "display": "胡瓜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "けが",
+      "meaning": "傷害；傷口；錯誤；意外；損失",
+      "forms": [
+        {
+          "display": "けが",
+          "level": "N4"
+        },
+        {
+          "display": "怪我",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "こしょう",
+      "meaning": "胡椒",
+      "forms": [
+        {
+          "display": "こしょう",
+          "level": "N3"
+        },
+        {
+          "display": "胡椒",
           "level": "N2"
+        }
+      ]
+    },
+    {
+      "reading": "ごちそう",
+      "meaning": "款待；請客；招待；宴請；盛宴；佳餚；美食；珍饈",
+      "forms": [
+        {
+          "display": "ごちそう",
+          "level": "N4"
+        },
+        {
+          "display": "ご馳走",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "これら",
+      "meaning": "這些；這幾個",
+      "forms": [
+        {
+          "display": "これら",
+          "level": "N3"
+        },
+        {
+          "display": "これ等",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "ごぞんじ",
+      "meaning": "瞭解；知道；熟人；相識的人",
+      "forms": [
+        {
+          "display": "ご存じ",
+          "level": "N4"
+        },
+        {
+          "display": "ご存知",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "さまざま",
+      "meaning": "各種各樣；五花八門；形形色色",
+      "forms": [
+        {
+          "display": "さまざま",
+          "level": "N3"
+        },
+        {
+          "display": "様々",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "しばらく",
+      "meaning": "片刻；一會兒；一段時間；有一陣子；暫時；目前；眼下",
+      "forms": [
+        {
+          "display": "しばらく",
+          "level": "N4"
+        },
+        {
+          "display": "暫く",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "すごい",
+      "meaning": "可怕的；令人驚恐的；驚人的；了不起的；非常棒的；極好的；數量龐大的；極其廣大的",
+      "forms": [
+        {
+          "display": "すごい",
+          "level": "N4"
+        },
+        {
+          "display": "凄い",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "そのため",
+      "meaning": "因此；所以；為此",
+      "forms": [
+        {
+          "display": "そのため",
+          "level": "N2"
+        },
+        {
+          "display": "その為",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "reading": "そのほか",
+      "meaning": "其餘；其他；此外；除此之外；另外；及其他；等等；諸如此類；之類",
+      "forms": [
+        {
+          "display": "そのほか",
+          "level": "N2"
+        },
+        {
+          "display": "その他",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "reading": "そのまま",
+      "meaning": "原樣；不變；酷似；極為相似；立即；緊接著；不停頓地",
+      "forms": [
+        {
+          "display": "そのまま",
+          "level": "N3"
+        },
+        {
+          "display": "其の儘",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "それほど",
+      "meaning": "那種程度；那麼多；那樣地",
+      "forms": [
+        {
+          "display": "それほど",
+          "level": "N4"
+        },
+        {
+          "display": "それ程",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "つまり",
+      "meaning": "也就是說；換句話說；即；意思是；總之；一句話；歸根結底；說到底；最終；堵塞；阻塞；填塞；堵塞程度",
+      "forms": [
+        {
+          "display": "つまり",
+          "level": "N3"
+        },
+        {
+          "display": "詰まり",
+          "level": "N3"
         }
       ]
     }
   ],
-  "levelConflicts": [],
+  "levelConflicts": [
+    {
+      "reading": "ごみばこ",
+      "meaning": "垃圾桶；垃圾箱；廢物箱",
+      "forms": [
+        {
+          "display": "ごみ箱",
+          "level": "N4"
+        },
+        {
+          "display": "ゴミ箱",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "すいか",
+      "meaning": "西瓜",
+      "forms": [
+        {
+          "display": "すいか",
+          "level": "N5"
+        },
+        {
+          "display": "西瓜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "せっけん",
+      "meaning": "肥皂",
+      "forms": [
+        {
+          "display": "石鹸[けん]",
+          "level": "N2"
+        },
+        {
+          "display": "石鹸",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "ただいま",
+      "meaning": "我回來了；我回來了啊；現在；目前；此刻；剛才；方才；片刻前",
+      "forms": [
+        {
+          "display": "ただ今",
+          "level": "N5"
+        },
+        {
+          "display": "只今",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ふるさと",
+      "meaning": "故鄉；家鄉；出生地；原籍；遺蹟；歷史遺留；古蹟",
+      "forms": [
+        {
+          "display": "ふるさと",
+          "level": "N3"
+        },
+        {
+          "display": "故郷",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "みそしる",
+      "meaning": "味噌湯",
+      "forms": [
+        {
+          "display": "みそ汁",
+          "level": "N4"
+        },
+        {
+          "display": "味噌汁",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "りんご",
+      "meaning": "蘋果；蘋果樹",
+      "forms": [
+        {
+          "display": "りんご",
+          "level": "N5"
+        },
+        {
+          "display": "林檎",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "すし",
+      "meaning": "壽司；用醋飯配合魚、蔬菜、雞蛋等製成的日本料理",
+      "forms": [
+        {
+          "display": "すし",
+          "level": "N5"
+        },
+        {
+          "display": "寿司",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "いくつか",
+      "meaning": "幾個；一些；若干",
+      "forms": [
+        {
+          "display": "いくつか",
+          "level": "N3"
+        },
+        {
+          "display": "幾つか",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "インド",
+      "meaning": "印度",
+      "forms": [
+        {
+          "display": "インド",
+          "level": "N3"
+        },
+        {
+          "display": "印度",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "きゅうり",
+      "meaning": "黃瓜",
+      "forms": [
+        {
+          "display": "きゅうり",
+          "level": "N3"
+        },
+        {
+          "display": "胡瓜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "こしょう",
+      "meaning": "胡椒",
+      "forms": [
+        {
+          "display": "こしょう",
+          "level": "N3"
+        },
+        {
+          "display": "胡椒",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "reading": "どのよう",
+      "meaning": "什麼樣的；什麼種類的",
+      "forms": [
+        {
+          "display": "どのよう",
+          "level": "N3"
+        },
+        {
+          "display": "どの様",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "やってくる",
+      "meaning": "來到；出現；來臨；走到今天；達到目前狀態；持續做某事（一段時間）",
+      "forms": [
+        {
+          "display": "やってくる",
+          "level": "N2"
+        },
+        {
+          "display": "やって来る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "やりがい",
+      "meaning": "做某事的價值；值得做的感覺；有成就感；滿足感",
+      "forms": [
+        {
+          "display": "やりがい",
+          "level": "N2"
+        },
+        {
+          "display": "遣り甲斐",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ばら",
+      "meaning": "玫瑰",
+      "forms": [
+        {
+          "display": "ばら",
+          "level": "N3"
+        },
+        {
+          "display": "薔薇",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ぎりぎり",
+      "meaning": "勉強；僅僅；剛好；極限狀態；最後一刻",
+      "forms": [
+        {
+          "display": "ぎりぎり",
+          "level": "N2"
+        },
+        {
+          "display": "限り限り",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "あしもと",
+      "meaning": "腳下；腳邊；步態；步伐；最近的；當前的；眼下的",
+      "forms": [
+        {
+          "display": "足下",
+          "level": "N2"
+        },
+        {
+          "display": "足元",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "おお",
+      "meaning": "大；巨大；重大；嚴重；響亮；年長；資深；前輩；最終；極限；最後",
+      "forms": [
+        {
+          "display": "おお",
+          "level": "N3"
+        },
+        {
+          "display": "大",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "かっこいい",
+      "meaning": "帥氣；好看；時髦；酷；瀟灑；整潔；很棒",
+      "forms": [
+        {
+          "display": "かっこいい",
+          "level": "N4"
+        },
+        {
+          "display": "格好いい",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "きのこ",
+      "meaning": "蘑菇；菌類",
+      "forms": [
+        {
+          "display": "きのこ",
+          "level": "N2"
+        },
+        {
+          "display": "茸",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "こういう",
+      "meaning": "這樣的；這種；像這樣的",
+      "forms": [
+        {
+          "display": "こういう",
+          "level": "N5"
+        },
+        {
+          "display": "こう言う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "どこまでも",
+      "meaning": "任何地方；永遠；到天涯海角；不管艱難險阻；無論如何；堅持到底；竭盡全力；堅持不懈；固執己見",
+      "forms": [
+        {
+          "display": "どこまでも",
+          "level": "N2"
+        },
+        {
+          "display": "何処までも",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "なぜか",
+      "meaning": "不知為何；莫名其妙地；出於某種原因",
+      "forms": [
+        {
+          "display": "なぜか",
+          "level": "N3"
+        },
+        {
+          "display": "何故か",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "やりとり",
+      "meaning": "往來；交換；互相問答；來回應酬",
+      "forms": [
+        {
+          "display": "やりとり",
+          "level": "N2"
+        },
+        {
+          "display": "やり取り",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "ひかれる",
+      "meaning": "被吸引；被迷住；對……著迷；被……所打動",
+      "forms": [
+        {
+          "display": "引かれる",
+          "level": "N2"
+        },
+        {
+          "display": "惹かれる",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "にんじん",
+      "meaning": "胡蘿蔔；人參",
+      "forms": [
+        {
+          "display": "にんじん",
+          "level": "N4"
+        },
+        {
+          "display": "人参",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "うなずく",
+      "meaning": "點頭；低頭同意；贊同",
+      "forms": [
+        {
+          "display": "うなずく",
+          "level": "N2"
+        },
+        {
+          "display": "頷く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "あり",
+      "meaning": "螞蟻",
+      "forms": [
+        {
+          "display": "蟻[あり]",
+          "level": "N2"
+        },
+        {
+          "display": "蟻",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "いろんな",
+      "meaning": "各種各樣的；多種多樣的；形形色色的",
+      "forms": [
+        {
+          "display": "いろんな",
+          "level": "N4"
+        },
+        {
+          "display": "色んな",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "reading": "うつむく",
+      "meaning": "低頭；向下看",
+      "forms": [
+        {
+          "display": "うつむく",
+          "level": "N2"
+        },
+        {
+          "display": "俯く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "かばう",
+      "meaning": "保護；照顧；保衛；包庇；維護",
+      "forms": [
+        {
+          "display": "かばう",
+          "level": "N2"
+        },
+        {
+          "display": "庇う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "くみとる",
+      "meaning": "汲取；舀取；抽取；領會；體察；推測；體諒",
+      "forms": [
+        {
+          "display": "くみ取る",
+          "level": "N2"
+        },
+        {
+          "display": "汲み取る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ささやか",
+      "meaning": "小的；微小的；微不足道的；卑微的；樸素的；微薄的",
+      "forms": [
+        {
+          "display": "ささやか",
+          "level": "N2"
+        },
+        {
+          "display": "細やか",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "めくる",
+      "meaning": "翻動；翻頁；翻閱（書等）；撕下；剝去；脫去；拉下（如被子）；掀起（如地板）；撕碎",
+      "forms": [
+        {
+          "display": "めくる",
+          "level": "N2"
+        },
+        {
+          "display": "捲る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "もとより",
+      "meaning": "從一開始；自始至終；素來；當然；自然；不用說；更不用說；何況",
+      "forms": [
+        {
+          "display": "もとより",
+          "level": "N2"
+        },
+        {
+          "display": "元より",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "きめつける",
+      "meaning": "武斷地認定；獨斷地下結論；責罵；訓斥",
+      "forms": [
+        {
+          "display": "決めつける",
+          "level": "N2"
+        },
+        {
+          "display": "決め付ける",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "とりかかる",
+      "meaning": "開始；著手；動手",
+      "forms": [
+        {
+          "display": "取りかかる",
+          "level": "N2"
+        },
+        {
+          "display": "取り掛かる",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "いやいや",
+      "meaning": "不；不不；不，一點也不",
+      "forms": [
+        {
+          "display": "いやいや",
+          "level": "N2"
+        },
+        {
+          "display": "否々",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "なじむ",
+      "meaning": "熟悉；習慣；適應；親近；友好；相配；協調；相稱；匹配；融合；和諧",
+      "forms": [
+        {
+          "display": "なじむ",
+          "level": "N2"
+        },
+        {
+          "display": "馴染む",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "めど",
+      "meaning": "目標；目的；眉目；頭緒",
+      "forms": [
+        {
+          "display": "めど",
+          "level": "N1"
+        },
+        {
+          "display": "目処",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "reading": "ふりこみ",
+      "meaning": "銀行轉賬；匯款；點炮；放炮",
+      "forms": [
+        {
+          "display": "振り込み",
+          "level": "N3"
+        },
+        {
+          "display": "振込",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "てっぺん",
+      "meaning": "頂部；頂端；峰頂；午夜十二點；子夜；頭頂；頭皮；頭蓋骨頂部",
+      "forms": [
+        {
+          "display": "てっぺん",
+          "level": "N1"
+        },
+        {
+          "display": "天辺",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "reading": "かなわない",
+      "meaning": "不是對手；無法匹敵；力不能及；無法忍受；難以承受；令人難堪；無法做到；做不了；不可能",
+      "forms": [
+        {
+          "display": "かなわない",
+          "level": "N2"
+        },
+        {
+          "display": "敵わない",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "こなす",
+      "meaning": "消化；分解；粉碎；碾碎；能夠使用；擅長；掌握",
+      "forms": [
+        {
+          "display": "こなす",
+          "level": "N2"
+        },
+        {
+          "display": "熟す",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "そのもの",
+      "meaning": "其物本身；那物本身",
+      "forms": [
+        {
+          "display": "そのもの",
+          "level": "N2"
+        },
+        {
+          "display": "その物",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ちなみに",
+      "meaning": "順便說一下；另外；插一句；順便提一下",
+      "forms": [
+        {
+          "display": "ちなみに",
+          "level": "N3"
+        },
+        {
+          "display": "因みに",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "どろどろ",
+      "meaning": "粘稠的；糊狀的；漿狀的；濃稠的；黏滑的；糖漿狀的；黏膩的；泥汙的；油膩的；沾滿汙垢（油脂等）的；（感情、關係等）糾纏混亂；渾濁；齷齪",
+      "forms": [
+        {
+          "display": "どろどろ",
+          "level": "N2"
+        },
+        {
+          "display": "泥々",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "なぞらえる",
+      "meaning": "比作；比喻為；仿照；模仿；效法",
+      "forms": [
+        {
+          "display": "なぞらえる",
+          "level": "N2"
+        },
+        {
+          "display": "準える",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "まんざら",
+      "meaning": "並非完全；並非全然",
+      "forms": [
+        {
+          "display": "まんざら",
+          "level": "N2"
+        },
+        {
+          "display": "満更",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ゆえに",
+      "meaning": "因此；所以；故此",
+      "forms": [
+        {
+          "display": "ゆえに",
+          "level": "N2"
+        },
+        {
+          "display": "故に",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "わきまえる",
+      "meaning": "辨別；區分；識別；懂得；明白；記住",
+      "forms": [
+        {
+          "display": "わきまえる",
+          "level": "N2"
+        },
+        {
+          "display": "弁える",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "おおがかり",
+      "meaning": "大規模；大陣仗",
+      "forms": [
+        {
+          "display": "大がかり",
+          "level": "N1"
+        },
+        {
+          "display": "大掛かり",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "reading": "しんと",
+      "meaning": "信徒；教徒；信仰者；追隨者；平信徒",
+      "forms": [
+        {
+          "display": "しんと",
+          "level": "N2"
+        },
+        {
+          "display": "信徒",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "しずめる",
+      "meaning": "使（小孩、人群等）安靜；使安靜；平復（自己的情緒、興奮等）；鎮定；安撫（某人的憤怒）；平息；平定（如糾紛）；鎮壓（反抗、暴動、火災等）；平定；控制",
+      "forms": [
+        {
+          "display": "鎮める",
+          "level": "N2"
+        },
+        {
+          "display": "静める",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ねぎ",
+      "meaning": "蔥；小蔥；大蔥；青蔥",
+      "forms": [
+        {
+          "display": "ねぎ",
+          "level": "N2"
+        },
+        {
+          "display": "葱",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "すいせい",
+      "meaning": "彗星",
+      "forms": [
+        {
+          "display": "彗[すい]星",
+          "level": "N1"
+        },
+        {
+          "display": "彗星",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "reading": "どういう",
+      "meaning": "什麼樣的；什麼型別的；什麼",
+      "forms": [
+        {
+          "display": "どういう",
+          "level": "N5"
+        },
+        {
+          "display": "どう言う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "わがくに",
+      "meaning": "我國；我們的國家；自己的國家",
+      "forms": [
+        {
+          "display": "我が国",
+          "level": "N2"
+        },
+        {
+          "display": "わが国",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ひとごと",
+      "meaning": "他人的事；與自己無關的事",
+      "forms": [
+        {
+          "display": "他人事",
+          "level": "N1"
+        },
+        {
+          "display": "人事",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "reading": "どういたしまして",
+      "meaning": "不用謝；別客氣；哪裡哪裡；不敢當",
+      "forms": [
+        {
+          "display": "どういたしまして",
+          "level": "N5"
+        },
+        {
+          "display": "どう致しまして",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "しんずい",
+      "meaning": "精髓；精要；靈魂；核心",
+      "forms": [
+        {
+          "display": "神髄",
+          "level": "N2"
+        },
+        {
+          "display": "真髄",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "いまひとつ",
+      "meaning": "再一個；又一個；不太；不夠；不完全；有些欠缺",
+      "forms": [
+        {
+          "display": "今一つ",
+          "level": "N2"
+        },
+        {
+          "display": "今ひとつ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ひらめく",
+      "meaning": "閃爍；閃耀；閃亮；發光；飄動；搖曳；波動；閃現；突然想到；靈光一現",
+      "forms": [
+        {
+          "display": "ひらめく",
+          "level": "N2"
+        },
+        {
+          "display": "閃く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ひとりあるき",
+      "meaning": "（謠言等）獨自流傳；自行傳播；不脛而走；獨自行走；單獨散步；獨立行走；無需攙扶地行走",
+      "forms": [
+        {
+          "display": "独り歩き",
+          "level": "N1"
+        },
+        {
+          "display": "一人歩き",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "reading": "かなた",
+      "meaning": "那邊；彼岸；遠方；對岸",
+      "forms": [
+        {
+          "display": "かなた",
+          "level": "N2"
+        },
+        {
+          "display": "彼方",
+          "level": "N1"
+        }
+      ]
+    }
+  ],
+  "semanticSentinels": [
+    "教え",
+    "共和",
+    "指令",
+    "仕上げ",
+    "美人",
+    "まい/舞/枚/毎"
+  ],
   "fatalIssueCount": 0,
   "fatalIssues": [],
-  "generatedCount": 10919,
-  "coreUniqueAtBuild": 10511,
-  "mergedUniqueAtBuild": 21429,
-  "meaningSources": {
-    "thesaurus": 2678,
-    "wikidict": 2903,
-    "kaikki": 2814,
-    "direct_thesaurus_candidates": 2476
-  }
+  "reviewIssues": [
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ごみばこ",
+      "meaning": "垃圾桶；垃圾箱；廢物箱",
+      "forms": [
+        {
+          "display": "ごみ箱",
+          "level": "N4"
+        },
+        {
+          "display": "ゴミ箱",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "すいか",
+      "meaning": "西瓜",
+      "forms": [
+        {
+          "display": "すいか",
+          "level": "N5"
+        },
+        {
+          "display": "西瓜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "せっけん",
+      "meaning": "肥皂",
+      "forms": [
+        {
+          "display": "石鹸[けん]",
+          "level": "N2"
+        },
+        {
+          "display": "石鹸",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ただいま",
+      "meaning": "我回來了；我回來了啊；現在；目前；此刻；剛才；方才；片刻前",
+      "forms": [
+        {
+          "display": "ただ今",
+          "level": "N5"
+        },
+        {
+          "display": "只今",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ふるさと",
+      "meaning": "故鄉；家鄉；出生地；原籍；遺蹟；歷史遺留；古蹟",
+      "forms": [
+        {
+          "display": "ふるさと",
+          "level": "N3"
+        },
+        {
+          "display": "故郷",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "みそしる",
+      "meaning": "味噌湯",
+      "forms": [
+        {
+          "display": "みそ汁",
+          "level": "N4"
+        },
+        {
+          "display": "味噌汁",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "りんご",
+      "meaning": "蘋果；蘋果樹",
+      "forms": [
+        {
+          "display": "りんご",
+          "level": "N5"
+        },
+        {
+          "display": "林檎",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "すし",
+      "meaning": "壽司；用醋飯配合魚、蔬菜、雞蛋等製成的日本料理",
+      "forms": [
+        {
+          "display": "すし",
+          "level": "N5"
+        },
+        {
+          "display": "寿司",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いくつか",
+      "meaning": "幾個；一些；若干",
+      "forms": [
+        {
+          "display": "いくつか",
+          "level": "N3"
+        },
+        {
+          "display": "幾つか",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "インド",
+      "meaning": "印度",
+      "forms": [
+        {
+          "display": "インド",
+          "level": "N3"
+        },
+        {
+          "display": "印度",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きゅうり",
+      "meaning": "黃瓜",
+      "forms": [
+        {
+          "display": "きゅうり",
+          "level": "N3"
+        },
+        {
+          "display": "胡瓜",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こしょう",
+      "meaning": "胡椒",
+      "forms": [
+        {
+          "display": "こしょう",
+          "level": "N3"
+        },
+        {
+          "display": "胡椒",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どのよう",
+      "meaning": "什麼樣的；什麼種類的",
+      "forms": [
+        {
+          "display": "どのよう",
+          "level": "N3"
+        },
+        {
+          "display": "どの様",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "やってくる",
+      "meaning": "來到；出現；來臨；走到今天；達到目前狀態；持續做某事（一段時間）",
+      "forms": [
+        {
+          "display": "やってくる",
+          "level": "N2"
+        },
+        {
+          "display": "やって来る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "やりがい",
+      "meaning": "做某事的價值；值得做的感覺；有成就感；滿足感",
+      "forms": [
+        {
+          "display": "やりがい",
+          "level": "N2"
+        },
+        {
+          "display": "遣り甲斐",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ばら",
+      "meaning": "玫瑰",
+      "forms": [
+        {
+          "display": "ばら",
+          "level": "N3"
+        },
+        {
+          "display": "薔薇",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ぎりぎり",
+      "meaning": "勉強；僅僅；剛好；極限狀態；最後一刻",
+      "forms": [
+        {
+          "display": "ぎりぎり",
+          "level": "N2"
+        },
+        {
+          "display": "限り限り",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "あしもと",
+      "meaning": "腳下；腳邊；步態；步伐；最近的；當前的；眼下的",
+      "forms": [
+        {
+          "display": "足下",
+          "level": "N2"
+        },
+        {
+          "display": "足元",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おお",
+      "meaning": "大；巨大；重大；嚴重；響亮；年長；資深；前輩；最終；極限；最後",
+      "forms": [
+        {
+          "display": "おお",
+          "level": "N3"
+        },
+        {
+          "display": "大",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かっこいい",
+      "meaning": "帥氣；好看；時髦；酷；瀟灑；整潔；很棒",
+      "forms": [
+        {
+          "display": "かっこいい",
+          "level": "N4"
+        },
+        {
+          "display": "格好いい",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きのこ",
+      "meaning": "蘑菇；菌類",
+      "forms": [
+        {
+          "display": "きのこ",
+          "level": "N2"
+        },
+        {
+          "display": "茸",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こういう",
+      "meaning": "這樣的；這種；像這樣的",
+      "forms": [
+        {
+          "display": "こういう",
+          "level": "N5"
+        },
+        {
+          "display": "こう言う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どこまでも",
+      "meaning": "任何地方；永遠；到天涯海角；不管艱難險阻；無論如何；堅持到底；竭盡全力；堅持不懈；固執己見",
+      "forms": [
+        {
+          "display": "どこまでも",
+          "level": "N2"
+        },
+        {
+          "display": "何処までも",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "なぜか",
+      "meaning": "不知為何；莫名其妙地；出於某種原因",
+      "forms": [
+        {
+          "display": "なぜか",
+          "level": "N3"
+        },
+        {
+          "display": "何故か",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "やりとり",
+      "meaning": "往來；交換；互相問答；來回應酬",
+      "forms": [
+        {
+          "display": "やりとり",
+          "level": "N2"
+        },
+        {
+          "display": "やり取り",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひかれる",
+      "meaning": "被吸引；被迷住；對……著迷；被……所打動",
+      "forms": [
+        {
+          "display": "引かれる",
+          "level": "N2"
+        },
+        {
+          "display": "惹かれる",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "にんじん",
+      "meaning": "胡蘿蔔；人參",
+      "forms": [
+        {
+          "display": "にんじん",
+          "level": "N4"
+        },
+        {
+          "display": "人参",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "うなずく",
+      "meaning": "點頭；低頭同意；贊同",
+      "forms": [
+        {
+          "display": "うなずく",
+          "level": "N2"
+        },
+        {
+          "display": "頷く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "あり",
+      "meaning": "螞蟻",
+      "forms": [
+        {
+          "display": "蟻[あり]",
+          "level": "N2"
+        },
+        {
+          "display": "蟻",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いろんな",
+      "meaning": "各種各樣的；多種多樣的；形形色色的",
+      "forms": [
+        {
+          "display": "いろんな",
+          "level": "N4"
+        },
+        {
+          "display": "色んな",
+          "level": "N5"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "うつむく",
+      "meaning": "低頭；向下看",
+      "forms": [
+        {
+          "display": "うつむく",
+          "level": "N2"
+        },
+        {
+          "display": "俯く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かばう",
+      "meaning": "保護；照顧；保衛；包庇；維護",
+      "forms": [
+        {
+          "display": "かばう",
+          "level": "N2"
+        },
+        {
+          "display": "庇う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "くみとる",
+      "meaning": "汲取；舀取；抽取；領會；體察；推測；體諒",
+      "forms": [
+        {
+          "display": "くみ取る",
+          "level": "N2"
+        },
+        {
+          "display": "汲み取る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ささやか",
+      "meaning": "小的；微小的；微不足道的；卑微的；樸素的；微薄的",
+      "forms": [
+        {
+          "display": "ささやか",
+          "level": "N2"
+        },
+        {
+          "display": "細やか",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "めくる",
+      "meaning": "翻動；翻頁；翻閱（書等）；撕下；剝去；脫去；拉下（如被子）；掀起（如地板）；撕碎",
+      "forms": [
+        {
+          "display": "めくる",
+          "level": "N2"
+        },
+        {
+          "display": "捲る",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "もとより",
+      "meaning": "從一開始；自始至終；素來；當然；自然；不用說；更不用說；何況",
+      "forms": [
+        {
+          "display": "もとより",
+          "level": "N2"
+        },
+        {
+          "display": "元より",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "きめつける",
+      "meaning": "武斷地認定；獨斷地下結論；責罵；訓斥",
+      "forms": [
+        {
+          "display": "決めつける",
+          "level": "N2"
+        },
+        {
+          "display": "決め付ける",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "とりかかる",
+      "meaning": "開始；著手；動手",
+      "forms": [
+        {
+          "display": "取りかかる",
+          "level": "N2"
+        },
+        {
+          "display": "取り掛かる",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いやいや",
+      "meaning": "不；不不；不，一點也不",
+      "forms": [
+        {
+          "display": "いやいや",
+          "level": "N2"
+        },
+        {
+          "display": "否々",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "なじむ",
+      "meaning": "熟悉；習慣；適應；親近；友好；相配；協調；相稱；匹配；融合；和諧",
+      "forms": [
+        {
+          "display": "なじむ",
+          "level": "N2"
+        },
+        {
+          "display": "馴染む",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "めど",
+      "meaning": "目標；目的；眉目；頭緒",
+      "forms": [
+        {
+          "display": "めど",
+          "level": "N1"
+        },
+        {
+          "display": "目処",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ふりこみ",
+      "meaning": "銀行轉賬；匯款；點炮；放炮",
+      "forms": [
+        {
+          "display": "振り込み",
+          "level": "N3"
+        },
+        {
+          "display": "振込",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "てっぺん",
+      "meaning": "頂部；頂端；峰頂；午夜十二點；子夜；頭頂；頭皮；頭蓋骨頂部",
+      "forms": [
+        {
+          "display": "てっぺん",
+          "level": "N1"
+        },
+        {
+          "display": "天辺",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かなわない",
+      "meaning": "不是對手；無法匹敵；力不能及；無法忍受；難以承受；令人難堪；無法做到；做不了；不可能",
+      "forms": [
+        {
+          "display": "かなわない",
+          "level": "N2"
+        },
+        {
+          "display": "敵わない",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "こなす",
+      "meaning": "消化；分解；粉碎；碾碎；能夠使用；擅長；掌握",
+      "forms": [
+        {
+          "display": "こなす",
+          "level": "N2"
+        },
+        {
+          "display": "熟す",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "そのもの",
+      "meaning": "其物本身；那物本身",
+      "forms": [
+        {
+          "display": "そのもの",
+          "level": "N2"
+        },
+        {
+          "display": "その物",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ちなみに",
+      "meaning": "順便說一下；另外；插一句；順便提一下",
+      "forms": [
+        {
+          "display": "ちなみに",
+          "level": "N3"
+        },
+        {
+          "display": "因みに",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どろどろ",
+      "meaning": "粘稠的；糊狀的；漿狀的；濃稠的；黏滑的；糖漿狀的；黏膩的；泥汙的；油膩的；沾滿汙垢（油脂等）的；（感情、關係等）糾纏混亂；渾濁；齷齪",
+      "forms": [
+        {
+          "display": "どろどろ",
+          "level": "N2"
+        },
+        {
+          "display": "泥々",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "なぞらえる",
+      "meaning": "比作；比喻為；仿照；模仿；效法",
+      "forms": [
+        {
+          "display": "なぞらえる",
+          "level": "N2"
+        },
+        {
+          "display": "準える",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "まんざら",
+      "meaning": "並非完全；並非全然",
+      "forms": [
+        {
+          "display": "まんざら",
+          "level": "N2"
+        },
+        {
+          "display": "満更",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ゆえに",
+      "meaning": "因此；所以；故此",
+      "forms": [
+        {
+          "display": "ゆえに",
+          "level": "N2"
+        },
+        {
+          "display": "故に",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "わきまえる",
+      "meaning": "辨別；區分；識別；懂得；明白；記住",
+      "forms": [
+        {
+          "display": "わきまえる",
+          "level": "N2"
+        },
+        {
+          "display": "弁える",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "おおがかり",
+      "meaning": "大規模；大陣仗",
+      "forms": [
+        {
+          "display": "大がかり",
+          "level": "N1"
+        },
+        {
+          "display": "大掛かり",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しんと",
+      "meaning": "信徒；教徒；信仰者；追隨者；平信徒",
+      "forms": [
+        {
+          "display": "しんと",
+          "level": "N2"
+        },
+        {
+          "display": "信徒",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しずめる",
+      "meaning": "使（小孩、人群等）安靜；使安靜；平復（自己的情緒、興奮等）；鎮定；安撫（某人的憤怒）；平息；平定（如糾紛）；鎮壓（反抗、暴動、火災等）；平定；控制",
+      "forms": [
+        {
+          "display": "鎮める",
+          "level": "N2"
+        },
+        {
+          "display": "静める",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ねぎ",
+      "meaning": "蔥；小蔥；大蔥；青蔥",
+      "forms": [
+        {
+          "display": "ねぎ",
+          "level": "N2"
+        },
+        {
+          "display": "葱",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "すいせい",
+      "meaning": "彗星",
+      "forms": [
+        {
+          "display": "彗[すい]星",
+          "level": "N1"
+        },
+        {
+          "display": "彗星",
+          "level": "N3"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どういう",
+      "meaning": "什麼樣的；什麼型別的；什麼",
+      "forms": [
+        {
+          "display": "どういう",
+          "level": "N5"
+        },
+        {
+          "display": "どう言う",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "わがくに",
+      "meaning": "我國；我們的國家；自己的國家",
+      "forms": [
+        {
+          "display": "我が国",
+          "level": "N2"
+        },
+        {
+          "display": "わが国",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひとごと",
+      "meaning": "他人的事；與自己無關的事",
+      "forms": [
+        {
+          "display": "他人事",
+          "level": "N1"
+        },
+        {
+          "display": "人事",
+          "level": "N4"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "どういたしまして",
+      "meaning": "不用謝；別客氣；哪裡哪裡；不敢當",
+      "forms": [
+        {
+          "display": "どういたしまして",
+          "level": "N5"
+        },
+        {
+          "display": "どう致しまして",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "しんずい",
+      "meaning": "精髓；精要；靈魂；核心",
+      "forms": [
+        {
+          "display": "神髄",
+          "level": "N2"
+        },
+        {
+          "display": "真髄",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いまひとつ",
+      "meaning": "再一個；又一個；不太；不夠；不完全；有些欠缺",
+      "forms": [
+        {
+          "display": "今一つ",
+          "level": "N2"
+        },
+        {
+          "display": "今ひとつ",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひらめく",
+      "meaning": "閃爍；閃耀；閃亮；發光；飄動；搖曳；波動；閃現；突然想到；靈光一現",
+      "forms": [
+        {
+          "display": "ひらめく",
+          "level": "N2"
+        },
+        {
+          "display": "閃く",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "ひとりあるき",
+      "meaning": "（謠言等）獨自流傳；自行傳播；不脛而走；獨自行走；單獨散步；獨立行走；無需攙扶地行走",
+      "forms": [
+        {
+          "display": "独り歩き",
+          "level": "N1"
+        },
+        {
+          "display": "一人歩き",
+          "level": "N2"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "かなた",
+      "meaning": "那邊；彼岸；遠方；對岸",
+      "forms": [
+        {
+          "display": "かなた",
+          "level": "N2"
+        },
+        {
+          "display": "彼方",
+          "level": "N1"
+        }
+      ]
+    }
+  ],
+  "reviewIssueCount": 66
 }
