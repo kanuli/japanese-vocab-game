@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-27-quality-depth-batch3-v1",
+  "version": "2026-08-27-quality-depth-batch4-v1",
   "policy": "data/CONTENT_REFERENCE_POLICY.md",
   "referenceMap": "data/content_reference_map.json",
   "expansions": {
@@ -60,5 +60,15 @@
     ],
     "audit": "data/quality_depth_batch3_report.json",
     "copyright": "All new wording is project-original; external sites remain reference-only."
+  },
+  "qualityDepthBatch4": {
+    "scope": "full listening database quality audit: 6,690 original catalog plus remote Hanabira base examples",
+    "runtime": [
+      "severe catalog distractor gate",
+      "same-semantic-dimension mutation preference",
+      "quality-filtered session pool"
+    ],
+    "audit": "data/full_listening_quality_batch4_report.json",
+    "copyright": "Hanabira examples are evaluated in-memory for aggregate QA; the audit report stores metrics, not copied example text."
   }
 }

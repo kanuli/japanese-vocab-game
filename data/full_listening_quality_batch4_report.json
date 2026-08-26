@@ -1,0 +1,130 @@
+{
+  "version": "2026-08-27-full-listening-quality-batch4-v1",
+  "methodology": {
+    "scope": "Full project-original 6,690 listening catalog plus Hanabira base examples used by listening.html.",
+    "catalogGate": "Severe-only runtime filter: rejects structural errors, >=2 extreme giveaway distractors, >=2 major length outliers, or zero lexical near-miss distractors.",
+    "hanabira": "Examples are fetched and evaluated in memory; only aggregate metrics are persisted.",
+    "copyright": "No external example text is written to this report."
+  },
+  "originalCatalog": {
+    "count": 6690,
+    "qualityEligible": 5786,
+    "rejected": 904,
+    "eligibleRate": 86.5,
+    "structuralBad": 0,
+    "extremeTwoPlus": 247,
+    "noNearMiss": 657,
+    "lengthTwoPlusOutlier": 0,
+    "maxWrongTripleReuse": 301,
+    "perLevel": {
+      "N1": {
+        "count": 1020,
+        "qualityEligible": 846,
+        "rejected": 174,
+        "structuralBad": 0,
+        "extremeTwoPlus": 0,
+        "noNearMiss": 174,
+        "lengthTwoPlusOutlier": 0,
+        "avgSentenceChars": 82.6,
+        "medianSentenceChars": 78
+      },
+      "N2": {
+        "count": 1236,
+        "qualityEligible": 989,
+        "rejected": 247,
+        "structuralBad": 0,
+        "extremeTwoPlus": 247,
+        "noNearMiss": 0,
+        "lengthTwoPlusOutlier": 0,
+        "avgSentenceChars": 72.5,
+        "medianSentenceChars": 79
+      },
+      "N3": {
+        "count": 1472,
+        "qualityEligible": 1216,
+        "rejected": 256,
+        "structuralBad": 0,
+        "extremeTwoPlus": 0,
+        "noNearMiss": 256,
+        "lengthTwoPlusOutlier": 0,
+        "avgSentenceChars": 58,
+        "medianSentenceChars": 59
+      },
+      "N4": {
+        "count": 1506,
+        "qualityEligible": 1279,
+        "rejected": 227,
+        "structuralBad": 0,
+        "extremeTwoPlus": 0,
+        "noNearMiss": 227,
+        "lengthTwoPlusOutlier": 0,
+        "avgSentenceChars": 46.2,
+        "medianSentenceChars": 49
+      },
+      "N5": {
+        "count": 1456,
+        "qualityEligible": 1456,
+        "rejected": 0,
+        "structuralBad": 0,
+        "extremeTwoPlus": 0,
+        "noNearMiss": 0,
+        "lengthTwoPlusOutlier": 0,
+        "avgSentenceChars": 37.8,
+        "medianSentenceChars": 36
+      }
+    }
+  },
+  "hanabira": {
+    "perLevel": {
+      "N1": {
+        "count": 980,
+        "mutationEligible": 354,
+        "sameDimensionEligible": 354,
+        "avgSentenceChars": 19.6,
+        "medianSentenceChars": 19
+      },
+      "N2": {
+        "count": 764,
+        "mutationEligible": 288,
+        "sameDimensionEligible": 288,
+        "avgSentenceChars": 20.5,
+        "medianSentenceChars": 20
+      },
+      "N3": {
+        "count": 528,
+        "mutationEligible": 199,
+        "sameDimensionEligible": 199,
+        "avgSentenceChars": 18,
+        "medianSentenceChars": 18
+      },
+      "N4": {
+        "count": 494,
+        "mutationEligible": 156,
+        "sameDimensionEligible": 156,
+        "avgSentenceChars": 15.7,
+        "medianSentenceChars": 15
+      },
+      "N5": {
+        "count": 544,
+        "mutationEligible": 249,
+        "sameDimensionEligible": 249,
+        "avgSentenceChars": 14.7,
+        "medianSentenceChars": 14
+      }
+    },
+    "total": 3310,
+    "mutationEligible": 1246,
+    "sameDimensionEligible": 1246,
+    "duplicateSentences": 11,
+    "mutationEligibleRate": 37.6,
+    "sameDimensionShareOfEligible": 100
+  },
+  "runtimeChecks": {
+    "catalogQualityGate": true,
+    "rankedMutation": true,
+    "qualityPool": true,
+    "qualityLabel": true
+  },
+  "failures": [],
+  "passed": true
+}
