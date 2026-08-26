@@ -1,11 +1,11 @@
 name: Rebuild audited vocabulary data
-# Manual review trigger: 2026-08-26 batch 3
 
 on:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
+      - '.teacher-review-rebuild-trigger'
       - tools/build_vocab_bundle.py
       - tools/build_vocab_bundle_exact.py
       - tools/refine_core_ambiguity.py
@@ -195,4 +195,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json
           git commit -m "Rebuild v5 source-lineage teacher-audited JLPT data"
+          git pull --rebase origin main
           git push
