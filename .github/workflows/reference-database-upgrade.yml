@@ -10,12 +10,15 @@ on:
       - 'listening-reference-expansion.js'
       - 'listening-gap-expansion.js'
       - 'listening-gap-topup.js'
+      - 'listening-gap-topup-batch2.js'
       - 'conversation-reference-expansion.js'
       - 'conversation-gap-expansion.js'
+      - 'conversation-function-topup.js'
       - 'tools/apply_reference_database_upgrade.py'
       - 'tools/fix_listening_gap_naturalness.py'
       - 'tools/audit_coverage_gaps.py'
       - 'tools/reconcile_coverage_report.py'
+      - 'tools/reconcile_batch2_coverage.py'
       - '.github/scripts/audit_reference_expansion.mjs'
       - 'data/CONTENT_REFERENCE_POLICY.md'
       - 'data/content_reference_map.json'
@@ -41,6 +44,8 @@ jobs:
         run: python tools/audit_coverage_gaps.py
       - name: Reconcile deduplicated listening coverage
         run: python tools/reconcile_coverage_report.py
+      - name: Reconcile and validate batch 2 coverage
+        run: python tools/reconcile_batch2_coverage.py
       - name: Check patch whitespace
         run: git diff --check
       - name: Commit integrated database upgrade
