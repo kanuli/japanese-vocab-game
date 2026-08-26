@@ -1,9 +1,9 @@
 {
-  "version": 4,
-  "status": "failure",
-  "checkedAt": "2026-08-26T09:22:00Z",
-  "runId": "32952524659",
-  "headSha": "c78d13f6f4a2247953ab8b8d3bfae07c4c50abeb",
+  "version": 5,
+  "status": "success",
+  "checkedAt": "2026-08-26T09:27:23Z",
+  "runId": "32952994696",
+  "headSha": "f8a28de3d9ff6fe5c5a01f41ea7d049e5fb17daa",
   "checks": [
     "default-all-N1-N5-seven-pages",
     "conversation-pronunciation-range-presets",
@@ -13,7 +13,8 @@
     "vocab-core-overlay-10000-plus",
     "vocab-suika-meaning",
     "vocab-mai-homophones",
-    "vocab-external-crosschecks-16",
+    "vocab-external-crosschecks-46",
+    "vocab-core-fallback-zero-runtime-set",
     "pronunciation-9month-8day-furigana",
     "grammar-quality-zero-failures",
     "listening-mock-quality-zero-failures"
