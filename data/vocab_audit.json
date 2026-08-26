@@ -5,27 +5,88 @@
     "officialJlptNote": "Estimated levels are not an official JLPT vocabulary list."
   },
   "counts": {
-    "advancedGenerated": 10916,
-    "uniqueKeys": 10916,
+    "advancedGenerated": 10919,
+    "uniqueKeys": 10919,
     "duplicateRowsRemoved": 8,
-    "sameMeaningHomophoneGroupsForReview": 2
+    "sameMeaningHomophoneGroupsForReview": 2,
+    "curatedRowsAdded": 3
   },
   "sentinelMai": {
     "まい": [
       {
         "meaning": "不會～；不打算～；恐怕不～（否定推量／否定意志）",
-        "level": "N2"
+        "level": "N2",
+        "location": "advanced"
       }
     ],
-    "舞": [],
-    "枚": [],
-    "毎": []
+    "舞": [
+      {
+        "meaning": "舞；舞蹈",
+        "level": "N2",
+        "location": "advanced"
+      }
+    ],
+    "枚": [
+      {
+        "meaning": "張、枚（計算薄而平物件的量詞）",
+        "level": "N5",
+        "location": "advanced"
+      }
+    ],
+    "毎": [
+      {
+        "meaning": "每～；每一～",
+        "level": "N5",
+        "location": "advanced"
+      }
+    ]
   },
+  "sentinelMaiCorePresence": {
+    "まい": false,
+    "舞": false,
+    "枚": false,
+    "毎": false
+  },
+  "curatedRowsAdded": [
+    "まい|舞",
+    "まい|枚",
+    "まい|毎"
+  ],
+  "homophoneReview": [
+    {
+      "reading": "とりにく",
+      "meaning": "雞肉",
+      "forms": [
+        {
+          "display": "鶏肉",
+          "level": "N5"
+        },
+        {
+          "display": "とり肉",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "ばからしい",
+      "meaning": "④【イ形】愚蠢的；無聊的",
+      "forms": [
+        {
+          "display": "馬鹿らしい",
+          "level": "N2"
+        },
+        {
+          "display": "ばからしい",
+          "level": "N1"
+        }
+      ]
+    }
+  ],
   "fatalIssueCount": 0,
   "fatalIssues": [],
-  "generatedCount": 10916,
+  "generatedCount": 10919,
   "coreUniqueAtBuild": 10511,
-  "mergedUniqueAtBuild": 21427,
+  "mergedUniqueAtBuild": 21429,
   "meaningSources": {
     "thesaurus": 2678,
     "wikidict": 2903,
