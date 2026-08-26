@@ -1,0 +1,205 @@
+{
+  "version": "2026-08-27-teacher-page-suitability-v1",
+  "scope": "All 11 user-facing HTML pages; N1-N5 suitability is project-calibrated using teacher-audited vocabulary, established grammar/listening/conversation gates and runtime source consistency. Translator is level-neutral.",
+  "pages": {
+    "index.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": true,
+      "language": "zh-Hant"
+    },
+    "wordaudio.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": true,
+      "language": "zh-Hant"
+    },
+    "wordlist.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": true,
+      "language": "zh-Hant"
+    },
+    "grammar.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": false,
+      "language": "zh-Hant"
+    },
+    "listening.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": false,
+      "language": "zh-Hant"
+    },
+    "conversation.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": false,
+      "language": "zh-Hant"
+    },
+    "pronunciation.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": false,
+      "language": "zh-Hant"
+    },
+    "mocktest.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": true,
+      "language": "zh-Hant"
+    },
+    "translator.html": {
+      "exists": true,
+      "hasN1N5": false,
+      "teacherVocabLoader": false,
+      "language": "zh-Hant"
+    },
+    "vocab-plus-game.html": {
+      "exists": true,
+      "hasN1N5": true,
+      "teacherVocabLoader": true,
+      "language": "zh-Hant"
+    },
+    "vocabulary-plus.html": {
+      "exists": true,
+      "hasN1N5": false,
+      "teacherVocabLoader": true,
+      "language": "zh-Hant"
+    }
+  },
+  "vocabulary": {
+    "teacherAuditRows": 32613,
+    "reviewQueueOpen": 0,
+    "runtimeStatus": "success",
+    "mockFallbackChecked": 47,
+    "mockFallbackCounts": {
+      "N1": 10,
+      "N2": 9,
+      "N3": 9,
+      "N4": 11,
+      "N5": 8
+    },
+    "mockFallbackMismatches": [],
+    "mockFallbackUnknown": [
+      {
+        "word": "あながち",
+        "reading": "あながち",
+        "level": "N1",
+        "sourceDeclared": "N1",
+        "kind": "base"
+      }
+    ],
+    "mockSpecialChecked": [
+      {
+        "term": "おおむね",
+        "sourceDeclared": "N1",
+        "effective": "N2",
+        "teacher": "N2"
+      },
+      {
+        "term": "もっぱら",
+        "sourceDeclared": "N1",
+        "effective": "N1",
+        "teacher": "N1"
+      },
+      {
+        "term": "とうとう",
+        "sourceDeclared": "N2",
+        "effective": "N4",
+        "teacher": "N4"
+      },
+      {
+        "term": "あいにく",
+        "sourceDeclared": "N2",
+        "effective": "N3",
+        "teacher": "N3"
+      },
+      {
+        "term": "かなり",
+        "sourceDeclared": "N3",
+        "effective": "N3",
+        "teacher": "N3"
+      },
+      {
+        "term": "わざわざ",
+        "sourceDeclared": "N3",
+        "effective": "N2",
+        "teacher": "N2"
+      },
+      {
+        "term": "結局",
+        "sourceDeclared": "N3",
+        "effective": "N3",
+        "teacher": "N3"
+      },
+      {
+        "term": "急に",
+        "sourceDeclared": "N4",
+        "effective": "N3",
+        "teacher": "N3"
+      },
+      {
+        "term": "間に合う",
+        "sourceDeclared": "N4",
+        "effective": "N4",
+        "teacher": "N4"
+      },
+      {
+        "term": "たいてい",
+        "sourceDeclared": "N4",
+        "effective": "N4",
+        "teacher": "N4"
+      },
+      {
+        "term": "すぐ",
+        "sourceDeclared": "N5",
+        "effective": "N5",
+        "teacher": "N5"
+      },
+      {
+        "term": "たくさん",
+        "sourceDeclared": "N5",
+        "effective": "N5",
+        "teacher": "N5"
+      }
+    ],
+    "mockSpecialMismatches": []
+  },
+  "grammar": {
+    "runtimeGeneratedChecked": 3438,
+    "failures": 0,
+    "depthPassed": true
+  },
+  "listening": {
+    "catalog": 6690,
+    "eligibleRate": 100,
+    "avgSentenceCharsN1toN5": [
+      82.6,
+      72.5,
+      58,
+      46.2,
+      37.8
+    ]
+  },
+  "conversation": {
+    "scenes": 77,
+    "dialogues": 1925,
+    "exactDuplicatePairs": 0,
+    "avgDialogueCharsN1toN5": [
+      91.5,
+      64.8,
+      56.7,
+      39.3,
+      30.3
+    ]
+  },
+  "mocktest": {
+    "existingGeneratedQualityFailures": 0,
+    "teacherRuntimePrimary": true
+  },
+  "misleadingOfficialListPages": [],
+  "failures": [],
+  "passed": true
+}
