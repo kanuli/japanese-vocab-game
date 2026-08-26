@@ -1,0 +1,113 @@
+name: Teacher JLPT runtime regression
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/teacher-jlpt-runtime-regression.yml'
+      - 'data/advanced_vocab.js'
+      - 'data/vocab_core_verified.js'
+      - 'data/jlpt_teacher_audit.tsv'
+      - 'data/vocab_audit.json'
+      - 'data/vocab_common_fixups.js'
+      - 'data/vocab_external_crosscheck.js'
+      - 'advanced_words.js'
+      - 'core_vocab_fetch_patch.js'
+      - 'large_vocab_loader.js'
+      - 'large_vocab_build.js'
+      - 'large_vocab_sources.js'
+      - 'wordlist.html'
+
+jobs:
+  teacher-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify committed teacher audit artifact
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          audit=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
+          r=audit['jlptRecalibration']
+          assert r['version']=='20260826-teacher-v4-exact-audit', r.get('version')
+          assert r['scope']=='every core+advanced runtime word exact key'
+          assert r['rowCount']==32511, r['rowCount']
+          assert r['estimatedN1WithoutRarityEvidence']==0
+          assert r['duplicateExactKeys']==0
+          with Path('data/jlpt_teacher_audit.tsv').open(encoding='utf-8',newline='') as f:
+            rows=list(csv.DictReader(f,delimiter='\t'))
+          assert len(rows)==r['rowCount'],(len(rows),r['rowCount'])
+          assert not [x for x in rows if x['level']=='N1' and x['status'].startswith('estimated')]
+          print('STATIC TEACHER AUDIT PASS',r['combinedCountsByLevel'],r['teacherGradeCounts'])
+          PY
+
+      - name: Install Chromium
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Verify actual browser vocabulary levels
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/teacher-http.log 2>&1 &
+          echo $! >/tmp/teacher-http.pid
+          trap 'kill $(cat /tmp/teacher-http.pid) 2>/dev/null || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/wordlist.html >/dev/null && break; sleep 1; done
+          cat >/tmp/teacher-runtime.cjs <<'NODE'
+          const {chromium}=require(process.cwd()+'/node_modules/playwright');
+          const expected={
+            'まい|まい':'N2','まい|舞':'N2','まい|枚':'N5','まい|毎':'N5',
+            'すいか|西瓜':'N5','これ|これ':'N5','それ|それ':'N5',
+            'おもしろい|面白い':'N5','あかるい|明るい':'N5','おわる|終わる':'N5',
+            'べんきょう|勉強':'N5','さんぽ|散歩':'N5','だんだん|だんだん':'N5','もし|もし':'N4',
+            'ふん|分':'N5','キロ|キロ':'N5','さらいげつ|再来月':'N5','さらいねん|再来年':'N5',
+            'まんなか|真ん中':'N4','つくる|造る':'N5'
+          };
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({serviceWorkers:'block'});
+            const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
+            const response=await page.goto('http://127.0.0.1:4173/wordlist.html?teacher='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+            if(!response||response.status()>=400) throw Error('wordlist HTTP '+(response?.status()||'none'));
+            await page.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>=32000,null,{timeout:30000});
+            await page.waitForTimeout(1000);
+            const result=await page.evaluate((expected)=>{
+              const words=window.WA.words;
+              const display=w=>w.kanji||w.displayWord||w.reading;
+              const byKey=new Map(words.map(w=>[`${w.reading}|${display(w)}`,w]));
+              const counts={N1:0,N2:0,N3:0,N4:0,N5:0};
+              for(const w of words) if(counts[w.level]!==undefined) counts[w.level]++;
+              const sentinels={};
+              for(const [key,level] of Object.entries(expected)){
+                const w=byKey.get(key);
+                sentinels[key]=w?{level:w.level,meaning:w.meaning,levelSource:w.levelSource||'',estimated:!!w.estimated}:null;
+              }
+              const estimatedN1=words.filter(w=>w.level==='N1'&&(w.estimated===true||String(w.levelSource||'').includes('estimate'))).map(w=>`${w.reading}|${display(w)}`);
+              const meta=window.VOCAB_JLPT_RECALIBRATION_META||window.ADVANCED_WORDS_BUNDLE_META?.jlptRecalibration||null;
+              const coreMeta=window.VOCAB_CORE_VERIFIED_META||null;
+              return {total:words.length,counts,sentinels,estimatedN1,meta,coreMeta};
+            },expected);
+            if(errors.length) throw Error('page errors: '+errors.join(' | '));
+            if(result.total<32000) throw Error('runtime vocabulary underfilled '+result.total);
+            if(!result.meta||result.meta.version!=='20260826-teacher-v4-exact-audit') throw Error('teacher v4 metadata missing '+JSON.stringify(result.meta));
+            if(result.estimatedN1.length) throw Error('runtime estimated N1 forbidden '+JSON.stringify(result.estimatedN1.slice(0,30)));
+            for(const [key,level] of Object.entries(expected)){
+              const row=result.sentinels[key];
+              if(!row||row.level!==level) throw Error(`teacher sentinel ${key}: expected ${level}, got ${JSON.stringify(row)}`);
+            }
+            const suika=result.sentinels['すいか|西瓜'];
+            if(!String(suika.meaning||'').includes('西瓜')||String(suika.meaning||'').includes('天邊一朵雲')) throw Error('西瓜 meaning corrupted '+JSON.stringify(suika));
+            const mai=result.sentinels['まい|まい'];
+            if(!String(mai.meaning||'').includes('不會')) throw Error('まい meaning corrupted '+JSON.stringify(mai));
+            if(result.counts.N1>=14500) throw Error('N1 regression '+JSON.stringify(result.counts));
+            if(result.counts.N5<1800||result.counts.N4<1500||result.counts.N3<4000) throw Error('lower-level underfill '+JSON.stringify(result.counts));
+            console.log('TEACHER RUNTIME PASS',JSON.stringify(result));
+            await browser.close();
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+          node /tmp/teacher-runtime.cjs
