@@ -14,10 +14,13 @@ META = ROOT / "data" / "jlpt_teacher_review_queue.json"
 
 def severity(row: dict[str, str]) -> tuple[int, int, str, str]:
     level = row.get("level", "")
-    # Prioritize suspicious advanced labels first, then exact-source conflicts.
     advanced = {"N1": 5, "N2": 4, "N3": 3, "N4": 2, "N5": 1}.get(level, 0)
     conflict = 1 if row.get("conflict", "").lower() in {"1", "true", "yes"} else 0
     return (-advanced, -conflict, row.get("reading", ""), row.get("display", ""))
+
+
+def exact_key(row: dict[str, str]) -> str:
+    return f"{row.get('reading','')}|{row.get('display','')}"
 
 
 def main() -> int:
@@ -32,16 +35,24 @@ def main() -> int:
         w.writerows(review)
     by_level: dict[str, int] = {}
     by_basis: dict[str, int] = {}
+    keys_by_level: dict[str, list[str]] = {x: [] for x in ("N1","N2","N3","N4","N5")}
     for r in review:
-        by_level[r.get("level", "")] = by_level.get(r.get("level", ""), 0) + 1
+        level = r.get("level", "")
+        by_level[level] = by_level.get(level, 0) + 1
         by_basis[r.get("basis", "")] = by_basis.get(r.get("basis", ""), 0) + 1
+        if level in keys_by_level:
+            keys_by_level[level].append(exact_key(r))
     meta = {
         "status": "complete",
         "sourceRows": len(rows),
         "reviewRows": len(review),
         "countsByLevel": dict(sorted(by_level.items())),
         "countsByBasis": dict(sorted(by_basis.items(), key=lambda kv: (-kv[1], kv[0]))),
-        "rule": "all grade-C teacher audit rows; no sampling",
+        "highRiskKeys": {
+            "N1": keys_by_level["N1"],
+            "N2": keys_by_level["N2"],
+        },
+        "rule": "all grade-C teacher audit rows; no sampling; N1/N2 keys exposed for targeted teacher cross-check",
     }
     META.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(meta, ensure_ascii=False, indent=2))
