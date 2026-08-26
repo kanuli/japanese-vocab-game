@@ -4,12 +4,21 @@ from __future__ import annotations
 
 import json
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import build_vocab_bundle as base
 
 ORIGINAL_CHOOSE = base.choose_entry
+
+# Explicit corrections for the ambiguity that exposed the original bug.
+# These are keyed by (reading, displayed form), never by reading alone.
+CURATED = {
+    ("まい", "まい"): ("N2", "不會～；不打算～；恐怕不～（否定推量／否定意志）"),
+    ("まい", "舞"): ("N2", "舞；舞蹈"),
+    ("まい", "枚"): ("N5", "張、枚（計算薄而平物件的量詞）"),
+    ("まい", "毎"): ("N5", "每～；每一～"),
+}
 
 
 def choose_exact(raw: dict):
@@ -28,11 +37,33 @@ def parse_bundle(text: str):
     return m, json.loads(m.group(1)), json.loads(m.group(2))
 
 
-def audit(tuples: list[list]) -> dict:
+def dedupe_and_curate(tuples: list[list]):
+    unique = []
+    seen = set()
+    removed = 0
+    for row in tuples:
+        if len(row) < 5:
+            unique.append(row)
+            continue
+        level, reading, kanji, meaning, pos = row[:5]
+        display = kanji or reading
+        key = f"{reading}|{display}"
+        if key in seen:
+            removed += 1
+            continue
+        seen.add(key)
+        fix = CURATED.get((reading, display))
+        if fix:
+            level, meaning = fix
+        unique.append([level, reading, kanji, meaning, pos])
+    return unique, removed
+
+
+def audit(tuples: list[list], duplicate_rows_removed: int) -> dict:
     fatal = []
     keys = set()
     homophones = defaultdict(list)
-    sentinel = {"舞": [], "枚": [], "毎": []}
+    sentinel = {"まい": [], "舞": [], "枚": [], "毎": []}
     negative = re.compile(r"(?:不(?:會|会|打算|可能|要)?|否定|絕不|绝不|恐怕不)")
     for row in tuples:
         if len(row) < 5:
@@ -49,7 +80,8 @@ def audit(tuples: list[list]) -> dict:
         homophones[reading].append((display, meaning, level))
         if reading == "まい" and display in sentinel:
             sentinel[display].append({"meaning": meaning, "level": level})
-            if negative.search(str(meaning)):
+            # Only written kanji forms are forbidden from inheriting the negative auxiliary sense.
+            if display != "まい" and negative.search(str(meaning)):
                 fatal.append({"type": "mai_semantic_contamination", "key": key, "meaning": meaning})
 
     review_groups = 0
@@ -63,12 +95,13 @@ def audit(tuples: list[list]) -> dict:
     return {
         "policy": {
             "meaning": "exact written-form match only; kana/alternate-form fallback forbidden",
-            "level": "JLPT Waller when available; otherwise exact written-form+reading frequency only",
+            "level": "JLPT Waller when available; otherwise exact written-form+reading frequency only; curated exceptions are keyed by reading+written form",
             "officialJlptNote": "Estimated levels are not an official JLPT vocabulary list."
         },
         "counts": {
             "advancedGenerated": len(tuples),
             "uniqueKeys": len(keys),
+            "duplicateRowsRemoved": duplicate_rows_removed,
             "sameMeaningHomophoneGroupsForReview": review_groups
         },
         "sentinelMai": sentinel,
@@ -86,13 +119,18 @@ def main() -> int:
     out = Path(base.OUT)
     text = out.read_text(encoding="utf-8")
     match, meta, tuples = parse_bundle(text)
-    report = audit(tuples)
+    tuples, removed = dedupe_and_curate(tuples)
+    report = audit(tuples, removed)
     if report["fatalIssueCount"]:
         raise RuntimeError(f"Vocabulary audit failed: {report['fatalIssues'][:5]}")
 
+    counts = Counter(row[0] for row in tuples if len(row) >= 5)
     meta["version"] = "prebuilt-20260826-v4-exact"
+    meta["generatedCount"] = len(tuples)
+    meta["mergedUniqueAtBuild"] = int(meta.get("coreUniqueAtBuild") or 0) + len(tuples)
+    meta["countsByLevel"] = {level: counts.get(level, 0) for level in ["N1", "N2", "N3", "N4", "N5"]}
     meta["meaningPolicy"] = "exact written-form match only; no reading/alternate-form semantic fallback"
-    meta["levelPolicy"] = "JLPT Waller when available; otherwise exact written-form+reading subtitle-frequency estimate"
+    meta["levelPolicy"] = "JLPT Waller when available; otherwise exact written-form+reading subtitle-frequency estimate; curated exceptions keyed by reading+form"
     meta["audit"] = "data/vocab_audit.json"
     replacement = "const M=" + json.dumps(meta, ensure_ascii=False, separators=(",", ":")) + ",T=" + json.dumps(tuples, ensure_ascii=False, separators=(",", ":")) + ";\nwindow.ADVANCED_WORDS"
     text = text[:match.start()] + replacement + text[match.end():]
