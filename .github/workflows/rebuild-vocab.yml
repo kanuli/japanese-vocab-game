@@ -9,6 +9,7 @@ on:
       - tools/build_vocab_bundle_exact.py
       - tools/refine_core_ambiguity.py
       - tools/expand_advanced_vocab_stage12.py
+      - tools/recalibrate_jlpt_world.py
       - tools/classify_vocab_audit.py
       - tools/check_vocab_sentinels.py
       - data/vocab_external_crosscheck.js
@@ -37,7 +38,7 @@ jobs:
         run: |
           curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
           zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
-      - name: Build, refine, expand and classify all vocabulary data
+      - name: Build, refine, expand, recalibrate and classify all vocabulary data
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
           # Full-corpus evidence scan found ~9.8k safe supplements beyond the
@@ -55,8 +56,9 @@ jobs:
           fi
           python tools/refine_core_ambiguity.py
           python tools/expand_advanced_vocab_stage12.py
+          python tools/recalibrate_jlpt_world.py
           python tools/classify_vocab_audit.py
-      - name: Verify coverage and audit
+      - name: Verify coverage, JLPT distribution and audit
         run: |
           python - <<'PY'
           import json
@@ -76,9 +78,17 @@ jobs:
           assert audit['counts']['coreMeaningFallbackAfterRefinement'] == 0, audit['counts']
           assert len(audit.get('coreUnresolvedAll', [])) == 0, audit.get('coreUnresolvedAll', [])[:10]
           assert len(audit.get('stage2ExternalValidation', {}).get('reviewSample', [])) >= 24
+          recal = audit.get('jlptRecalibration', {})
+          assert recal.get('status') == 'complete', recal
+          assert recal.get('trainingDirectRows', 0) >= 7000, recal
+          assert recal.get('estimatedN1WithoutObservedRank') == 0, recal
+          jlpt_counts = recal.get('combinedCountsByLevel', {})
+          assert sum(jlpt_counts.values()) >= 32000, jlpt_counts
+          assert jlpt_counts.get('N1', 999999) < 15000, jlpt_counts
+          assert all(jlpt_counts.get(x, 0) > 0 for x in ['N1','N2','N3','N4','N5']), jlpt_counts
           print(json.dumps(audit['counts'], ensure_ascii=False, indent=2))
           print(json.dumps(audit['stage1Expansion'], ensure_ascii=False, indent=2))
-          print(json.dumps(audit['coreAudit'], ensure_ascii=False, indent=2))
+          print(json.dumps(recal, ensure_ascii=False, indent=2))
           print('reviewIssueCount=', audit.get('reviewIssueCount', 0))
           print('expansionReviewIssueCount=', audit.get('expansionReviewIssueCount', 0))
           print('stage2ReviewSample=', len(audit.get('stage2ExternalValidation', {}).get('reviewSample', [])))
@@ -94,5 +104,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json
-          git commit -m "Rebuild refine and expand audited vocabulary data"
+          git commit -m "Rebuild and world-recalibrate audited vocabulary data"
           git push
