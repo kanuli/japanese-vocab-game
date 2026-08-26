@@ -3,9 +3,9 @@
   "policy": "v5-source-lineage",
   "runtimeOverlay": "20260826-teacher-runtime-v2-lineage",
   "status": "success",
-  "checkedAt": "2026-08-26T14:25:46Z",
-  "runId": "32980107572",
-  "headSha": "1f6e480fa7195cd8b030bd3976759f38b453caf7",
+  "checkedAt": "2026-08-26T20:16:06Z",
+  "runId": "33009431665",
+  "headSha": "7d1741b47b830620be432d95179e68373065be66",
   "checks": [
     "default-all-N1-N5-seven-pages",
     "conversation-pronunciation-range-presets",
