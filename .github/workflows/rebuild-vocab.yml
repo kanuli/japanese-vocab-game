@@ -1,0 +1,52 @@
+name: Rebuild audited vocabulary bundle
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tools/build_vocab_bundle.py
+      - tools/build_vocab_bundle_exact.py
+      - large_vocab_sources.js
+      - large_vocab_build.js
+      - large_vocab_matchers.js
+      - large_vocab_loader.js
+      - .github/workflows/rebuild-vocab.yml
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install builder dependency
+        run: pip install opencc-python-reimplemented
+      - name: Build exact-match vocabulary
+        run: python tools/build_vocab_bundle_exact.py
+      - name: Verify audit has no fatal issues
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          audit = json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
+          assert audit['fatalIssueCount'] == 0, audit['fatalIssues']
+          print(json.dumps(audit['counts'], ensure_ascii=False, indent=2))
+          print(json.dumps(audit['sentinelMai'], ensure_ascii=False, indent=2))
+          PY
+      - name: Commit regenerated audited bundle
+        run: |
+          if git diff --quiet -- data/advanced_vocab.js data/vocab_audit.json; then
+            echo "Vocabulary bundle already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/advanced_vocab.js data/vocab_audit.json
+          git commit -m "Rebuild audited vocabulary bundle"
+          git push
