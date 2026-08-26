@@ -68,6 +68,9 @@ def patch_listening():
     s = add_after_once(s,
         '<script src="./listening-reference-expansion.js?v=20260826v1"></script>',
         '<script src="./listening-gap-expansion.js?v=20260827v1"></script>', path)
+    s = add_after_once(s,
+        '<script src="./listening-gap-expansion.js?v=20260827v1"></script>',
+        '<script src="./listening-gap-topup.js?v=20260827v1"></script>', path)
     if '...reference]' not in s:
         anchor = 'items=[...base,...original];'
         require(s, anchor, path)
@@ -133,12 +136,12 @@ def patch_mocktest():
 def update_manifest():
     path = 'data/reference_upgrade_manifest.json'
     data = {
-        'version': '2026-08-27-gap-v1',
+        'version': '2026-08-27-gap-v2',
         'policy': 'data/CONTENT_REFERENCE_POLICY.md',
         'referenceMap': 'data/content_reference_map.json',
         'expansions': {
             'grammar': ['grammar-reference-expansion.js','grammar-gap-expansion.js'],
-            'listening': ['listening-reference-expansion.js','listening-gap-expansion.js'],
+            'listening': ['listening-reference-expansion.js','listening-gap-expansion.js','listening-gap-topup.js'],
             'conversation': ['conversation-reference-expansion.js','conversation-gap-expansion.js']
         },
         'integratedPages': ['grammar.html', 'listening.html', 'conversation.html', 'mocktest.html', 'mocktest.js'],
@@ -150,7 +153,7 @@ def update_manifest():
         'notes': [
             'Vocabulary pages continue using the shared world-evidence calibration layer instead of a new duplicate level system.',
             'Targeted grammar gap: N4 passive coverage.',
-            'Targeted listening gaps: 44 subtype-focused original items per JLPT level.',
+            'Targeted listening gaps use candidate templates plus explicit top-ups; sentence deduplication determines actual database growth, and every targeted sparse subtype must retain at least three unique expansion examples.',
             'Targeted conversation gaps: six JF-topic scenes for food, nature/environment, and language/culture.',
             'Pronunciation inherits verified readings; raw count is not expanded independently.',
             'Translator remains a utility and is not treated as a JLPT database.'
