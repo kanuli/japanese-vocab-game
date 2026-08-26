@@ -1,2 +1,2 @@
-2026-08-26-v2
-Re-run integration after fixing grammar expansion count and source provenance display.
+2026-08-27-gap-audit-v1
+Run cross-database JLPT/JF Standard coverage-gap audit before the next targeted expansion.
