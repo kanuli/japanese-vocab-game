@@ -1,0 +1,45 @@
+reading	display	queue_level	confirmed_level	decision	reference	rationale	reviewed_at
+あきれる	呆れる	N1	N2	confirmed	時雨:呆れる	Exact entry labels 呆れる（あきれる）N2; N1 lineage label rejected.	2026-08-26
+あさって	明後日	N1	N5	confirmed	時雨:明後日	Exact basic time word labels 明後日（あさって）N5.	2026-08-26
+あそこ	彼処	N1	N5	confirmed	時雨:彼処	Exact reading/display entry supports N5 despite uncommon kanji display.	2026-08-26
+あちこち	彼方此方	N1	N3	confirmed	時雨:あちこち	Exact entry lists 彼方此方（あちこち）N3.	2026-08-26
+あちら	彼方	N1	N3	confirmed	時雨:彼方/あちら	Exact reading あちら under 彼方 is N3; distinguish かなた N2.	2026-08-26
+あふれる	溢れる	N1	N3	confirmed	時雨:溢れる	Exact entry labels 溢れる（あふれる）N3.	2026-08-26
+あぶる	炙る	N1	N2	confirmed	時雨:炙る	Exact entry labels 炙る（あぶる）N2.	2026-08-26
+あらすじ	粗筋	N1	N3	confirmed	時雨:粗筋	Exact entry labels 粗筋（あらすじ）N3.	2026-08-26
+あらゆる	凡ゆる	N1	N2	confirmed	時雨:凡ゆる	Exact entry labels 凡ゆる（あらゆる）N2.	2026-08-26
+ありがとう	有難う	N1	N5	confirmed	時雨:有難う	Exact common greeting is N5; N1 lineage label rejected.	2026-08-26
+あるいは	或いは	N1	N3	confirmed	時雨:或いは	Exact entry labels 或いは（あるいは）N3.	2026-08-26
+いかが	如何	N1	N4	confirmed	時雨:如何/いかが	Exact reading いかが is N4; distinguish 如何（いかん）N2 and 如何（どう）N5.	2026-08-26
+いじめる	苛める	N1	N4	confirmed	時雨:苛める	Exact entry/course classification supports N4.	2026-08-26
+いずれ	何れ	N1	N2	confirmed	時雨:何れ/いずれ	Exact reading いずれ under 何れ is N2.	2026-08-26
+いちいち	一々	N1	N2	confirmed	Bunpro:一々	Exact vocabulary entry supports N2.	2026-08-26
+いつでも	何時でも	N1	N5	confirmed	時雨:何時でも	Exact entry labels 何時でも（いつでも）N5.	2026-08-26
+いつまでも	何時までも	N1	N3	confirmed	時雨:何時までも	Exact entry labels 何時までも（いつまでも）N3.	2026-08-26
+いらいら	苛々	N1	N2	confirmed	時雨:苛々	Exact kanji display 苛々 is N2; do not conflate with kana/katakana イライラ entry classified N3.	2026-08-26
+いろいろ	色々	N1	N5	confirmed	時雨:色々	Exact common form labels 色々（いろいろ）N5.	2026-08-26
+いわゆる	所謂	N1	N2	confirmed	時雨:所謂	Exact entry labels 所謂（いわゆる）N2.	2026-08-26
+うどん	饂飩	N1	N3	confirmed	時雨:饂飩	Exact kanji display 饂飩（うどん）is classified N3.	2026-08-26
+うなる	唸る	N1	N2	confirmed	時雨:唸る	Exact entry labels 唸る（うなる）N2.	2026-08-26
+おいしい	美味しい	N1	N5	confirmed	時雨:美味しい	Exact common adjective is N5.	2026-08-26
+おいでになる	お出でになる	N1	N2	confirmed	時雨:お出でになる	Exact honorific expression is classified N2.	2026-08-26
+おかげさまで	お蔭様で	N1	N4	confirmed	時雨:お蔭様で	Exact expression お蔭様で（おかげさまで）is N4.	2026-08-26
+おかしい	可笑しい	N1	N4	confirmed	時雨:可笑しい	Exact entry labels 可笑しい（おかしい）N4.	2026-08-26
+おさきに	お先に	N1	N4	confirmed	時雨:お先に	Exact expression お先に（おさきに）is N4.	2026-08-26
+おしゃべり	お喋り	N1	N3	confirmed	時雨:お喋り	Exact entry labels お喋り（おしゃべり）N3.	2026-08-26
+おしゃれ	お洒落	N1	N3	confirmed	時雨:お洒落	Exact entry labels お洒落（おしゃれ）N3.	2026-08-26
+おじいさん	お祖父さん	N1	N5	confirmed	時雨:お祖父さん	Exact display/reading is N5.	2026-08-26
+おじゃまします	お邪魔します	N1	N5	confirmed	時雨:お邪魔します	Exact expression is N5.	2026-08-26
+おだいじに	お大事に	N1	N4	confirmed	時雨:お大事に	Exact fixed expression is N4.	2026-08-26
+おねがいします	お願いします	N1	N5	confirmed	時雨:お願いします	Exact expression is N5.	2026-08-26
+おはよう	お早う	N1	N5	confirmed	時雨:お早う	Exact greeting and display are N5.	2026-08-26
+おばあさん	お祖母さん	N1	N5	confirmed	時雨:お祖母さん	Exact display/reading is N5.	2026-08-26
+おまわりさん	お巡りさん	N1	N5	confirmed	N5 teaching-list crosscheck	Common basic vocabulary; exact form retained at N5 after independent crosscheck.	2026-08-26
+おもちゃ	玩具	N1	N4	confirmed	時雨:玩具/おもちゃ	Exact reading おもちゃ with display 玩具 is N4.	2026-08-26
+おやすみ	お休み	N1	N5	confirmed	時雨:お休み	Exact common expression is N5.	2026-08-26
+おやつ	お八つ	N1	N4	confirmed	Bunpro:おやつ	Exact vocabulary entry classifies おやつ N4 and lists お八つ as its written form.	2026-08-26
+およそ	凡そ	N1	N3	confirmed	時雨:凡そ	Exact entry labels 凡そ（およそ）N3.	2026-08-26
+かきとり	書き取り	N1	N3	confirmed	Bunpro:書き取り	Exact vocabulary entry labels 書き取り（かきとり）N3.	2026-08-26
+かしこまりました	畏まりました	N1	N4	confirmed	Bunpro:かしこまりました	Exact vocabulary entry is N4 and lists 畏まりました as the written form.	2026-08-26
+かもしれない	かも知れない	N1	N4	confirmed	Bunpro:かもしれない	JLPT N4 grammar point; orthographic variant かも知れない belongs to the same expression.	2026-08-26
+かゆい	痒い	N1	N3	confirmed	時雨:痒い	Exact entry labels 痒い（かゆい）N3.	2026-08-26
