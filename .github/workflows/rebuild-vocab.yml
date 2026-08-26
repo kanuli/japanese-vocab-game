@@ -60,10 +60,11 @@ jobs:
           assert audit['counts']['core'] >= 10000, audit['counts']
           assert audit['counts']['advanced'] >= 7000, audit['counts']
           assert audit['counts']['runtimeUnique'] >= 17000, audit['counts']
-          assert audit['coreAudit']['tomoshiMeaningsApplied'] >= 7000, audit['coreAudit']
-          assert audit['coreAudit']['manualSecondaryCrosscheckApplied'] >= 16, audit['coreAudit']
-          assert audit['coreAudit']['originalMeaningFallback'] < 320, audit['coreAudit']
-          assert audit['counts']['coreMeaningFallbackAfterRefinement'] == audit['coreAudit']['originalMeaningFallback']
+          assert audit['coreAudit']['tomoshiMeaningsApplied'] >= 10000, audit['coreAudit']
+          assert audit['coreAudit']['manualSecondaryCrosscheckApplied'] >= 46, audit['coreAudit']
+          assert audit['coreAudit']['originalMeaningFallback'] == 0, audit['coreAudit']
+          assert audit['counts']['coreMeaningFallbackAfterRefinement'] == 0, audit['counts']
+          assert len(audit.get('coreUnresolvedAll', [])) == 0, audit.get('coreUnresolvedAll', [])[:10]
           print(json.dumps(audit['counts'], ensure_ascii=False, indent=2))
           print(json.dumps(audit['coreAudit'], ensure_ascii=False, indent=2))
           print(json.dumps(audit['sentinelMai'], ensure_ascii=False, indent=2))
