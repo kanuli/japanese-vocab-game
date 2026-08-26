@@ -14,6 +14,7 @@ on:
       - tools/recalibrate_jlpt_world_v3.py
       - tools/recalibrate_jlpt_teacher_v4.py
       - tools/teacher_jlpt_policy_v5.py
+      - tools/teacher_manual_review.py
       - tools/run_teacher_jlpt_audit.py
       - tools/audit_runtime_supplements.py
       - tools/run_runtime_supplement_audit.py
@@ -26,6 +27,7 @@ on:
       - data/vocab_common_fixups.js
       - data/vocab_external_crosscheck.js
       - data/vocab_stage2_external_validation.json
+      - data/jlpt_teacher_manual_review.tsv
       - large_vocab_sources.js
       - large_vocab_build.js
       - large_vocab_matchers.js
