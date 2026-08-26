@@ -1,2 +1,2 @@
-2026-08-27-full-listening-quality-batch4-v1
-Run batch 4: audit the full 6,690 original listening catalog plus Hanabira base examples, filter severe giveaway distractors, and prefer same-dimension generated alternatives.
+2026-08-27-listening-repair-batch5-preflight-v1
+Analyze all 904 weak listening catalog candidates by level, subtype, option pattern and template reuse before deterministic repair.
