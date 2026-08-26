@@ -189,8 +189,8 @@
     },
     "N4": {
       "catalogCount": 1506,
-      "uniqueExpansionCount": 50,
-      "combinedDiagnosticCount": 1556,
+      "uniqueExpansionCount": 54,
+      "combinedDiagnosticCount": 1560,
       "distinctTypes": 14,
       "topTypes": [
         [
@@ -243,28 +243,19 @@
         ],
         [
           "可能性理解",
-          3
+          5
         ],
         [
           "特徵理解",
-          3
+          5
         ]
       ],
-      "underrepresented": [
-        [
-          "可能性理解",
-          3
-        ],
-        [
-          "特徵理解",
-          3
-        ]
-      ]
+      "underrepresented": []
     },
     "N3": {
       "catalogCount": 1472,
-      "uniqueExpansionCount": 52,
-      "combinedDiagnosticCount": 1524,
+      "uniqueExpansionCount": 56,
+      "combinedDiagnosticCount": 1528,
       "distinctTypes": 16,
       "topTypes": [
         [
@@ -312,6 +303,10 @@
           5
         ],
         [
+          "意圖理解",
+          5
+        ],
+        [
           "決定理解",
           5
         ],
@@ -320,33 +315,20 @@
           5
         ],
         [
-          "理由理解",
+          "範圍理解",
           5
         ],
         [
-          "意圖理解",
-          3
-        ],
-        [
-          "範圍理解",
-          3
+          "理由理解",
+          5
         ]
       ],
-      "underrepresented": [
-        [
-          "意圖理解",
-          3
-        ],
-        [
-          "範圍理解",
-          3
-        ]
-      ]
+      "underrepresented": []
     },
     "N2": {
       "catalogCount": 1236,
-      "uniqueExpansionCount": 43,
-      "combinedDiagnosticCount": 1279,
+      "uniqueExpansionCount": 55,
+      "combinedDiagnosticCount": 1291,
       "distinctTypes": 16,
       "topTypes": [
         [
@@ -378,7 +360,27 @@
           5
         ],
         [
+          "課題理解",
+          5
+        ],
+        [
           "原因結果",
+          5
+        ],
+        [
+          "原因推論",
+          5
+        ],
+        [
+          "範圍理解",
+          5
+        ],
+        [
+          "指示理解",
+          5
+        ],
+        [
+          "否定推論",
           5
         ],
         [
@@ -390,61 +392,16 @@
           5
         ],
         [
-          "課題理解",
-          3
-        ],
-        [
-          "原因推論",
-          3
-        ],
-        [
-          "範圍理解",
-          3
-        ],
-        [
-          "指示理解",
-          3
-        ],
-        [
-          "否定推論",
-          3
-        ],
-        [
           "風險推論",
-          3
+          5
         ]
       ],
-      "underrepresented": [
-        [
-          "原因推論",
-          3
-        ],
-        [
-          "否定推論",
-          3
-        ],
-        [
-          "指示理解",
-          3
-        ],
-        [
-          "範圍理解",
-          3
-        ],
-        [
-          "課題理解",
-          3
-        ],
-        [
-          "風險推論",
-          3
-        ]
-      ]
+      "underrepresented": []
     },
     "N1": {
       "catalogCount": 1020,
-      "uniqueExpansionCount": 44,
-      "combinedDiagnosticCount": 1064,
+      "uniqueExpansionCount": 52,
+      "combinedDiagnosticCount": 1072,
       "distinctTypes": 14,
       "topTypes": [
         [
@@ -489,39 +446,22 @@
         ],
         [
           "論理理解",
-          3
+          5
         ],
         [
           "逆接理解",
-          3
+          5
         ],
         [
           "評價理解",
-          3
+          5
         ],
         [
           "結論推論",
-          3
+          5
         ]
       ],
-      "underrepresented": [
-        [
-          "結論推論",
-          3
-        ],
-        [
-          "評價理解",
-          3
-        ],
-        [
-          "論理理解",
-          3
-        ],
-        [
-          "逆接理解",
-          3
-        ]
-      ]
+      "underrepresented": []
     }
   },
   "conversation": {

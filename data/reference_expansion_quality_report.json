@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-27-gap-v3",
+  "version": "2026-08-27-gap-v4",
   "grammar": {
     "count": 108,
     "perLevel": {
@@ -12,38 +12,38 @@
     "targetedGap": "N4 passive"
   },
   "listening": {
-    "count": 245,
+    "count": 273,
     "perLevel": {
-      "N1": 44,
-      "N2": 43,
-      "N3": 52,
-      "N4": 50,
+      "N1": 52,
+      "N2": 55,
+      "N3": 56,
+      "N4": 54,
       "N5": 56
     },
     "typeCounts": {
       "N1": {
         "正式公告": 7,
-        "論理理解": 3,
+        "論理理解": 5,
         "判斷理解": 6,
         "時間關係": 6,
         "展開理解": 6,
         "範圍理解": 7,
-        "逆接理解": 3,
-        "評價理解": 3,
-        "結論推論": 3
+        "逆接理解": 5,
+        "評價理解": 5,
+        "結論推論": 5
       },
       "N2": {
         "程序理解": 5,
         "變化理解": 5,
-        "課題理解": 3,
+        "課題理解": 5,
         "原因結果": 5,
-        "原因推論": 3,
-        "範圍理解": 3,
-        "指示理解": 3,
-        "否定推論": 3,
+        "原因推論": 5,
+        "範圍理解": 5,
+        "指示理解": 5,
+        "否定推論": 5,
         "建議理解": 5,
         "趨勢理解": 5,
-        "風險推論": 3
+        "風險推論": 5
       },
       "N3": {
         "變更理解": 5,
@@ -52,10 +52,10 @@
         "課題理解": 5,
         "變化理解": 5,
         "資訊來源": 5,
-        "意圖理解": 3,
+        "意圖理解": 5,
         "決定理解": 5,
         "順序理解": 5,
-        "範圍理解": 3,
+        "範圍理解": 5,
         "理由理解": 5
       },
       "N4": {
@@ -66,8 +66,8 @@
         "條件理解": 6,
         "準備理解": 6,
         "方向理解": 6,
-        "可能性理解": 3,
-        "特徵理解": 3,
+        "可能性理解": 5,
+        "特徵理解": 5,
         "概要理解": 1
       },
       "N5": {
@@ -82,13 +82,13 @@
       }
     },
     "targetedGap": "underrepresented listening subtypes",
-    "note": "Candidate templates are sentence-deduplicated; explicit top-ups bring every targeted sparse subtype to at least three unique expansion examples."
+    "note": "Batch 2 requires at least five unique expansion examples for every targeted subtype after sentence deduplication."
   },
   "conversation": {
     "newScenes": 16,
     "newDialogues": 400,
     "perScene": 25,
-    "targetedGap": "JF food + nature/environment + language/culture"
+    "targetedGap": "JF topics plus N4 reschedule/recommendation, N3 procedure and N2 exception functions"
   },
   "pageChecks": {
     "grammar": true,
