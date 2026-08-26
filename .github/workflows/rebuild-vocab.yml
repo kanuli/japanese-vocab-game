@@ -20,6 +20,7 @@ on:
       - tools/run_runtime_supplement_audit.py
       - tools/classify_vocab_audit.py
       - tools/check_vocab_sentinels.py
+      - tools/export_teacher_review_queue.py
       - advanced_words_curated.js
       - data/coverage_deferred_manual.js
       - data/coverage_sourcecheck_manual.js
@@ -169,14 +170,28 @@ jobs:
           PY
       - name: Verify blocking semantic sentinels
         run: python tools/check_vocab_sentinels.py
+      - name: Refresh remaining grade-C teacher review queue
+        run: |
+          python tools/export_teacher_review_queue.py
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          meta=json.loads(Path('data/jlpt_teacher_review_queue.json').read_text(encoding='utf-8'))
+          with Path('data/jlpt_teacher_review_queue.tsv').open(encoding='utf-8',newline='') as f:
+            rows=list(csv.DictReader(f,delimiter='\t'))
+          assert meta['status']=='complete',meta
+          assert len(rows)==meta['reviewRows'],(len(rows),meta)
+          assert all(r['grade']=='C' for r in rows)
+          print('TEACHER REVIEW QUEUE PASS',json.dumps(meta,ensure_ascii=False))
+          PY
       - name: Commit regenerated teacher-audited vocabulary
         run: |
-          if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js; then
-            echo "Vocabulary data already current."
+          if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json; then
+            echo "Vocabulary data and review queue already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js
+          git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv data/vocab_teacher_runtime_overlay.js data/jlpt_teacher_review_queue.tsv data/jlpt_teacher_review_queue.json
           git commit -m "Rebuild v5 source-lineage teacher-audited JLPT data"
           git push
