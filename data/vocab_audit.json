@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T14:57:41.427815+00:00",
+  "generated": "2026-08-26T15:57:46.660985+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
@@ -29,9 +29,9 @@
     "stage1ConflictingExactKeysSkipped": 8,
     "stage2StratifiedReviewQueue": 36,
     "jlptCountsCoreAdvanced": {
-      "N1": 5240,
-      "N2": 11154,
-      "N3": 10972,
+      "N1": 5200,
+      "N2": 11174,
+      "N3": 10992,
       "N4": 2496,
       "N5": 2649
     }
@@ -13473,27 +13473,27 @@
     "combinedCountsByLevel": {
       "N5": 2649,
       "N4": 2496,
-      "N3": 10972,
-      "N2": 11154,
-      "N1": 5240
+      "N3": 10992,
+      "N2": 11174,
+      "N1": 5200
     },
     "directCountsByLevel": {
-      "N3": 2504,
-      "N5": 997,
-      "N4": 953,
-      "N2": 3563,
-      "N1": 5240
+      "N3": 2514,
+      "N5": 1011,
+      "N4": 957,
+      "N2": 3575,
+      "N1": 5200
     },
     "estimatedCountsByLevel": {
-      "N3": 8468,
-      "N4": 1543,
-      "N2": 7591,
-      "N5": 1652
+      "N3": 8478,
+      "N4": 1539,
+      "N2": 7599,
+      "N5": 1638
     },
     "teacherGradeCounts": {
       "B": 7587,
-      "C": 2773,
-      "A": 2897,
+      "C": 2733,
+      "A": 2937,
       "D": 19254
     },
     "teacherBasisCounts": {
@@ -13501,12 +13501,12 @@
       "common-core-vs-waller-lineage-easier": 2547,
       "core+waller-lineage-corroborated": 2652,
       "independent-teacher-anchor": 113,
-      "manual-secondary-exact": 132,
+      "manual-secondary-exact": 172,
       "common-core-vs-internal-lineage-conflict-easier": 63,
       "core-vs-waller-lineage-adjacent": 18,
       "core-vs-waller-lineage-large": 6,
       "waller-lineage-exact": 2126,
-      "waller-lineage-vs-existing-conflict": 105,
+      "waller-lineage-vs-existing-conflict": 65,
       "internal-waller-lineage-conflict-common-easier": 33,
       "existing-direct-exact-row": 384,
       "internal-waller-lineage-conflict-existing-tiebreak": 1,
@@ -13514,7 +13514,7 @@
     },
     "directRows": 13257,
     "estimatedRows": 19254,
-    "directConflictRows": 2961,
+    "directConflictRows": 2921,
     "directConflictSamples": [
       {
         "key": "こうこう|高校",
@@ -16064,13 +16064,13 @@
       }
     ],
     "coreDeckExactEvidence": 10511,
-    "manualSecondaryExactConfigured": 142,
+    "manualSecondaryExactConfigured": 182,
     "trainingCountsByLevel": {
-      "N3": 2504,
-      "N5": 997,
-      "N4": 953,
-      "N2": 3563,
-      "N1": 5240
+      "N3": 2514,
+      "N5": 1011,
+      "N4": 957,
+      "N2": 3575,
+      "N1": 5200
     },
     "worldTargetCounts": {
       "N5": 2649,
@@ -16080,20 +16080,20 @@
       "N1": 13457
     },
     "residualQuotas": {
-      "N5": 1652,
-      "N4": 1543,
-      "N3": 8468,
-      "N2": 7591,
+      "N5": 1638,
+      "N4": 1539,
+      "N3": 8478,
+      "N2": 7599,
       "N1": 0
     },
     "modelRankLogMedians": {
-      "N5": 4.014582000774073,
-      "N4": 3.8678797834583794,
-      "N3": 3.824288551976581,
-      "N2": 4.01705421783742,
-      "N1": 4.041333437155279
+      "N5": 4.054613054556888,
+      "N4": 3.872272846224205,
+      "N3": 3.8287235195446243,
+      "N2": 4.019033163930999,
+      "N1": 4.038441320910511
     },
-    "estimatedN1MinimumFrequencyRank": 10695,
+    "estimatedN1MinimumFrequencyRank": 10684,
     "estimatedN1WithoutRarityEvidence": 0,
     "duplicateExactKeys": 0,
     "teacherSentinels": {
@@ -17674,14 +17674,14 @@
     "rowCount": 32613,
     "countsByLevel": {
       "N5": 2652,
-      "N4": 2506,
-      "N3": 10988,
-      "N2": 11219,
-      "N1": 5248
+      "N4": 2507,
+      "N3": 11008,
+      "N2": 11238,
+      "N1": 5208
     },
     "gradeCounts": {
-      "C": 2775,
-      "A": 2897,
+      "C": 2735,
+      "A": 2937,
       "D": 19332,
       "B": 7609
     },
@@ -17691,14 +17691,14 @@
     "estimatedN1": 0,
     "duplicateExactKeys": 0,
     "rankLogMediansUsed": {
-      "N5": 4.014582000774073,
-      "N4": 3.8678797834583794,
-      "N3": 3.824288551976581,
-      "N2": 4.01705421783742
+      "N5": 4.054613054556888,
+      "N4": 3.872272846224205,
+      "N3": 3.8287235195446243,
+      "N2": 4.019033163930999
     },
     "overlay": {
       "version": "20260826-teacher-runtime-v2-lineage",
-      "generated": "2026-08-26T14:58:26.496299+00:00",
+      "generated": "2026-08-26T15:58:27.214577+00:00",
       "configuredKeys": 393,
       "rule": "apply v5 source-lineage-aware teacher level after all additive runtime supplements",
       "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated."
