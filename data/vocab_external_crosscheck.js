@@ -12,7 +12,15 @@ const rows=[
   ["その","その","N5","那；那個"],
   ["おじ","おじ","N5","伯父；叔父；叔叔"],
   ["おば","おば","N5","伯母；叔母；阿姨"],
-  ["する","する","N5","做；進行；執行"]
+  ["する","する","N5","做；進行；執行"],
+  ["あれ","あれ","N5","那個、那；咦、欸（依語境）"],
+  ["いつ","いつ","N5","何時；什麼時候"],
+  ["いい","いい","N5","好；良好；可以"],
+  ["うん","うん","N5","嗯；是的；好"],
+  ["ここ","ここ","N5","這裡；此處"],
+  ["そこ","そこ","N5","那裡；那邊"],
+  ["どう","どう","N5","如何；怎麼；怎樣"],
+  ["どの","どの","N5","哪個；哪一個"]
 ];
 let applied=0;
 if(map instanceof Map){
@@ -25,7 +33,7 @@ if(map instanceof Map){
   }
 }
 window.VOCAB_EXTERNAL_CROSSCHECK_META={
-  version:"20260826-v1",
+  version:"20260826-v2",
   configured:rows.length,
   applied,
   policy:"Secondary manual sense/level validation only; no bulk scraping or copied dictionary text.",
