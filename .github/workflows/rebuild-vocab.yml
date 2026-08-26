@@ -12,6 +12,7 @@ on:
       - tools/recalibrate_jlpt_world.py
       - tools/recalibrate_jlpt_world_v2.py
       - tools/recalibrate_jlpt_world_v3.py
+      - tools/recalibrate_jlpt_teacher_v4.py
       - tools/classify_vocab_audit.py
       - tools/check_vocab_sentinels.py
       - data/vocab_external_crosscheck.js
@@ -40,7 +41,7 @@ jobs:
         run: |
           curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
           zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
-      - name: Build, refine, expand, recalibrate and classify all vocabulary data
+      - name: Build, refine, expand, teacher-audit and classify all vocabulary data
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
           VOCAB_ADVANCED_TARGET: '22000'
@@ -55,12 +56,12 @@ jobs:
           fi
           python tools/refine_core_ambiguity.py
           python tools/expand_advanced_vocab_stage12.py
-          python tools/recalibrate_jlpt_world_v3.py
+          python tools/recalibrate_jlpt_teacher_v4.py
           python tools/classify_vocab_audit.py
-      - name: Verify coverage, weighted JLPT consensus and audit
+      - name: Verify full teacher JLPT audit and coverage
         run: |
           python - <<'PY'
-          import json
+          import csv,json
           from pathlib import Path
           audit=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
           assert audit['fatalIssueCount']==0, audit['fatalIssues']
@@ -79,38 +80,53 @@ jobs:
           assert len(audit.get('stage2ExternalValidation',{}).get('reviewSample',[]))>=24
           r=audit.get('jlptRecalibration',{})
           assert r.get('status')=='complete', r
-          assert r.get('version')=='20260826-world-v3-weighted-consensus', r
-          assert r.get('trainingDirectRows',0)>=7000, r
-          assert r.get('estimatedN1WithoutObservedRank')==0, r
+          assert r.get('version')=='20260826-teacher-v4-exact-audit', r
+          assert r.get('scope')=='every core+advanced runtime word exact key', r
+          assert r.get('rowCount',0)>=32000, r
+          assert r.get('directRows',0)>=10000, r
+          assert r.get('estimatedN1WithoutRarityEvidence')==0, r
+          assert r.get('duplicateExactKeys')==0, r
           assert r.get('manualSecondaryExactConfigured',0)>=56, r
           assert r.get('coreDeckExactEvidence',0)>=10000, r
           c=r.get('combinedCountsByLevel',{})
-          assert sum(c.values())>=32000,c
+          assert sum(c.values())==r['rowCount'],(c,r['rowCount'])
+          assert all(c.get(x,0)>0 for x in ['N1','N2','N3','N4','N5']),c
           assert c.get('N1',999999)<14500,c
           assert c.get('N5',0)>=1800 and c.get('N4',0)>=1500 and c.get('N3',0)>=4000,c
           expected={
+            'まい|まい':'N2','まい|舞':'N2','まい|枚':'N5','まい|毎':'N5',
             'すいか|西瓜':'N5','これ|これ':'N5','それ|それ':'N5',
             'おもしろい|面白い':'N5','あかるい|明るい':'N5','おわる|終わる':'N5',
-            'べんきょう|勉強':'N5','さんぽ|散歩':'N5','だんだん|だんだん':'N5','もし|もし':'N4'
+            'べんきょう|勉強':'N5','さんぽ|散歩':'N5','だんだん|だんだん':'N5','もし|もし':'N4',
+            'ふん|分':'N5','キロ|キロ':'N5','さらいげつ|再来月':'N4','さらいねん|再来年':'N4',
+            'まんなか|真ん中':'N4','つくる|造る':'N3'
           }
-          s=r.get('worldKnowledgeSentinels',{})
+          s=r.get('teacherSentinels',{})
           for key,level in expected.items():
             assert s.get(key,{}).get('level')==level,(key,s.get(key))
-          print('WEIGHTED JLPT PASS',json.dumps(c,ensure_ascii=False))
-          print('overriddenDirect=',r.get('existingDirectLevelsOverridden'))
-          print('conflicts=',r.get('weightedEvidenceConflictCount'))
+          path=Path('data/jlpt_teacher_audit.tsv')
+          assert path.exists(), 'missing full teacher audit artifact'
+          with path.open(encoding='utf-8',newline='') as f:
+            rows=list(csv.DictReader(f,delimiter='\t'))
+          assert len(rows)==r['rowCount'],(len(rows),r['rowCount'])
+          assert all(x['level'] in {'N1','N2','N3','N4','N5'} for x in rows)
+          assert all(x['grade'] in {'A','B','C','D'} for x in rows)
+          assert all(x['basis'] for x in rows)
+          print('TEACHER JLPT AUDIT PASS',json.dumps(c,ensure_ascii=False))
+          print('rows=',len(rows),'grades=',json.dumps(r.get('teacherGradeCounts',{}),ensure_ascii=False))
+          print('directConflicts=',r.get('directConflictRows'),'estimated=',r.get('estimatedRows'))
           print('sentinels=',json.dumps(s,ensure_ascii=False))
           PY
       - name: Verify blocking semantic sentinels
         run: python tools/check_vocab_sentinels.py
-      - name: Commit regenerated audited vocabulary
+      - name: Commit regenerated teacher-audited vocabulary
         run: |
-          if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json; then
+          if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv; then
             echo "Vocabulary data already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json
-          git commit -m "Rebuild weighted-consensus JLPT vocabulary data"
+          git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json data/jlpt_teacher_audit.tsv
+          git commit -m "Rebuild teacher-audited JLPT vocabulary data"
           git push
