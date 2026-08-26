@@ -3,7 +3,7 @@ document.write('<script src="./advanced_words_curated.js?v=20260821v1"><\/script
 // Full-database audit outputs. Load the core overlay before any page fetches notes.csv,
 // then apply conservative secondary dictionary cross-checks to exact ambiguous keys.
 document.write('<script src="./data/vocab_core_verified.js?v=20260826v1"><\/script>');
-document.write('<script src="./data/vocab_external_crosscheck.js?v=20260826v2"><\/script>');
+document.write('<script src="./data/vocab_external_crosscheck.js?v=20260826v3"><\/script>');
 document.write('<script src="./core_vocab_fetch_patch.js?v=20260826v2"><\/script>');
 document.write('<script src="./data/advanced_vocab.js?v=20260826v1"><\/script>');
 // Strict surface-form completion layer: the 185 direct-reviewed forms that were
