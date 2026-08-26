@@ -8,6 +8,7 @@ on:
       - tools/build_vocab_bundle.py
       - tools/build_vocab_bundle_exact.py
       - tools/classify_vocab_audit.py
+      - tools/check_vocab_sentinels.py
       - large_vocab_sources.js
       - large_vocab_build.js
       - large_vocab_matchers.js
@@ -61,6 +62,8 @@ jobs:
           print(json.dumps(audit['sentinelMai'], ensure_ascii=False, indent=2))
           print('reviewIssueCount=', audit.get('reviewIssueCount', 0))
           PY
+      - name: Verify blocking semantic sentinels
+        run: python tools/check_vocab_sentinels.py
       - name: Commit regenerated audited vocabulary
         run: |
           if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json; then
