@@ -1,6 +1,6 @@
 {
-  "version": "2026-08-27-teacher-page-suitability-v1",
-  "scope": "All 11 user-facing HTML pages; N1-N5 suitability is project-calibrated using teacher-audited vocabulary, established grammar/listening/conversation gates and runtime source consistency. Translator is level-neutral.",
+  "version": "2026-08-27-teacher-page-suitability-v2",
+  "scope": "All 11 user-facing HTML pages; N1-N5 suitability is project-calibrated using teacher-audited vocabulary, explicit teacher adjudication for unresolved fallback-only terms, established grammar/listening/conversation gates and runtime source consistency. Translator is level-neutral.",
   "pages": {
     "index.html": {
       "exists": true,
@@ -82,13 +82,13 @@
       "N5": 8
     },
     "mockFallbackMismatches": [],
-    "mockFallbackUnknown": [
+    "mockFallbackUnknown": [],
+    "manualTeacherAdjudications": [
       {
         "word": "あながち",
         "reading": "あながち",
         "level": "N1",
-        "sourceDeclared": "N1",
-        "kind": "base"
+        "basis": "Teacher adjudication: N1. Corroborated by ASK Publishing はじめての日本語能力試験 N1 単語3000 and independent N1 teaching/practice references; dictionary meaning/use also checked."
       }
     ],
     "mockSpecialChecked": [
