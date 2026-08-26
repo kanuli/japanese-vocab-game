@@ -11,6 +11,7 @@ on:
       - tools/expand_advanced_vocab_stage12.py
       - tools/recalibrate_jlpt_world.py
       - tools/recalibrate_jlpt_world_v2.py
+      - tools/recalibrate_jlpt_world_v3.py
       - tools/classify_vocab_audit.py
       - tools/check_vocab_sentinels.py
       - data/vocab_external_crosscheck.js
@@ -42,9 +43,6 @@ jobs:
       - name: Build, refine, expand, recalibrate and classify all vocabulary data
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
-          # Full-corpus evidence scan found ~9.8k safe supplements beyond the
-          # audited 12.5k baseline. 22k stays below that evidence ceiling and
-          # deliberately excludes the dictionary-only tail.
           VOCAB_ADVANCED_TARGET: '22000'
         run: |
           set +e
@@ -57,45 +55,51 @@ jobs:
           fi
           python tools/refine_core_ambiguity.py
           python tools/expand_advanced_vocab_stage12.py
-          python tools/recalibrate_jlpt_world_v2.py
+          python tools/recalibrate_jlpt_world_v3.py
           python tools/classify_vocab_audit.py
-      - name: Verify coverage, JLPT distribution and audit
+      - name: Verify coverage, weighted JLPT consensus and audit
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          audit = json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
-          assert audit['fatalIssueCount'] == 0, audit['fatalIssues']
-          assert audit.get('refinementFatalIssueCount', 0) == 0
-          assert audit.get('expansionFatalIssueCount', 0) == 0
-          assert audit['counts']['core'] >= 10000, audit['counts']
-          assert audit['counts']['advanced'] >= 22000, audit['counts']
-          assert audit['counts']['runtimeUnique'] >= 32000, audit['counts']
-          assert audit['counts']['stage1AdvancedAddedVs12500'] >= 9500, audit['counts']
-          assert audit['counts']['stage1SafeCandidatePool'] >= 22000, audit['counts']
-          assert audit['coreAudit']['tomoshiMeaningsApplied'] >= 10000, audit['coreAudit']
-          assert audit['coreAudit']['manualSecondaryCrosscheckApplied'] >= 46, audit['coreAudit']
-          assert audit['coreAudit']['originalMeaningFallback'] == 0, audit['coreAudit']
-          assert audit['counts']['coreMeaningFallbackAfterRefinement'] == 0, audit['counts']
-          assert len(audit.get('coreUnresolvedAll', [])) == 0, audit.get('coreUnresolvedAll', [])[:10]
-          assert len(audit.get('stage2ExternalValidation', {}).get('reviewSample', [])) >= 24
-          recal = audit.get('jlptRecalibration', {})
-          assert recal.get('status') == 'complete', recal
-          assert recal.get('trainingDirectRows', 0) >= 7000, recal
-          assert recal.get('estimatedN1WithoutObservedRank') == 0, recal
-          jlpt_counts = recal.get('combinedCountsByLevel', {})
-          assert sum(jlpt_counts.values()) >= 32000, jlpt_counts
-          assert jlpt_counts.get('N1', 999999) < 14500, jlpt_counts
-          assert jlpt_counts.get('N5', 0) >= 1500, jlpt_counts
-          assert jlpt_counts.get('N4', 0) >= 1500, jlpt_counts
-          assert jlpt_counts.get('N3', 0) >= 4000, jlpt_counts
-          assert all(jlpt_counts.get(x, 0) > 0 for x in ['N1','N2','N3','N4','N5']), jlpt_counts
-          print(json.dumps(audit['counts'], ensure_ascii=False, indent=2))
-          print(json.dumps(audit['stage1Expansion'], ensure_ascii=False, indent=2))
-          print(json.dumps(recal, ensure_ascii=False, indent=2))
-          print('reviewIssueCount=', audit.get('reviewIssueCount', 0))
-          print('expansionReviewIssueCount=', audit.get('expansionReviewIssueCount', 0))
-          print('stage2ReviewSample=', len(audit.get('stage2ExternalValidation', {}).get('reviewSample', [])))
+          audit=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
+          assert audit['fatalIssueCount']==0, audit['fatalIssues']
+          assert audit.get('refinementFatalIssueCount',0)==0
+          assert audit.get('expansionFatalIssueCount',0)==0
+          assert audit['counts']['core']>=10000, audit['counts']
+          assert audit['counts']['advanced']>=22000, audit['counts']
+          assert audit['counts']['runtimeUnique']>=32000, audit['counts']
+          assert audit['counts']['stage1AdvancedAddedVs12500']>=9500, audit['counts']
+          assert audit['counts']['stage1SafeCandidatePool']>=22000, audit['counts']
+          assert audit['coreAudit']['tomoshiMeaningsApplied']>=10000, audit['coreAudit']
+          assert audit['coreAudit']['manualSecondaryCrosscheckApplied']>=46, audit['coreAudit']
+          assert audit['coreAudit']['originalMeaningFallback']==0, audit['coreAudit']
+          assert audit['counts']['coreMeaningFallbackAfterRefinement']==0, audit['counts']
+          assert len(audit.get('coreUnresolvedAll',[]))==0, audit.get('coreUnresolvedAll',[])[:10]
+          assert len(audit.get('stage2ExternalValidation',{}).get('reviewSample',[]))>=24
+          r=audit.get('jlptRecalibration',{})
+          assert r.get('status')=='complete', r
+          assert r.get('version')=='20260826-world-v3-weighted-consensus', r
+          assert r.get('trainingDirectRows',0)>=7000, r
+          assert r.get('estimatedN1WithoutObservedRank')==0, r
+          assert r.get('manualSecondaryExactConfigured',0)>=56, r
+          assert r.get('coreDeckExactEvidence',0)>=10000, r
+          c=r.get('combinedCountsByLevel',{})
+          assert sum(c.values())>=32000,c
+          assert c.get('N1',999999)<14500,c
+          assert c.get('N5',0)>=1800 and c.get('N4',0)>=1500 and c.get('N3',0)>=4000,c
+          expected={
+            'すいか|西瓜':'N5','これ|これ':'N5','それ|それ':'N5',
+            'おもしろい|面白い':'N5','あかるい|明るい':'N5','おわる|終わる':'N5',
+            'べんきょう|勉強':'N5','さんぽ|散歩':'N5','だんだん|だんだん':'N5','もし|もし':'N4'
+          }
+          s=r.get('worldKnowledgeSentinels',{})
+          for key,level in expected.items():
+            assert s.get(key,{}).get('level')==level,(key,s.get(key))
+          print('WEIGHTED JLPT PASS',json.dumps(c,ensure_ascii=False))
+          print('overriddenDirect=',r.get('existingDirectLevelsOverridden'))
+          print('conflicts=',r.get('weightedEvidenceConflictCount'))
+          print('sentinels=',json.dumps(s,ensure_ascii=False))
           PY
       - name: Verify blocking semantic sentinels
         run: python tools/check_vocab_sentinels.py
@@ -108,5 +112,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json
-          git commit -m "Rebuild and world-recalibrate audited vocabulary data"
+          git commit -m "Rebuild weighted-consensus JLPT vocabulary data"
           git push
