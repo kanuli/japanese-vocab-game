@@ -14,6 +14,8 @@ import json
 import os
 import re
 import sqlite3
+import unicodedata
+from collections import defaultdict
 from pathlib import Path
 
 from opencc import OpenCC
@@ -26,9 +28,12 @@ DB_PATH = Path(os.environ.get("TOMOSHI_DB", "/tmp/tomoshi.db"))
 AUDIT_PATH = ROOT / "data" / "vocab_audit.json"
 EXTERNAL_PATH = ROOT / "data" / "vocab_external_crosscheck.js"
 CC = OpenCC("s2t")
+JP_CC = OpenCC("t2jp")
 
 STOP_CHARS = set("的了是在有和與或為於及之等個一種表示用作作為者也又而可會")
 PUNCT_RE = re.compile(r"[\s\u3000，,。；;、：:！？!?／/\\|（）()［］\[\]【】{}<>《》〈〉「」『』…·・~～—–_-]+")
+FURI_RE = re.compile(r"([\u3400-\u9fff々〆ヵヶ]+)\[([ぁ-ゖァ-ヺー]+)\]")
+KANA_BRACKET_RE = re.compile(r"\[([ぁ-ゖァ-ヺー]+)\]")
 
 
 def load_manual_crosschecks() -> dict[str, dict]:
@@ -50,6 +55,72 @@ def load_manual_crosschecks() -> dict[str, dict]:
         if reading and display and level in exact.VALID_LEVELS and meaning:
             out[f"{reading}|{display}"] = {"level": level, "meaning": meaning}
     return out
+
+
+def kana_key(value: str) -> str:
+    text = unicodedata.normalize("NFKC", str(value or "").strip())
+    out = []
+    for ch in text:
+        code = ord(ch)
+        if 0x30A1 <= code <= 0x30F6:
+            out.append(chr(code - 0x60))
+        else:
+            out.append(ch)
+    return "".join(out)
+
+
+def surface_form(value: str) -> str:
+    """Normalize only orthographic notation, never meaning or reading identity.
+
+    Examples: 石鹸[けん] -> 石鹸, 贅[ぜい]沢 -> 贅沢, カラオケ remains カラオケ.
+    Traditional glyph variants are converted to Japanese standard forms only for
+    dictionary lookup; the runtime display key itself remains untouched.
+    """
+    text = base.clean_text(value or "").replace(" ", "")
+    text = FURI_RE.sub(r"\1", text)
+    text = KANA_BRACKET_RE.sub("", text)
+    text = unicodedata.normalize("NFKC", text)
+    try:
+        text = JP_CC.convert(text)
+    except Exception:
+        pass
+    return text
+
+
+def build_normalized_form_index(conn: sqlite3.Connection, core_records: list[dict], entry_info: dict) -> dict[str, list[dict]]:
+    wanted = defaultdict(list)
+    for rec in core_records:
+        surf = surface_form(rec["display"])
+        if surf:
+            wanted[surf].append(rec)
+
+    normalized_entry = {}
+    for eid, info in entry_info.items():
+        normalized_entry[eid] = {
+            "readings": {kana_key(x) for x in (info.get("readings") or set())},
+            "written": {surface_form(x) for x in (info.get("written") or set())},
+            "common": bool(info.get("common")),
+        }
+
+    result = defaultdict(list)
+    for row in conn.execute("SELECT text, entry_id, is_kana, is_common FROM forms"):
+        form = surface_form(str(row[0] or ""))
+        if not form or form not in wanted:
+            continue
+        eid = str(row[1])
+        info = normalized_entry.get(eid) or {}
+        readings = info.get("readings") or set()
+        for rec in wanted[form]:
+            if kana_key(rec["reading"]) not in readings:
+                continue
+            result[rec["key"]].append({
+                "entry_id": eid,
+                "form_common": bool(row[3]),
+                "entry_common": bool(info.get("common")),
+                "written_exact": form in (info.get("written") or set()),
+                "normalized_match": True,
+            })
+    return result
 
 
 def norm_text(value: str) -> str:
@@ -176,7 +247,8 @@ def main() -> int:
     zh, entry_info, tomoshi_jlpt, _zh_total = exact.load_tomoshi(conn)
     core_text = base.fetch_text(base.URLS["core"])
     core_records = exact.parse_core_records(core_text)
-    form_index = exact.build_core_form_index(conn, core_records, entry_info)
+    exact_form_index = exact.build_core_form_index(conn, core_records, entry_info)
+    normalized_form_index = build_normalized_form_index(conn, core_records, entry_info)
 
     words_data = base.fetch_json(base.URLS["words"])
     waller_by_id = {}
@@ -201,17 +273,24 @@ def main() -> int:
         "semanticResolvedPairs": 0,
         "manualSecondaryCrosscheckApplied": 0,
         "semanticCandidatesReviewed": 0,
+        "normalizedFormReadingRecoveredPairs": 0,
     }
 
     for rec in core_records:
         key = rec["key"]
-        options = form_index.get(key, [])
+        raw_options = exact_form_index.get(key, [])
+        normalized_options = normalized_form_index.get(key, [])
+        options = raw_options or normalized_options
+        if not raw_options and normalized_options:
+            stats["normalizedFormReadingRecoveredPairs"] += 1
+
         eid, was_ambiguous = exact.choose_core_entry(options, zh)
         if was_ambiguous:
             stats["ambiguousPairs"] += 1
 
         manual_item = manual.get(key)
         scored = []
+        selected_semantically = False
         if eid is None and options:
             anchor = manual_item["meaning"] if manual_item else rec["meaning"]
             selected, scored = semantic_resolve(
@@ -220,9 +299,11 @@ def main() -> int:
             stats["semanticCandidatesReviewed"] += 1
             if selected:
                 eid = selected
+                selected_semantically = True
                 stats["semanticResolvedPairs"] += 1
                 semantic_selected.append({
                     "key": key,
+                    "lookupDisplay": surface_form(rec["display"]),
                     "originalMeaning": rec["meaning"],
                     "anchorMeaning": anchor,
                     "selectedEntryId": eid,
@@ -241,7 +322,7 @@ def main() -> int:
 
         if eid and eid in zh:
             meaning = zh[eid]
-            meaning_source = "tomoshi-entry-id-semantic-resolve" if any(x["key"] == key for x in semantic_selected[-1:]) else "tomoshi-entry-id"
+            meaning_source = "tomoshi-entry-id-semantic-resolve" if selected_semantically else ("tomoshi-entry-id-normalized-form" if not raw_options and normalized_options else "tomoshi-entry-id")
             stats["tomoshiMeaningsApplied"] += 1
             level, level_source = candidate_level(
                 eid, rec["level"], waller_by_id, entry_info, tomoshi_jlpt
@@ -258,6 +339,8 @@ def main() -> int:
             stats["originalMeaningFallback"] += 1
             residual.append({
                 "key": key,
+                "lookupDisplay": surface_form(rec["display"]),
+                "lookupReading": kana_key(rec["reading"]),
                 "originalMeaning": rec["meaning"],
                 "level": rec["level"],
                 "candidateCount": len({x["entry_id"] for x in options}),
@@ -275,7 +358,6 @@ def main() -> int:
             "meaning": meaning, "level": level, "source": "core-refined"
         })
 
-    # Block known semantic corruption from being introduced by the refinement pass.
     refinement_fatal = []
     exact.semantic_audit(rows_for_semantic_audit, refinement_fatal)
     for row in rows_for_semantic_audit:
@@ -286,10 +368,10 @@ def main() -> int:
         raise RuntimeError(f"refinement semantic audit failed: {refinement_fatal[:5]}")
 
     exact.write_core_overlay(overlay, {
-        "version": "core-verified-20260826-v2-refined",
+        "version": "core-verified-20260826-v3-normalized-refined",
         "generated": exact.datetime.now(exact.timezone.utc).isoformat(),
         "rows": len(overlay),
-        "meaningPolicy": "Tomoshi zh-TW by exact JMdict entry ID; all ambiguous candidates reviewed by conservative Traditional-Chinese semantic scoring; manual secondary cross-checks folded in; unresolved values retained",
+        "meaningPolicy": "Tomoshi zh-TW by exact JMdict entry ID; safe form notation/kana-script normalization is used only when raw exact lookup has no candidate; all ambiguous candidates reviewed by conservative Traditional-Chinese semantic scoring; manual secondary cross-checks folded in; unresolved values retained",
         "levelPolicy": "JLPT Waller/Tomoshi JLPT > embedded entry level > original core deck; validated external cross-check level may override exact key",
         "semanticResolver": "strong semantic similarity + separation margin; commonness/JLPT agreement only small tie-breakers",
     })
@@ -302,9 +384,11 @@ def main() -> int:
     audit.setdefault("counts", {})["coreMeaningFallbackAfterRefinement"] = len(residual)
     audit["counts"]["coreSecondaryCrosschecksApplied"] = stats["manualSecondaryCrosscheckApplied"]
     audit["counts"]["coreSemanticResolvedPairs"] = stats["semanticResolvedPairs"]
+    audit["counts"]["coreNormalizedFormReadingRecoveredPairs"] = stats["normalizedFormReadingRecoveredPairs"]
     audit.setdefault("policy", {})["coreRefinement"] = (
-        "Every original core fallback is reviewed against all exact form+reading Tomoshi/JMdict candidates. "
-        "Automatic selection requires strong Traditional-Chinese semantic agreement and a clear margin. "
+        "Every original core fallback is reviewed against all safe exact-equivalent form+reading Tomoshi/JMdict candidates. "
+        "Bracketed furigana notation, Unicode/Japanese glyph normalization and hiragana/katakana reading equivalence are allowed only when the raw exact lookup has no candidate. "
+        "Automatic semantic selection still requires strong Traditional-Chinese agreement and a clear margin. "
         "Mazii/MOJi/時雨 are secondary manual validation only; their proprietary dictionary text is not bulk-copied."
     )
     audit["refinementFatalIssueCount"] = 0
@@ -314,8 +398,8 @@ def main() -> int:
     print(f"semantic_resolved={len(semantic_selected)} residual_fallback={len(residual)} manual_crosschecks={len(manual)}")
     if residual:
         print("residual samples:")
-        for item in residual[:40]:
-            print(" ", item["key"], "=>", item["originalMeaning"], "candidates=", item["candidateCount"])
+        for item in residual[:60]:
+            print(" ", item["key"], "lookup=", item["lookupDisplay"], "/", item["lookupReading"], "=>", item["originalMeaning"], "candidates=", item["candidateCount"])
     return 0
 
 
