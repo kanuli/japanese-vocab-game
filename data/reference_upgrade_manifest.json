@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-27-gap-v2",
+  "version": "2026-08-27-gap-v3",
   "policy": "data/CONTENT_REFERENCE_POLICY.md",
   "referenceMap": "data/content_reference_map.json",
   "expansions": {
@@ -10,11 +10,13 @@
     "listening": [
       "listening-reference-expansion.js",
       "listening-gap-expansion.js",
-      "listening-gap-topup.js"
+      "listening-gap-topup.js",
+      "listening-gap-topup-batch2.js"
     ],
     "conversation": [
       "conversation-reference-expansion.js",
-      "conversation-gap-expansion.js"
+      "conversation-gap-expansion.js",
+      "conversation-function-topup.js"
     ]
   },
   "integratedPages": [
@@ -42,8 +44,8 @@
   "notes": [
     "Vocabulary pages continue using the shared world-evidence calibration layer instead of a new duplicate level system.",
     "Targeted grammar gap: N4 passive coverage.",
-    "Targeted listening gaps use candidate templates plus explicit top-ups; sentence deduplication determines actual database growth, and every targeted sparse subtype must retain at least three unique expansion examples.",
-    "Targeted conversation gaps: six JF-topic scenes for food, nature/environment, and language/culture.",
+    "Listening batch 2 raises every targeted sparse subtype to at least five unique expansion examples after sentence deduplication.",
+    "Conversation batch 2 fills N4 change/reschedule and recommendation, N3 procedure, and N2 exception communicative-function gaps without increasing scene count.",
     "Pronunciation inherits verified readings; raw count is not expanded independently.",
     "Translator remains a utility and is not treated as a JLPT database."
   ]
