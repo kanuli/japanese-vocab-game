@@ -27,6 +27,18 @@ jobs:
           python-version: '3.12'
       - name: Install builder dependency
         run: pip install opencc-python-reimplemented
+      - name: Download structured Traditional Chinese dictionary
+        run: |
+          curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
+          zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
+          echo '=== tables ==='
+          sqlite3 /tmp/tomoshi.db '.tables'
+          for table in entries forms zh_defs_zhtw vocab_jlpt; do
+            echo "=== schema: $table ==="
+            sqlite3 /tmp/tomoshi.db ".schema $table"
+            echo "=== sample: $table ==="
+            sqlite3 -header -column /tmp/tomoshi.db "SELECT * FROM $table LIMIT 2;" || true
+          done
       - name: Build exact-match vocabulary
         run: python tools/build_vocab_bundle_exact.py
       - name: Verify audit has no fatal issues
