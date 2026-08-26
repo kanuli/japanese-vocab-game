@@ -1,2 +1,2 @@
-2026-08-27-listening-length-batch6-preflight-v1
-Analyze every remaining answer-length quality outlier after Batch 5 before deterministic repair; keep all prior quality gates binding.
+2026-08-27-listening-completion-batch6-v1
+Repair all 186 remaining answer-length outliers, require 100% original-catalog quality eligibility, and rerun the complete prior QA chain without lowering any gate.
