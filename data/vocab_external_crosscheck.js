@@ -1,8 +1,6 @@
-// Conservative manual cross-check layer for core rows that remained ambiguous after
-// exact JMdict/Tomoshi matching. External dictionaries are used only to validate the
-// lexical sense/level; their proprietary wording, examples, audio, and other content
-// are not copied into this project. Meanings below are short independent paraphrases.
-// Rows 17-46 complete the residual set from the full normalized semantic audit.
+// Conservative manual cross-check layer for exact core rows. External dictionaries are
+// used only to validate lexical sense/level; proprietary wording, examples and audio are
+// not copied. Meanings below are short independent Traditional-Chinese paraphrases.
 (()=>{"use strict";
 const map=window.VOCAB_CORE_VERIFIED;
 const rows=[
@@ -52,7 +50,16 @@ const rows=[
   ["こがねいろ","こがね色","N1","金黃色；黃金色"],
   ["とろみ","とろみ","N1","（醬汁、湯等的）黏稠度；濃稠狀態"],
   ["さきのばし","先延ばし","N1","延期；拖延；擱置"],
-  ["すいか","西瓜","N5","西瓜"]
+  ["すいか","西瓜","N5","西瓜"],
+  ["これ","これ","N5","這個；這"],
+  ["それ","それ","N5","那個；那"],
+  ["おもしろい","面白い","N5","有趣的；好玩的"],
+  ["あかるい","明るい","N5","明亮的；開朗的"],
+  ["おわる","終わる","N5","結束；完結"],
+  ["べんきょう","勉強","N5","學習；用功"],
+  ["さんぽ","散歩","N5","散步"],
+  ["だんだん","だんだん","N5","逐漸；漸漸"],
+  ["もし","もし","N4","如果；假如"]
 ];
 let applied=0;
 if(map instanceof Map){
@@ -65,10 +72,10 @@ if(map instanceof Map){
   }
 }
 window.VOCAB_EXTERNAL_CROSSCHECK_META={
-  version:"20260826-v4-jlpt-recheck",
+  version:"20260826-v5-jlpt-conflict-sanity",
   configured:rows.length,
   applied,
-  policy:"Secondary manual sense/level validation only; no bulk scraping or copied dictionary text. Exact written-form+reading checks use reusable JMdict/Tomoshi evidence plus Mazii/MOJi/時雨 where available. 西瓜（すいか） is explicitly cross-checked as N5.",
-  references:["Mazii","MOJi辞書","時雨日中辭典","JMdict/Tomoshi"]
+  policy:"Secondary exact sense/level validation only; no bulk scraping or copied dictionary text. High-risk world-source JLPT conflicts are sanity-checked against Mazii/MOJi/時雨 where available; 時雨 explicitly confirms the added common-word sentinels.",
+  references:["Mazii","MOJi辞書","時雨日中辭典","JMdict/Tomoshi","OpenJLPT","Waller/Tanos"]
 };
 })();
