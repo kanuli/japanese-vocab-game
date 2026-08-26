@@ -1,0 +1,35 @@
+{
+  "version": "2026-08-27-japanese-database-completion-v1",
+  "scope": "Current project reference/diagnostic grammar, listening and conversation databases plus page integration gates.",
+  "status": {
+    "grammar": {
+      "referenceQuestions": 108,
+      "coverageMissing": 0,
+      "depthGatePassed": true
+    },
+    "listening": {
+      "originalCatalog": 6690,
+      "qualityEligible": 6690,
+      "eligibleRate": 100.0,
+      "referenceExpansionUnique": 273,
+      "underrepresentedSubtypes": 0
+    },
+    "conversation": {
+      "scenes": 77,
+      "dialogues": 1925,
+      "weakTopics": 0,
+      "weakExpectedFunctions": 0,
+      "exactDuplicatePairs": 0,
+      "awkwardGenericTemplates": 0
+    },
+    "pageChecks": {
+      "grammar": true,
+      "listening": true,
+      "conversation": true,
+      "mocktest": true
+    }
+  },
+  "interpretation": "Completed means all current project-defined coverage, structural, quality-depth, duplication, language-leakage and integration hard gates pass. It does not mean an official JLPT syllabus is exhausted, because JLPT publishes capability descriptions rather than a fixed official grammar/vocabulary list.",
+  "failures": [],
+  "passed": true
+}

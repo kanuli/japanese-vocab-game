@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-27-full-conversation-batch7-v1",
+  "version": "2026-08-27-japanese-database-completion-v1",
   "policy": "data/CONTENT_REFERENCE_POLICY.md",
   "referenceMap": "data/content_reference_map.json",
   "expansions": {
@@ -81,5 +81,12 @@
     ],
     "script": "conversation-quality-batch7.js",
     "audit": "data/full_conversation_batch7_report.json"
+  },
+  "completion": {
+    "grammar": "108 representative project-original reference questions; coverage matrix complete; Batch 8 depth gate validates N2/N3 by grammatical complexity rather than sentence length.",
+    "listening": "6,690 project-original catalog rows are 100% quality eligible under structural, near-miss, giveaway, length and language-leakage gates; 273 unique targeted reference-expansion items retain subtype coverage.",
+    "conversation": "77 scenes / 1,925 dialogues; all scene/level counts preserved; no exact duplicate pairs, no Chinese-field kana leakage, no known generic 進める misuse, and full-database template concentration gates pass.",
+    "finalAudit": "data/database_completion_report.json",
+    "scopeNote": "Completion is against current project-defined diagnostic and quality gates, not a claim that JLPT publishes or has an exhaustible official grammar/vocabulary syllabus."
   }
 }

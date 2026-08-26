@@ -1,0 +1,70 @@
+{
+  "version": "2026-08-27-grammar-depth-batch8-v1",
+  "grammarCount": 108,
+  "byLevel": {
+    "N1": {
+      "count": 24,
+      "avgChars": 22,
+      "avgAdvanced": 0.75,
+      "avgModal": 0,
+      "avgConnect": 1,
+      "avgClauses": 3,
+      "avgComplexityScore": 4,
+      "advancedShare": 37.5,
+      "structuralErrors": 0
+    },
+    "N2": {
+      "count": 18,
+      "avgChars": 20.6,
+      "avgAdvanced": 1.67,
+      "avgModal": 0.33,
+      "avgConnect": 1.39,
+      "avgClauses": 3.39,
+      "avgComplexityScore": 7.74,
+      "advancedShare": 83.3,
+      "structuralErrors": 0
+    },
+    "N3": {
+      "count": 18,
+      "avgChars": 21.1,
+      "avgAdvanced": 0,
+      "avgModal": 1,
+      "avgConnect": 0.83,
+      "avgClauses": 2.39,
+      "avgComplexityScore": 2.82,
+      "advancedShare": 0,
+      "structuralErrors": 0
+    },
+    "N4": {
+      "count": 30,
+      "avgChars": 15.8,
+      "avgAdvanced": 0.1,
+      "avgModal": 0.27,
+      "avgConnect": 0.6,
+      "avgClauses": 1.8,
+      "avgComplexityScore": 1.55,
+      "advancedShare": 10,
+      "structuralErrors": 0
+    },
+    "N5": {
+      "count": 18,
+      "avgChars": 13.1,
+      "avgAdvanced": 0,
+      "avgModal": 0,
+      "avgConnect": 0.17,
+      "avgClauses": 1.22,
+      "avgComplexityScore": 0.24,
+      "advancedShare": 0,
+      "structuralErrors": 0
+    }
+  },
+  "diagnosticFinding": "N3 average sentence length may slightly exceed N2, but N2 is materially deeper on advanced constructions, connective/subordination load and composite complexity. No padding rewrite is justified.",
+  "targets": {
+    "structuralErrors": 0,
+    "n2MinusN3ComplexityMin": 2,
+    "n2AdvancedShareMin": 50,
+    "n3AdvancedShareMax": 25
+  },
+  "failures": [],
+  "passed": true
+}
