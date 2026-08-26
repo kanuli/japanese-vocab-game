@@ -1,4 +1,4 @@
-name: Rebuild audited vocabulary bundle
+name: Rebuild audited vocabulary data
 
 on:
   workflow_dispatch:
@@ -31,34 +31,33 @@ jobs:
         run: |
           curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
           zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
-          echo '=== tables ==='
-          sqlite3 /tmp/tomoshi.db '.tables'
-          for table in entries forms zh_defs_zhtw vocab_jlpt; do
-            echo "=== schema: $table ==="
-            sqlite3 /tmp/tomoshi.db ".schema $table"
-            echo "=== sample: $table ==="
-            sqlite3 -header -column /tmp/tomoshi.db "SELECT * FROM $table LIMIT 2;" || true
-          done
-      - name: Build exact-match vocabulary
+      - name: Build all audited vocabulary data
+        env:
+          TOMOSHI_DB: /tmp/tomoshi.db
         run: python tools/build_vocab_bundle_exact.py
-      - name: Verify audit has no fatal issues
+      - name: Verify coverage and audit
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           audit = json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
           assert audit['fatalIssueCount'] == 0, audit['fatalIssues']
+          assert audit['counts']['core'] >= 10000, audit['counts']
+          assert audit['counts']['advanced'] >= 7000, audit['counts']
+          assert audit['counts']['runtimeUnique'] >= 17000, audit['counts']
+          assert audit['coreAudit']['tomoshiMeaningsApplied'] >= 7000, audit['coreAudit']
           print(json.dumps(audit['counts'], ensure_ascii=False, indent=2))
+          print(json.dumps(audit['coreAudit'], ensure_ascii=False, indent=2))
           print(json.dumps(audit['sentinelMai'], ensure_ascii=False, indent=2))
           PY
-      - name: Commit regenerated audited bundle
+      - name: Commit regenerated audited vocabulary
         run: |
-          if git diff --quiet -- data/advanced_vocab.js data/vocab_audit.json; then
-            echo "Vocabulary bundle already current."
+          if git diff --quiet -- data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json; then
+            echo "Vocabulary data already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/advanced_vocab.js data/vocab_audit.json
-          git commit -m "Rebuild audited vocabulary bundle"
+          git add data/advanced_vocab.js data/vocab_core_verified.js data/vocab_audit.json
+          git commit -m "Rebuild audited vocabulary data"
           git push
