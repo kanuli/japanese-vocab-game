@@ -78,18 +78,26 @@ coverage=load_json('data/database_completion_report.json')
 if not coverage.get('passed') or coverage.get('failures'):
     fail.append('cross-database completion gate failed')
 
-# 3) Canonical vocabulary lookup.
+# 3) Canonical vocabulary lookup + explicit teacher adjudications when the TSV has no unique row.
 with (ROOT/'data/jlpt_teacher_audit.tsv').open(encoding='utf-8',newline='') as f:
     audit_rows=list(csv.DictReader(f,delimiter='\t'))
 exact={(r.get('reading',''),r.get('display','')):r.get('level','') for r in audit_rows}
 by_display={}
 for r in audit_rows: by_display.setdefault(r.get('display',''),set()).add(r.get('level',''))
 
+MANUAL_TEACHER_LEVELS={
+    ('あながち','あながち'):'N1',
+}
+MANUAL_TEACHER_EVIDENCE={
+    'あながち|あながち':'Teacher adjudication: N1. Corroborated by ASK Publishing はじめての日本語能力試験 N1 単語3000 and independent N1 teaching/practice references; dictionary meaning/use also checked.'
+}
+
 def teacher_level(reading,word):
     actual=exact.get((reading,word))
     if actual:return actual
     levels=by_display.get(word,set())
-    return next(iter(levels)) if len(levels)==1 else None
+    if len(levels)==1:return next(iter(levels))
+    return MANUAL_TEACHER_LEVELS.get((reading,word))
 
 # 4) Effective Mock Test emergency fallback after teacher-level override map + N1 replenishment.
 fix_block=re.search(r'const FALLBACK_LEVEL_FIXES=\{(.*?)\};',mock_js,re.S)
@@ -109,15 +117,19 @@ if extra_block:
     for word,reading,meaning in re.findall(r'\["([^"]+)","([^"]+)","([^"]*)"\]',extra_block.group(1)):
         effective.append({'word':word,'reading':reading,'level':'N1','sourceDeclared':'N1','kind':'extra'})
 
-fallback_mismatch=[];fallback_unknown=[]
+fallback_mismatch=[];fallback_unknown=[];manual_used=[]
 for row in effective:
     actual=teacher_level(row['reading'],row['word'])
+    manual_key=f"{row['reading']}|{row['word']}"
+    if (row['reading'],row['word']) in MANUAL_TEACHER_LEVELS:
+        manual_used.append({'word':row['word'],'reading':row['reading'],'level':MANUAL_TEACHER_LEVELS[(row['reading'],row['word'])],'basis':MANUAL_TEACHER_EVIDENCE[manual_key]})
     if actual and actual!=row['level']:
         fallback_mismatch.append({**row,'teacher':actual})
     elif not actual:
         fallback_unknown.append(row)
 fallback_counts={l:sum(1 for x in effective if x['level']==l) for l in order}
 if fallback_mismatch: fail.append(f'mocktest effective fallback level mismatches={len(fallback_mismatch)}')
+if fallback_unknown: fail.append(f'mocktest unresolved fallback levels={len(fallback_unknown)}')
 if any(fallback_counts[l]<8 for l in order): fail.append(f'mocktest fallback underfill by level: {fallback_counts}')
 
 # 5) Effective SPECIAL level after teacher-level move map.
@@ -146,12 +158,13 @@ for name in PAGES:
 if misleading: fail.append('misleading official fixed-list wording: '+','.join(sorted(set(misleading))))
 
 report={
-  'version':'2026-08-27-teacher-page-suitability-v1',
-  'scope':'All 11 user-facing HTML pages; N1-N5 suitability is project-calibrated using teacher-audited vocabulary, established grammar/listening/conversation gates and runtime source consistency. Translator is level-neutral.',
+  'version':'2026-08-27-teacher-page-suitability-v2',
+  'scope':'All 11 user-facing HTML pages; N1-N5 suitability is project-calibrated using teacher-audited vocabulary, explicit teacher adjudication for unresolved fallback-only terms, established grammar/listening/conversation gates and runtime source consistency. Translator is level-neutral.',
   'pages':page_status,
   'vocabulary':{
     'teacherAuditRows':len(audit_rows),'reviewQueueOpen':queue_open or 0,'runtimeStatus':v5.get('status'),
     'mockFallbackChecked':len(effective),'mockFallbackCounts':fallback_counts,'mockFallbackMismatches':fallback_mismatch,'mockFallbackUnknown':fallback_unknown,
+    'manualTeacherAdjudications':manual_used,
     'mockSpecialChecked':special_checked,'mockSpecialMismatches':special_mismatch
   },
   'grammar':{'runtimeGeneratedChecked':gram.get('totals',{}).get('webGeneratedAndChecked'),'failures':gram.get('totals',{}).get('failures'),'depthPassed':gdepth.get('passed')},
