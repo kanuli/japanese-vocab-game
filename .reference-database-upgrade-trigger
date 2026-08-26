@@ -1,2 +1,2 @@
-2026-08-27-listening-completion-batch6-v1
-Repair all 186 remaining answer-length outliers, require 100% original-catalog quality eligibility, and rerun the complete prior QA chain without lowering any gate.
+2026-08-27-full-conversation-batch7-preflight-v1
+Audit all 77 scenes and 1,925 dialogues for structure, Japanese leakage in Traditional Chinese, exact duplicates, template concentration and JLPT depth before final conversation repair.
