@@ -10,6 +10,7 @@ on:
       - tools/refine_core_ambiguity.py
       - tools/expand_advanced_vocab_stage12.py
       - tools/recalibrate_jlpt_world.py
+      - tools/recalibrate_jlpt_world_v2.py
       - tools/classify_vocab_audit.py
       - tools/check_vocab_sentinels.py
       - data/vocab_external_crosscheck.js
@@ -56,7 +57,7 @@ jobs:
           fi
           python tools/refine_core_ambiguity.py
           python tools/expand_advanced_vocab_stage12.py
-          python tools/recalibrate_jlpt_world.py
+          python tools/recalibrate_jlpt_world_v2.py
           python tools/classify_vocab_audit.py
       - name: Verify coverage, JLPT distribution and audit
         run: |
@@ -84,7 +85,10 @@ jobs:
           assert recal.get('estimatedN1WithoutObservedRank') == 0, recal
           jlpt_counts = recal.get('combinedCountsByLevel', {})
           assert sum(jlpt_counts.values()) >= 32000, jlpt_counts
-          assert jlpt_counts.get('N1', 999999) < 15000, jlpt_counts
+          assert jlpt_counts.get('N1', 999999) < 14500, jlpt_counts
+          assert jlpt_counts.get('N5', 0) >= 1500, jlpt_counts
+          assert jlpt_counts.get('N4', 0) >= 1500, jlpt_counts
+          assert jlpt_counts.get('N3', 0) >= 4000, jlpt_counts
           assert all(jlpt_counts.get(x, 0) > 0 for x in ['N1','N2','N3','N4','N5']), jlpt_counts
           print(json.dumps(audit['counts'], ensure_ascii=False, indent=2))
           print(json.dumps(audit['stage1Expansion'], ensure_ascii=False, indent=2))
