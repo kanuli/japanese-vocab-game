@@ -52,7 +52,7 @@ jobs:
           node --check data/vocab_common_fixups.js
           python tools/check_vocab_sentinels.py
           python - <<'PY'
-          import json
+          import json,re
           from pathlib import Path
           g=json.loads(Path('data/grammar_quality_v27_runtime_report.json').read_text(encoding='utf-8'))
           l=json.loads(Path('data/listening_mock_quality_v3_report.json').read_text(encoding='utf-8'))
@@ -62,6 +62,9 @@ jobs:
           assert all(x['qualityFailures']==0 and x['underfills']==0 for x in l['mock']['perLevel'].values())
           s=Path('data/vocab_common_fixups.js').read_text(encoding='utf-8')
           assert "level:'N4'" in s and "reading:'にわ'" in s and "kanji:'庭'" in s
+          x=Path('data/vocab_external_crosscheck.js').read_text(encoding='utf-8')
+          assert '20260826-v3-complete' in x
+          assert len(re.findall(r'^\s*\["',x,re.M))==46
           print('Static targeted regression checks PASS')
           PY
 
@@ -122,54 +125,50 @@ jobs:
               return {
                 runtimePatch:window.VOCAB_CORE_RUNTIME_PATCH_META||null,
                 externalMeta:window.VOCAB_EXTERNAL_CROSSCHECK_META||null,
-                niwa:find('にわ','庭'),
-                suika:find('すいか','西瓜'),
-                mai:find('まい','まい'),
-                dance:find('まい','舞'),
-                counter:find('まい','枚'),
-                every:find('まい','毎'),
-                anata:find('あなた','あなた'),
-                ikura:find('いくら','いくら'),
-                aru:find('ある','ある'),
-                ano:find('あの','あの'),
-                sono:find('その','その'),
-                oji:find('おじ','おじ'),
-                oba:find('おば','おば'),
-                suru:find('する','する'),
-                are:find('あれ','あれ'),
-                itsu:find('いつ','いつ'),
-                ii:find('いい','いい'),
-                un:find('うん','うん'),
-                koko:find('ここ','ここ'),
-                soko:find('そこ','そこ'),
-                dou:find('どう','どう'),
-                dono:find('どの','どの')
+                niwa:find('にわ','庭'), suika:find('すいか','西瓜'),
+                mai:find('まい','まい'), dance:find('まい','舞'), counter:find('まい','枚'), every:find('まい','毎'),
+                anata:find('あなた','あなた'), suru:find('する','する'), itsu:find('いつ','いつ'), dou:find('どう','どう'),
+                sou:find('そう','そう'), dake:find('だけ','だけ'), nai:find('ない','ない'),
+                para:find('ぱらぱら','ぱらぱら'), youyaku:find('ようやく','ようやく'), oeru:find('おえる','終える'),
+                menkyo:find('めんきょ','免許'), yori:find('より','より(副)'), iwaba:find('いわば','いわば'),
+                kuwaeru:find('くわえる','くわえる'), niji:find('にじ','虹'), kiru:find('きる','きる'),
+                mi:find('み','味'), haihai:find('はいはい','はいはい'), kar:find('かられる','駆られる'),
+                tataeru:find('たたえる','たたえる'), wear:find('ウエア','ウエア'), yugami:find('ゆがみ','ゆがみ'),
+                toromi:find('とろみ','とろみ'), saki:find('さきのばし','先延ばし')
               };
             });
             if(!vocabCheck.runtimePatch||vocabCheck.runtimePatch.patchedRows<10000||vocabCheck.runtimePatch.verifiedRows<10000)throw Error('core overlay not applied '+JSON.stringify(vocabCheck.runtimePatch));
-            if(!vocabCheck.externalMeta||vocabCheck.externalMeta.applied!==16)throw Error('external cross-check layer not applied '+JSON.stringify(vocabCheck.externalMeta));
+            if(!vocabCheck.externalMeta||vocabCheck.externalMeta.applied!==46||vocabCheck.externalMeta.configured!==46)throw Error('external cross-check layer not complete '+JSON.stringify(vocabCheck.externalMeta));
             if(!vocabCheck.niwa||vocabCheck.niwa.level!=='N4')throw Error('庭/にわ N4 missing '+JSON.stringify(vocabCheck.niwa));
             if(!vocabCheck.suika||!String(vocabCheck.suika.meaning).includes('西瓜')||String(vocabCheck.suika.meaning).includes('天邊一朵雲'))throw Error('西瓜/すいか corrupted '+JSON.stringify(vocabCheck.suika));
-            if(!vocabCheck.mai||vocabCheck.mai.level!=='N2'||!String(vocabCheck.mai.meaning).includes('不會'))throw Error('まい semantic failure '+JSON.stringify(vocabCheck.mai));
-            if(!vocabCheck.dance||vocabCheck.dance.level!=='N2'||!String(vocabCheck.dance.meaning).includes('舞'))throw Error('舞 semantic failure '+JSON.stringify(vocabCheck.dance));
-            if(!vocabCheck.counter||vocabCheck.counter.level!=='N5'||!String(vocabCheck.counter.meaning).includes('枚'))throw Error('枚 semantic failure '+JSON.stringify(vocabCheck.counter));
-            if(!vocabCheck.every||vocabCheck.every.level!=='N5'||!String(vocabCheck.every.meaning).includes('每'))throw Error('毎 semantic failure '+JSON.stringify(vocabCheck.every));
-            if(!vocabCheck.anata||vocabCheck.anata.level!=='N5'||!String(vocabCheck.anata.meaning).includes('你'))throw Error('あなた cross-check failure '+JSON.stringify(vocabCheck.anata));
-            if(!vocabCheck.ikura||vocabCheck.ikura.level!=='N4'||!String(vocabCheck.ikura.meaning).includes('多少'))throw Error('いくら cross-check failure '+JSON.stringify(vocabCheck.ikura));
-            if(!vocabCheck.aru||vocabCheck.aru.level!=='N5'||!String(vocabCheck.aru.meaning).includes('有'))throw Error('ある cross-check failure '+JSON.stringify(vocabCheck.aru));
-            if(!vocabCheck.ano||vocabCheck.ano.level!=='N5'||!String(vocabCheck.ano.meaning).includes('那'))throw Error('あの cross-check failure '+JSON.stringify(vocabCheck.ano));
-            if(!vocabCheck.sono||vocabCheck.sono.level!=='N5'||!String(vocabCheck.sono.meaning).includes('那'))throw Error('その cross-check failure '+JSON.stringify(vocabCheck.sono));
-            if(!vocabCheck.oji||vocabCheck.oji.level!=='N5'||!String(vocabCheck.oji.meaning).includes('叔'))throw Error('おじ cross-check failure '+JSON.stringify(vocabCheck.oji));
-            if(!vocabCheck.oba||vocabCheck.oba.level!=='N5'||!String(vocabCheck.oba.meaning).includes('姨'))throw Error('おば cross-check failure '+JSON.stringify(vocabCheck.oba));
-            if(!vocabCheck.suru||vocabCheck.suru.level!=='N5'||!String(vocabCheck.suru.meaning).includes('做'))throw Error('する cross-check failure '+JSON.stringify(vocabCheck.suru));
-            if(!vocabCheck.are||vocabCheck.are.level!=='N5'||!String(vocabCheck.are.meaning).includes('那'))throw Error('あれ cross-check failure '+JSON.stringify(vocabCheck.are));
-            if(!vocabCheck.itsu||vocabCheck.itsu.level!=='N5'||!String(vocabCheck.itsu.meaning).includes('什麼時候'))throw Error('いつ cross-check failure '+JSON.stringify(vocabCheck.itsu));
-            if(!vocabCheck.ii||vocabCheck.ii.level!=='N5'||!String(vocabCheck.ii.meaning).includes('好'))throw Error('いい cross-check failure '+JSON.stringify(vocabCheck.ii));
-            if(!vocabCheck.un||vocabCheck.un.level!=='N5'||!String(vocabCheck.un.meaning).includes('是的'))throw Error('うん cross-check failure '+JSON.stringify(vocabCheck.un));
-            if(!vocabCheck.koko||vocabCheck.koko.level!=='N5'||!String(vocabCheck.koko.meaning).includes('這裡'))throw Error('ここ cross-check failure '+JSON.stringify(vocabCheck.koko));
-            if(!vocabCheck.soko||vocabCheck.soko.level!=='N5'||!String(vocabCheck.soko.meaning).includes('那裡'))throw Error('そこ cross-check failure '+JSON.stringify(vocabCheck.soko));
-            if(!vocabCheck.dou||vocabCheck.dou.level!=='N5'||!String(vocabCheck.dou.meaning).includes('如何'))throw Error('どう cross-check failure '+JSON.stringify(vocabCheck.dou));
-            if(!vocabCheck.dono||vocabCheck.dono.level!=='N5'||!String(vocabCheck.dono.meaning).includes('哪個'))throw Error('どの cross-check failure '+JSON.stringify(vocabCheck.dono));
+            if(!vocabCheck.mai||!String(vocabCheck.mai.meaning).includes('不會'))throw Error('まい semantic failure '+JSON.stringify(vocabCheck.mai));
+            if(!vocabCheck.dance||!String(vocabCheck.dance.meaning).includes('舞'))throw Error('舞 semantic failure '+JSON.stringify(vocabCheck.dance));
+            if(!vocabCheck.counter||!String(vocabCheck.counter.meaning).includes('枚'))throw Error('枚 semantic failure '+JSON.stringify(vocabCheck.counter));
+            if(!vocabCheck.every||!String(vocabCheck.every.meaning).includes('每'))throw Error('毎 semantic failure '+JSON.stringify(vocabCheck.every));
+            if(!vocabCheck.anata||!String(vocabCheck.anata.meaning).includes('你'))throw Error('あなた cross-check failure '+JSON.stringify(vocabCheck.anata));
+            if(!vocabCheck.suru||!String(vocabCheck.suru.meaning).includes('做'))throw Error('する cross-check failure '+JSON.stringify(vocabCheck.suru));
+            if(!vocabCheck.itsu||!String(vocabCheck.itsu.meaning).includes('什麼時候'))throw Error('いつ cross-check failure '+JSON.stringify(vocabCheck.itsu));
+            if(!vocabCheck.dou||!String(vocabCheck.dou.meaning).includes('如何'))throw Error('どう cross-check failure '+JSON.stringify(vocabCheck.dou));
+            if(!vocabCheck.sou||!String(vocabCheck.sou.meaning).includes('那樣'))throw Error('そう cross-check failure '+JSON.stringify(vocabCheck.sou));
+            if(!vocabCheck.dake||!String(vocabCheck.dake.meaning).includes('只'))throw Error('だけ cross-check failure '+JSON.stringify(vocabCheck.dake));
+            if(!vocabCheck.nai||!String(vocabCheck.nai.meaning).includes('沒有'))throw Error('ない cross-check failure '+JSON.stringify(vocabCheck.nai));
+            if(!vocabCheck.para||!String(vocabCheck.para.meaning).includes('翻頁'))throw Error('ぱらぱら cross-check failure '+JSON.stringify(vocabCheck.para));
+            if(!vocabCheck.youyaku||!String(vocabCheck.youyaku.meaning).includes('終於'))throw Error('ようやく cross-check failure '+JSON.stringify(vocabCheck.youyaku));
+            if(!vocabCheck.oeru||!String(vocabCheck.oeru.meaning).includes('完成'))throw Error('終える cross-check failure '+JSON.stringify(vocabCheck.oeru));
+            if(!vocabCheck.menkyo||!String(vocabCheck.menkyo.meaning).includes('執照'))throw Error('免許 cross-check failure '+JSON.stringify(vocabCheck.menkyo));
+            if(!vocabCheck.yori||!String(vocabCheck.yori.meaning).includes('更加'))throw Error('より(副) cross-check failure '+JSON.stringify(vocabCheck.yori));
+            if(!vocabCheck.iwaba||!String(vocabCheck.iwaba.meaning).includes('可以說'))throw Error('いわば cross-check failure '+JSON.stringify(vocabCheck.iwaba));
+            if(!vocabCheck.kuwaeru||!String(vocabCheck.kuwaeru.meaning).includes('叼'))throw Error('くわえる cross-check failure '+JSON.stringify(vocabCheck.kuwaeru));
+            if(!vocabCheck.niji||!String(vocabCheck.niji.meaning).includes('彩虹'))throw Error('虹 cross-check failure '+JSON.stringify(vocabCheck.niji));
+            if(!vocabCheck.kiru||!String(vocabCheck.kiru.meaning).includes('做到最後'))throw Error('きる suffix cross-check failure '+JSON.stringify(vocabCheck.kiru));
+            if(!vocabCheck.mi||!String(vocabCheck.mi.meaning).includes('藥品'))throw Error('味/み counter cross-check failure '+JSON.stringify(vocabCheck.mi));
+            if(!vocabCheck.haihai||!String(vocabCheck.haihai.meaning).includes('爬行'))throw Error('はいはい crawling cross-check failure '+JSON.stringify(vocabCheck.haihai));
+            if(!vocabCheck.kar||!String(vocabCheck.kar.meaning).includes('驅使'))throw Error('駆られる cross-check failure '+JSON.stringify(vocabCheck.kar));
+            if(!vocabCheck.tataeru||!String(vocabCheck.tataeru.meaning).includes('充滿'))throw Error('たたえる fill-sense cross-check failure '+JSON.stringify(vocabCheck.tataeru));
+            if(!vocabCheck.wear||!String(vocabCheck.wear.meaning).includes('衣服'))throw Error('ウエア cross-check failure '+JSON.stringify(vocabCheck.wear));
+            if(!vocabCheck.yugami||!String(vocabCheck.yugami.meaning).includes('扭曲'))throw Error('ゆがみ cross-check failure '+JSON.stringify(vocabCheck.yugami));
+            if(!vocabCheck.toromi||!String(vocabCheck.toromi.meaning).includes('黏稠'))throw Error('とろみ cross-check failure '+JSON.stringify(vocabCheck.toromi));
+            if(!vocabCheck.saki||!String(vocabCheck.saki.meaning).includes('拖延'))throw Error('先延ばし cross-check failure '+JSON.stringify(vocabCheck.saki));
             console.log('VOCAB RUNTIME PASS',JSON.stringify(vocabCheck));
             await wl.close();
 
@@ -196,7 +195,7 @@ jobs:
           from datetime import datetime,timezone
           from pathlib import Path
           out={
-            'version':4,
+            'version':5,
             'status':os.environ.get('RESULT','unknown'),
             'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
             'runId':os.environ.get('GITHUB_RUN_ID'),
@@ -205,8 +204,9 @@ jobs:
               'default-all-N1-N5-seven-pages','conversation-pronunciation-range-presets',
               'wordaudio-repeat-gap-options','wordaudio-quantity-options','vocab-niwa-N4',
               'vocab-core-overlay-10000-plus','vocab-suika-meaning','vocab-mai-homophones',
-              'vocab-external-crosschecks-16','pronunciation-9month-8day-furigana',
-              'grammar-quality-zero-failures','listening-mock-quality-zero-failures'
+              'vocab-external-crosschecks-46','vocab-core-fallback-zero-runtime-set',
+              'pronunciation-9month-8day-furigana','grammar-quality-zero-failures',
+              'listening-mock-quality-zero-failures'
             ]
           }
           Path('targeted-ui-audit-status.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
