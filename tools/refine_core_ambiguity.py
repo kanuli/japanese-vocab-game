@@ -28,7 +28,19 @@ DB_PATH = Path(os.environ.get("TOMOSHI_DB", "/tmp/tomoshi.db"))
 AUDIT_PATH = ROOT / "data" / "vocab_audit.json"
 EXTERNAL_PATH = ROOT / "data" / "vocab_external_crosscheck.js"
 CC = OpenCC("s2t")
-JP_CC = OpenCC("t2jp")
+
+# Conservative traditional/old-glyph -> Japanese standard glyph normalization.
+# Used ONLY for dictionary form lookup, never to rewrite the user's runtime display.
+JP_GLYPH_MAP = str.maketrans({
+    "嚙":"噛", "搔":"掻", "剝":"剥", "頰":"頬", "歲":"歳", "黑":"黒",
+    "戶":"戸", "惠":"恵", "德":"徳", "瀨":"瀬", "濱":"浜", "邊":"辺",
+    "邉":"辺", "澤":"沢", "廣":"広", "國":"国", "學":"学", "會":"会",
+    "氣":"気", "體":"体", "臺":"台", "萬":"万", "圓":"円", "鐵":"鉄",
+    "驛":"駅", "號":"号", "壓":"圧", "處":"処", "醫":"医", "藥":"薬",
+    "舊":"旧", "樂":"楽", "櫻":"桜", "觀":"観", "實":"実", "讀":"読",
+    "圖":"図", "聲":"声", "假":"仮", "變":"変", "續":"続", "關":"関",
+    "應":"応", "寫":"写", "畫":"画", "轉":"転", "點":"点", "鹽":"塩",
+})
 
 STOP_CHARS = set("的了是在有和與或為於及之等個一種表示用作作為者也又而可會")
 PUNCT_RE = re.compile(r"[\s\u3000，,。；;、：:！？!?／/\\|（）()［］\[\]【】{}<>《》〈〉「」『』…·・~～—–_-]+")
@@ -70,21 +82,12 @@ def kana_key(value: str) -> str:
 
 
 def surface_form(value: str) -> str:
-    """Normalize only orthographic notation, never meaning or reading identity.
-
-    Examples: 石鹸[けん] -> 石鹸, 贅[ぜい]沢 -> 贅沢, カラオケ remains カラオケ.
-    Traditional glyph variants are converted to Japanese standard forms only for
-    dictionary lookup; the runtime display key itself remains untouched.
-    """
+    """Normalize safe orthographic notation for lookup, not for runtime display."""
     text = base.clean_text(value or "").replace(" ", "")
     text = FURI_RE.sub(r"\1", text)
     text = KANA_BRACKET_RE.sub("", text)
     text = unicodedata.normalize("NFKC", text)
-    try:
-        text = JP_CC.convert(text)
-    except Exception:
-        pass
-    return text
+    return text.translate(JP_GLYPH_MAP)
 
 
 def build_normalized_form_index(conn: sqlite3.Connection, core_records: list[dict], entry_info: dict) -> dict[str, list[dict]]:
