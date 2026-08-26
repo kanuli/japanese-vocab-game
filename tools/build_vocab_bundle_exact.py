@@ -11,13 +11,16 @@ import build_vocab_bundle as base
 
 ORIGINAL_CHOOSE = base.choose_entry
 
-# Explicit corrections for the ambiguity that exposed the original bug.
-# These are keyed by (reading, displayed form), never by reading alone.
+# Explicit corrections are keyed by (reading, displayed form), never by reading alone.
 CURATED = {
     ("まい", "まい"): ("N2", "不會～；不打算～；恐怕不～（否定推量／否定意志）", "other"),
     ("まい", "舞"): ("N2", "舞；舞蹈", "noun"),
     ("まい", "枚"): ("N5", "張、枚（計算薄而平物件的量詞）", "noun"),
     ("まい", "毎"): ("N5", "每～；每一～", "other"),
+    ("とりにく", "鶏肉"): ("N5", "雞肉", "noun"),
+    ("とりにく", "とり肉"): ("N5", "雞肉", "noun"),
+    ("ばからしい", "馬鹿らしい"): ("N2", "愚蠢的；無聊的；荒唐的", "adj"),
+    ("ばからしい", "ばからしい"): ("N2", "愚蠢的；無聊的；荒唐的", "adj"),
 }
 
 
@@ -25,7 +28,7 @@ def choose_exact(raw: dict):
     entry = ORIGINAL_CHOOSE(raw)
     if entry:
         # Critical fix: the displayed lexical form is the ONLY semantic/frequency lookup key.
-        # This prevents 舞 / 枚 / 毎 from inheriting the kana-only ～まい meaning or rank.
+        # This prevents unrelated homophones from sharing a meaning or estimated rank.
         entry["forms"] = [entry["display"]]
     return entry
 
@@ -93,23 +96,25 @@ def audit(tuples: list[list], duplicate_rows_removed: int, core_keys: set[str], 
         homophones[reading].append((display, meaning, level))
         if reading == "まい" and display in sentinel:
             sentinel[display].append({"meaning": meaning, "level": level, "location": "advanced"})
-            # Only written kanji forms are forbidden from inheriting the negative auxiliary sense.
             if display != "まい" and negative.search(str(meaning)):
                 fatal.append({"type": "mai_semantic_contamination", "key": key, "meaning": meaning})
 
-    core_presence = {}
-    for display in sentinel:
-        key = f"まい|{display}"
-        core_presence[display] = key in core_keys
-
-    review = []
+    core_presence = {display: f"まい|{display}" in core_keys for display in sentinel}
+    variant_groups = []
+    level_conflicts = []
     for reading, group in homophones.items():
         by_meaning = defaultdict(list)
         for display, meaning, level in group:
             by_meaning[meaning].append({"display": display, "level": level})
         for meaning, forms in by_meaning.items():
             if len({x["display"] for x in forms}) > 1:
-                review.append({"reading": reading, "meaning": meaning, "forms": forms})
+                record = {"reading": reading, "meaning": meaning, "forms": forms}
+                variant_groups.append(record)
+                if len({x["level"] for x in forms}) > 1:
+                    level_conflicts.append(record)
+
+    for conflict in level_conflicts:
+        fatal.append({"type": "same_meaning_variant_level_conflict", **conflict})
 
     return {
         "policy": {
@@ -121,13 +126,15 @@ def audit(tuples: list[list], duplicate_rows_removed: int, core_keys: set[str], 
             "advancedGenerated": len(tuples),
             "uniqueKeys": len(keys),
             "duplicateRowsRemoved": duplicate_rows_removed,
-            "sameMeaningHomophoneGroupsForReview": len(review),
+            "sameMeaningVariantGroups": len(variant_groups),
+            "sameMeaningVariantLevelConflicts": len(level_conflicts),
             "curatedRowsAdded": len(curated_added)
         },
         "sentinelMai": sentinel,
         "sentinelMaiCorePresence": core_presence,
         "curatedRowsAdded": curated_added,
-        "homophoneReview": review[:100],
+        "variantGroups": variant_groups[:100],
+        "levelConflicts": level_conflicts[:100],
         "fatalIssueCount": len(fatal),
         "fatalIssues": fatal[:100]
     }
@@ -145,6 +152,9 @@ def main() -> int:
     tuples, removed = dedupe_and_curate(tuples)
     core_keys = base.core_keys(base.fetch_text(base.URLS["core"]))
     curated_added = ensure_curated(tuples, core_keys)
+    # Apply curated corrections again to rows that may have just been added.
+    tuples, removed_after_add = dedupe_and_curate(tuples)
+    removed += removed_after_add
     report = audit(tuples, removed, core_keys, curated_added)
     if report["fatalIssueCount"]:
         raise RuntimeError(f"Vocabulary audit failed: {report['fatalIssues'][:5]}")
