@@ -1,0 +1,963 @@
+{
+  "version": "2026-08-27-listening-repair-batch5-v3",
+  "baseline": {
+    "count": 6690,
+    "qualityEligible": 5786,
+    "rejected": 904,
+    "eligibleRate": 86.5,
+    "rejectedByLevel": {
+      "N1": 174,
+      "N2": 247,
+      "N3": 256,
+      "N4": 227
+    },
+    "reasons": {
+      "noNearMiss": 657,
+      "extremeTwoPlus": 247
+    },
+    "kanaChoiceCount": 7142,
+    "kanaSamples": [
+      {
+        "id": "JL-N5-0003",
+        "value": "資料を受付に出す"
+      },
+      {
+        "id": "JL-N5-0003",
+        "value": "資料を受付に出す"
+      },
+      {
+        "id": "JL-N5-0003",
+        "value": "担当者に電話する"
+      },
+      {
+        "id": "JL-N5-0003",
+        "value": "コピーを三部取る"
+      },
+      {
+        "id": "JL-N5-0003",
+        "value": "担当者に電話するの後で資料を受付に出す"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "担当者に電話する"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "予約を変更する"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "荷物を二階へ運ぶ"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "予約を変更するの後で担当者に電話する"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "担当者に電話する"
+      },
+      {
+        "id": "JL-N5-0013",
+        "value": "予約を変更する"
+      },
+      {
+        "id": "JL-N5-0013",
+        "value": "申込書に名前を書く"
+      }
+    ],
+    "maxWrongTripleReuse": 301,
+    "topWrongTriples": [
+      {
+        "count": 301,
+        "signature": "先到空港再去学校｜在学校附近的入口見面｜在空港見面"
+      },
+      {
+        "count": 301,
+        "signature": "日期和會場都改了｜會場不變只改日期｜活動完全取消"
+      },
+      {
+        "count": 301,
+        "signature": "先處理資料｜取消外出｜叫男方先去"
+      },
+      {
+        "count": 295,
+        "signature": "取消見面｜改去公園等對方｜等對方到了才去駅"
+      },
+      {
+        "count": 294,
+        "signature": "會場不變但開始時間延後｜會場改到公園開始時間也提早｜活動取消"
+      },
+      {
+        "count": 294,
+        "signature": "不再處理資料｜交給別人後不再確認｜今天一定處理資料"
+      },
+      {
+        "count": 291,
+        "signature": "先到空港再去駅｜在空港見面｜在駅附近的入口見面"
+      },
+      {
+        "count": 291,
+        "signature": "在駅買新的資料｜把資料丟掉｜把資料帶去駅"
+      },
+      {
+        "count": 247,
+        "signature": "去公園的東側入口｜去学校的西側入口｜去車站前的施工入口"
+      },
+      {
+        "count": 247,
+        "signature": "日期延後但會場不變｜會場和開始時間都改了｜活動取消"
+      },
+      {
+        "count": 247,
+        "signature": "今天一定處理資料｜全部交給男方｜完全放棄處理資料"
+      },
+      {
+        "count": 204,
+        "signature": "在図書館正面入口前｜在図書館西側職員入口前｜在教室東側入口前"
+      }
+    ]
+  },
+  "currentBeforeRun": {
+    "count": 6690,
+    "qualityEligible": 5786,
+    "rejected": 904,
+    "eligibleRate": 86.5,
+    "rejectedByLevel": {
+      "N1": 174,
+      "N2": 247,
+      "N3": 256,
+      "N4": 227
+    },
+    "reasons": {
+      "noNearMiss": 657,
+      "extremeTwoPlus": 247
+    },
+    "kanaChoiceCount": 7142,
+    "kanaSamples": [
+      {
+        "id": "JL-N5-0003",
+        "value": "資料を受付に出す"
+      },
+      {
+        "id": "JL-N5-0003",
+        "value": "資料を受付に出す"
+      },
+      {
+        "id": "JL-N5-0003",
+        "value": "担当者に電話する"
+      },
+      {
+        "id": "JL-N5-0003",
+        "value": "コピーを三部取る"
+      },
+      {
+        "id": "JL-N5-0003",
+        "value": "担当者に電話するの後で資料を受付に出す"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "担当者に電話する"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "予約を変更する"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "荷物を二階へ運ぶ"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "予約を変更するの後で担当者に電話する"
+      },
+      {
+        "id": "JL-N5-0008",
+        "value": "担当者に電話する"
+      },
+      {
+        "id": "JL-N5-0013",
+        "value": "予約を変更する"
+      },
+      {
+        "id": "JL-N5-0013",
+        "value": "申込書に名前を書く"
+      }
+    ],
+    "maxWrongTripleReuse": 301,
+    "topWrongTriples": [
+      {
+        "count": 301,
+        "signature": "先到空港再去学校｜在学校附近的入口見面｜在空港見面"
+      },
+      {
+        "count": 301,
+        "signature": "日期和會場都改了｜會場不變只改日期｜活動完全取消"
+      },
+      {
+        "count": 301,
+        "signature": "先處理資料｜取消外出｜叫男方先去"
+      },
+      {
+        "count": 295,
+        "signature": "取消見面｜改去公園等對方｜等對方到了才去駅"
+      },
+      {
+        "count": 294,
+        "signature": "會場不變但開始時間延後｜會場改到公園開始時間也提早｜活動取消"
+      },
+      {
+        "count": 294,
+        "signature": "不再處理資料｜交給別人後不再確認｜今天一定處理資料"
+      },
+      {
+        "count": 291,
+        "signature": "先到空港再去駅｜在空港見面｜在駅附近的入口見面"
+      },
+      {
+        "count": 291,
+        "signature": "在駅買新的資料｜把資料丟掉｜把資料帶去駅"
+      },
+      {
+        "count": 247,
+        "signature": "去公園的東側入口｜去学校的西側入口｜去車站前的施工入口"
+      },
+      {
+        "count": 247,
+        "signature": "日期延後但會場不變｜會場和開始時間都改了｜活動取消"
+      },
+      {
+        "count": 247,
+        "signature": "今天一定處理資料｜全部交給男方｜完全放棄處理資料"
+      },
+      {
+        "count": 204,
+        "signature": "在図書館正面入口前｜在図書館西側職員入口前｜在教室東側入口前"
+      }
+    ]
+  },
+  "after": {
+    "count": 6690,
+    "qualityEligible": 6504,
+    "rejected": 186,
+    "eligibleRate": 97.2,
+    "rejectedByLevel": {
+      "N1": 14,
+      "N2": 86,
+      "N3": 8,
+      "N4": 12,
+      "N5": 66
+    },
+    "reasons": {
+      "lengthTwoPlusOutlier": 186
+    },
+    "kanaChoiceCount": 0,
+    "kanaSamples": [],
+    "maxWrongTripleReuse": 32,
+    "topWrongTriples": [
+      {
+        "count": 32,
+        "signature": "只改地點不改日期｜後天照常舉行｜星期五的會議取消改到後天"
+      },
+      {
+        "count": 32,
+        "signature": "會議八時結束前三十分鐘才報到｜會議八時開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議八時半結束前三十分鐘才報到｜會議八時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議九時結束前三十分鐘才報到｜會議九時開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議九時半結束前三十分鐘才報到｜會議九時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議十時半結束前三十分鐘才報到｜會議十時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議十一時半結束前三十分鐘才報到｜會議十一時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議一時結束前三十分鐘才報到｜會議一時開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議一時半結束前三十分鐘才報到｜會議一時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "活動在十一時半結束參加者要提早離場｜活動在十一時半開始但只有工作人員要提早進場｜活動延後開始所以不用提早進場"
+      }
+    ]
+  },
+  "repairCounts": {
+    "surfaceCleanup": 5042,
+    "taskTranslatedAndNearMiss": 1337,
+    "n2InferenceRebuilt": 247,
+    "reusedTemplateSurfaceDiversified": 3086,
+    "compositeAnswerCleanup": 516,
+    "normalizedTemplateDiversified": 798,
+    "diversityRevertedForQuality": 0,
+    "traditionalizedActionAliases": 172,
+    "finalReuseDiversification": 112
+  },
+  "targets": {
+    "eligibleRateMin": 95.0,
+    "structuralBadMax": 0,
+    "kanaChoiceCountMax": 0,
+    "maxWrongTripleReuseMax": 40,
+    "n2ExtremeTwoPlusMax": 0
+  },
+  "samples": [
+    {
+      "id": "JL-N5-0001",
+      "level": "N5",
+      "typeZh": "即時應答",
+      "beforeCorrect": "明日的会議是八時開始，要準時到。",
+      "afterCorrect": "明天的會議是八時開始，要準時到。",
+      "beforeChoices": [
+        "明日的会議是八時開始，要準時到。",
+        "明日的会議是十一時開始，要準時到。",
+        "今天的会議是八時開始。",
+        "明日的会議是八時結束。"
+      ],
+      "afterChoices": [
+        "明天的會議是八時開始，要準時到。",
+        "明天的會議是十一時開始，要準時到。",
+        "今天的會議是八時開始。",
+        "明天的會議是八時結束。"
+      ]
+    },
+    {
+      "id": "JL-N5-0002",
+      "level": "N5",
+      "typeZh": "重點理解",
+      "beforeCorrect": "在駅見面。",
+      "afterCorrect": "在車站見面。",
+      "beforeChoices": [
+        "在駅見面。",
+        "在空港見面。",
+        "在駅附近的入口見面。",
+        "先到空港再去駅。"
+      ],
+      "afterChoices": [
+        "在車站見面。",
+        "在機場見面。",
+        "在車站附近的入口見面。",
+        "先到機場再去車站。"
+      ]
+    },
+    {
+      "id": "JL-N5-0003",
+      "level": "N5",
+      "typeZh": "任務理解",
+      "beforeCorrect": "資料を受付に出す",
+      "afterCorrect": "把資料交到接待處",
+      "beforeChoices": [
+        "資料を受付に出す",
+        "担当者に電話する",
+        "コピーを三部取る",
+        "担当者に電話するの後で資料を受付に出す"
+      ],
+      "afterChoices": [
+        "把資料交到接待處",
+        "先確認資料但稍後提交",
+        "影印三份文件",
+        "担当者に電話するの後で資料を受付に出す"
+      ]
+    },
+    {
+      "id": "JL-N5-0004",
+      "level": "N5",
+      "typeZh": "概要理解",
+      "beforeCorrect": "明日的会議取消，改到星期五。",
+      "afterCorrect": "明天的會議取消，改到星期五。",
+      "beforeChoices": [
+        "明日的会議取消，改到星期五。",
+        "星期五的会議取消，改到明日。",
+        "明日照常舉行。",
+        "只改地點，不改日期。"
+      ],
+      "afterChoices": [
+        "明天的會議取消，改到星期五。",
+        "星期五的會議取消，改到明天。",
+        "明天照常舉行。",
+        "只改地點，不改日期。"
+      ]
+    },
+    {
+      "id": "JL-N5-0005",
+      "level": "N5",
+      "typeZh": "推論／意圖理解",
+      "beforeCorrect": "去駅拿回資料。",
+      "afterCorrect": "去車站拿回資料。",
+      "beforeChoices": [
+        "去駅拿回資料。",
+        "把資料帶去駅。",
+        "在駅買新的資料。",
+        "把資料丟掉。"
+      ],
+      "afterChoices": [
+        "去車站拿回資料。",
+        "把資料帶去車站。",
+        "在車站買新的資料。",
+        "把資料丟掉。"
+      ]
+    },
+    {
+      "id": "JL-N5-0006",
+      "level": "N5",
+      "typeZh": "即時應答",
+      "beforeCorrect": "明日的会議是八時開始，要準時到。",
+      "afterCorrect": "明天的會議是八時開始，要準時到。",
+      "beforeChoices": [
+        "明日的会議是十一時開始，要準時到。",
+        "今天的会議是八時開始。",
+        "明日的会議是八時結束。",
+        "明日的会議是八時開始，要準時到。"
+      ],
+      "afterChoices": [
+        "明天的會議是十一時開始，要準時到。",
+        "今天的會議是八時開始。",
+        "明天的會議是八時結束。",
+        "明天的會議是八時開始，要準時到。"
+      ]
+    },
+    {
+      "id": "JL-N5-0007",
+      "level": "N5",
+      "typeZh": "重點理解",
+      "beforeCorrect": "在駅見面。",
+      "afterCorrect": "在車站見面。",
+      "beforeChoices": [
+        "在空港見面。",
+        "在駅附近的入口見面。",
+        "先到空港再去駅。",
+        "在駅見面。"
+      ],
+      "afterChoices": [
+        "在機場見面。",
+        "在車站附近的入口見面。",
+        "先到機場再去車站。",
+        "在車站見面。"
+      ]
+    },
+    {
+      "id": "JL-N5-0008",
+      "level": "N5",
+      "typeZh": "任務理解",
+      "beforeCorrect": "担当者に電話する",
+      "afterCorrect": "致電負責人",
+      "beforeChoices": [
+        "予約を変更する",
+        "荷物を二階へ運ぶ",
+        "予約を変更するの後で担当者に電話する",
+        "担当者に電話する"
+      ],
+      "afterChoices": [
+        "稍後再致電負責人",
+        "把行李搬到二樓",
+        "予約を変更するの後で担当者に電話する",
+        "致電負責人"
+      ]
+    },
+    {
+      "id": "JL-N5-0009",
+      "level": "N5",
+      "typeZh": "概要理解",
+      "beforeCorrect": "明日的会議取消，改到星期五。",
+      "afterCorrect": "明天的會議取消，改到星期五。",
+      "beforeChoices": [
+        "星期五的会議取消，改到明日。",
+        "明日照常舉行。",
+        "只改地點，不改日期。",
+        "明日的会議取消，改到星期五。"
+      ],
+      "afterChoices": [
+        "星期五的會議取消，改到明天。",
+        "明天照常舉行。",
+        "只改地點，不改日期。",
+        "明天的會議取消，改到星期五。"
+      ]
+    },
+    {
+      "id": "JL-N5-0010",
+      "level": "N5",
+      "typeZh": "推論／意圖理解",
+      "beforeCorrect": "去駅拿回資料。",
+      "afterCorrect": "去車站拿回資料。",
+      "beforeChoices": [
+        "把資料帶去駅。",
+        "在駅買新的資料。",
+        "把資料丟掉。",
+        "去駅拿回資料。"
+      ],
+      "afterChoices": [
+        "把資料帶去車站。",
+        "在車站買新的資料。",
+        "把資料丟掉。",
+        "去車站拿回資料。"
+      ]
+    },
+    {
+      "id": "JL-N5-0011",
+      "level": "N5",
+      "typeZh": "即時應答",
+      "beforeCorrect": "明日的会議是八時開始，要準時到。",
+      "afterCorrect": "明天的會議是八時開始，要準時到。",
+      "beforeChoices": [
+        "今天的会議是八時開始。",
+        "明日的会議是八時結束。",
+        "明日的会議是八時開始，要準時到。",
+        "明日的会議是十一時開始，要準時到。"
+      ],
+      "afterChoices": [
+        "今天的會議是八時開始。",
+        "明天的會議是八時結束。",
+        "明天的會議是八時開始，要準時到。",
+        "明天的會議是十一時開始，要準時到。"
+      ]
+    },
+    {
+      "id": "JL-N5-0012",
+      "level": "N5",
+      "typeZh": "重點理解",
+      "beforeCorrect": "在駅見面。",
+      "afterCorrect": "在車站見面。",
+      "beforeChoices": [
+        "在駅附近的入口見面。",
+        "先到空港再去駅。",
+        "在駅見面。",
+        "在空港見面。"
+      ],
+      "afterChoices": [
+        "在車站附近的入口見面。",
+        "先到機場再去車站。",
+        "在車站見面。",
+        "在機場見面。"
+      ]
+    },
+    {
+      "id": "JL-N5-0013",
+      "level": "N5",
+      "typeZh": "任務理解",
+      "beforeCorrect": "予約を変更する",
+      "afterCorrect": "更改預約",
+      "beforeChoices": [
+        "申込書に名前を書く",
+        "コピーを三部取るの後で予約を変更する",
+        "予約を変更する",
+        "コピーを三部取る"
+      ],
+      "afterChoices": [
+        "先確認預約內容但暫不更改",
+        "コピーを三部取るの後で予約を変更する",
+        "更改預約",
+        "影印三份文件"
+      ]
+    },
+    {
+      "id": "JL-N5-0014",
+      "level": "N5",
+      "typeZh": "概要理解",
+      "beforeCorrect": "明日的会議取消，改到星期五。",
+      "afterCorrect": "明天的會議取消，改到星期五。",
+      "beforeChoices": [
+        "明日照常舉行。",
+        "只改地點，不改日期。",
+        "明日的会議取消，改到星期五。",
+        "星期五的会議取消，改到明日。"
+      ],
+      "afterChoices": [
+        "明天照常舉行。",
+        "只改地點，不改日期。",
+        "明天的會議取消，改到星期五。",
+        "星期五的會議取消，改到明天。"
+      ]
+    },
+    {
+      "id": "JL-N5-0015",
+      "level": "N5",
+      "typeZh": "推論／意圖理解",
+      "beforeCorrect": "去駅拿回資料。",
+      "afterCorrect": "去車站拿回資料。",
+      "beforeChoices": [
+        "在駅買新的資料。",
+        "把資料丟掉。",
+        "去駅拿回資料。",
+        "把資料帶去駅。"
+      ],
+      "afterChoices": [
+        "在車站買新的資料。",
+        "把資料丟掉。",
+        "去車站拿回資料。",
+        "把資料帶去車站。"
+      ]
+    },
+    {
+      "id": "JL-N5-0016",
+      "level": "N5",
+      "typeZh": "即時應答",
+      "beforeCorrect": "明日的会議是八時開始，要準時到。",
+      "afterCorrect": "明天的會議是八時開始，要準時到。",
+      "beforeChoices": [
+        "明日的会議是八時結束。",
+        "明日的会議是八時開始，要準時到。",
+        "明日的会議是十一時開始，要準時到。",
+        "今天的会議是八時開始。"
+      ],
+      "afterChoices": [
+        "明天的會議是八時結束。",
+        "明天的會議是八時開始，要準時到。",
+        "明天的會議是十一時開始，要準時到。",
+        "今天的會議是八時開始。"
+      ]
+    },
+    {
+      "id": "JL-N5-0017",
+      "level": "N5",
+      "typeZh": "重點理解",
+      "beforeCorrect": "在駅見面。",
+      "afterCorrect": "在車站見面。",
+      "beforeChoices": [
+        "先到空港再去駅。",
+        "在駅見面。",
+        "在空港見面。",
+        "在駅附近的入口見面。"
+      ],
+      "afterChoices": [
+        "先到機場再去車站。",
+        "在車站見面。",
+        "在機場見面。",
+        "在車站附近的入口見面。"
+      ]
+    },
+    {
+      "id": "JL-N5-0018",
+      "level": "N5",
+      "typeZh": "任務理解",
+      "beforeCorrect": "コピーを三部取る",
+      "afterCorrect": "影印三份文件",
+      "beforeChoices": [
+        "荷物を二階へ運ぶの後でコピーを三部取る",
+        "コピーを三部取る",
+        "荷物を二階へ運ぶ",
+        "鍵を受付へ返す"
+      ],
+      "afterChoices": [
+        "荷物を二階へ運ぶの後でコピーを三部取る",
+        "影印三份文件",
+        "先整理文件但暫不影印",
+        "把鑰匙交還接待處"
+      ]
+    },
+    {
+      "id": "JL-N5-0019",
+      "level": "N5",
+      "typeZh": "概要理解",
+      "beforeCorrect": "明日的会議取消，改到星期五。",
+      "afterCorrect": "明天的會議取消，改到星期五。",
+      "beforeChoices": [
+        "只改地點，不改日期。",
+        "明日的会議取消，改到星期五。",
+        "星期五的会議取消，改到明日。",
+        "明日照常舉行。"
+      ],
+      "afterChoices": [
+        "只改地點，不改日期。",
+        "明天的會議取消，改到星期五。",
+        "星期五的會議取消，改到明天。",
+        "明天照常舉行。"
+      ]
+    },
+    {
+      "id": "JL-N5-0020",
+      "level": "N5",
+      "typeZh": "推論／意圖理解",
+      "beforeCorrect": "去駅拿回資料。",
+      "afterCorrect": "去車站拿回資料。",
+      "beforeChoices": [
+        "把資料丟掉。",
+        "去駅拿回資料。",
+        "把資料帶去駅。",
+        "在駅買新的資料。"
+      ],
+      "afterChoices": [
+        "把資料丟掉。",
+        "去車站拿回資料。",
+        "把資料帶去車站。",
+        "在車站買新的資料。"
+      ]
+    },
+    {
+      "id": "JL-N5-0021",
+      "level": "N5",
+      "typeZh": "即時應答",
+      "beforeCorrect": "明日的会議是八時開始，要準時到。",
+      "afterCorrect": "明天的會議是八時開始，要準時到。",
+      "beforeChoices": [
+        "明日的会議是八時開始，要準時到。",
+        "明日的会議是十一時開始，要準時到。",
+        "今天的会議是八時開始。",
+        "明日的会議是八時結束。"
+      ],
+      "afterChoices": [
+        "明天的會議是八時開始，要準時到。",
+        "明天的會議是十一時開始，要準時到。",
+        "今天的會議是八時開始。",
+        "明天的會議是八時結束。"
+      ]
+    },
+    {
+      "id": "JL-N5-0022",
+      "level": "N5",
+      "typeZh": "重點理解",
+      "beforeCorrect": "在駅見面。",
+      "afterCorrect": "在車站見面。",
+      "beforeChoices": [
+        "在駅見面。",
+        "在空港見面。",
+        "在駅附近的入口見面。",
+        "先到空港再去駅。"
+      ],
+      "afterChoices": [
+        "在車站見面。",
+        "在機場見面。",
+        "在車站附近的入口見面。",
+        "先到機場再去車站。"
+      ]
+    },
+    {
+      "id": "JL-N5-0023",
+      "level": "N5",
+      "typeZh": "任務理解",
+      "beforeCorrect": "荷物を二階へ運ぶ",
+      "afterCorrect": "把行李搬到二樓",
+      "beforeChoices": [
+        "荷物を二階へ運ぶ",
+        "申込書に名前を書く",
+        "会議室を予約する",
+        "申込書に名前を書くの後で荷物を二階へ運ぶ"
+      ],
+      "afterChoices": [
+        "把行李搬到二樓",
+        "把行李搬到三樓",
+        "預約會議室",
+        "申込書に名前を書くの後で荷物を二階へ運ぶ"
+      ]
+    },
+    {
+      "id": "JL-N5-0024",
+      "level": "N5",
+      "typeZh": "概要理解",
+      "beforeCorrect": "明日的会議取消，改到星期五。",
+      "afterCorrect": "明天的會議取消，改到星期五。",
+      "beforeChoices": [
+        "明日的会議取消，改到星期五。",
+        "星期五的会議取消，改到明日。",
+        "明日照常舉行。",
+        "只改地點，不改日期。"
+      ],
+      "afterChoices": [
+        "明天的會議取消，改到星期五。",
+        "星期五的會議取消，改到明天。",
+        "明天照常舉行。",
+        "只改地點，不改日期。"
+      ]
+    }
+  ],
+  "notes": [
+    "Task-action translations are deterministic project-authored Traditional Chinese mappings for the 12 observed action values.",
+    "N2 distractors are project-original near-miss alternatives based only on the project audio scenario, not copied external text.",
+    "High-reuse template diversification changes surface wording only; answer meaning and correctness are preserved.",
+    "Batch 5 v2 translates embedded action combinations such as Aの後でB into Traditional Chinese.",
+    "Template diversification now operates on normalized propositions and uses a 64-combination Cartesian cycle, while reverting any wording change that would make a previously eligible item fail the quality gate.",
+    "Batch 5 v3 handles the two Traditional-kanji/Japanese-grammar action aliases left by earlier surface cleanup and lowers high-reuse groups above 32."
+  ],
+  "afterCompositeCleanup": {
+    "count": 6690,
+    "qualityEligible": 6504,
+    "rejected": 186,
+    "eligibleRate": 97.2,
+    "rejectedByLevel": {
+      "N1": 14,
+      "N2": 86,
+      "N3": 8,
+      "N4": 12,
+      "N5": 66
+    },
+    "reasons": {
+      "lengthTwoPlusOutlier": 186
+    },
+    "kanaChoiceCount": 172,
+    "kanaSamples": [
+      {
+        "id": "JL-N5-0033",
+        "value": "會議室を予約する之後再把鑰匙交還接待處"
+      },
+      {
+        "id": "JL-N5-0038",
+        "value": "確認電郵之後再會議室を予約する"
+      },
+      {
+        "id": "JL-N5-0053",
+        "value": "本を圖書館へ返す之後再領取藥物"
+      },
+      {
+        "id": "JL-N5-0058",
+        "value": "把資料交到接待處之後再本を圖書館へ返す"
+      },
+      {
+        "id": "JL-N5-0098",
+        "value": "致電負責人之後再會議室を予約する"
+      },
+      {
+        "id": "JL-N5-0118",
+        "value": "致電負責人之後再本を圖書館へ返す"
+      },
+      {
+        "id": "JL-N5-0158",
+        "value": "更改預約之後再會議室を予約する"
+      },
+      {
+        "id": "JL-N5-0178",
+        "value": "更改預約之後再本を圖書館へ返す"
+      },
+      {
+        "id": "JL-N5-0218",
+        "value": "影印三份文件之後再會議室を予約する"
+      },
+      {
+        "id": "JL-N5-0238",
+        "value": "影印三份文件之後再本を圖書館へ返す"
+      },
+      {
+        "id": "JL-N5-0278",
+        "value": "把行李搬到二樓之後再會議室を予約する"
+      },
+      {
+        "id": "JL-N5-0298",
+        "value": "把行李搬到二樓之後再本を圖書館へ返す"
+      }
+    ],
+    "maxWrongTripleReuse": 294,
+    "topWrongTriples": [
+      {
+        "count": 294,
+        "signature": "會場不變但開始時間延後｜會場改到公園開始時間也提早｜活動取消"
+      },
+      {
+        "count": 204,
+        "signature": "延期到其他日期會場不變｜日期不變但開始時間和會場都改了｜活動取消"
+      },
+      {
+        "count": 73,
+        "signature": "日期延後但會場不變｜會場和開始時間都改了｜活動取消"
+      },
+      {
+        "count": 59,
+        "signature": "日期延後但會場不變｜活動取消｜舉行地點與開始時間都有更改"
+      },
+      {
+        "count": 58,
+        "signature": "日期延後但會場不變｜活動取消｜活動地點和開場時間同時調整"
+      },
+      {
+        "count": 57,
+        "signature": "日期延後但會場不變｜會場及開始時刻都有變動｜活動取消"
+      },
+      {
+        "count": 49,
+        "signature": "只改地點不改日期｜星期五的會議取消改到明天｜活動明天如期進行"
+      },
+      {
+        "count": 41,
+        "signature": "只改地點不改日期｜明天照常舉行｜星期五的會議取消改到明天"
+      },
+      {
+        "count": 39,
+        "signature": "只改地點不改日期｜明天按原定安排舉行｜星期五的會議取消改到明天"
+      },
+      {
+        "count": 35,
+        "signature": "只改地點不改日期｜後天按原定安排舉行｜星期五的會議取消改到後天"
+      },
+      {
+        "count": 34,
+        "signature": "只改地點不改日期｜後天仍按原計畫舉行｜星期五的會議取消改到後天"
+      },
+      {
+        "count": 32,
+        "signature": "只改地點不改日期｜後天照常舉行｜星期五的會議取消改到後天"
+      }
+    ]
+  },
+  "afterAliasCleanup": {
+    "count": 6690,
+    "qualityEligible": 6504,
+    "rejected": 186,
+    "eligibleRate": 97.2,
+    "rejectedByLevel": {
+      "N1": 14,
+      "N2": 86,
+      "N3": 8,
+      "N4": 12,
+      "N5": 66
+    },
+    "reasons": {
+      "lengthTwoPlusOutlier": 186
+    },
+    "kanaChoiceCount": 0,
+    "kanaSamples": [],
+    "maxWrongTripleReuse": 43,
+    "topWrongTriples": [
+      {
+        "count": 43,
+        "signature": "只改地點不改日期｜明天按原定安排舉行｜星期五的會議取消改到明天"
+      },
+      {
+        "count": 35,
+        "signature": "只改地點不改日期｜後天按原定安排舉行｜星期五的會議取消改到後天"
+      },
+      {
+        "count": 34,
+        "signature": "只改地點不改日期｜後天仍按原計畫舉行｜星期五的會議取消改到後天"
+      },
+      {
+        "count": 32,
+        "signature": "只改地點不改日期｜後天照常舉行｜星期五的會議取消改到後天"
+      },
+      {
+        "count": 32,
+        "signature": "會議八時結束前三十分鐘才報到｜會議八時開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議八時半結束前三十分鐘才報到｜會議八時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議九時結束前三十分鐘才報到｜會議九時開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議九時半結束前三十分鐘才報到｜會議九時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議十時半結束前三十分鐘才報到｜會議十時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      },
+      {
+        "count": 32,
+        "signature": "會議十一時半結束前三十分鐘才報到｜會議十一時半開始開始後三十分鐘才報到｜活動改到十一時開始而且不用提早報到"
+      }
+    ]
+  }
+}
