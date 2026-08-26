@@ -1,0 +1,35 @@
+{
+  "policy": {
+    "meaning": "exact written-form match only; kana/alternate-form fallback forbidden",
+    "level": "JLPT Waller when available; otherwise exact written-form+reading frequency only; curated exceptions are keyed by reading+written form",
+    "officialJlptNote": "Estimated levels are not an official JLPT vocabulary list."
+  },
+  "counts": {
+    "advancedGenerated": 10916,
+    "uniqueKeys": 10916,
+    "duplicateRowsRemoved": 8,
+    "sameMeaningHomophoneGroupsForReview": 2
+  },
+  "sentinelMai": {
+    "まい": [
+      {
+        "meaning": "不會～；不打算～；恐怕不～（否定推量／否定意志）",
+        "level": "N2"
+      }
+    ],
+    "舞": [],
+    "枚": [],
+    "毎": []
+  },
+  "fatalIssueCount": 0,
+  "fatalIssues": [],
+  "generatedCount": 10916,
+  "coreUniqueAtBuild": 10511,
+  "mergedUniqueAtBuild": 21427,
+  "meaningSources": {
+    "thesaurus": 2678,
+    "wikidict": 2903,
+    "kaikki": 2814,
+    "direct_thesaurus_candidates": 2476
+  }
+}
