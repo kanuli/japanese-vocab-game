@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "policy": "v5-source-lineage",
+  "runtimeOverlay": "20260826-teacher-runtime-v2-lineage",
+  "status": "failure",
+  "checkedAt": "2026-08-26T13:33:26Z",
+  "runId": "32974790548",
+  "headSha": "4091ee6bb50b0365439b910b2d9c33760ef32551",
+  "checks": [
+    "v5-source-independence",
+    "32613-plus-teacher-audit-rows",
+    "zero-duplicate-exact-keys",
+    "zero-estimated-N1",
+    "393-plus-runtime-overlay-keys",
+    "chromium-32000-plus-runtime-words",
+    "teacher-sentinels",
+    "mai-homophone-separation",
+    "suika-semantic-sentinel",
+    "niwa-N5-current-teacher-level"
+  ]
+}
