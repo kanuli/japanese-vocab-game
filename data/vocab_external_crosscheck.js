@@ -51,7 +51,8 @@ const rows=[
   ["ぜんだま","善玉","N1","好人；正派角色；有益的一方"],
   ["こがねいろ","こがね色","N1","金黃色；黃金色"],
   ["とろみ","とろみ","N1","（醬汁、湯等的）黏稠度；濃稠狀態"],
-  ["さきのばし","先延ばし","N1","延期；拖延；擱置" ]
+  ["さきのばし","先延ばし","N1","延期；拖延；擱置"],
+  ["すいか","西瓜","N5","西瓜"]
 ];
 let applied=0;
 if(map instanceof Map){
@@ -64,10 +65,10 @@ if(map instanceof Map){
   }
 }
 window.VOCAB_EXTERNAL_CROSSCHECK_META={
-  version:"20260826-v3-complete",
+  version:"20260826-v4-jlpt-recheck",
   configured:rows.length,
   applied,
-  policy:"Secondary manual sense/level validation only; no bulk scraping or copied dictionary text. Final residual set cross-checked against reusable JMdict/Tomoshi candidates and, where available, Mazii/MOJi/時雨 reference entries.",
+  policy:"Secondary manual sense/level validation only; no bulk scraping or copied dictionary text. Exact written-form+reading checks use reusable JMdict/Tomoshi evidence plus Mazii/MOJi/時雨 where available. 西瓜（すいか） is explicitly cross-checked as N5.",
   references:["Mazii","MOJi辞書","時雨日中辭典","JMdict/Tomoshi"]
 };
 })();
