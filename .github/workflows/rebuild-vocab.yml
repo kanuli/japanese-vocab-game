@@ -7,6 +7,7 @@ on:
     paths:
       - tools/build_vocab_bundle.py
       - tools/build_vocab_bundle_exact.py
+      - tools/classify_vocab_audit.py
       - large_vocab_sources.js
       - large_vocab_build.js
       - large_vocab_matchers.js
@@ -31,10 +32,19 @@ jobs:
         run: |
           curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
           zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
-      - name: Build all audited vocabulary data
+      - name: Build and classify all vocabulary data
         env:
           TOMOSHI_DB: /tmp/tomoshi.db
-        run: python tools/build_vocab_bundle_exact.py
+        run: |
+          set +e
+          python tools/build_vocab_bundle_exact.py
+          build_rc=$?
+          set -e
+          if [ ! -f data/vocab_audit.json ]; then
+            echo "Builder failed before producing an audit."
+            exit "$build_rc"
+          fi
+          python tools/classify_vocab_audit.py
       - name: Verify coverage and audit
         run: |
           python - <<'PY'
@@ -49,6 +59,7 @@ jobs:
           print(json.dumps(audit['counts'], ensure_ascii=False, indent=2))
           print(json.dumps(audit['coreAudit'], ensure_ascii=False, indent=2))
           print(json.dumps(audit['sentinelMai'], ensure_ascii=False, indent=2))
+          print('reviewIssueCount=', audit.get('reviewIssueCount', 0))
           PY
       - name: Commit regenerated audited vocabulary
         run: |
