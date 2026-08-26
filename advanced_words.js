@@ -1,6 +1,10 @@
 // Load the curated supplement and validated repo-hosted expansion before the game initializes.
 document.write('<script src="./advanced_words_curated.js?v=20260821v1"><\/script>');
-document.write('<script src="./data/advanced_vocab.js?v=20260821v1"><\/script>');
+// Full-database audit outputs. Load the core overlay before any page fetches notes.csv,
+// then patch only exact reading+written-form matches. Ambiguous/unresolved rows stay unchanged.
+document.write('<script src="./data/vocab_core_verified.js?v=20260826v1"><\/script>');
+document.write('<script src="./core_vocab_fetch_patch.js?v=20260826v1"><\/script>');
+document.write('<script src="./data/advanced_vocab.js?v=20260826v1"><\/script>');
 // Strict surface-form completion layer: the 185 direct-reviewed forms that were
 // previously deferred only because the automatic sources had no reliable TC meaning.
 document.write('<script src="./data/coverage_deferred_manual.js?v=20260821v1"><\/script>');
