@@ -622,7 +622,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 せずに	せずに	N5	D	estimated	model+frequency+world-distribution	1	22648	1006540	{}
 せっきょく	積極	N5	D	estimated	model+frequency+world-distribution	1	1253	1383010	{}
 せっけん	石鹸	N5	A	direct	independent-teacher-anchor	1	15057	1382590	"{""teacher-anchor"":""N5"",""openjlpt-exact"":""N2"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
-せっけん	石鹸[けん]	N5	A	direct	independent-teacher-anchor	1	15057	1382590	"{""teacher-anchor"":""N5"",""core-deck-exact"":""N2"",""existing-direct"":""N5"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N2"",""waller-entry-context"":""N5""}"
 せびろ	背広	N5	B	direct	waller-lineage-exact	1	5730	1472740	"{""openjlpt-exact"":""N5"",""waller-exact"":""N5"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
 せまい	狭い	N5	A	direct	core+waller-lineage-corroborated	1	21976	1237680	"{""core-deck-exact"":""N5"",""openjlpt-exact"":""N5"",""waller-exact"":""N5"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
 せん	千	N5	A	direct	core+waller-lineage-corroborated	1	288	1388740	"{""core-deck-exact"":""N5"",""openjlpt-exact"":""N5"",""waller-exact"":""N5"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
@@ -2681,7 +2680,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あつめる	集める	N4	A	direct	core+waller-lineage-corroborated	1	3144	1333560	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
 あてさき	宛先	N4	B	direct	core-exact	1	25082	1586500	"{""core-deck-exact"":""N4"",""existing-direct"":""N4""}"
 あてる	当てる	N4	A	direct	manual-secondary-exact	1	4727	1448860	"{""manual-secondary-exact"":""N4"",""core-deck-exact"":""N4"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
-あめ	飴[あめ]	N4	B	direct+conflict	core-exact	1	20601	1153520	"{""core-deck-exact"":""N4"",""existing-direct"":""N5"",""core-deck-normalized"":""N4"",""openjlpt-normalized"":""N5"",""waller-normalized"":""N5"",""waller-entry-context"":""N5""}"
 あやまって	誤って	N4	D	estimated	model+frequency+world-distribution	1	3442	1857140	{}
 あやまる	謝る	N4	A	direct	core+waller-lineage-corroborated	1	15042	1323010	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
 あれだけ	あれだけ	N4	D	estimated	model+frequency+world-distribution	1	25579	1981440	{}
@@ -2746,7 +2744,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 うごき	動き	N4	A	direct	manual-secondary-exact	1	354	1451180	"{""manual-secondary-exact"":""N4"",""core-deck-exact"":""N4"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うごく	動く	N4	A	direct	core+waller-lineage-corroborated	1	24552	1451210	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
 うそ	嘘	N4	A	direct	manual-secondary-exact	1	10269	1172400	"{""manual-secondary-exact"":""N4"",""openjlpt-exact"":""N3"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
-うそ	嘘[うそ]	N4	B	direct	core-exact	1	10269	1172400	"{""core-deck-exact"":""N4"",""existing-direct"":""N4"",""core-deck-normalized"":""N4"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N4"",""waller-entry-context"":""N4""}"
 うたげ	宴	N4	D	estimated	model+frequency+world-distribution	1	3953	1176310	{}
 うつ	打つ	N4	A	direct	core+waller-lineage-corroborated	1	2742	1408810	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
 うつくしい	美しい	N4	A	direct	core+waller-lineage-corroborated	1	3797	1486360	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
@@ -3414,7 +3411,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 そつぎょう	卒業	N4	A	direct	core+waller-lineage-corroborated	1	1274	1405890	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
 そのご	その後	N4	B	direct	core-exact	0		1006860	"{""core-deck-exact"":""N4"",""existing-direct"":""N4""}"
 そのまま	そのまま	N4	A	direct	manual-secondary-exact	1	24384	1406030	"{""manual-secondary-exact"":""N4"",""core-deck-exact"":""N4"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3""}"
-そば	蕎麦[そば]	N4	B	direct+conflict	core-exact	1	20147	1238460	"{""core-deck-exact"":""N4"",""existing-direct"":""N2"",""core-deck-normalized"":""N4"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
+そば	蕎麦	N2	B	direct	waller-lineage-exact	1	20147	1238460	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 それじゃ	それじゃ	N4	D	estimated	model+frequency+world-distribution	1	26326	2858616	{}
 それぞれ	それぞれ	N4	A	direct	manual-secondary-exact	1	25159	1596690	"{""manual-secondary-exact"":""N4"",""core-deck-exact"":""N4"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 それで	それで	N4	A	direct	core+waller-lineage-corroborated	1	22667	1007000	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4""}"
@@ -3733,7 +3730,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ぬき	抜き	N4	D	estimated	model+frequency+world-distribution	1	2469	2009330	{}
 ぬすむ	盗む	N4	A	direct	core+waller-lineage-corroborated	1	4230	1448440	"{""core-deck-exact"":""N4"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
 ぬる	塗る	N4	A	direct	manual-secondary-exact	1	12697	1444270	"{""manual-secondary-exact"":""N4"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
-ぬれる	濡[ぬ]れる	N4	B	direct	core-exact	1	19259	1467620	"{""core-deck-exact"":""N4"",""existing-direct"":""N4"",""core-deck-normalized"":""N4"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3""}"
 ぬれる	濡れる	N4	A	direct	manual-secondary-exact	1	19259	1467620	"{""manual-secondary-exact"":""N4"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N4""}"
 ねだん	値段	N4	A	direct	manual-secondary-exact	1	1945	1600160	"{""manual-secondary-exact"":""N4"",""core-deck-exact"":""N4"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N4""}"
 ねっしん	熱心	N4	A	direct	manual-secondary-exact	1	2312	1467910	"{""manual-secondary-exact"":""N4"",""core-deck-exact"":""N4"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N4""}"
@@ -5533,7 +5529,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 いただける	頂ける	N3	D	estimated	model+frequency+world-distribution	1	25456	1628260	{}
 いたむ	悼む	N3	D	estimated	model+frequency+world-distribution	1	19257	1446980	{}
 いたむ	痛む	N3	A	direct	manual-secondary-exact	1	20179	1432710	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-いためる	炒[いた]める	N3	B	direct+conflict	core-exact	1	9654	1568920	"{""core-deck-exact"":""N3"",""existing-direct"":""N1"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
+いためる	炒める	N1	B	direct	waller-lineage-exact	1	9654	1568920	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いたり	至り	N3	D	estimated	model+frequency+world-distribution	1	18750	1858420	{}
 いたる	至る	N3	A	direct	manual-secondary-exact	1	21534	1311870	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 いたん	異端	N3	D	estimated	model+frequency+world-distribution	1	10256	1157940	{}
@@ -5905,7 +5901,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 うわかわ	上皮	N3	D	estimated	model+frequency+world-distribution	1	21358	1580440	{}
 うわくちびる	上唇	N3	D	estimated	model+frequency+world-distribution	1	25024	1580410	{}
 うわさ	噂	N3	B	direct	waller-lineage-exact	1	11215	1172590	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
-うわさ	噂[うわさ]	N3	B	direct	core-exact	1	11215	1172590	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 うわぜい	上背	N3	D	estimated	model+frequency+world-distribution	1	19400	1354130	{}
 うわっちょうし	上っ調子	N3	D	estimated	model+frequency+world-distribution	1	2175	1352450	{}
 うわづみ	上積み	N3	D	estimated	model+frequency+world-distribution	1	6086	1353640	{}
@@ -6044,7 +6039,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 えんらい	遠来	N3	D	estimated	model+frequency+world-distribution	1	21119	1178430	{}
 お	御	N3	B	direct	waller-lineage-exact	1	26196	2826528	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 お	緒	N3	D	estimated	model+frequency+world-distribution	1	5595	1343610	{}
-おい	甥[おい]	N3	B	direct+conflict	core-exact	1	18300	1179140	"{""core-deck-exact"":""N3"",""existing-direct"":""N1"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
+おい	甥	N1	B	direct	waller-lineage-exact	1	18300	1179140	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おい	老い	N3	A	direct	manual-secondary-exact	1	6340	1643510	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N1"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 おいかぜ	追い風	N3	D	estimated	model+frequency+world-distribution	1	4363	1588800	{}
 おいこす	追い越す	N3	A	direct	manual-secondary-exact	1	19726	1432280	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -6441,7 +6436,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かえ	替え	N3	D	estimated	model+frequency+world-distribution	1	9044	1410830	{}
 かえだま	替え玉	N3	D	estimated	model+frequency+world-distribution	1	5665	1410840	{}
 かえる	代える	N3	A	direct	manual-secondary-exact	1	11546	1589780	"{""manual-secondary-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N3""}"
-かえる	孵[かえ]る	N3	B	direct	core-exact	0		1566230	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3""}"
+かえる	孵る	N3	B	direct	core-exact	0		1566230	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3""}"
 かえる	換える	N3	A	direct	manual-secondary-exact	1	11546	1589780	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3""}"
 かえる	替える	N3	B	direct	waller-lineage-exact	1	11546	1589780	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3""}"
 かえる	蛙	N3	D	estimated	model+frequency+world-distribution	1	15552	1577460	{}
@@ -6459,7 +6454,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かかり	掛かり	N3	D	estimated	model+frequency+world-distribution	1	16523	1207570	{}
 かかりかん	係官	N3	D	estimated	model+frequency+world-distribution	1	7438	1249280	{}
 かかりちょう	係長	N3	D	estimated	model+frequency+world-distribution	1	5000	1249370	{}
-かかる	罹[かか]る	N3	B	direct	core-exact	1	25282	1609500	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 かかる	罹る	N3	B	direct	waller-lineage-exact	1	25282	1609500	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 かかわらず	関わらず	N3	D	estimated	model+frequency+world-distribution	1	25109	1589860	{}
 かかわる	関わる	N3	B	direct+conflict	core-exact	1	25110	1589880	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -6474,7 +6468,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かき	火器	N3	D	estimated	model+frequency+world-distribution	1	5433	1193780	{}
 かき	火気	N3	D	estimated	model+frequency+world-distribution	1	21128	1193790	{}
 かき	牡蠣	N3	D	estimated	model+frequency+world-distribution	1	23665	1182920	{}
-かき	牡蠣[かき]	N3	B	direct	core-exact	1	23665	1182920	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3""}"
 かき	花器	N3	D	estimated	model+frequency+world-distribution	1	17932	1194620	{}
 かき	花期	N3	D	estimated	model+frequency+world-distribution	1	19998	1589890	{}
 かきごおり	かき氷	N3	D	estimated	model+frequency+world-distribution	1	24363	1399920	{}
@@ -6489,7 +6482,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かぎる	限る	N3	A	direct	manual-secondary-exact	1	2078	1264640	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 かく	各	N3	D	estimated	model+frequency+world-distribution	1	23750	1204860	{}
 かく	描く	N3	A	direct	core+waller-lineage-corroborated	1	25051	1583460	"{""core-deck-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
-かく	搔[か]く	N3	B	direct+conflict	core-exact	1	24364	1399970	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""core-deck-normalized"":""N3"",""waller-entry-context"":""N2""}"
+かく	搔く	N3	B	direct+conflict	core-exact	1	24364	1399970	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""core-deck-normalized"":""N3"",""waller-entry-context"":""N2""}"
 かく	角	N3	A	direct	manual-secondary-exact	1	23754	1206100	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かくいつ	画一	N3	D	estimated	model+frequency+world-distribution	1	7734	1589990	{}
 かくえきていしゃ	各駅停車	N3	B	direct	core-exact	0		1204900	"{""core-deck-exact"":""N3"",""existing-direct"":""N3""}"
@@ -6731,7 +6724,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かみぶくろ	紙袋	N3	D	estimated	model+frequency+world-distribution	1	7981	1311580	{}
 かみよ	神代	N3	D	estimated	model+frequency+world-distribution	1	15203	1364740	{}
 かみわざ	神業	N3	D	estimated	model+frequency+world-distribution	1	24257	1364510	{}
-かむ	嚙[か]む	N3	B	direct+conflict	core-exact	1	23773	1209240	"{""core-deck-exact"":""N3"",""existing-direct"":""N4"",""core-deck-normalized"":""N3"",""waller-entry-context"":""N4""}"
+かむ	嚙む	N3	B	direct+conflict	core-exact	1	23773	1209240	"{""core-deck-exact"":""N3"",""existing-direct"":""N4"",""core-deck-normalized"":""N3"",""waller-entry-context"":""N4""}"
 かむ	擤む	N3	D	estimated	model+frequency+world-distribution	1	25475	1632670	{}
 かめい	仮名	N3	D	estimated	model+frequency+world-distribution	1	6758	1577090	{}
 かめい	家名	N3	D	estimated	model+frequency+world-distribution	1	21127	1192500	{}
@@ -7850,7 +7843,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 けんえい	兼営	N3	D	estimated	model+frequency+world-distribution	1	15161	1256570	{}
 けんえい	県営	N3	D	estimated	model+frequency+world-distribution	1	10341	1258820	{}
 けんえき	権益	N3	D	estimated	model+frequency+world-distribution	1	8421	1258100	{}
-けんか	喧嘩[けんか]	N3	B	direct+conflict	core-exact	1	17377	1257040	"{""core-deck-exact"":""N3"",""existing-direct"":""N4"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N4"",""waller-entry-context"":""N4""}"
 けんか	献花	N3	D	estimated	model+frequency+world-distribution	1	8258	1630770	{}
 けんかい	見解	N3	A	direct	manual-secondary-exact	1	600	1259390	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 けんかく	剣客	N3	D	estimated	model+frequency+world-distribution	1	21627	1256780	{}
@@ -10441,7 +10433,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 せいれん	清廉	N3	D	estimated	model+frequency+world-distribution	1	16648	1378420	{}
 せかいてき	世界的	N3	D	estimated	model+frequency+world-distribution	1	1705	1373940	{}
 せき	咳	N3	B	direct	waller-lineage-exact	1	18766	1204300	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
-せき	咳[せき]	N3	B	direct	core-exact	1	18766	1204300	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 せき	積	N3	D	estimated	model+frequency+world-distribution	1	7085	1382870	{}
 せきえい	石英	N3	D	estimated	model+frequency+world-distribution	1	18027	1382480	{}
 せきぐん	赤軍	N3	D	estimated	model+frequency+world-distribution	1	6591	1383400	{}
@@ -11108,13 +11099,12 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 たしょく	多色	N3	D	estimated	model+frequency+world-distribution	1	21468	1787660	{}
 たじゅう	多重	N3	D	estimated	model+frequency+world-distribution	1	8075	1407770	{}
 たすけ	助け	N3	A	direct	manual-secondary-exact	1	5596	1344390	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-たずねる	訊[たず]ねる	N3	B	direct+conflict	core-exact	1	12676	1369940	"{""core-deck-exact"":""N3"",""existing-direct"":""N4"",""core-deck-normalized"":""N3"",""waller-entry-context"":""N4""}"
+たずねる	訊ねる	N3	B	direct+conflict	core-exact	1	12676	1369940	"{""core-deck-exact"":""N3"",""existing-direct"":""N4"",""core-deck-normalized"":""N3"",""waller-entry-context"":""N4""}"
 たせん	他薦	N3	D	estimated	model+frequency+world-distribution	1	18607	1581410	{}
 たぜい	多勢	N3	D	estimated	model+frequency+world-distribution	1	22180	1407880	{}
 たそがれ	黄昏	N3	D	estimated	model+frequency+world-distribution	1	16021	1576750	{}
 たたかい	戦い	N3	A	direct	manual-secondary-exact	1	1455	1596950	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 たたき	叩き	N3	D	estimated	model+frequency+world-distribution	1	24432	1416050	{}
-たたく	叩[たた]く	N3	B	direct	core-exact	1	24433	1416170	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 たたく	叩く	N3	B	direct	waller-lineage-exact	1	24433	1416170	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 たたずむ	佇む	N3	D	estimated	model+frequency+world-distribution	1	24906	1563190	{}
 たたむ	畳む	N3	A	direct	manual-secondary-exact	1	24228	1356780	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -11403,7 +11393,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ちゃっか	着火	N3	D	estimated	model+frequency+world-distribution	1	20454	1616510	{}
 ちゃみせ	茶店	N3	D	estimated	model+frequency+world-distribution	1	20902	1581670	{}
 ちゃや	茶屋	N3	D	estimated	model+frequency+world-distribution	1	9516	1422620	{}
-ちゃわん	茶碗[わん]	N3	B	direct+conflict	core-exact	1	10145	1597530	"{""core-deck-exact"":""N3"",""existing-direct"":""N5"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2""}"
 ちゃーはん	チャーハン	N3	B	direct	core-exact	1	29875	1568950	"{""core-deck-exact"":""N3"",""existing-direct"":""N3""}"
 ちゅう	注	N3	A	direct	core+waller-lineage-corroborated	1	5681	1426520	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 ちゅうえつ	中越	N3	D	estimated	model+frequency+world-distribution	1	7362	2849423	{}
@@ -11629,7 +11618,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 つきよ	月夜	N3	D	estimated	model+frequency+world-distribution	1	19698	1255870	{}
 つぎつぎ	次々	N3	A	direct	core+waller-lineage-corroborated	1	1940	1597850	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 つく	就く	N3	A	direct	manual-secondary-exact	1	24145	1331530	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
-つく	点[つ]く	N3	B	direct+conflict	core-exact	1	24522	1441400	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
+つく	点く	N2	B	direct	waller-lineage-exact	1	24522	1441400	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 つくだ	佃	N3	D	estimated	model+frequency+world-distribution	1	10593	1581870	{}
 つくだに	佃煮	N3	D	estimated	model+frequency+world-distribution	1	20354	1433660	{}
 つくづく	熟	N3	D	estimated	model+frequency+world-distribution	1	7363	1008110	{}
@@ -11642,7 +11631,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 つぐなう	償う	N3	D	estimated	model+frequency+world-distribution	1	15046	1346020	{}
 つけ	付け	N3	D	estimated	model+frequency+world-distribution	1	24690	1495750	{}
 つけこむ	つけ込む	N3	D	estimated	model+frequency+world-distribution	1	22009	1495900	{}
-つける	点[つ]ける	N3	B	direct+conflict	core-exact	1	25312	1610400	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
+つける	点ける	N2	B	direct	waller-lineage-exact	1	25312	1610400	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 つた	蔦	N3	D	estimated	model+frequency+world-distribution	1	11985	1433760	{}
 つたう	伝う	N3	B	direct	core-exact	1	18797	1441850	"{""core-deck-exact"":""N3"",""existing-direct"":""N3""}"
 つたわる	伝わる	N3	A	direct	manual-secondary-exact	1	9534	1441900	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -12378,7 +12367,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 なつび	夏日	N3	D	estimated	model+frequency+world-distribution	1	20136	1980940	{}
 なつふく	夏服	N3	D	estimated	model+frequency+world-distribution	1	17931	1191600	{}
 なつやま	夏山	N3	D	estimated	model+frequency+world-distribution	1	16990	1191440	{}
-なでる	撫[な]でる	N3	B	direct+conflict	core-exact	1	24704	1498290	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
+なでる	撫でる	N2	B	direct	waller-lineage-exact	1	24704	1498290	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ななくさ	七草	N3	D	estimated	model+frequency+world-distribution	1	16120	1319400	{}
 ななめ	斜め	N3	A	direct	manual-secondary-exact	1	7034	1322400	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 なにかと	何かと	N3	B	direct	core-exact	1	23699	1189280	"{""core-deck-exact"":""N3"",""existing-direct"":""N3""}"
@@ -12744,7 +12733,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 のら	野良	N3	D	estimated	model+frequency+world-distribution	1	15308	1537660	{}
 のり	のり	N3	B	direct+conflict	core-exact	1	15506	1267400	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 のり	海苔	N3	D	estimated	model+frequency+world-distribution	1	17835	1201620	{}
-のり	海苔[のり]	N3	B	direct	core-exact	1	17835	1201620	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3""}"
 のりかえ	乗り換え	N3	A	direct	manual-secondary-exact	1	9678	1600460	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N2""}"
 のりと	祝詞	N3	D	estimated	model+frequency+world-distribution	1	19390	1337450	{}
 のりば	乗場	N3	D	estimated	model+frequency+world-distribution	1	15560	1600520	{}
@@ -13249,7 +13237,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ひめぎみ	姫君	N3	D	estimated	model+frequency+world-distribution	1	21777	1487950	{}
 ひめん	罷免	N3	D	estimated	model+frequency+world-distribution	1	10521	1484240	{}
 ひも	紐	N3	B	direct	waller-lineage-exact	1	19265	1487970	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
-ひも	紐[ひも]	N3	B	direct	core-exact	1	19265	1487970	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 ひもと	火元	N3	D	estimated	model+frequency+world-distribution	1	15599	1193840	{}
 ひゃくがい	百害	N3	D	estimated	model+frequency+world-distribution	1	21778	1488100	{}
 ひゃくじゅうきゅうばん	119番	N3	D	estimated	model+frequency+world-distribution	1	7743	1602160	{}
@@ -13858,7 +13845,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ほうれい	法令	N3	D	estimated	model+frequency+world-distribution	1	5762	1517500	{}
 ほうれつ	放列	N3	D	estimated	model+frequency+world-distribution	1	20966	1710450	{}
 ほうわ	法話	N3	D	estimated	model+frequency+world-distribution	1	18731	1805420	{}
-ほえる	吠[ほ]える	N3	B	direct	core-exact	1	25225	1603420	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 ほえる	吠える	N3	B	direct	waller-lineage-exact	1	25225	1603420	"{""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 ほかく	保革	N3	D	estimated	model+frequency+world-distribution	1	7767	1627250	{}
 ほかに	他に	N3	D	estimated	model+frequency+world-distribution	1	23746	1203280	{}
@@ -14320,7 +14306,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 むきゅう	無休	N3	D	estimated	model+frequency+world-distribution	1	10091	1529800	{}
 むぎちゃ	麦茶	N3	D	estimated	model+frequency+world-distribution	1	21300	1476230	{}
 むぎばたけ	麦畑	N3	D	estimated	model+frequency+world-distribution	1	17631	1476280	{}
-むく	剝[む]く	N3	B	direct+conflict	core-exact	1	24630	1474370	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""core-deck-normalized"":""N3"",""waller-entry-context"":""N2""}"
+むく	剝く	N3	B	direct+conflict	core-exact	1	24630	1474370	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""core-deck-normalized"":""N3"",""waller-entry-context"":""N2""}"
 むく	向く	N3	A	direct	core+waller-lineage-corroborated	1	23977	1277080	"{""core-deck-exact"":""N3"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 むく	無垢	N3	D	estimated	model+frequency+world-distribution	1	16710	1529950	{}
 むくいる	報いる	N3	D	estimated	model+frequency+world-distribution	1	14590	1515630	{}
@@ -14369,7 +14355,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 むるい	無類	N3	D	estimated	model+frequency+world-distribution	1	16789	1673740	{}
 むろまち	室町	N3	D	estimated	model+frequency+world-distribution	1	8709	1608060	{}
 め	芽	N3	A	direct	manual-secondary-exact	1	3481	1197710	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
-めい	姪[めい]	N3	B	direct+conflict	core-exact	1	18352	1532940	"{""core-deck-exact"":""N3"",""existing-direct"":""N2"",""core-deck-normalized"":""N3"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
+めい	姪	N2	B	direct	waller-lineage-exact	1	18352	1532940	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 めいい	名医	N3	D	estimated	model+frequency+world-distribution	1	20869	1531370	{}
 めいうん	命運	N3	D	estimated	model+frequency+world-distribution	1	7230	1531990	{}
 めいか	名家	N3	D	estimated	model+frequency+world-distribution	1	16237	1531380	{}
@@ -14686,7 +14672,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ゆうパック	ゆうパック	N3	D	estimated	model+frequency+world-distribution	1	25889	2143670	{}
 ゆえき	輸液	N3	D	estimated	model+frequency+world-distribution	1	19970	1538800	{}
 ゆえに	故に	N3	D	estimated	model+frequency+world-distribution	1	13619	1267130	{}
-ゆえん	所以[ゆえん]	N3	B	direct	core-exact	0		1343130	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3""}"
+ゆえん	所以	N3	B	direct	core-exact	0		1343130	"{""core-deck-exact"":""N3"",""existing-direct"":""N3"",""core-deck-normalized"":""N3""}"
 ゆかい	愉快	N3	A	direct	manual-secondary-exact	1	9148	1538560	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N3"",""waller-exact"":""N3"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 ゆかした	床下	N3	D	estimated	model+frequency+world-distribution	1	8018	1349420	{}
 ゆかた	浴衣	N3	A	direct	manual-secondary-exact	1	8217	1584990	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -16218,7 +16204,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あおじゃしん	青写真	N2	D	estimated	model+frequency+world-distribution	1	7808	1750060	{}
 あおじろい	青白い	N2	B	direct	waller-lineage-exact	1	18786	1381760	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 あおたがい	青田買い	N2	D	estimated	model+frequency+world-distribution	1	10903	1381690	{}
-あおむけ	仰[あお]向け	N2	B	direct	core-exact	1	15962	1238910	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 あおむけ	仰向け	N2	D	estimated	model+frequency+world-distribution	1	15962	1238910	{}
 あかいろ	赤色	N2	D	estimated	model+frequency+world-distribution	1	11538	1580940	{}
 あかげ	赤毛	N2	D	estimated	model+frequency+world-distribution	1	14298	1383630	{}
@@ -16376,7 +16361,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あらりょうじ	荒療治	N2	D	estimated	model+frequency+world-distribution	1	13993	1671440	{}
 あらわす	著す	N2	B	direct	waller-lineage-exact	1	24470	1427080	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 あらわれる	表れる	N2	B	direct+conflict	core-exact	1	11296	1263510	"{""core-deck-exact"":""N2"",""existing-direct"":""N3""}"
-あり	蟻[あり]	N2	B	direct	core-exact	1	17840	1225940	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 ありあわせ	あり合わせ	N2	D	estimated	model+frequency+world-distribution	1	26424	1610560	{}
 ありうる	有り得る	N2	B	direct	core-exact	0		1540970	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ありえない	あり得ない	N2	D	estimated	model+frequency+world-distribution	1	25785	2109610	{}
@@ -16731,7 +16715,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 いりょう	衣料	N2	A	direct	manual-secondary-exact	1	3454	1158830	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いりょうひん	衣料品	N2	D	estimated	model+frequency+world-distribution	1	25897	2144400	{}
 いる	炒る	N2	B	direct	waller-lineage-exact	1	21740	1391500	"{""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-いるか	海豚[いるか]	N2	B	direct	core-exact	1	23737	1201670	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 いれいさい	慰霊祭	N2	D	estimated	model+frequency+world-distribution	1	9291	1156970	{}
 いれかえ	入れ替え	N2	D	estimated	model+frequency+world-distribution	1	7819	1791760	{}
 いれかえる	入れ替える	N2	B	direct	core-exact	1	12060	1587790	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -16775,7 +16758,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 うおいちば	魚市場	N2	D	estimated	model+frequency+world-distribution	1	18874	1233150	{}
 うおうさおう	右往左往	N2	D	estimated	model+frequency+world-distribution	1	22034	1171050	{}
 うおがし	魚河岸	N2	D	estimated	model+frequency+world-distribution	1	21473	1810810	{}
-うかつ	迂闊[うかつ]	N2	B	direct	core-exact	0		1171890	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
+うかつ	迂闊	N2	B	direct	core-exact	0		1171890	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 うかばれない	浮かばれない	N2	D	estimated	model+frequency+world-distribution	1	20125	1859910	{}
 うかびあがる	浮かび上がる	N2	B	direct	core-exact	1	8150	1497350	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 うかぶ	浮かぶ	N2	A	direct	manual-secondary-exact	1	14125	1497430	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N2""}"
@@ -17162,7 +17145,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おがむ	拝む	N2	A	direct	core+waller-lineage-corroborated	1	19728	1472230	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 おきあがりこぼし	起き上がりこぼし	N2	D	estimated	model+frequency+world-distribution	1	22358	1795480	{}
 おきがさ	置き傘	N2	D	estimated	model+frequency+world-distribution	1	14982	1788690	{}
-おきて	掟[おきて]	N2	B	direct	core-exact	1	17886	1567460	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 おきどけい	置き時計	N2	D	estimated	model+frequency+world-distribution	1	16884	2187310	{}
 おきにいり	お気に入り	N2	B	direct	core-exact	1	25321	1610620	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 おきのどくに	お気の毒に	N2	B	direct	existing-direct-exact-row	0		2167510	"{""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -17297,7 +17279,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おねがいいたします	お願いいたします	N2	D	estimated	model+frequency+world-distribution	1	22482	1001730	{}
 おねがいいたします	お願い致します	N2	D	estimated	model+frequency+world-distribution	1	22482	1001730	{}
 おのおの	各々	N2	B	direct	waller-lineage-exact	1	17441	2826190	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2""}"
-おのずから	自[おの]ずから	N2	B	direct+conflict	core-exact	1	24106	1317330	"{""core-deck-exact"":""N2"",""existing-direct"":""N1"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
+おのずから	自ずから	N1	B	direct	waller-lineage-exact	1	24106	1317330	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おはなしちゅう	お話中	N2	D	estimated	model+frequency+world-distribution	1	8327	1002750	{}
 おはようございます	お早うございます	N2	D	estimated	model+frequency+world-distribution	1	22499	1002340	{}
 おばあちゃん	お婆ちゃん	N2	D	estimated	model+frequency+world-distribution	1	25616	2009460	{}
@@ -17523,7 +17505,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かいよう	海洋	N2	B	direct	waller-lineage-exact	1	2017	1201790	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 かいようきしょうだい	海洋気象台	N2	D	estimated	model+frequency+world-distribution	1	18252	1772840	{}
 かいらん	回覧	N2	A	direct	manual-secondary-exact	1	15601	1199800	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かいり	乖[かい]離	N2	B	direct	core-exact	1	18151	1563010	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 かいりつ	戒律	N2	D	estimated	model+frequency+world-distribution	1	14188	1200700	{}
 かいりょう	改良	N2	A	direct	manual-secondary-exact	1	3487	1201140	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かいろ	回路	N2	A	direct	manual-secondary-exact	1	4947	1199830	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -17711,7 +17692,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かしん	家臣	N2	D	estimated	model+frequency+world-distribution	1	12289	1192080	{}
 かしパン	菓子パン	N2	D	estimated	model+frequency+world-distribution	1	22404	1931310	{}
 かじつ	果実	N2	A	direct	core+waller-lineage-corroborated	1	5930	1192940	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-かじとり	舵[かじ]取り	N2	B	direct	core-exact	0		1753450	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
+かじとり	舵取り	N2	B	direct	core-exact	0		1753450	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 かじば	火事場	N2	D	estimated	model+frequency+world-distribution	1	20066	1724420	{}
 かじゅ	果樹	N2	D	estimated	model+frequency+world-distribution	1	10743	1192970	{}
 かじゅう	過重	N2	D	estimated	model+frequency+world-distribution	1	12763	1196130	{}
@@ -17818,10 +17799,10 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かどうか	か如何か	N2	D	estimated	model+frequency+world-distribution	1	25738	2087300	{}
 かどうりつ	稼働率	N2	D	estimated	model+frequency+world-distribution	1	9212	1613800	{}
 かどで	門出	N2	D	estimated	model+frequency+world-distribution	1	13035	1636020	{}
-かなう	叶[かな]う	N2	B	direct+conflict	core-exact	1	23768	1208870	"{""core-deck-exact"":""N2"",""existing-direct"":""N1"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
-かなう	敵[かな]う	N2	B	direct	core-exact	0		2868803	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
-かなう	適[かな]う	N2	B	direct	core-exact	0		2868802	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
-かなえる	叶[かな]える	N2	B	direct+conflict	core-exact	1	23769	1208880	"{""core-deck-exact"":""N2"",""existing-direct"":""N1"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
+かなう	叶う	N1	B	direct	waller-lineage-exact	1	23768	1208870	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
+かなう	敵う	N2	B	direct	core-exact	0		2868803	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
+かなう	適う	N2	B	direct	core-exact	0		2868802	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
+かなえる	叶える	N1	B	direct	waller-lineage-exact	1	23769	1208880	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かなしばり	金縛り	N2	D	estimated	model+frequency+world-distribution	1	18878	1243140	{}
 かなしみ	悲しみ	N2	B	direct	core-exact	1	3397	1590550	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 かなた	かなた	N2	B	direct	core-exact	1	13181	1483180	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -17860,7 +17841,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かま	釜	N2	B	direct	waller-lineage-exact	1	6933	1209080	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 かまいません	構いません	N2	D	estimated	model+frequency+world-distribution	1	18894	1279670	{}
 かまえ	構え	N2	A	direct	manual-secondary-exact	0		1279690	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かみあう	嚙[か]み合う	N2	B	direct	core-exact	0		1209150	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
+かみあう	嚙み合う	N2	B	direct	core-exact	0		1209150	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 かみかざり	髪飾り	N2	D	estimated	model+frequency+world-distribution	1	19011	1477980	{}
 かみがた	髪型	N2	B	direct	core-exact	1	10232	1954390	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 かみきれ	紙切れ	N2	D	estimated	model+frequency+world-distribution	1	13974	1636280	{}
@@ -19533,7 +19514,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こんにちてき	今日的	N2	D	estimated	model+frequency+world-distribution	1	10825	1289420	{}
 こんねんど	今年度	N2	B	direct	core-exact	1	1475	1657600	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 こんぶ	昆布	N2	D	estimated	model+frequency+world-distribution	1	13207	1579150	{}
-こんぽう	梱[こん]包	N2	B	direct	core-exact	1	24011	1290300	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 こんぽん	根本	N2	A	direct	manual-secondary-exact	1	2963	2848289	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こんぽんてき	根本的	N2	B	direct	core-exact	1	4553	1290290	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 こんまけ	根負け	N2	D	estimated	model+frequency+world-distribution	1	17982	1290270	{}
@@ -19566,7 +19546,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ごかん	語感	N2	D	estimated	model+frequency+world-distribution	1	12808	1271030	{}
 ごがくりょく	語学力	N2	D	estimated	model+frequency+world-distribution	1	14059	1934820	{}
 ごきょうりょく	ご協力	N2	D	estimated	model+frequency+world-distribution	1	23954	1270290	{}
-ごく	極[ごく]	N2	B	direct+conflict	core-exact	1	6467	1240180	"{""core-deck-exact"":""N2"",""existing-direct"":""N3"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 ごくごく	ごくごく	N2	A	direct	manual-secondary-exact	0		2178890	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ごくさいしき	極彩色	N2	D	estimated	model+frequency+world-distribution	1	16830	1760600	{}
 ごくろうさま	ごくろうさま	N2	B	direct	runtime-legacy-lineage-exact	1	14068	1005030	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N2"",""exactEvidence"":{""openjlpt"":""N2"",""waller"":""N2"",""tomoshi"":""N2""},""tomoshiEntryIds"":[""1005030""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N2""],""tomoshiLevelSources"":[""1005030:waller:N2""]}"
@@ -19738,7 +19717,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 さくふう	作風	N2	B	direct	core-exact	1	7496	1297930	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 さくらんぼ	桜ん坊	N2	D	estimated	model+frequency+world-distribution	1	19377	1298460	{}
 さぐる	探る	N2	A	direct	core+waller-lineage-corroborated	1	18334	1418260	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-さけ	鮭[さけ]	N2	B	direct	core-exact	1	15095	1579300	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 さけずき	酒好き	N2	D	estimated	model+frequency+world-distribution	1	19388	1329070	{}
 さけづくり	酒造り	N2	D	estimated	model+frequency+world-distribution	1	15475	1878760	{}
 さけのみ	酒飲み	N2	D	estimated	model+frequency+world-distribution	1	14916	1645170	{}
@@ -19803,7 +19781,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 さつまいも	薩摩芋	N2	D	estimated	model+frequency+world-distribution	1	24043	1299220	{}
 さなだ	真田	N2	D	estimated	model+frequency+world-distribution	1	13828	1364170	{}
 さび	錆	N2	B	direct	waller-lineage-exact	1	21566	1593820	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2""}"
-さび	錆[さび]	N2	B	direct	core-exact	1	21566	1593820	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2""}"
 さびる	さびる	N2	B	direct	core-exact	1	24046	1299640	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 さびる	錆びる	N2	B	direct	waller-lineage-exact	1	24046	1299640	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 さへん	左辺	N2	D	estimated	model+frequency+world-distribution	1	12561	1657630	{}
@@ -20488,7 +20465,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 しょくじどき	食事時	N2	D	estimated	model+frequency+world-distribution	1	18751	1883180	{}
 しょくせいかつ	食生活	N2	B	direct	core-exact	1	4146	1358510	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 しょくせき	職責	N2	D	estimated	model+frequency+world-distribution	1	13518	1660350	{}
-しょくだい	燭[しょく]台	N2	B	direct	core-exact	0		1652880	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
+しょくだい	燭台	N2	B	direct	core-exact	0		1652880	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 しょくちゅうどく	食中毒	N2	D	estimated	model+frequency+world-distribution	1	10159	1609950	{}
 しょくば	職場	N2	B	direct	core-exact	1	1224	1357540	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 しょくひ	食費	N2	B	direct	core-exact	1	8027	1358590	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -21163,7 +21140,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 すきとおる	透き通る	N2	B	direct	waller-lineage-exact	1	17406	1450510	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 すきま	隙間	N2	A	direct	core+waller-lineage-corroborated	1	21061	1253790	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 すぎ	杉	N2	A	direct	manual-secondary-exact	1	5132	1373520	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-すくう	掬[すく]う	N2	B	direct+conflict	core-exact	1	23830	1226200	"{""core-deck-exact"":""N2"",""existing-direct"":""N1"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
+すくう	掬う	N1	B	direct	waller-lineage-exact	1	23830	1226200	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すくなくとも	少なくとも	N2	A	direct	manual-secondary-exact	1	971	1595610	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N2""}"
 すけっと	助っ人	N2	D	estimated	model+frequency+world-distribution	1	11723	1344500	{}
 すじあい	筋合い	N2	D	estimated	model+frequency+world-distribution	1	15834	1595670	{}
@@ -21449,7 +21426,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 せめる	攻める	N2	A	direct	core+waller-lineage-corroborated	1	4059	1279130	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 せりあい	競り合い	N2	D	estimated	model+frequency+world-distribution	1	7768	1630150	{}
 せりあう	競り合う	N2	D	estimated	model+frequency+world-distribution	1	5858	1630160	{}
-せりふ	台詞[せりふ]	N2	B	direct	core-exact	1	15321	1577270	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 せわにん	世話人	N2	D	estimated	model+frequency+world-distribution	1	3680	1374340	{}
 せわもの	世話物	N2	D	estimated	model+frequency+world-distribution	1	13079	1753920	{}
 せわやく	世話役	N2	D	estimated	model+frequency+world-distribution	1	15431	1753910	{}
@@ -21550,7 +21526,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 せんれん	洗練	N2	B	direct	core-exact	1	18788	1391090	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ぜいかん	税関	N2	A	direct	manual-secondary-exact	1	5136	1382090	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ぜいこみ	税込み	N2	D	estimated	model+frequency+world-distribution	1	10142	1596250	{}
-ぜいたく	贅[ぜい]沢	N2	B	direct+conflict	core-exact	1	20198	1573150	"{""core-deck-exact"":""N2"",""existing-direct"":""N3"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 ぜいびき	税引き	N2	D	estimated	model+frequency+world-distribution	1	8049	1382060	{}
 ぜいりし	税理士	N2	D	estimated	model+frequency+world-distribution	1	8050	1382200	{}
 ぜかひか	是か非か	N2	D	estimated	model+frequency+world-distribution	1	16647	1374490	{}
@@ -21661,7 +21636,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 そうさかん	捜査官	N2	D	estimated	model+frequency+world-distribution	1	25836	2134050	{}
 そうさく	創作	N2	A	direct	core+waller-lineage-corroborated	1	3703	1398420	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 そうさくたい	捜索隊	N2	D	estimated	model+frequency+world-distribution	1	15928	1835310	{}
-そうざい	惣[そう]菜	N2	B	direct	core-exact	1	11743	1399580	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 そうざい	惣菜	N2	D	estimated	model+frequency+world-distribution	1	11743	1399580	{}
 そうしき	総指揮	N2	D	estimated	model+frequency+world-distribution	1	14951	1708520	{}
 そうしたら	然うしたら	N2	D	estimated	model+frequency+world-distribution	1	26467	2762810	{}
@@ -21754,7 +21728,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 そしきてき	組織的	N2	D	estimated	model+frequency+world-distribution	1	5148	1397660	{}
 そしきろうどうしゃ	組織労働者	N2	D	estimated	model+frequency+world-distribution	1	20960	1697140	{}
 そしつ	素質	N2	A	direct	core+waller-lineage-corroborated	1	7585	1397240	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-そしゃく	咀嚼[そしゃく]	N2	B	direct	core-exact	1	21352	1565150	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 そせい	組成	N2	D	estimated	model+frequency+world-distribution	1	14307	1397670	{}
 そせい	蘇生	N2	D	estimated	model+frequency+world-distribution	1	12065	1596520	{}
 そせん	祖先	N2	A	direct	manual-secondary-exact	1	7584	1396820	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N1"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -21784,7 +21757,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 そのため	その為	N2	A	direct	manual-secondary-exact	0		1006850	"{""manual-secondary-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N2""}"
 そのほか	その他	N2	B	direct	existing-direct-exact-row	1	22663	1006900	"{""existing-direct"":""N2""}"
 そのもの	そのもの	N2	B	direct	core-exact	1	25413	1612700	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
-そば	蕎麦	N2	B	direct	waller-lineage-exact	1	20147	1238460	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 そばや	蕎麦屋	N2	D	estimated	model+frequency+world-distribution	1	25301	1610140	{}
 そびょう	素描	N2	D	estimated	model+frequency+world-distribution	1	14780	1397370	{}
 そまりぐあい	染まり具合	N2	D	estimated	model+frequency+world-distribution	1	17240	1608860	{}
@@ -22402,7 +22374,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ちゅうりんじょう	駐輪場	N2	B	direct	core-exact	0		1427000	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ちゆ	治癒	N2	D	estimated	model+frequency+world-distribution	1	11334	1316880	{}
 ちょう	腸	N2	A	direct	manual-secondary-exact	1	7127	1428960	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ちょう	蝶[ちょう]	N2	B	direct+conflict	core-exact	1	8560	1429010	"{""core-deck-exact"":""N2"",""existing-direct"":""N1"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
+ちょう	蝶	N1	B	direct	waller-lineage-exact	1	8560	1429010	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちょうい	弔意	N2	D	estimated	model+frequency+world-distribution	1	13959	1597610	{}
 ちょうおんそく	超音速	N2	D	estimated	model+frequency+world-distribution	1	16179	1429400	{}
 ちょうおんぱ	超音波	N2	D	estimated	model+frequency+world-distribution	1	8775	1742400	{}
@@ -22574,7 +22546,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 つぎつぎに	次々に	N2	D	estimated	model+frequency+world-distribution	1	25169	1597860	{}
 つぎのように	次のように	N2	D	estimated	model+frequency+world-distribution	1	24104	1316410	{}
 つぎはぎ	継ぎ接ぎ	N2	D	estimated	model+frequency+world-distribution	1	23899	1251730	{}
-つく	点く	N2	B	direct	waller-lineage-exact	1	24522	1441400	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 つく	突く	N2	B	direct	waller-lineage-exact	1	24564	1456890	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 つくす	尽くす	N2	A	direct	manual-secondary-exact	1	13159	1370090	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 つくづく	つくづく	N2	B	direct	core-exact	1	7363	1008110	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -22585,7 +22556,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 つくりもの	作り物	N2	D	estimated	model+frequency+world-distribution	1	20767	1297410	{}
 つくりわらい	作り笑い	N2	D	estimated	model+frequency+world-distribution	1	24035	1297310	{}
 つぐ	次ぐ	N2	A	direct	core+waller-lineage-corroborated	1	7515	1316400	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-つぐ	注[つ]ぐ	N2	B	direct+conflict	core-exact	1	25903	2145240	"{""core-deck-exact"":""N2"",""existing-direct"":""N3"",""core-deck-normalized"":""N2"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 つぐ	継ぐ	N2	A	direct	manual-secondary-exact	1	11290	1251750	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 つけいる	付け入る	N2	D	estimated	model+frequency+world-distribution	1	22220	1496050	{}
 つけくわえ	付け加え	N2	D	estimated	model+frequency+world-distribution	1	20843	1495780	{}
@@ -22597,7 +22567,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 つけびと	付け人	N2	D	estimated	model+frequency+world-distribution	1	17698	1597960	{}
 つけもの	漬物	N2	B	direct	core-exact	1	8568	1433700	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 つける	就ける	N2	B	direct	core-exact	0		1331540	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
-つける	点ける	N2	B	direct	waller-lineage-exact	1	25312	1610400	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 つじせっぽう	辻説法	N2	D	estimated	model+frequency+world-distribution	1	21488	1846200	{}
 つじどう	辻堂	N2	D	estimated	model+frequency+world-distribution	1	13102	1846180	{}
 つっかける	突っ掛ける	N2	D	estimated	model+frequency+world-distribution	1	26387	1456920	{}
@@ -22979,7 +22948,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 とうかく	倒閣	N2	D	estimated	model+frequency+world-distribution	1	11434	1445840	{}
 とうかく	当確	N2	D	estimated	model+frequency+world-distribution	1	11649	1784210	{}
 とうかく	頭角	N2	B	direct	core-exact	1	9073	1450790	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
-とうかん	投函[かん]	N2	B	direct	core-exact	1	24545	1447310	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 とうき	陶器	N2	A	direct	manual-secondary-exact	1	7628	1450610	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 とうきょうしょうけんとりひきじょ	東京証券取引所	N2	D	estimated	model+frequency+world-distribution	1	4423	1999080	{}
 とうぎゅう	闘牛	N2	D	estimated	model+frequency+world-distribution	1	13421	1451010	{}
@@ -23059,7 +23027,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 とおりま	通り魔	N2	D	estimated	model+frequency+world-distribution	1	21260	1433020	{}
 とおりみち	通り道	N2	D	estimated	model+frequency+world-distribution	1	15252	1433000	{}
 とかす	溶かす	N2	A	direct	core+waller-lineage-corroborated	1	11793	1546040	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-とがる	尖[とが]る	N2	B	direct	core-exact	1	24335	1389970	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
 とがる	尖る	N2	B	direct	waller-lineage-exact	1	24335	1389970	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ときとして	時として	N2	D	estimated	model+frequency+world-distribution	1	11619	1658470	{}
 ときはかねなり	時は金なり	N2	D	estimated	model+frequency+world-distribution	1	25871	2140350	{}
@@ -23448,7 +23415,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 なつもの	夏物	N2	D	estimated	model+frequency+world-distribution	1	11838	1191610	{}
 なづけおや	名付け親	N2	D	estimated	model+frequency+world-distribution	1	15792	1531800	{}
 なづける	名付ける	N2	A	direct	manual-secondary-exact	1	12717	1531790	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-なでる	撫でる	N2	B	direct	waller-lineage-exact	1	24704	1498290	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ななふしぎ	七不思議	N2	D	estimated	model+frequency+world-distribution	1	21174	1319450	{}
 なにげなく	何気なく	N2	D	estimated	model+frequency+world-distribution	1	23684	1188680	{}
 なにごと	何事	N2	B	direct	core-exact	1	6913	1188740	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -23708,7 +23674,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ぬけめ	抜け目	N2	D	estimated	model+frequency+world-distribution	1	20465	1633900	{}
 ぬし	主	N2	B	direct	core-exact	1	24130	1324960	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ぬまた	沼田	N2	D	estimated	model+frequency+world-distribution	1	13969	1628100	{}
-ぬらす	濡[ぬ]らす	N2	B	direct	core-exact	1	24598	1467610	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
 ぬらす	濡らす	N2	B	direct	waller-lineage-exact	1	24598	1467610	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ぬるまゆ	ぬるま湯	N2	B	direct	core-exact	0		1950100	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ねあがり	値上がり	N2	B	direct	core-exact	1	5840	1600020	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -24098,8 +24063,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 はやまって	早まって	N2	D	estimated	model+frequency+world-distribution	1	12152	1902480	{}
 はやまる	早まる	N2	B	direct	core-exact	1	16920	1400170	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 はやめる	速める	N2	B	direct+conflict	core-exact	1	4851	1601080	"{""core-deck-exact"":""N2"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-はやり	流行[はや]り	N2	B	direct+conflict	core-exact	0		2834093	"{""core-deck-exact"":""N2"",""existing-direct"":""N1"",""core-deck-normalized"":""N2"",""waller-entry-context"":""N1""}"
-はやる	流行[はや]る	N2	B	direct	core-exact	1	24863	1552310	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
+はやり	流行り	N1	B	direct	existing-direct-exact-row	0		2834093	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 はやる	流行る	N2	B	direct	waller-lineage-exact	1	24863	1552310	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 はらいこむ	払い込む	N2	B	direct	waller-lineage-exact	1	19268	1501580	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 はらいさげ	払下げ	N2	D	estimated	model+frequency+world-distribution	1	12633	1954590	{}
@@ -24198,7 +24162,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ばくが	麦芽	N2	D	estimated	model+frequency+world-distribution	1	14346	1476120	{}
 ばくしょう	爆笑	N2	D	estimated	model+frequency+world-distribution	1	11462	1475850	{}
 ばくしん	爆心	N2	D	estimated	model+frequency+world-distribution	1	13557	1797250	{}
-ばくだい	莫[ばく]大	N2	B	direct+conflict	core-exact	1	24635	1476060	"{""core-deck-exact"":""N2"",""existing-direct"":""N3"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 ばくちく	爆竹	N2	D	estimated	model+frequency+world-distribution	1	10976	1475880	{}
 ばくふう	爆風	N2	D	estimated	model+frequency+world-distribution	1	12455	1475970	{}
 ばくやく	爆薬	N2	D	estimated	model+frequency+world-distribution	1	13433	1475980	{}
@@ -24610,7 +24573,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ふくらます	膨らます	N2	A	direct	core+waller-lineage-corroborated	1	8633	1519970	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ふくらむ	膨らむ	N2	A	direct	core+waller-lineage-corroborated	1	8634	1519990	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ふくりこうせい	福利厚生	N2	D	estimated	model+frequency+world-distribution	1	10222	1826450	{}
-ふくろう	梟[ふくろう]	N2	B	direct	core-exact	1	24943	1568080	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 ふくろこうじ	袋小路	N2	D	estimated	model+frequency+world-distribution	1	12415	1411080	{}
 ふぐあい	不具合	N2	B	direct	core-exact	0		1492030	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ふぐう	不遇	N2	B	direct	core-exact	1	15770	1492070	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -25053,7 +25015,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ほけんじょ	保健所	N2	D	estimated	model+frequency+world-distribution	1	5823	1584000	{}
 ほけんふ	保健婦	N2	D	estimated	model+frequency+world-distribution	1	7208	1513430	{}
 ほこうしゃてんごく	歩行者天国	N2	D	estimated	model+frequency+world-distribution	1	25368	1611540	{}
-ほこり	埃[ほこり]	N2	B	direct+conflict	core-exact	1	24921	1565750	"{""core-deck-exact"":""N2"",""existing-direct"":""N3"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 ほご	保護	N2	A	direct	manual-secondary-exact	1	396	1513530	"{""manual-secondary-exact"":""N2"",""core-deck-exact"":""N2"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ほごしゃ	保護者	N2	B	direct	core-exact	1	4777	1513630	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 ほごちょう	保護鳥	N2	D	estimated	model+frequency+world-distribution	1	18119	1513670	{}
@@ -25551,7 +25512,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 むけい	無形	N2	D	estimated	model+frequency+world-distribution	1	13192	1529830	{}
 むけいかく	無計画	N2	D	estimated	model+frequency+world-distribution	1	20506	1672650	{}
 むけいぶんかざい	無形文化財	N2	D	estimated	model+frequency+world-distribution	1	11150	1672180	{}
-むける	剝[む]ける	N2	B	direct	core-exact	1	24631	1474380	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
+むける	剝ける	N2	B	direct	core-exact	1	24631	1474380	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2""}"
 むげん	無限	N2	A	direct	core+waller-lineage-corroborated	1	6713	1529880	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 むこうがわ	向こう側	N2	B	direct	core-exact	1	25238	1604830	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 むこくせき	無国籍	N2	D	estimated	model+frequency+world-distribution	1	13581	1954890	{}
@@ -25621,7 +25582,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 むれ	群れ	N2	A	direct	core+waller-lineage-corroborated	1	4998	1247510	"{""core-deck-exact"":""N2"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 めあたらしい	目新しい	N2	B	direct	core-exact	1	21336	1535510	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
 めあて	目当て	N2	B	direct	core-exact	1	6253	1535600	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
-めい	姪	N2	B	direct	waller-lineage-exact	1	18352	1532940	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 めいうつ	銘打つ	N2	D	estimated	model+frequency+world-distribution	1	17718	1641370	{}
 めいかん	名鑑	N2	D	estimated	model+frequency+world-distribution	1	12034	1531400	{}
 めいき	名器	N2	B	direct	core-exact	0		1752560	"{""core-deck-exact"":""N2"",""existing-direct"":""N2""}"
@@ -26499,7 +26459,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 わたしぶね	渡し船	N2	D	estimated	model+frequency+world-distribution	1	18059	1444600	{}
 わたりあう	渡り合う	N2	D	estimated	model+frequency+world-distribution	1	19929	1444630	{}
 わたりろうか	渡り廊下	N2	D	estimated	model+frequency+world-distribution	1	20365	1444670	{}
-わび	詫[わ]び	N2	B	direct+conflict	core-exact	1	24901	1562670	"{""core-deck-exact"":""N2"",""existing-direct"":""N1"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
+わび	詫び	N1	B	direct	waller-lineage-exact	1	24901	1562670	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 わびる	詫びる	N2	B	direct	waller-lineage-exact	1	25262	1606790	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 わふく	和服	N2	B	direct	waller-lineage-exact	1	8673	1562190	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 わようせっちゅう	和洋折衷	N2	D	estimated	model+frequency+world-distribution	1	21350	1562290	{}
@@ -26527,7 +26487,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 わるぢえ	悪知恵	N2	D	estimated	model+frequency+world-distribution	1	22431	1917720	{}
 われめ	割れ目	N2	D	estimated	model+frequency+world-distribution	1	13677	1607020	{}
 わん	椀	N2	B	direct	waller-lineage-exact	1	16019	1562780	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-わん	椀[わん]	N2	B	direct	core-exact	1	16019	1562780	"{""core-deck-exact"":""N2"",""existing-direct"":""N2"",""core-deck-normalized"":""N2"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
 わん	碗	N2	B	direct	waller-lineage-exact	0		1562840	"{""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 わんりょく	腕力	N2	D	estimated	model+frequency+world-distribution	1	11797	1562950	{}
 アイスコーヒー	アイスコーヒー	N2	D	estimated	model+frequency+world-distribution	1	25328	1610760	{}
@@ -27442,7 +27401,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ヴァイオリニスト	ヴァイオリニスト	N2	D	estimated	model+frequency+world-distribution	1	23308	1097730	{}
 ああ	吁	N1	B	direct	existing-direct-exact-row	1	24915	1565440	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あい	相	N1	B	direct	waller-lineage-exact	0		1400800	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-あいきょう	愛嬌[きょう]	N1	B	direct	core-exact	1	23569	1150620	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あいこ	愛顧	N1	B	direct	core-exact	0		1150660	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あいご	愛護	N1	B	direct	core-exact	1	8329	1150670	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あいそ	愛想	N1	A	direct	core+waller-lineage-corroborated	1	10587	1575660	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -27450,11 +27408,10 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あいぞう	愛憎	N1	B	direct	waller-lineage-exact	1	14408	1575670	"{""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あいたい	相対	N1	B	direct	waller-lineage-exact	1	6608	1401100	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あいだがら	間柄	N1	A	direct	core+waller-lineage-corroborated	1	23794	1215660	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-あいづち	相槌[づち]	N1	B	direct	core-exact	1	16923	1401220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あいてどる	相手取る	N1	B	direct	core-exact	1	5394	1847970	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あいどく	愛読	N1	B	direct	core-exact	1	10246	1150990	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あいまって	相まって	N1	B	direct	core-exact	1	10691	1749070	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-あいろ	隘[あい]路	N1	B	direct	core-exact	0		1574020	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+あいろ	隘路	N1	B	direct	core-exact	0		1574020	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あえて	敢えて	N1	B	direct	waller-lineage-exact	1	23783	1212850	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あおくさい	青臭い	N1	B	direct	core-exact	0		1381540	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あおぐ	仰ぐ	N1	A	direct	core+waller-lineage-corroborated	1	14080	1238780	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -27470,8 +27427,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あがり	上がり	N1	B	direct	waller-lineage-exact	1	3658	1352190	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あがる	挙がる	N1	B	direct	core-exact	0		2864572	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あきま	空き間	N1	B	direct	existing-direct-exact-row	0		1676080	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-あきれはてる	呆[あき]れ果てる	N1	B	direct	core-exact	0		1847930	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
-あきれる	呆[あき]れる	N1	B	direct+conflict	core-exact	1	24753	1515580	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1""}"
+あきれはてる	呆れ果てる	N1	B	direct	core-exact	0		1847930	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あく	悪	N1	B	direct	waller-lineage-exact	1	1979	1151230	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あく	灰汁	N1	B	direct	waller-lineage-exact	0		1201960	"{""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あくしゅう	悪臭	N1	B	direct	core-exact	1	10248	1151900	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -27513,13 +27469,11 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あたふた	あたふた	N1	B	direct	core-exact	0		1631590	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あたまうち	頭打ち	N1	B	direct	core-exact	1	8211	1582330	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あたり	当り	N1	B	direct	existing-direct-exact-row	1	3266	1448780	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-あだ	仇[あだ]	N1	B	direct	core-exact	1	16735	1577910	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あっかん	圧巻	N1	B	direct	core-exact	1	10250	1152990	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あっけない	あっけない	N1	B	direct	core-exact	0		1515600	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あっけない	呆気ない	N1	B	direct	waller-lineage-exact	0		1515600	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あっこう	悪口	N1	B	direct	waller-lineage-exact	1	26334	2862924	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あっさり	あっさり	N1	A	direct	core+waller-lineage-corroborated	1	22438	1000360	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-あっせん	斡旋[あっせん]	N1	B	direct	core-exact	1	19224	1153410	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あったかい	あったかい	N1	B	direct+conflict	core-exact	1	10132	1586420	"{""core-deck-exact"":""N1"",""existing-direct"":""N5"",""waller-entry-context"":""N5""}"
 あっぱく	圧迫	N1	A	direct	core+waller-lineage-corroborated	1	6877	1153310	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あつかい	扱い	N1	A	direct	core+waller-lineage-corroborated	1	1488	1153430	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -27527,7 +27481,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あつみ	厚み	N1	B	direct	core-exact	1	6015	1275600	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あつらえる	誂える	N1	B	direct	waller-lineage-exact	1	26402	1572680	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あつりょく	圧力	N1	A	direct	core+waller-lineage-corroborated	1	994	1153340	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-あつれき	軋轢[あつれき]	N1	B	direct	core-exact	0		1573460	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+あつれき	軋轢	N1	B	direct	core-exact	0		1573460	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あて	宛	N1	B	direct	waller-lineage-exact	1	7150	1448820	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あて	当て	N1	B	direct	waller-lineage-exact	1	7150	1448820	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あてじ	当て字	N1	B	direct	waller-lineage-exact	0		1448890	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -27543,14 +27497,14 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あなどる	侮る	N1	B	direct	core-exact	1	25054	1583670	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あの	彼の	N1	B	direct	waller-lineage-exact	1	22440	1000420	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あびせる	浴びせる	N1	B	direct	core-exact	1	10572	1547440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-あふれかえる	溢[あふ]れ返る	N1	B	direct	core-exact	0		2143640	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+あふれかえる	溢れ返る	N1	B	direct	core-exact	0		2143640	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あぶらえ	油絵	N1	A	direct	core+waller-lineage-corroborated	1	8182	1538630	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あべこべ	あべこべ	N1	B	direct	waller-lineage-exact	1	22444	1000470	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あまえる	甘える	N1	A	direct	core+waller-lineage-corroborated	1	17368	1213440	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あまくち	甘口	N1	B	direct	waller-lineage-exact	1	17477	1213510	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あまぐ	雨具	N1	B	direct	waller-lineage-exact	1	21516	1171940	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あまぐも	雨雲	N1	B	direct	core-exact	1	16053	1171910	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-あまのじゃく	天の邪鬼[じゃく]	N1	B	direct	core-exact	0		1438260	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+あまのじゃく	天の邪鬼	N1	B	direct	core-exact	0		1438260	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あまみず	雨水	N1	B	direct	core-exact	1	6756	1576440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あみ	網	N1	A	direct	core+waller-lineage-corroborated	1	4795	1534380	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あみもの	編み物	N1	B	direct+conflict	core-exact	1	12732	1586670	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
@@ -27565,7 +27519,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あらかじめ	予め	N1	B	direct	waller-lineage-exact	1	24836	1542860	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あらっぽい	荒っぽい	N1	A	direct	core+waller-lineage-corroborated	1	15969	1281470	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あられ	霰	N1	B	direct	waller-lineage-exact	0		1574100	"{""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-あらわ	顕[あら]わ	N1	B	direct	core-exact	0		1560080	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+あらわ	顕わ	N1	B	direct	core-exact	0		1560080	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ありあまる	有り余る	N1	B	direct	core-exact	0		1541050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ありあり	ありあり	N1	B	direct	core-exact	0		2007200	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ありかた	在り方	N1	B	direct	core-exact	0		1586810	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -27586,7 +27540,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 あんせい	安静	N1	A	direct	core+waller-lineage-corroborated	1	13116	1153910	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 あんぜん	暗然	N1	B	direct	core-exact	0		1154640	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あんたい	安泰	N1	B	direct	core-exact	1	15018	1154070	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-あんど	安堵[ど]	N1	B	direct	core-exact	1	15116	1154170	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 あんぴ	安否	N1	B	direct	core-exact	1	8806	1154230	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 あんもく	暗黙	N1	B	direct	core-exact	1	8808	1154700	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 い	伊	N1	B	direct	waller-lineage-exact	1	26044	2252790	"{""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -27658,7 +27611,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 いたたまれない	いたたまれない	N1	B	direct	core-exact	0		2015440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 いたで	痛手	N1	B	direct	core-exact	1	7135	1432780	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 いためる	傷める	N1	B	direct	core-exact	1	24491	1432720	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-いためる	炒める	N1	B	direct	waller-lineage-exact	1	9654	1568920	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いたわる	いたわる	N1	B	direct	core-exact	1	24889	1560240	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いたわる	労る	N1	B	direct	waller-lineage-exact	1	24889	1560240	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いちあん	一案	N1	B	direct	core-exact	1	15120	1161010	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -27677,7 +27629,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 いちべつ	一別	N1	B	direct	waller-lineage-exact	0		1166400	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いちもく	一目	N1	A	direct	core+waller-lineage-corroborated	0		2810460	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いちもくりょうぜん	一目瞭然	N1	B	direct	core-exact	0		1167000	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-いちょう	銀杏[いちょう]	N1	B	direct	core-exact	0		1243420	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+いちょう	銀杏	N1	B	direct	core-exact	0		1243420	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 いちらん	一覧	N1	B	direct	core-exact	1	9781	1167180	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 いちりつ	一律	N1	A	direct	core+waller-lineage-corroborated	1	2982	1167250	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いちれい	一礼	N1	B	direct	core-exact	1	12756	1167420	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -27758,7 +27710,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 いんきょ	隠居	N1	B	direct	waller-lineage-exact	1	13253	1170690	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 いんし	因子	N1	B	direct	core-exact	1	7373	1168720	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 いんしょうづける	印象づける	N1	B	direct	core-exact	1	11543	1587910	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-いんせき	隕[いん]石	N1	B	direct	core-exact	1	17679	1574040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 いんちょう	院長	N1	B	direct	core-exact	1	1995	1170210	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 う	卯	N1	B	direct	existing-direct-exact-row	1	25001	1576460	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うえかえる	植え替える	N1	B	direct	core-exact	0		2035800	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -27767,14 +27718,14 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 うえつける	植え付ける	N1	B	direct	core-exact	1	18162	1587990	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うかれる	浮かれる	N1	B	direct	core-exact	1	24695	1497370	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うきぼり	浮き彫り	N1	B	direct	core-exact	1	2420	1588030	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-うぐいす	鶯[うぐいす]	N1	B	direct	core-exact	0		1181730	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+うぐいす	鶯	N1	B	direct	core-exact	0		1181730	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 うけうり	受け売り	N1	B	direct	core-exact	0		1329680	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うけおう	請け負う	N1	B	direct	core-exact	1	8046	1381300	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うけこたえ	受け答え	N1	B	direct	core-exact	1	13515	1653440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うけざら	受け皿	N1	B	direct	core-exact	1	4592	1329620	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うけつぐ	受け継ぐ	N1	A	direct	core+waller-lineage-corroborated	1	9436	1329600	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うけみ	受身	N1	B	direct	waller-lineage-exact	1	6544	1329860	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-うさんくさい	胡散[うさん]臭い	N1	B	direct	core-exact	0		1267540	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+うさんくさい	胡散臭い	N1	B	direct	core-exact	0		1267540	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 うしろすがた	後ろ姿	N1	B	direct	core-exact	1	11301	1269420	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うしろめたい	後ろめたい	N1	B	direct	core-exact	1	20597	2007360	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うじ	氏	N1	B	direct	waller-lineage-exact	0		1311010	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -27783,12 +27734,10 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 うず	渦	N1	A	direct	core+waller-lineage-corroborated	1	7375	1172310	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うずうず	うずうず	N1	B	direct	core-exact	1	22457	1000980	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うずめる	うずめる	N1	B	direct	core-exact	1	24778	1524490	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-うせる	失[う]せる	N1	B	direct	core-exact	0		1319770	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
-うそつき	嘘[うそ]つき	N1	B	direct	core-exact	1	23639	1172460	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
+うせる	失せる	N1	B	direct	core-exact	0		1319770	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 うそつき	嘘つき	N1	B	direct	waller-lineage-exact	1	23639	1172460	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-うたう	謳[うた]う	N1	B	direct	core-exact	1	25277	1609300	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 うたがわしい	疑わしい	N1	B	direct	core-exact	1	9824	1225530	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-うたぐりぶかい	疑[うたぐ]り深い	N1	B	direct	core-exact	0		2805050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+うたぐりぶかい	疑り深い	N1	B	direct	core-exact	0		2805050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 うちあわせる	打ち合わせる	N1	B	direct	waller-lineage-exact	1	25099	1588150	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うちきる	打ち切る	N1	A	direct	core+waller-lineage-corroborated	1	8076	1408720	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うちけし	打ち消し	N1	B	direct	waller-lineage-exact	1	18360	1588200	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -27813,7 +27762,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 うぬぼれ	うぬぼれ	N1	B	direct	runtime-legacy-lineage-exact	1	24108	1317730	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1317730""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1317730:waller:N1""]}"
 うぬぼれ	自惚れ	N1	B	direct	waller-lineage-exact	1	24108	1317730	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 うねり	うねり	N1	B	direct	core-exact	1	22460	1001050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-うのみ	鵜呑[うの]み	N1	B	direct	core-exact	0		1172210	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+うのみ	鵜呑み	N1	B	direct	core-exact	0		1172210	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 うばいとる	奪い取る	N1	B	direct	core-exact	1	17597	1416320	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うまれおちる	生まれ落ちる	N1	B	direct	core-exact	0		1851590	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 うまれそだつ	生まれ育つ	N1	B	direct	core-exact	1	25864	2136900	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -27882,15 +27831,13 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 えんしゅう	演習	N1	B	direct	waller-lineage-exact	1	2495	1176930	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 えんしゅつ	演出	N1	A	direct	core+waller-lineage-corroborated	1	1012	1176950	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 えんずる	演ずる	N1	B	direct	waller-lineage-exact	1	10276	1176790	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-えんせい	厭[えん]世	N1	B	direct	core-exact	0		1175500	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+えんせい	厭世	N1	B	direct	core-exact	0		1175500	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 えんせん	沿線	N1	B	direct	waller-lineage-exact	1	7382	1176750	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 えんだん	縁談	N1	B	direct	waller-lineage-exact	1	14544	1177650	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 お	尾	N1	A	direct	core+waller-lineage-corroborated	1	2331	1485770	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-おい	甥	N1	B	direct	waller-lineage-exact	1	18300	1179140	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おいはらう	追い払う	N1	B	direct	core-exact	1	19927	1432380	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 おいる	老いる	N1	A	direct	core+waller-lineage-corroborated	1	17883	1560990	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おういん	押印	N1	B	direct	core-exact	1	15127	1180480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-おうか	謳[おう]歌	N1	B	direct	core-exact	1	19992	1572900	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 おうきゅう	応急	N1	B	direct	waller-lineage-exact	1	6904	1179880	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おうごん	黄金	N1	B	direct	waller-lineage-exact	1	3956	1181860	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おうしゅう	押収	N1	B	direct	core-exact	1	8346	1180510	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -27955,7 +27902,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おちいる	陥る	N1	B	direct	core-exact	1	16892	1216120	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 おちつき	落ち着き	N1	B	direct	waller-lineage-exact	1	6732	1548590	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おっかない	おっかない	N1	B	direct	waller-lineage-exact	0		1001330	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-おっくう	億劫[おっくう]	N1	B	direct	core-exact	0		1182650	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+おっくう	億劫	N1	B	direct	core-exact	0		1182650	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 おつ	乙	N1	B	direct	waller-lineage-exact	1	10279	1182940	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おつかい	お使い	N1	B	direct	waller-lineage-exact	1	16886	1001980	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おてあげ	お手上げ	N1	A	direct	core+waller-lineage-corroborated	1	10244	1002080	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -27968,8 +27915,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 おどる	躍る	N1	B	direct	core-exact	1	17664	1538445	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 おないどし	同い年	N1	B	direct	waller-lineage-exact	1	14333	1451740	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おなじみ	おなじみ	N1	B	direct	core-exact	1	25603	2007510	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-おのずから	自ずから	N1	B	direct	waller-lineage-exact	1	24106	1317330	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-おのずと	自[おの]ずと	N1	B	direct	core-exact	0		2007530	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+おのずと	自ずと	N1	B	direct	core-exact	0		2007530	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 おびえる	おびえる	N1	B	direct	core-exact	1	23858	1236630	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おびえる	怯える	N1	B	direct	waller-lineage-exact	1	23858	1236630	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 おびただしい	おびただしい	N1	B	direct	core-exact	1	24922	1565840	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28050,7 +27996,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かいざい	介在	N1	B	direct	core-exact	1	10286	1198080	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かいしめる	買い占める	N1	B	direct	core-exact	1	9685	1609480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かいしゅう	改修	N1	A	direct	core+waller-lineage-corroborated	1	4949	1200880	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かいしょう	甲斐[かい]性	N1	B	direct	core-exact	0		1280270	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+かいしょう	甲斐性	N1	B	direct	core-exact	0		1280270	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 かいしょく	会食	N1	B	direct	core-exact	1	9796	1198670	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かいしん	会心	N1	B	direct	core-exact	1	6922	1198680	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かいじゅう	怪獣	N1	B	direct	waller-lineage-exact	1	8854	1200280	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28080,10 +28026,9 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かいりゅう	海流	N1	B	direct	waller-lineage-exact	1	13119	1201820	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かいろ	海路	N1	B	direct	existing-direct-exact-row	1	14641	1201830	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かう	交う	N1	B	direct	core-exact	0		2037030	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-かえす	孵[かえ]す	N1	B	direct	core-exact	0		1566220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+かえす	孵す	N1	B	direct	core-exact	0		1566220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 かえりみる	省みる	N1	A	direct	core+waller-lineage-corroborated	1	22027	2836356	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かえりみる	顧みる	N1	B	direct	waller-lineage-exact	1	19700	1267870	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かえる	蛙[かえる]	N1	B	direct	core-exact	1	15552	1577460	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 かおつき	顔つき	N1	B	direct	existing-direct-exact-row	1	15028	1217850	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かおまけ	顔負け	N1	B	direct	core-exact	1	10634	1614370	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かかえこむ	抱え込む	N1	B	direct	core-exact	1	19091	1633980	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28114,7 +28059,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かくしゅう	隔週	N1	A	direct	core+waller-lineage-corroborated	1	10157	1607110	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かくしん	核心	N1	B	direct	core-exact	1	4958	1205590	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かくしん	革新	N1	A	direct	core+waller-lineage-corroborated	1	2020	1206470	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かくらん	攪[かく]乱	N1	B	direct	core-exact	0		2068450	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+かくらん	攪乱	N1	B	direct	core-exact	0		2068450	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 かくり	隔離	N1	B	direct	core-exact	1	4959	1206440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かけ	掛け	N1	B	direct	waller-lineage-exact	1	10294	1207600	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かけ	賭け	N1	A	direct	core+waller-lineage-corroborated	1	9191	1590040	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28136,7 +28081,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かこう	囲う	N1	B	direct	core-exact	1	18760	1155960	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かごう	化合	N1	B	direct	waller-lineage-exact	1	23677	1186980	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かごん	過言	N1	B	direct	core-exact	1	8850	1196080	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-かさばる	嵩張[かさば]る	N1	B	direct	core-exact	0		1372890	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
 かさばる	嵩張る	N1	B	direct	waller-lineage-exact	0		1372890	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かさむ	かさむ	N1	B	direct	core-exact	0		1372880	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かさむ	嵩む	N1	B	direct	waller-lineage-exact	0		1372880	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28189,7 +28133,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かっせい	活性	N1	B	direct	core-exact	1	1533	1208330	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かっせいか	活性化	N1	B	direct	core-exact	0		1208340	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かっそう	滑走	N1	B	direct	core-exact	1	3495	1208730	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-かったつ	闊[かっ]達	N1	B	direct	core-exact	1	15839	1615630	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 かってでる	買って出る	N1	B	direct	core-exact	0		1473750	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かっと	かっと	N1	B	direct	core-exact	1	22515	1002910	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かつ	且つ	N1	B	direct	waller-lineage-exact	1	23767	1208840	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28198,14 +28141,10 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かて	糧	N1	B	direct	core-exact	0		2017850	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かとう	過当	N1	B	direct	core-exact	1	8356	1196330	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かどう	稼働	N1	B	direct	core-exact	1	5826	1590520	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-かなう	叶う	N1	B	direct	waller-lineage-exact	1	23768	1208870	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かなえる	叶える	N1	B	direct	waller-lineage-exact	1	23769	1208880	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かなえる	適[かな]える	N1	B	direct	core-exact	0		2868940	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+かなえる	適える	N1	B	direct	core-exact	0		2868940	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 かなぐ	金具	N1	B	direct	core-exact	1	10326	1242790	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かなづち	金槌	N1	B	direct	waller-lineage-exact	1	25521	1779760	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かなづち	金槌[づち]	N1	B	direct	core-exact	1	25521	1779760	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
 かなぼう	金棒	N1	B	direct	existing-direct-exact-row	0		1682400	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かに	蟹[かに]	N1	B	direct	core-exact	1	20141	1202410	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 かにゅう	加入	N1	A	direct	core+waller-lineage-corroborated	1	1511	1190430	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かねあい	兼ね合い	N1	B	direct	core-exact	1	10791	1256530	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かねがね	かねがね	N1	B	direct	core-exact	0		1590570	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28226,7 +28165,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かみきる	噛み切る	N1	B	direct	waller-lineage-exact	0		1209200	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かみくず	紙くず	N1	B	direct+conflict	core-exact	1	25286	1609610	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 かみつ	過密	N1	A	direct	core+waller-lineage-corroborated	1	7392	1196460	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-かみつく	嚙[か]み付く	N1	B	direct	core-exact	1	23772	1209220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+かみつく	嚙み付く	N1	B	direct	core-exact	1	23772	1209220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 かめ	亀	N1	B	direct	core-exact	1	4974	1224260	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 かめ	甕	N1	B	direct	existing-direct-exact-row	1	19951	1491110	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かめん	仮面	N1	B	direct	core-exact	1	6912	1188220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28300,7 +28239,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 かんれき	還暦	N1	B	direct	waller-lineage-exact	1	7888	1215160	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かんろく	貫禄	N1	B	direct	waller-lineage-exact	0		1215110	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 かんわ	緩和	N1	A	direct	core+waller-lineage-corroborated	1	552	1214530	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-が	蛾[が]	N1	B	direct	core-exact	1	18847	1197760	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 がい	街	N1	A	direct	core+waller-lineage-corroborated	1	23748	1204570	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 がいか	外貨	N1	A	direct	core+waller-lineage-corroborated	1	2512	1203410	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 がいかん	概観	N1	B	direct	core-exact	1	16994	1204430	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28322,7 +28260,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 がくさい	学際	N1	B	direct	core-exact	1	11113	1614010	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 がくし	学士	N1	B	direct	waller-lineage-exact	1	8859	1206760	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 がくせつ	学説	N1	A	direct	core+waller-lineage-corroborated	1	9327	1206950	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-がくぜん	愕[がく]然	N1	B	direct	core-exact	0		1693200	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+がくぜん	愕然	N1	B	direct	core-exact	0		1693200	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 がくちょう	学長	N1	B	direct	core-exact	1	2517	1206990	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 がくひ	学費	N1	B	direct	core-exact	1	7883	1207060	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 がくふ	楽譜	N1	A	direct	core+waller-lineage-corroborated	1	7410	1207490	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28343,8 +28281,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 がらり	がらり	N1	B	direct	core-exact	0		2007790	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 がる	がる	N1	B	direct	waller-lineage-exact	1	25464	1631750	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 がん	癌	N1	B	direct	waller-lineage-exact	1	10302	1217110	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-がん	癌[がん]	N1	B	direct	core-exact	1	10302	1217110	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
-がん	雁[がん]	N1	B	direct	core-exact	1	10588	1577700	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 がんか	眼科	N1	B	direct	waller-lineage-exact	1	10303	1217150	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 がんきゅう	眼球	N1	B	direct	waller-lineage-exact	1	14203	1217180	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 がんきょう	眼鏡	N1	B	direct	waller-lineage-exact	0		2862467	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28399,14 +28335,13 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 きしょう	希少	N1	B	direct	core-exact	1	7423	1222880	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きじゅつ	記述	N1	A	direct	core+waller-lineage-corroborated	1	3038	1223280	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きすう	奇数	N1	B	direct	waller-lineage-exact	1	17369	1219410	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-きずな	絆[きずな]	N1	B	direct	core-exact	1	10586	1570420	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 きせい	規制	N1	A	direct	core+waller-lineage-corroborated	1	79	1223010	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きせいちゅう	寄生虫	N1	B	direct	core-exact	1	9816	1219770	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きせき	奇跡	N1	B	direct	core-exact	1	4844	1591250	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きせき	軌跡	N1	B	direct	core-exact	1	5964	1223970	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きせつふう	季節風	N1	B	direct	core-exact	1	18405	1222870	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きせん	汽船	N1	B	direct	waller-lineage-exact	1	14078	1222730	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-きぜん	毅[き]然	N1	B	direct	core-exact	0		1822530	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+きぜん	毅然	N1	B	direct	core-exact	0		1822530	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 きそくてき	規則的	N1	B	direct	core-exact	1	17484	1223050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きそん	既存	N1	B	direct	core-exact	1	2523	1220450	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きぞう	寄贈	N1	B	direct	core-exact	1	10124	1577730	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28418,7 +28353,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 きちょう	基調	N1	B	direct	core-exact	1	2031	1219130	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きちょうめん	几帳面	N1	B	direct	waller-lineage-exact	1	24908	1564360	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きっかり	きっかり	N1	A	direct	core+waller-lineage-corroborated	0		1003410	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-きっこう	拮[きっ]抗	N1	B	direct	core-exact	1	18152	1567370	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 きっさ	喫茶	N1	B	direct	waller-lineage-exact	1	9827	1226430	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きっちり	きっちり	N1	A	direct	core+waller-lineage-corroborated	1	22533	1003420	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きづかう	気遣う	N1	B	direct	core-exact	1	19322	1222150	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28458,7 +28392,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 きゅうえん	救援	N1	B	direct	waller-lineage-exact	1	1059	1229070	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きゅうかい	休会	N1	B	direct	core-exact	1	11857	1227640	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きゅうがく	休学	N1	B	direct	waller-lineage-exact	1	16894	1227660	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-きゅうきょ	急遽[きょ]	N1	B	direct	core-exact	1	3047	1229020	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 きゅうきょく	究極	N1	A	direct	core+waller-lineage-corroborated	1	5475	1230040	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きゅうくつ	窮屈	N1	A	direct	core+waller-lineage-corroborated	1	10316	1230080	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きゅうこん	球根	N1	A	direct	core+waller-lineage-corroborated	1	14663	1229950	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28480,7 +28413,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 きゅうりょう	丘陵	N1	A	direct	core+waller-lineage-corroborated	1	6456	1227320	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きょう	強	N1	B	direct	core-exact	0		2020300	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きょうい	驚異	N1	B	direct	waller-lineage-exact	1	6466	1238700	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-きょうえん	饗[きょう]宴	N1	B	direct	core-exact	1	14215	1238630	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 きょうがく	共学	N1	B	direct	waller-lineage-exact	1	10319	1234350	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 きょうき	凶器	N1	B	direct	core-exact	1	9193	1591540	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 きょうき	狂気	N1	B	direct	core-exact	1	9840	1237540	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28610,7 +28542,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ぎりょう	技量	N1	B	direct	core-exact	1	12784	1225250	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぎわく	疑惑	N1	B	direct	waller-lineage-exact	1	567	1225680	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぎんみ	吟味	N1	A	direct	core+waller-lineage-corroborated	1	15963	1243390	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-くい	杭[くい]	N1	B	direct	core-exact	1	12184	1279450	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 くいこむ	食い込む	N1	B	direct	core-exact	1	10878	1358180	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 くいしんぼう	食いしん坊	N1	B	direct	core-exact	0		1358090	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 くいちがう	食い違う	N1	A	direct	core+waller-lineage-corroborated	1	17395	1358110	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28718,15 +28649,14 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 けいぶ	警部	N1	B	direct	waller-lineage-exact	1	6479	1252510	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けいべつ	軽蔑	N1	B	direct	waller-lineage-exact	1	21060	1252860	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けいほう	警報	N1	B	direct	core-exact	1	4026	1252520	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-けいもう	啓蒙[もう]	N1	B	direct	core-exact	1	13612	1250050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 けいれき	経歴	N1	A	direct	core+waller-lineage-corroborated	1	4024	1251690	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-けいれん	痙攣[けいれん]	N1	B	direct	core-exact	0		1569590	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+けいれん	痙攣	N1	B	direct	core-exact	0		1569590	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 けいろ	経路	N1	A	direct	core+waller-lineage-corroborated	1	5495	1251700	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けいろうのひ	敬老の日	N1	B	direct	core-exact	0		1250810	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 けがらわしい	汚らわしい	N1	B	direct	waller-lineage-exact	0		1178980	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けがれ	汚れ	N1	B	direct	waller-lineage-exact	0		1178990	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けがれる	汚れる	N1	B	direct	waller-lineage-exact	0		1179000	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-けげん	怪訝[けげん]	N1	B	direct	core-exact	0		1200380	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+けげん	怪訝	N1	B	direct	core-exact	0		1200380	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 けしいん	消印	N1	B	direct	core-exact	1	3401	1592600	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 けっかく	結核	N1	B	direct	waller-lineage-exact	1	4513	1254710	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けっかん	血管	N1	B	direct	waller-lineage-exact	1	4515	1255180	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28765,7 +28695,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 けんきゅういん	研究員	N1	B	direct	core-exact	1	3072	1258540	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 けんぎょう	兼業	N1	B	direct	waller-lineage-exact	1	12055	1578300	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けんげん	権限	N1	A	direct	core+waller-lineage-corroborated	1	1095	1258130	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-けんさん	研鑽[さん]	N1	B	direct	core-exact	1	21632	1258700	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 けんざい	健在	N1	B	direct	waller-lineage-exact	1	7914	1256300	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けんし	犬歯	N1	B	direct	core-exact	0		1258350	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 けんしき	見識	N1	B	direct	core-exact	1	7919	1259630	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28782,7 +28711,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 けんやく	倹約	N1	B	direct	waller-lineage-exact	1	16429	1256010	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けんよう	兼用	N1	B	direct	waller-lineage-exact	1	13282	1256720	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 けんりつ	県立	N1	B	direct	core-exact	1	1581	1258940	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-けんろう	堅牢[ろう]	N1	B	direct	core-exact	0		1257230	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+けんろう	堅牢	N1	B	direct	core-exact	0		1257230	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 げいごう	迎合	N1	B	direct	core-exact	1	17508	1253250	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 げいとう	芸当	N1	B	direct	core-exact	0		1253120	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 げいのうじん	芸能人	N1	B	direct	core-exact	1	23904	1253150	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28919,7 +28848,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こうほう	広報	N1	B	direct	core-exact	1	1450	1593040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 こうほしゃ	候補者	N1	B	direct	core-exact	1	23970	1272740	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 こうぼ	公募	N1	B	direct	waller-lineage-exact	1	3563	1274680	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-こうぼう	光芒[ぼう]	N1	B	direct	core-exact	0		1719900	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+こうぼう	光芒	N1	B	direct	core-exact	0		1719900	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 こうぼう	工房	N1	B	direct	core-exact	1	6992	1278260	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 こうまん	高慢	N1	B	direct	core-exact	1	14898	1615850	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 こうみょう	巧妙	N1	A	direct	core+waller-lineage-corroborated	1	6993	1278340	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28945,7 +28874,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こくれん	国連	N1	B	direct	waller-lineage-exact	1	155	1287210	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こぐ	漕ぐ	N1	B	direct	waller-lineage-exact	1	24367	1400530	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こけい	固形	N1	B	direct	core-exact	1	11298	1266590	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-こけん	沽[こ]券	N1	B	direct	core-exact	0		1568610	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+こけん	沽券	N1	B	direct	core-exact	0		1568610	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 こげくさい	焦げ臭い	N1	B	direct	core-exact	0		1350740	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 こげちゃ	こげ茶	N1	B	direct	existing-direct-exact-row	0		1350750	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ここう	孤高	N1	B	direct	core-exact	1	15000	1843300	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -28973,7 +28902,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こじれる	こじれる	N1	B	direct	core-exact	0		1567270	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こじれる	拗れる	N1	B	direct	waller-lineage-exact	0		1567270	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こじん	故人	N1	B	direct	waller-lineage-exact	1	3080	1267190	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-こす	濾[こ]す	N1	B	direct	core-exact	0		1288330	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+こす	濾す	N1	B	direct	core-exact	0		1288330	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 こずえ	梢	N1	B	direct	waller-lineage-exact	0		1349980	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こせき	戸籍	N1	B	direct	waller-lineage-exact	1	4530	1267030	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こたい	固体	N1	B	direct	waller-lineage-exact	1	8915	1266640	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -28984,7 +28913,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こちょう	誇張	N1	A	direct	core+waller-lineage-corroborated	1	14086	1267820	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こっけい	滑稽	N1	A	direct	core+waller-lineage-corroborated	1	16421	1208660	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こっこう	国交	N1	B	direct	waller-lineage-exact	1	1128	1286380	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-こっとう	骨董[とう]	N1	B	direct	core-exact	1	17386	1288700	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 こっとうひん	骨董品	N1	B	direct	waller-lineage-exact	0		1288710	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こつ	骨	N1	B	direct	waller-lineage-exact	0		1288540	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こと	古都	N1	B	direct	core-exact	1	6493	1265960	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29023,7 +28951,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 こんぜつ	根絶	N1	B	direct	core-exact	1	7954	1290240	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 こんちゅう	昆虫	N1	A	direct	core+waller-lineage-corroborated	1	4550	1289980	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こんてい	根底	N1	A	direct	core+waller-lineage-corroborated	1	4552	1290260	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-こんとん	混沌[とん]	N1	B	direct	core-exact	1	13304	1290490	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 こんどう	混同	N1	A	direct	core+waller-lineage-corroborated	1	12186	1290480	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 こんにゅう	混入	N1	B	direct	core-exact	1	10365	1290510	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 こんわく	困惑	N1	B	direct	core-exact	1	8938	1289630	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29059,7 +28986,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ごて	後手	N1	B	direct	core-exact	1	6984	1269730	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ごと	毎	N1	B	direct	waller-lineage-exact	1	24779	1524640	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ごばん	碁盤	N1	B	direct	waller-lineage-exact	1	14699	1270890	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ごびゅう	誤謬[びゅう]	N1	B	direct	core-exact	0		1271440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+ごびゅう	誤謬	N1	B	direct	core-exact	0		1271440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ごまかす	ごまかす	N1	B	direct	core-exact	1	23969	1271480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ごまかす	誤魔化す	N1	B	direct	waller-lineage-exact	1	23969	1271480	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ごらんなさい	ご覧なさい	N1	B	direct	existing-direct-exact-row	0		1270770	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -29097,7 +29024,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 さえぎる	遮る	N1	A	direct	core+waller-lineage-corroborated	1	17390	1323290	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さえずる	さえずる	N1	B	direct	core-exact	1	26399	1565710	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さえずる	囀る	N1	B	direct	waller-lineage-exact	1	26399	1565710	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-さえる	冴[さ]える	N1	B	direct	core-exact	1	24033	1297050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
 さえる	冴える	N1	B	direct	waller-lineage-exact	1	24033	1297050	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さお	棹	N1	B	direct	existing-direct-exact-row	1	14075	1214060	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さお	竿	N1	B	direct	waller-lineage-exact	1	14075	1214060	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -29126,8 +29052,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 さけび	叫び	N1	A	direct	core+waller-lineage-corroborated	1	7899	1235890	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さけびごえ	叫び声	N1	B	direct	core-exact	1	11277	1235900	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 さける	裂ける	N1	B	direct	waller-lineage-exact	1	24884	1558610	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ささい	些[さ]細	N1	B	direct	core-exact	1	24012	1290680	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
-ささげる	捧[ささ]げる	N1	B	direct	core-exact	1	20634	1516430	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
 ささげる	捧げる	N1	B	direct	waller-lineage-exact	1	20634	1516430	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さしあたり	差し当たり	N1	B	direct	core-exact	1	24017	1291290	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 さしえ	挿絵	N1	B	direct	core-exact	1	8697	1593750	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29139,7 +29063,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 さしでがましい	差し出がましい	N1	B	direct	core-exact	0		1291220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 さじ	さじ	N1	B	direct+conflict	core-exact	1	20201	1585630	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 さじ	些事	N1	B	direct	waller-lineage-exact	0		1593790	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-さじん	砂塵[じん]	N1	B	direct	core-exact	0		1754560	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+さじん	砂塵	N1	B	direct	core-exact	0		1754560	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 さずける	授ける	N1	A	direct	core+waller-lineage-corroborated	1	17856	1330280	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さぞ	さぞ	N1	B	direct	existing-direct-exact-row	1	24919	1565620	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さぞ	嘸	N1	B	direct	waller-lineage-exact	1	24919	1565620	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -29182,7 +29106,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 さんきゃく	三脚	N1	B	direct	core-exact	1	21670	1300160	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 さんきゅう	産休	N1	B	direct	waller-lineage-exact	1	11903	1303760	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さんぎいん	参議院	N1	B	direct	waller-lineage-exact	1	2620	1302210	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-さんご	珊瑚[さんご]	N1	B	direct	core-exact	1	24054	1303710	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 さんご	産後	N1	B	direct	waller-lineage-exact	1	11904	1303790	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 さんさく	散策	N1	B	direct	core-exact	1	10836	1303540	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 さんざい	散在	N1	B	direct	core-exact	1	12829	1303520	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29255,7 +29178,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 しくじる	しくじる	N1	A	direct	core+waller-lineage-corroborated	1	22612	1005500	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 しけい	死刑	N1	B	direct	waller-lineage-exact	1	2125	1310810	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 しける	湿気る	N1	B	direct	waller-lineage-exact	0		1320420	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-しこう	嗜[し]好	N1	B	direct	core-exact	1	17884	1565500	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
 しこう	嗜好	N1	B	direct	waller-lineage-exact	1	17884	1565500	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 しこう	志向	N1	A	direct	core+waller-lineage-corroborated	1	1628	1309110	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 しこう	指向	N1	B	direct	core-exact	1	20774	1309770	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29339,7 +29261,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 しほう	四方	N1	B	direct	core-exact	1	5074	1307370	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 しほんきん	資本金	N1	B	direct	core-exact	1	5561	1312790	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 しほんしゅぎ	資本主義	N1	B	direct	core-exact	1	3611	1312800	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-しま	縞[しま]	N1	B	direct+conflict	core-exact	1	15041	1321670	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
 しまいとし	姉妹都市	N1	B	direct	core-exact	0		1307700	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 しまじま	島々	N1	B	direct	core-exact	1	9673	1594540	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 しまつ	始末	N1	A	direct	core+waller-lineage-corroborated	1	7016	1307620	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -29444,7 +29365,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 しゅほう	手法	N1	A	direct	core+waller-lineage-corroborated	1	1655	1328380	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 しゅりょう	狩猟	N1	B	direct	core-exact	1	7040	1328760	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 しゅわん	手腕	N1	B	direct	core-exact	1	4108	1328450	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-しゅんげん	峻[しゅん]厳	N1	B	direct	core-exact	0		1616220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+しゅんげん	峻厳	N1	B	direct	core-exact	0		1616220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 しゅんじ	瞬時	N1	B	direct	core-exact	1	7539	1341240	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 しゆう	私有	N1	B	direct	waller-lineage-exact	1	6526	1311390	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 しょ	諸	N1	B	direct	waller-lineage-exact	1	24182	1344210	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -29584,7 +29505,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 じかい	自戒	N1	B	direct	core-exact	1	12540	1617280	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 じかせい	自家製	N1	B	direct	core-exact	0		1317430	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 じかた	地方	N1	B	direct	waller-lineage-exact	0		2796690	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-じかどうちゃく	自家撞[どう]着	N1	B	direct	core-exact	0		1317440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+じかどうちゃく	自家撞着	N1	B	direct	core-exact	0		1317440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 じがじさん	自画自賛	N1	B	direct	core-exact	1	13794	1317470	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 じき	次期	N1	B	direct	core-exact	1	1176	1316490	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 じき	磁器	N1	B	direct	waller-lineage-exact	1	14253	1316980	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -29740,7 +29661,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 すいしん	推進	N1	A	direct	core+waller-lineage-corroborated	1	270	1371140	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すいしん	水深	N1	B	direct	core-exact	1	6828	1657120	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すいじゃく	衰弱	N1	B	direct	core-exact	1	11382	1372490	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-すいせい	彗[すい]星	N1	B	direct	core-exact	1	12505	1566680	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 すいせん	水洗	N1	B	direct	waller-lineage-exact	1	13161	1371760	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すいそう	吹奏	N1	B	direct	waller-lineage-exact	0		1370790	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すいそう	水槽	N1	B	direct	core-exact	1	6103	1371800	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29754,7 +29674,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 すいろん	推論	N1	B	direct	core-exact	1	16641	1371240	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すうこう	崇高	N1	B	direct	core-exact	1	13834	1372860	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すうし	数詞	N1	B	direct	waller-lineage-exact	0		1373050	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-すうせい	趨[すう]勢	N1	B	direct	core-exact	1	20800	1373390	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 すうはい	崇拝	N1	B	direct	waller-lineage-exact	1	11734	1372870	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すえおき	据え置き	N1	B	direct	core-exact	1	5353	1610690	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すえつける	据え付ける	N1	B	direct	waller-lineage-exact	1	21215	1373500	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -29769,7 +29688,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 すぎ	過ぎ	N1	B	direct	waller-lineage-exact	1	2506	1195960	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すぎさる	過ぎ去る	N1	B	direct	core-exact	1	13715	1195990	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すくい	救い	N1	B	direct	waller-lineage-exact	1	6458	1229030	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-すくう	掬う	N1	B	direct	waller-lineage-exact	1	23830	1226200	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すくすく	すくすく	N1	B	direct	core-exact	0		2008410	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すくなからず	少なからず	N1	B	direct	core-exact	1	7739	1595600	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すぐ	直ぐ	N1	B	direct	waller-lineage-exact	1	24481	1430610	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -29788,7 +29706,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 すすぐ	すすぐ	N1	B	direct	core-exact	0		2827411	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すすぐ	濯ぐ	N1	B	direct	waller-lineage-exact	0		1581550	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すすめる	薦める	N1	B	direct+conflict	core-exact	1	22022	1595680	"{""core-deck-exact"":""N1"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
-すずめ	雀[すずめ]	N1	B	direct	core-exact	1	4643	1373560	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 すたれる	廃れる	N1	A	direct	core+waller-lineage-corroborated	0		1472020	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すっとばす	すっ飛ばす	N1	B	direct	core-exact	0		2835486	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すねる	すねる	N1	B	direct	core-exact	0		1567260	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29801,7 +29718,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 すみか	住処	N1	B	direct	core-exact	0		1333970	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すみつく	住み着く	N1	B	direct	core-exact	0		1334020	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すみやか	速やか	N1	B	direct	core-exact	1	3713	1405000	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-すみわけ	棲[す]み分け	N1	B	direct	core-exact	0		1595800	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+すみわけ	棲み分け	N1	B	direct	core-exact	0		1595800	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 すり	刷り	N1	B	direct	waller-lineage-exact	1	12562	1657910	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 すりきれる	擦り切れる	N1	B	direct	core-exact	0		1595840	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 すりぬける	擦り抜ける	N1	B	direct	core-exact	0		1298880	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -29898,7 +29815,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 せかせか	せかせか	N1	B	direct	core-exact	1	22645	1006480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 せがむ	せがむ	N1	B	direct	core-exact	1	22646	1006490	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 せがれ	倅	N1	B	direct	existing-direct-exact-row	0		1585440	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-せき	堰[せき]	N1	B	direct	core-exact	1	4910	1955830	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 せきにんしゃ	責任者	N1	B	direct	core-exact	1	1716	1383190	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 せきむ	責務	N1	B	direct	waller-lineage-exact	1	4654	1383230	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 せきめん	赤面	N1	B	direct	core-exact	1	24314	1383620	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -30011,7 +29927,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 そうしょく	装飾	N1	A	direct	core+waller-lineage-corroborated	1	5151	1402340	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 そうじて	総じて	N1	B	direct	core-exact	0		2011980	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 そうじゅう	操縦	N1	A	direct	core+waller-lineage-corroborated	1	2727	1400080	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-そうせい	叢[そう]生	N1	B	direct	core-exact	0		1399050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+そうせい	叢生	N1	B	direct	core-exact	0		1399050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 そうぜん	騒然	N1	B	direct	core-exact	1	7589	1403070	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 そうだい	壮大	N1	A	direct	core+waller-lineage-corroborated	1	5654	1399430	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 そうどう	騒動	N1	B	direct	waller-lineage-exact	1	3204	1403080	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -30102,7 +30018,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 たいしょう	大正	N1	B	direct	core-exact	1	3217	1414250	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 たいしょう	対称	N1	B	direct	core-exact	1	15523	1410100	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 たいしょうてき	対照的	N1	B	direct	core-exact	1	3432	1713980	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-たいじ	対峙[じ]	N1	B	direct	core-exact	1	10925	1410330	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 たいせい	態勢	N1	A	direct	core+waller-lineage-corroborated	1	1283	1410770	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 たいせい	耐性	N1	B	direct	core-exact	1	9749	1817250	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 たいせん	対戦	N1	B	direct	core-exact	1	3212	1410190	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -30159,7 +30074,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 たどうし	他動詞	N1	B	direct	waller-lineage-exact	0		1407290	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 たどりつく	辿り着く	N1	B	direct	waller-lineage-exact	1	24436	1416680	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 たどる	辿る	N1	B	direct	waller-lineage-exact	1	24437	1416690	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-たぬき	狸[たぬき]	N1	B	direct	core-exact	1	15524	1416770	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 たねまき	種まき	N1	B	direct	core-exact	0		1686640	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 たのみ	頼み	N1	B	direct	waller-lineage-exact	1	5851	1610270	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 たのみこむ	頼み込む	N1	B	direct	core-exact	1	15808	1548360	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -30214,7 +30128,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 だいきぼ	大規模	N1	B	direct	core-exact	1	1285	1413350	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 だいこう	代行	N1	B	direct	core-exact	1	1744	1411850	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 だいこう	代講	N1	B	direct	core-exact	0		1411880	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-だいごみ	醍醐[だいご]味	N1	B	direct	core-exact	1	19427	1415460	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 だいさんしゃ	第三者	N1	B	direct	core-exact	1	3220	1415380	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 だいしぜん	大自然	N1	B	direct	core-exact	1	8304	1785710	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 だいしょう	代償	N1	B	direct	core-exact	1	7110	1411960	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -30272,7 +30185,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ちっそく	窒息	N1	B	direct	waller-lineage-exact	1	8555	1422540	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちっぽけ	ちっぽけ	N1	B	direct	core-exact	0		1007570	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ちなむ	ちなむ	N1	B	direct	core-exact	0		2008910	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-ちまた	巷[ちまた]	N1	B	direct	core-exact	1	16433	1278350	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ちみつ	緻密	N1	B	direct	core-exact	1	16480	1570520	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ちめい	知名	N1	B	direct	core-exact	1	4202	1420690	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ちめいてき	致命的	N1	B	direct	core-exact	1	9997	1421950	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -30301,7 +30213,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ちゅうじつ	忠実	N1	A	direct	core+waller-lineage-corroborated	1	4914	1012210	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちゅうすう	中枢	N1	A	direct	core+waller-lineage-corroborated	1	4205	1424660	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちゅうせいだい	中生代	N1	B	direct	core-exact	1	21383	1623340	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-ちゅうちょ	躊躇[ちゅうちょ]	N1	B	direct	core-exact	1	20199	1573370	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ちゅうっぱら	中っ腹	N1	B	direct	waller-lineage-exact	0		1425430	"{""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちゅうとはんぱ	中途半端	N1	B	direct	core-exact	1	9055	1425050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ちゅうどく	中毒	N1	B	direct	waller-lineage-exact	1	5178	1425160	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -30310,7 +30221,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ちゅうわ	中和	N1	B	direct	waller-lineage-exact	1	13647	1425670	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちょ	著	N1	B	direct	waller-lineage-exact	1	3448	1956680	"{""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちょう	庁	N1	A	direct	core+waller-lineage-corroborated	1	1768	1427590	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ちょう	蝶	N1	B	direct	waller-lineage-exact	1	8560	1429010	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちょう	超	N1	B	direct	waller-lineage-exact	1	24475	1429340	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちょういん	調印	N1	B	direct	waller-lineage-exact	1	1772	1429080	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちょうかく	聴覚	N1	A	direct	core+waller-lineage-corroborated	1	8095	1428880	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -30346,7 +30256,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ちょめい	著名	N1	A	direct	core+waller-lineage-corroborated	1	4704	1427150	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちらっと	ちらっと	N1	A	direct	core+waller-lineage-corroborated	1	22698	1007920	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちらり	ちらり	N1	B	direct	core-exact	1	25614	2008960	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-ちり	塵[ちり]	N1	B	direct	core-exact	1	24271	1369910	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ちりとり	ちり取り	N1	B	direct	existing-direct-exact-row	1	24272	1369920	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ちりばめる	ちりばめる	N1	B	direct	core-exact	0		1634240	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ちんか	沈下	N1	B	direct	core-exact	1	8564	1431690	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -30404,7 +30313,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 つつく	突く	N1	B	direct	waller-lineage-exact	1	24565	1456895	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 つつしむ	慎む	N1	B	direct	waller-lineage-exact	1	22023	1598000	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 つつみこむ	包み込む	N1	B	direct	core-exact	1	24752	1515380	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-つづる	綴[つづ]る	N1	B	direct	core-exact	1	22005	1433780	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 つてこと	伝言	N1	B	direct	waller-lineage-exact	0		2545840	"{""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 つとまる	務まる	N1	B	direct	existing-direct-exact-row	0		1240800	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 つとまる	勤まる	N1	A	direct	core+waller-lineage-corroborated	0		1240800	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -30417,7 +30325,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 つの	角	N1	B	direct	core-exact	1	23755	1206120	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 つのる	募る	N1	A	direct	core+waller-lineage-corroborated	1	5261	1514800	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 つば	唾	N1	A	direct	core+waller-lineage-corroborated	1	19723	1408410	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-つばめ	燕[つばめ]	N1	B	direct	core-exact	1	9785	1177350	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 つぶさに	つぶさに	N1	B	direct	core-exact	0		1598060	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 つぶやく	呟く	N1	B	direct	waller-lineage-exact	1	24912	1565120	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 つぶる	つぶる	N1	B	direct	core-exact	1	25071	1585820	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -30769,9 +30676,8 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 なごり	名残	N1	B	direct	waller-lineage-exact	1	9141	1531530	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 なさけ	情け	N1	B	direct	waller-lineage-exact	1	15048	1356220	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 なさけぶかい	情け深い	N1	B	direct	waller-lineage-exact	1	25183	1599490	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-なじみ	馴[な]染み	N1	B	direct	core-exact	0		1459810	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+なじみ	馴染み	N1	B	direct	core-exact	0		1459810	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 なじる	詰る	N1	B	direct	waller-lineage-exact	0		1226560	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-なす	為[な]す	N1	B	direct+conflict	core-exact	1	26331	2861111	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
 なだかい	名高い	N1	B	direct	waller-lineage-exact	1	10556	1531490	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 なだめる	なだめる	N1	B	direct	core-exact	1	24830	1540250	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 なだれ	雪崩	N1	B	direct	waller-lineage-exact	1	9490	1386690	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -30789,7 +30695,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 なまぬるい	生ぬるい	N1	B	direct	existing-direct-exact-row	1	16917	1378810	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 なまはんか	生半可	N1	B	direct	core-exact	0		1829680	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 なまみ	生身	N1	A	direct	core+waller-lineage-corroborated	1	12393	1379160	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-なまもの	生物[なまもの]	N1	B	direct	core-exact	1	26377	1379440	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 なまり	鉛	N1	B	direct	waller-lineage-exact	1	5920	1178500	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 なみ	並	N1	B	direct	existing-direct-exact-row	1	5839	1599620	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 なみなみならぬ	並々ならぬ	N1	B	direct	core-exact	0		1599660	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -30938,7 +30843,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 のち	のち	N1	B	direct+conflict	core-exact	1	23949	1269330	"{""core-deck-exact"":""N1"",""existing-direct"":""N3"",""waller-entry-context"":""N3""}"
 のちのち	後々	N1	B	direct	core-exact	1	26473	2841372	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 のっとる	乗っ取る	N1	B	direct	waller-lineage-exact	1	14098	1354700	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-のっとる	則[のっと]る	N1	B	direct	core-exact	0		1404080	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+のっとる	則る	N1	B	direct	core-exact	0		1404080	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 のどか	のどか	N1	B	direct	core-exact	1	24477	1429840	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 のどか	長閑	N1	B	direct	waller-lineage-exact	1	24477	1429840	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ののしる	罵る	N1	B	direct	waller-lineage-exact	1	24615	1471520	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31023,7 +30928,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 はす	蓮	N1	B	direct	waller-lineage-exact	1	5309	1559200	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 はずむ	弾む	N1	A	direct	core+waller-lineage-corroborated	1	11749	1419400	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 はせい	派生	N1	B	direct	core-exact	1	21550	1471150	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-はせる	馳[は]せる	N1	B	direct	core-exact	0		1949560	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+はせる	馳せる	N1	B	direct	core-exact	0		1949560	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 はそん	破損	N1	A	direct	core+waller-lineage-corroborated	1	9567	1471380	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 はた	機	N1	B	direct	waller-lineage-exact	0		1220760	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 はたらかす	働かす	N1	B	direct	core-exact	1	13590	2009420	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -31031,7 +30936,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 はたん	破綻	N1	B	direct	core-exact	1	11768	1471390	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 はだざわり	肌触り	N1	B	direct	core-exact	1	18173	1600800	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 はだし	裸足	N1	B	direct	waller-lineage-exact	1	24848	1547660	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-はちゅうるい	爬[は]虫類	N1	B	direct	core-exact	1	24951	1569220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 はっかく	発覚	N1	B	direct	core-exact	1	4753	1477200	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 はっくつ	発掘	N1	A	direct	core+waller-lineage-corroborated	1	3787	1477290	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 はっこう	発酵	N1	B	direct	core-exact	1	8129	1477450	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -31073,7 +30977,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 はめ	羽目	N1	B	direct	core-exact	1	10267	1171820	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 はもん	波紋	N1	B	direct	core-exact	1	3290	1471090	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 はやす	生やす	N1	A	direct	core+waller-lineage-corroborated	1	21992	1378760	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-はやり	流行り	N1	B	direct	existing-direct-exact-row	0		2834093	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 はらす	晴らす	N1	B	direct	core-exact	1	15704	1376450	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 はらだち	腹立ち	N1	B	direct	waller-lineage-exact	0		1501290	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 はらっぱ	原っぱ	N1	B	direct	waller-lineage-exact	1	15033	1261150	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31147,7 +31050,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ひ	碑	N1	B	direct	runtime-legacy-lineage-exact	1	4406	1702990	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N3"",""exactEvidence"":{""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1702990""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1702990:waller:N1""]}"
 ひ	非	N1	A	direct	core+waller-lineage-corroborated	1	24662	1484710	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひあい	悲哀	N1	B	direct	core-exact	1	10048	1483210	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-ひいき	贔屓[ひいき]	N1	B	direct	core-exact	1	24978	1573200	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ひいては	延いては	N1	B	direct	waller-lineage-exact	0		1010470	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひかえしつ	控え室	N1	B	direct	core-exact	1	6298	1601430	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひかえしつ	控室	N1	B	direct	waller-lineage-exact	1	6298	1601430	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31173,8 +31075,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ひきもどす	引き戻す	N1	B	direct	core-exact	1	20602	1169180	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひきよせる	引き寄せる	N1	B	direct	core-exact	1	15585	1168870	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひけつ	否決	N1	B	direct	waller-lineage-exact	1	6209	1482980	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ひけつ	秘訣[けつ]	N1	B	direct	core-exact	1	19731	1484040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
-ひげ	髭[ひげ]	N1	B	direct+conflict	core-exact	1	25208	1601810	"{""core-deck-exact"":""N1"",""existing-direct"":""N4"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N4"",""waller-entry-context"":""N4""}"
 ひこう	非行	N1	B	direct	waller-lineage-exact	1	7653	1484870	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひこく	被告	N1	B	direct	core-exact	1	380	1484410	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひさん	悲惨	N1	B	direct	waller-lineage-exact	1	4760	1483290	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31220,19 +31120,18 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ひとみしり	人見知り	N1	B	direct	core-exact	1	20169	1367260	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひとむかし	一昔	N1	B	direct	core-exact	1	11683	1164130	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひとめ	人目	N1	B	direct	core-exact	1	8680	1580760	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ひとめぼれ	一目惚[ぼ]れ	N1	B	direct	core-exact	0		1166970	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+ひとめぼれ	一目惚れ	N1	B	direct	core-exact	0		1166970	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ひとやく	一役	N1	B	direct	core-exact	0		1167090	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひとりあるき	独り歩き	N1	B	direct	core-exact	1	7369	1163850	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひとりぼっち	一人ぼっち	N1	B	direct	core-exact	1	17701	1602040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひとりよがり	独りよがり	N1	B	direct	core-exact	0		1455680	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひどり	日取り	N1	B	direct	waller-lineage-exact	1	4742	1464140	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひな	雛	N1	B	direct	waller-lineage-exact	1	26279	2847628	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ひな	雛[ひな]	N1	B	direct	core-exact	1	26279	2847628	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
 ひなた	日なた	N1	B	direct	core-exact	1	9082	1464050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひなた	日向	N1	B	direct	waller-lineage-exact	1	9082	1464050	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひねりだす	ひねり出す	N1	B	direct	core-exact	0		1469510	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ひねる	ひねる	N1	B	direct+conflict	core-exact	1	24607	1469530	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
-ひのき	檜[ひのき]	N1	B	direct	core-exact	0		1568030	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+ひのき	檜	N1	B	direct	core-exact	0		1568030	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ひのまる	日の丸	N1	B	direct	waller-lineage-exact	1	3773	1463780	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひばな	火花	N1	B	direct	waller-lineage-exact	1	7869	1193760	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ひめい	悲鳴	N1	A	direct	core+waller-lineage-corroborated	1	5239	1483350	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31286,7 +31185,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 びょうしつ	病室	N1	B	direct	core-exact	1	6212	1490310	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 びょうしゃ	描写	N1	A	direct	core+waller-lineage-corroborated	1	6211	1490140	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 びょうにん	病人	N1	B	direct	core-exact	1	7189	1490360	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-びょうぶ	屏[びょう]風	N1	B	direct	core-exact	1	9653	1566400	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 びりょう	微量	N1	B	direct	waller-lineage-exact	1	10050	1486200	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぴんと	ぴんと	N1	B	direct	core-exact	0		2679390	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ふ	歩	N1	B	direct	waller-lineage-exact	0		1514290	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31308,7 +31206,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ふかかい	不可解	N1	B	direct	core-exact	1	18342	1491380	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ふかくてい	不確定	N1	B	direct	core-exact	1	16354	1740390	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ふかぶん	不可分	N1	B	direct	core-exact	1	5749	1491550	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-ふかん	俯瞰[ふかん]	N1	B	direct	core-exact	0		1563670	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+ふかん	俯瞰	N1	B	direct	core-exact	0		1563670	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ふきげん	不機嫌	N1	B	direct	core-exact	1	12233	1491820	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ふきつ	不吉	N1	B	direct	waller-lineage-exact	1	14587	1491910	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ふきとる	拭き取る	N1	B	direct	core-exact	0		1357230	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -31345,7 +31243,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ふぜい	風情	N1	B	direct	core-exact	1	9590	1499900	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ふそく	不測	N1	B	direct	core-exact	0		1493690	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ふたしか	不確か	N1	B	direct	core-exact	1	15538	1491600	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-ふち	淵[ふち]	N1	B	direct	core-exact	1	7666	1501530	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ふちゃく	付着	N1	B	direct	core-exact	1	15075	1496400	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ふちゅうい	不注意	N1	B	direct	core-exact	1	13185	1493830	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ふっかつ	復活	N1	A	direct	core+waller-lineage-corroborated	1	1853	1500700	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31474,7 +31371,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 へんきょう	偏狭	N1	B	direct	core-exact	1	18581	1510370	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 へんけん	偏見	N1	A	direct	core+waller-lineage-corroborated	1	4772	1510380	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 へんさい	返済	N1	A	direct	core+waller-lineage-corroborated	1	1864	1512210	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-へんさん	編纂[さん]	N1	B	direct	core-exact	1	14844	1511980	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 へんしつ	変質	N1	B	direct	core-exact	1	10544	1511120	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 へんじょう	返上	N1	B	direct	core-exact	1	7676	1512230	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 へんせい	編成	N1	B	direct	core-exact	1	893	1512040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -31570,7 +31466,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ほねおる	骨折る	N1	B	direct	core-exact	0		1668040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ほねみをおしまず	骨身を惜しまず	N1	B	direct	core-exact	0		2856727	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ほほえましい	ほほえましい	N1	B	direct	core-exact	0		1486000	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-ほほえむ	微[ほほ]笑む	N1	B	direct+conflict	core-exact	1	24666	1486030	"{""core-deck-exact"":""N1"",""existing-direct"":""N3"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N3"",""waller-normalized"":""N3"",""waller-entry-context"":""N3""}"
 ほぼ	保母	N1	B	direct	waller-lineage-exact	1	7293	1603540	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ほめたたえる	褒めたたえる	N1	B	direct	core-exact	0		1517940	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ほゆう	保有	N1	B	direct	core-exact	1	1866	1513970	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -31600,16 +31495,15 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ぼうぎょ	防御	N1	B	direct	core-exact	1	3335	1520330	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぼうすい	防水	N1	B	direct	core-exact	1	10083	1520490	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぼうせき	紡績	N1	B	direct	waller-lineage-exact	1	11024	1519930	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ぼうぜん	呆[ぼう]然	N1	B	direct	core-exact	0		1515610	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
 ぼうぜん	呆然	N1	B	direct	waller-lineage-exact	0		1515610	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ぼうぜん	茫[ぼう]然	N1	B	direct	core-exact	0		2835317	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+ぼうぜん	茫然	N1	B	direct	core-exact	0		2835317	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ぼうそう	暴走	N1	B	direct	core-exact	1	5765	1519480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぼうちょう	膨張	N1	B	direct	existing-direct-exact-row	1	5768	1520010	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぼうちょう	膨脹	N1	B	direct	runtime-legacy-lineage-exact	1	5768	1520010	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""openjlpt"":""N1"",""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1520010""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1520010:waller:N1""]}"
 ぼうっと	ぼうっと	N1	B	direct	core-exact	1	22823	1011760	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ぼうとう	冒頭	N1	A	direct	core+waller-lineage-corroborated	1	1872	1519860	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぼうどう	暴動	N1	B	direct	waller-lineage-exact	1	3334	1519520	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ぼうばく	茫[ぼう]漠	N1	B	direct	core-exact	0		1909010	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+ぼうばく	茫漠	N1	B	direct	core-exact	0		1909010	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ぼうふう	暴風	N1	B	direct	waller-lineage-exact	1	8159	1519540	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぼくし	牧師	N1	B	direct	waller-lineage-exact	1	6238	1521770	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ぼくめつ	撲滅	N1	B	direct	core-exact	1	8635	1521720	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -31637,7 +31531,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ぽんぽん	ぽんぽん	N1	B	direct	core-exact	1	29224	1126050	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 まあたらしい	真新しい	N1	B	direct	core-exact	1	11377	1363980	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 まいおちる	舞い落ちる	N1	B	direct	core-exact	0		2680480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-まいしん	邁[まい]進	N1	B	direct	core-exact	0		1573680	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+まいしん	邁進	N1	B	direct	core-exact	0		1573680	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 まいぞう	埋蔵	N1	A	direct	core+waller-lineage-corroborated	1	6709	1524560	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まう	舞う	N1	B	direct	waller-lineage-exact	1	7660	1499100	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まうえ	真上	N1	A	direct	core+waller-lineage-corroborated	1	11376	1363940	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31651,7 +31545,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 まぎれる	紛れる	N1	A	direct	core+waller-lineage-corroborated	1	17874	1505010	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まぎわ	間際	N1	B	direct	core-exact	1	6943	1215450	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 まく	膜	N1	B	direct	waller-lineage-exact	1	5273	1524850	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-まくあい	幕間[あい]	N1	B	direct	core-exact	1	19507	1524790	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 まくる	まくる	N1	B	direct	core-exact	1	23921	1257800	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まくる	捲る	N1	B	direct	waller-lineage-exact	1	23921	1257800	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まぐろ	まぐろ	N1	B	direct	core-exact	1	24782	1524880	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -31701,7 +31594,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 まもの	魔物	N1	B	direct	core-exact	1	14852	1524220	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 まゆ	眉	N1	A	direct	core+waller-lineage-corroborated	1	10522	1486270	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まゆ	繭	N1	B	direct	core-exact	1	15303	1525690	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-まゆをひそめる	眉を顰[ひそ]める	N1	B	direct	core-exact	0		2125270	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+まゆをひそめる	眉を顰める	N1	B	direct	core-exact	0		2125270	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 まよなか	真夜中	N1	B	direct	core-exact	1	10417	1364380	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 まり	鞠	N1	B	direct	waller-lineage-exact	0		1226280	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 まるごと	丸ごと	N1	A	direct	core+waller-lineage-corroborated	1	10300	1216410	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -31878,7 +31771,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 めだま	目玉	N1	B	direct	core-exact	1	2869	1535370	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 めつき	目つき	N1	B	direct	existing-direct-exact-row	1	20636	1535670	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 めつぼう	滅亡	N1	A	direct	core+waller-lineage-corroborated	1	12244	1533030	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-めでる	愛[め]でる	N1	B	direct	core-exact	0		1150480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+めでる	愛でる	N1	B	direct	core-exact	0		1150480	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 めど	めど	N1	B	direct	core-exact	1	24818	1535470	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 めぼしい	めぼしい	N1	B	direct	core-exact	0		2001300	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 めまぐるしい	目まぐるしい	N1	B	direct	core-exact	1	12995	1535170	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -31946,7 +31839,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ものしり	物知り	N1	B	direct	core-exact	1	22287	1642090	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ものすごい	ものすごい	N1	B	direct+conflict	core-exact	1	24719	1502630	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 ものずき	物好き	N1	B	direct	waller-lineage-exact	1	21091	1502500	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-もののけ	物の怪[け]	N1	B	direct	core-exact	0		1502400	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+もののけ	物の怪	N1	B	direct	core-exact	0		1502400	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ものまね	物真似	N1	B	direct	core-exact	0		1502620	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ものみ	物見	N1	B	direct	core-exact	1	14483	1722570	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 もはや	最早	N1	B	direct	waller-lineage-exact	1	24024	1294170	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -32007,7 +31900,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 やむ	病む	N1	B	direct	waller-lineage-exact	1	12231	1490210	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 やや	漸	N1	B	direct	existing-direct-exact-row	1	24959	1570120	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 ややこしい	ややこしい	N1	A	direct	core+waller-lineage-corroborated	1	22855	1012870	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-やゆ	揶揄[やゆ]	N1	B	direct	core-exact	1	16730	1567640	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 やられる	やられる	N1	B	direct	core-exact	0		1260410	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 やりきれない	やり切れない	N1	B	direct	core-exact	1	25433	1612960	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 やりくり	やりくり	N1	B	direct	core-exact	1	22856	1012930	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -32106,7 +31998,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 よこづな	横綱	N1	B	direct	waller-lineage-exact	1	1509	1180740	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 よこばい	横ばい	N1	B	direct	core-exact	1	4389	1614800	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 よこめ	横目	N1	B	direct	core-exact	1	8347	1181090	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-よしあし	善し悪[あ]し	N1	B	direct	core-exact	1	25031	1581170	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N1"",""waller-normalized"":""N1"",""waller-entry-context"":""N1""}"
 よしあし	善し悪し	N1	B	direct	waller-lineage-exact	1	25031	1581170	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 よしあし	良し悪し	N1	B	direct	existing-direct-exact-row	1	25031	1581170	"{""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 よせ	寄席	N1	B	direct	core-exact	1	8383	1219790	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -32136,7 +32027,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 よるべ	寄る辺	N1	B	direct	core-exact	0		1662290	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 よろこばしい	喜ばしい	N1	B	direct	core-exact	1	9216	1614400	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 よろん	世論	N1	B	direct	core-exact	1	980	1606150	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-よわい	齢[よわい]	N1	B	direct	core-exact	1	9650	1557940	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 よわき	弱気	N1	B	direct	core-exact	1	7998	1324710	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 よわね	弱音	N1	B	direct	core-exact	1	13149	1324670	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 よわみ	弱み	N1	B	direct	core-exact	1	9683	1606160	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -32176,7 +32066,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 りゅうい	留意	N1	B	direct	core-exact	1	16724	1552720	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 りゅうしゅつ	流出	N1	B	direct	core-exact	1	2889	1552350	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 りゅうじょう	粒状	N1	B	direct	core-exact	1	20882	1552920	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
-りゅうちょう	流暢[ちょう]	N1	B	direct	core-exact	1	24865	1552430	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 りゅうつう	流通	N1	A	direct	core+waller-lineage-corroborated	1	1423	1552440	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 りゅうにゅう	流入	N1	B	direct	core-exact	1	4815	1552510	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 りゅうは	流派	N1	B	direct	core-exact	1	10112	1552520	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -32226,7 +32115,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 れんぽう	連邦	N1	B	direct	waller-lineage-exact	1	444	1559790	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 れんま	錬磨	N1	B	direct	core-exact	0		1618590	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 れんめい	連盟	N1	B	direct	waller-lineage-exact	1	946	1559870	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ろうえい	漏洩[えい]	N1	B	direct	core-exact	1	24894	1560870	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ろうきゅう	老朽	N1	B	direct	core-exact	1	5312	1561030	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ろうく	労苦	N1	B	direct	core-exact	1	13944	1560270	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ろうご	老後	N1	B	direct	core-exact	1	3863	1561040	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
@@ -32238,7 +32126,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 ろうほう	朗報	N1	B	direct	core-exact	1	8201	1560740	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ろうぼく	老木	N1	B	direct	core-exact	1	20031	1644530	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ろうりょく	労力	N1	A	direct	core+waller-lineage-corroborated	1	10119	1560650	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-ろか	濾[ろ]過	N1	B	direct	core-exact	0		1568860	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
+ろか	濾過	N1	B	direct	core-exact	0		1568860	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
 ろくが	録画	N1	B	direct	core-exact	1	5810	1561610	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 ろくな	ろくな	N1	B	direct	runtime-legacy-lineage-exact	1	25396	1612330	"{""runtimeSources"":[""coverage_sourcecheck_manual""],""legacyLevel"":""N1"",""exactEvidence"":{""waller"":""N1"",""tomoshi"":""N1""},""tomoshiEntryIds"":[""1612330""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[""N1""],""tomoshiLevelSources"":[""1612330:waller:N1""]}"
 ろくな	碌な	N1	B	direct	waller-lineage-exact	1	25396	1612330	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
@@ -32272,9 +32160,6 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 わずらわしい	煩わしい	N1	A	direct	core+waller-lineage-corroborated	1	20185	1481940	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 わたり	渡り	N1	B	direct	core-exact	1	8581	1444620	"{""core-deck-exact"":""N1"",""existing-direct"":""N1""}"
 わたりどり	渡り鳥	N1	A	direct	core+waller-lineage-corroborated	1	8109	1444650	"{""core-deck-exact"":""N1"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-わな	罠[わな]	N1	B	direct	core-exact	1	19742	1570620	"{""core-deck-exact"":""N1"",""existing-direct"":""N1"",""core-deck-normalized"":""N1""}"
-わび	詫び	N1	B	direct	waller-lineage-exact	1	24901	1562670	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
-わびる	詫[わ]びる	N1	B	direct+conflict	core-exact	1	25262	1606790	"{""core-deck-exact"":""N1"",""existing-direct"":""N2"",""core-deck-normalized"":""N1"",""openjlpt-normalized"":""N2"",""waller-normalized"":""N2"",""waller-entry-context"":""N2""}"
 わふう	和風	N1	B	direct	waller-lineage-exact	1	6751	1562180	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 わぶん	和文	N1	B	direct	waller-lineage-exact	1	16261	1562200	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 わら	藁	N1	B	direct	waller-lineage-exact	1	24902	1562710	"{""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
