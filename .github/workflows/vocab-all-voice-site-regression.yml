@@ -60,6 +60,7 @@ jobs:
             'word-supertonic3-delta-catalog.json',
             'word-supertonic3-runtime-delta-catalog.json',
           )
+          INLINE_RE=re.compile(r'\[[ぁ-ゖァ-ヺー]+\]')
 
           def load(p):
               return json.loads(Path(p).read_text(encoding='utf-8'))
@@ -74,7 +75,6 @@ jobs:
 
           def load_voice_index(meta):
               errors=[]
-              # Match desktop browser preference, with all published fallbacks.
               for raw in (meta.get('indexGithubUrl'),meta.get('indexUrl'),meta.get('indexHfUrl')):
                   if not raw: continue
                   local=local_candidate(raw)
@@ -91,7 +91,9 @@ jobs:
 
           runtime=[]
           seen=set()
+          normalized_seen={}
           malformed=[]
+          collisions=[]
           with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
               for r in csv.DictReader(f,delimiter='\t'):
                   reading=(r.get('reading') or '').strip()
@@ -102,7 +104,30 @@ jobs:
                   k=reading+'|'+display
                   assert k not in seen, ('duplicate exact key',k)
                   seen.add(k); runtime.append(k)
+                  normalized_display=INLINE_RE.sub('',display)
+                  nk=reading+'|'+normalized_display
+                  previous=normalized_seen.get(nk)
+                  if previous and previous!=k:
+                      collisions.append((nk,previous,k))
+                  else:
+                      normalized_seen[nk]=k
           assert len(runtime)>=32000, ('runtime vocabulary unexpectedly small',len(runtime))
+
+          if malformed:
+              print('INLINE-READING NORMALIZATION COLLISIONS:',len(collisions))
+              for x in collisions[:100]: print('COLLISION',repr(x))
+              file_counts=[]
+              for p in Path('.').rglob('*'):
+                  if not p.is_file() or '.git' in p.parts: continue
+                  if p.suffix.lower() not in {'.js','.json','.tsv','.py','.md','.html','.yml','.yaml'}: continue
+                  try:
+                      if p.stat().st_size>25_000_000: continue
+                      text=p.read_text(encoding='utf-8')
+                  except Exception:
+                      continue
+                  n=len(INLINE_RE.findall(text))
+                  if n: file_counts.append((n,str(p)))
+              for n,p in sorted(file_counts,reverse=True): print('ANNOTATION_FILE',n,p)
 
           union=set()
           for cp in CATALOGS:
@@ -138,6 +163,7 @@ jobs:
           if malformed:
               print('MALFORMED LEXICAL KEYS:',len(malformed))
               for pair in malformed[:200]: print('MALFORMED',repr(pair[0]),repr(pair[1]))
+          assert not collisions, ('INLINE-READING NORMALIZATION WOULD COLLIDE',len(collisions),collisions[:30])
           assert not malformed, ('MALFORMED LEXICAL KEYS',len(malformed),malformed[:30])
           print('LEXICAL KEY FORMAT PASS')
           PY
