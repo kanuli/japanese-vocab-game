@@ -40,7 +40,24 @@ function renderDevice(){var s=el('voice');if(!s)return;var vs=japaneseDeviceVoic
 async function renderHosted(eng){var s=el('voice');if(!s)return;var c=await loadCatalog(eng),all=keys(c);if(c&&c.status==='ready'&&all.length){s.disabled=false;s.innerHTML='<option value="random">🎲 每個單字隨機聲線</option>'+all.map(function(k){return'<option value="'+esc(k)+'">'+esc(voiceName(group(c)[k],k))+'</option>';}).join('');if(eng==='supertonic3'&&all.indexOf('F3')>=0)s.value='F3';status('✅ '+CFG[eng].label+'：'+all.length+' 種伺服器聲線可用。');}else{s.innerHTML='<option value="">伺服器聲線包尚未完成</option>';s.disabled=true;status('⏳ '+CFG[eng].label+' 的伺服器預錄包暫不可用；播放時會自動改用其他伺服器預錄聲線。');}}
 async function syncUI(){var eng=engine();if(eng==='device')renderDevice();else await renderHosted(eng);updateDesc();}
 function updateDesc(){var d=el('voiceDesc'),eng=engine();if(!d)return;if(eng==='voicevox')d.textContent='VOICEVOX：使用本站伺服器預先生成的單字音訊；播放時不需要即時生成。';else if(eng==='aivis')d.textContent='AivisSpeech / Style-Bert-VITS：使用本站伺服器預先生成的日語聲線包；不需要本機 AivisSpeech。';else if(eng==='device')d.textContent='裝置 Japanese voice：只作緊急備援，聲線依瀏覽器／作業系統而不同。';else d.textContent='Supertonic 3：使用本站伺服器預先生成的 F1–F5 / M1–M5 單字音訊；不下載、不安裝，也不在瀏覽器即時生成 Supertonic 模型。';}
-function installUI(){var voice=el('voice');if(!voice)return;var parent=voice.parentNode;if(!el('audioEngine')){var wrap=document.createElement('div');wrap.className='field';wrap.style.marginTop='10px';wrap.innerHTML='<label for="audioEngine">語音來源</label><select id="audioEngine"><option value="voicevox">'+CFG.voicevox.label+'</option><option value="supertonic3" selected>'+CFG.supertonic3.label+'</option><option value="aivis">'+CFG.aivis.label+'</option><option value="device">'+CFG.device.label+'</option></select>';parent.parentNode.insertBefore(wrap,parent);el('audioEngine').onchange=syncUI;}var title=document.querySelector('#setup aside h2');if(title)title.textContent='🔊 單字語音｜VOICEVOX / Supertonic 3 / AivisSpeech';var note=document.querySelector('#setup aside .notice');if(note)note.textContent='三種主要日語引擎均使用本站伺服器預先生成的單字聲線；不需要下載或安裝 Supertonic 模型。';var sample=el('sampleVoice');if(sample){sample.onclick=async function(){sample.disabled=true;sampleStatus('正在讀取伺服器預錄試聽…');try{var w=W.words&&W.words.length?W.words[0]:null,text=w?w.reading:'こんにちは';var used=await W.speak(text,w);sampleStatus('✅ 試聽完成：'+(used&&used.engine?used.engine:engine())+'｜'+text);}catch(e){sampleStatus('⚠️ 試聽失敗：'+(e&&e.message?e.message:String(e)));}finally{sample.disabled=false;}};}if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=function(){if(engine()==='device')renderDevice();};syncUI();}
-window.WORD_AUDIO_MULTI_VOICE={version:3,engines:['voicevox','supertonic3','aivis','device'],sync:syncUI,loadCatalog:loadCatalog,stop:stopAll,hostedOnly:true,mobileSafe:true};
+async function auditionSelectedVoice(){
+  var e=engine();
+  if(e==='device'){
+    var text='こんにちは',used=await speakDevice(text);
+    return{used:used,text:text};
+  }
+  var c=await loadCatalog(e);
+  if(!c||c.status!=='ready'||!c.words)throw new Error('所選伺服器語音 catalog 尚未可用');
+  var words=Array.isArray(W.words)?W.words:[],w=null;
+  for(var i=0;i<words.length;i++){
+    if(c.words[wordKey(words[i])]){w=words[i];break;}
+  }
+  if(!w)throw new Error('找不到可用於聲線試聽的已預錄單字');
+  var used=await playHosted(e,w);
+  if(!used)throw new Error('所選聲線未能直接播放試聽單字');
+  return{used:used,text:String(w.reading||'')};
+}
+function installUI(){var voice=el('voice');if(!voice)return;var parent=voice.parentNode;if(!el('audioEngine')){var wrap=document.createElement('div');wrap.className='field';wrap.style.marginTop='10px';wrap.innerHTML='<label for="audioEngine">語音來源</label><select id="audioEngine"><option value="voicevox">'+CFG.voicevox.label+'</option><option value="supertonic3" selected>'+CFG.supertonic3.label+'</option><option value="aivis">'+CFG.aivis.label+'</option><option value="device">'+CFG.device.label+'</option></select>';parent.parentNode.insertBefore(wrap,parent);el('audioEngine').onchange=syncUI;}var title=document.querySelector('#setup aside h2');if(title)title.textContent='🔊 單字語音｜VOICEVOX / Supertonic 3 / AivisSpeech';var note=document.querySelector('#setup aside .notice');if(note)note.textContent='三種主要日語引擎均使用本站伺服器預先生成的單字聲線；不需要下載或安裝 Supertonic 模型。';var sample=el('sampleVoice');if(sample){sample.onclick=async function(){sample.disabled=true;sampleStatus('正在直接測試目前選擇的日語聲線…');try{var result=await auditionSelectedVoice(),used=result.used;sampleStatus('✅ 試聽完成：'+(used&&used.engine?used.engine:engine())+'｜'+(used&&used.key?used.key:'')+'｜'+result.text);}catch(e){sampleStatus('⚠️ 試聽失敗：'+(e&&e.message?e.message:String(e)));}finally{sample.disabled=false;}};}if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=function(){if(engine()==='device')renderDevice();};syncUI();}
+window.WORD_AUDIO_MULTI_VOICE={version:4,engines:['voicevox','supertonic3','aivis','device'],sync:syncUI,loadCatalog:loadCatalog,stop:stopAll,hostedOnly:true,mobileSafe:true,auditionExactVoice:true};
 installUI();
 })();
