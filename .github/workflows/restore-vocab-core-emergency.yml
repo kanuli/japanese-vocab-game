@@ -1,0 +1,41 @@
+name: Restore full verified core vocabulary
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/restore-vocab-core-emergency.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRECLEAN_SHA: 26efc977c5fb8e234f1f0b141b9f9308249a9c8f
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+      - name: Restore and verify core file
+        run: |
+          git show "$PRECLEAN_SHA:data/vocab_core_verified.js" > data/vocab_core_verified.js
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('data/vocab_core_verified.js')
+          s=p.read_text(encoding='utf-8')
+          assert p.stat().st_size > 100000, p.stat().st_size
+          assert '10511' in s, 'expected core row metadata missing'
+          assert 'VOCAB_CORE_VERIFIED_META' in s
+          print('RESTORED CORE SIZE',p.stat().st_size)
+          PY
+      - name: Commit restored core
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/vocab_core_verified.js
+          git commit -m 'fix: restore full verified core vocabulary'
+          git push
