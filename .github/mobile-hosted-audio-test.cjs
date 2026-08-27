@@ -136,7 +136,7 @@ async function checkGenericVoiceTest(context,path,playRealAudio=false){
       version:window.MobileSupertonicGuard?.version,
       engine:document.querySelector('#audioEngine')?.value
     }));
-    if(base.mode!=='hosted-only'||base.version<4||base.engine!=='voicevox'||base.guard?.unlockRequested!==true){
+    if(base.mode!=='hosted-only'||base.version<4||base.engine!=='supertonic3'||base.guard?.unlockRequested!==true){
       throw new Error('mobile unlock/setup '+JSON.stringify(base));
     }
     console.log('UNLOCK PASS',JSON.stringify(base));
