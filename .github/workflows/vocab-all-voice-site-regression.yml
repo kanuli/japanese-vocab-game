@@ -51,7 +51,7 @@ jobs:
       - name: Audit the full vocabulary keyspace and every voice index
         run: |
           python - <<'PY'
-          import csv,json,re
+          import csv,json,re,urllib.request
           from pathlib import Path
 
           VOICES=('F1','F2','F3','F4','F5','M1','M2','M3','M4','M5')
@@ -64,13 +64,30 @@ jobs:
           def load(p):
               return json.loads(Path(p).read_text(encoding='utf-8'))
 
-          def local_index(meta):
-              raw=meta.get('indexUrl') or meta.get('indexGithubUrl')
+          def local_candidate(raw):
               if not raw: return None
-              raw=raw.split('?',1)[0]
-              if raw.startswith('./'): return raw[2:]
-              m=re.search(r'/([^/]+-index\.json)$',raw)
+              clean=raw.split('?',1)[0]
+              if clean.startswith('./'): return clean[2:]
+              if not re.match(r'^https?://',clean): return clean
+              m=re.search(r'/([^/]+-index\.json)$',clean)
               return m.group(1) if m else None
+
+          def load_voice_index(meta):
+              errors=[]
+              # Match desktop browser preference, with all published fallbacks.
+              for raw in (meta.get('indexGithubUrl'),meta.get('indexUrl'),meta.get('indexHfUrl')):
+                  if not raw: continue
+                  local=local_candidate(raw)
+                  if local and Path(local).is_file():
+                      return load(local),local
+                  if re.match(r'^https?://',raw):
+                      try:
+                          req=urllib.request.Request(raw,headers={'User-Agent':'vocab-all-voice-regression/1.0'})
+                          with urllib.request.urlopen(req,timeout=30) as response:
+                              return json.loads(response.read().decode('utf-8')),raw
+                      except Exception as exc:
+                          errors.append((raw,repr(exc)))
+              raise AssertionError(('no usable voice index',errors,meta))
 
           runtime=[]
           seen=set()
@@ -89,8 +106,6 @@ jobs:
 
           union=set()
           for cp in CATALOGS:
-              p=Path(cp)
-              assert p.is_file(), ('MISSING REQUIRED CATALOG',cp)
               c=load(cp)
               assert c.get('status')=='ready', (cp,'catalog not ready')
               words=c.get('words') or {}
@@ -103,9 +118,7 @@ jobs:
               if 'recordingCount' in c: assert int(c['recordingCount'])==len(words)*10, (cp,'recordingCount mismatch')
 
               for v in VOICES:
-                  ip=local_index(group[v])
-                  assert ip and Path(ip).is_file(), (cp,v,'missing local index',ip)
-                  idx=load(ip)
+                  idx,source=load_voice_index(group[v])
                   bundles=idx.get('bundles') or {}
                   miss=[]
                   for key,(wid,shard) in words.items():
@@ -113,8 +126,8 @@ jobs:
                       if wid not in (b.get('members') or {}):
                           miss.append(key)
                           if len(miss)>=10: break
-                  assert not miss, (cp,v,'catalog/index coverage gap',miss)
-                  if 'wordCount' in idx: assert int(idx['wordCount'])==len(words), (cp,v,'index wordCount mismatch')
+                  assert not miss, (cp,v,'catalog/index coverage gap',source,miss)
+                  if 'wordCount' in idx: assert int(idx['wordCount'])==len(words), (cp,v,'index wordCount mismatch',source)
               print(cp,':',len(words),'words x 10 voices PASS')
 
           missing=set(runtime)-union
