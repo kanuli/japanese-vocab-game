@@ -1,0 +1,65 @@
+name: Finalize verified core vocabulary cleanup
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/finalize-vocab-core-cleanup.yml'
+      - 'tools/normalize_vocab_core_verified.js'
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Normalize verified core table safely
+        run: |
+          node --check tools/normalize_vocab_core_verified.js
+          node tools/normalize_vocab_core_verified.js
+      - name: Validate restored core structure and canonical key compatibility
+        run: |
+          node - <<'JS'
+          const fs=require('fs'),vm=require('vm');
+          const source=fs.readFileSync('data/vocab_core_verified.js','utf8');
+          if(Buffer.byteLength(source)<100000) throw new Error('core file unexpectedly small');
+          if(/\[[ぁ-ゖァ-ヺー]+\]/.test(source)) throw new Error('inline annotation remains in core source');
+          const sandbox={console:{log(){},warn(){},error(){}}};sandbox.window=sandbox;sandbox.self=sandbox;
+          vm.createContext(sandbox);vm.runInContext(source,sandbox,{timeout:30000});
+          const map=sandbox.VOCAB_CORE_VERIFIED,meta=sandbox.VOCAB_CORE_VERIFIED_META;
+          if(!(map instanceof Map) && Object.prototype.toString.call(map)!=='[object Map]') throw new Error('core export is not Map');
+          if(!meta||!Number.isInteger(meta.rows)||meta.rows<10000) throw new Error('invalid core metadata rows');
+          if(map.size!==meta.rows) throw new Error(`core map/meta mismatch ${map.size}/${meta.rows}`);
+          console.log('CORE MAP PASS',map.size,meta.inlineReadingCleanup);
+          JS
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          audit=set()
+          with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
+            for r in csv.DictReader(f,delimiter='\t'):
+              rd=(r.get('reading') or '').strip(); ds=(r.get('display') or '').strip() or rd
+              audit.add(rd+'|'+ds)
+          # Catalog union is the authoritative hosted-audio lookup keyspace.
+          audio=set()
+          for p in ('word-supertonic3-catalog.json','word-supertonic3-delta-catalog.json','word-supertonic3-runtime-delta-catalog.json'):
+            audio.update(json.loads(Path(p).read_text(encoding='utf-8')).get('words',{}))
+          missing=audit-audio
+          assert not missing, ('teacher audit keys missing audio',len(missing),sorted(missing)[:20])
+          print('AUDIT AUDIO UNION PASS',len(audit))
+          PY
+      - name: Commit structure-safe normalized core
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/vocab_core_verified.js
+          if git diff --cached --quiet; then
+            echo 'Core already canonical.'
+            exit 0
+          fi
+          git commit -m 'fix: normalize verified core without losing map data'
+          git push
