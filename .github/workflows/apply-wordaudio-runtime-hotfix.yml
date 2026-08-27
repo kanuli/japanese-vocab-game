@@ -22,34 +22,42 @@ jobs:
         run: |
           node --check wordaudio-data.js
           node --check wordaudio-multivoice.js
-      - name: Update cache keys and remove duplicate multivoice loader
+          node --check wordaudio-delta-voices.js
+      - name: Update cache keys and remove duplicate audio loaders
         run: |
           python - <<'PY'
           from pathlib import Path
-          p=Path('wordlist.html'); s=p.read_text(encoding='utf-8')
-          s=s.replace('wordaudio-data.js?v=20260825v2','wordaudio-data.js?v=20260827v3')
-          s=s.replace('wordaudio-multivoice.js?v=20260827v1','wordaudio-multivoice.js?v=20260827v2')
-          p.write_text(s,encoding='utf-8')
-          p=Path('wordaudio.html'); s=p.read_text(encoding='utf-8')
-          s=s.replace('wordaudio-data.js?v=20260825v2','wordaudio-data.js?v=20260827v3')
-          s=s.replace('<script src="./wordaudio-multivoice.js?v=20260815v1"></script>\n','')
-          s=s.replace('wordaudio-multivoice.js?v=20260817v4','wordaudio-multivoice.js?v=20260827v2')
-          p.write_text(s,encoding='utf-8')
+          for name in ('wordlist.html','wordaudio.html'):
+              p=Path(name); s=p.read_text(encoding='utf-8')
+              s=s.replace('wordaudio-data.js?v=20260825v2','wordaudio-data.js?v=20260827v3')
+              s=s.replace('wordaudio-multivoice.js?v=20260827v1','wordaudio-multivoice.js?v=20260827v2')
+              s=s.replace('wordaudio-multivoice.js?v=20260817v4','wordaudio-multivoice.js?v=20260827v2')
+              s=s.replace('wordaudio-delta-voices.js?v=20260821v1','wordaudio-delta-voices.js?v=20260827v2')
+              old='<script src="./wordaudio-multivoice.js?v=20260815v1"></script>\n'
+              s=s.replace(old,'')
+              if 'wordaudio-delta-voices.js' not in s:
+                  needle='<script src="./wordaudio-multivoice.js?v=20260827v2"></script>'
+                  assert needle in s, (name,'missing multivoice insertion point')
+                  s=s.replace(needle,needle+'<script src="./wordaudio-delta-voices.js?v=20260827v2"></script>')
+              p.write_text(s,encoding='utf-8')
           PY
-      - name: Assert one multivoice loader and current cache keys
+      - name: Assert exact audio loader order and cache keys
         run: |
           python - <<'PY'
           from pathlib import Path
           for name in ('wordlist.html','wordaudio.html'):
               s=Path(name).read_text(encoding='utf-8')
               assert 'wordaudio-data.js?v=20260827v3' in s, name
-              assert s.count('wordaudio-multivoice.js') == 1, (name,s.count('wordaudio-multivoice.js'))
+              assert s.count('wordaudio-multivoice.js') == 1, (name,'multivoice',s.count('wordaudio-multivoice.js'))
+              assert s.count('wordaudio-delta-voices.js') == 1, (name,'delta',s.count('wordaudio-delta-voices.js'))
               assert 'wordaudio-multivoice.js?v=20260827v2' in s, name
-          print('cache/load regression PASS')
+              assert 'wordaudio-delta-voices.js?v=20260827v2' in s, name
+              assert s.index('wordaudio-multivoice.js') < s.index('wordaudio-delta-voices.js'), (name,'wrong loader order')
+          print('cache/load regression PASS: multivoice -> delta on both vocabulary pages')
           PY
       - name: Commit page cache/load fix
         run: |
           git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.email '41898269+github-actions[bot]@users.noreply.github.com'
           git add wordlist.html wordaudio.html
           if git diff --cached --quiet; then echo current; else git commit -m 'Publish word audio playback hotfix'; git pull --rebase origin main; git push origin main; fi
