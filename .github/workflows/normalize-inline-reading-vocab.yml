@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/normalize-inline-reading-vocab.yml'
+      - 'tools/normalize_inline_reading_vocab.py'
+      - 'tools/normalize_inline_reading_js.js'
 
 permissions:
   contents: write
