@@ -1,5 +1,6 @@
 name: Rebuild inline-reading cleanup from original source
 
+# Re-run canonical cleanup after full all-voice audit exposed remaining annotated source rows.
 on:
   workflow_dispatch:
   push:
