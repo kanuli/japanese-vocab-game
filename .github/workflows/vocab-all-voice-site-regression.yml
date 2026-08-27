@@ -1,6 +1,7 @@
 name: Vocabulary DB + all 10 voices + website regression
 
 # Production hard gate: one missing vocabulary key, voice index, website loader, or malformed lexical key fails the run.
+# final-regression-trigger: canonical-cleanup-20260827-v3
 on:
   workflow_dispatch:
   schedule:
