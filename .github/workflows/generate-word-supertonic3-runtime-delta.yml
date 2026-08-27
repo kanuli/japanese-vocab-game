@@ -82,13 +82,11 @@ jobs:
           CATALOG: word-supertonic3-runtime-delta-source.json
           OUT_DIR: word-supertonic-runtime-out
         run: python scripts/generate_word_supertonic_shard.py
-      - name: Validate and publish shard
+      - name: Validate shard and publish primary GitHub Release asset
         env:
           V: ${{ matrix.voice }}
           S: ${{ matrix.shard }}
           GH_TOKEN: ${{ github.token }}
-          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
-          HF_XET_HIGH_PERFORMANCE: '1'
         run: |
           python - <<'PY'
           import json,os,tarfile
@@ -102,15 +100,37 @@ jobs:
           with tarfile.open(p,'r:') as tf: assert len([x for x in tf.getmembers() if x.isfile()])==expected
           print(v,s,expected,p.stat().st_size)
           PY
-          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
-          hf upload "$HF_DATASET_REPO" "word-supertonic-runtime-out/$V-shard$S.tar" "$HF_DIR/$V-shard$S.tar" --repo-type dataset --commit-message "Runtime Word Supertonic 3 $V shard $S"
-          gh release upload "$RELEASE_TAG" "word-supertonic-runtime-out/$V-shard$S.tar" --clobber
-          mkdir -p manifest-artifact && cp "word-supertonic-runtime-out/$V-shard$S.json" manifest-artifact/
-      - uses: actions/upload-artifact@v4
+          mkdir -p manifest-artifact
+          cp "word-supertonic-runtime-out/$V-shard$S.json" manifest-artifact/
+          ok=0
+          for try in 1 2 3; do
+            if gh release upload "$RELEASE_TAG" "word-supertonic-runtime-out/$V-shard$S.tar" --clobber; then ok=1; break; fi
+            echo "GitHub Release upload attempt $try failed for $V shard $S" >&2
+            sleep $((try*5))
+          done
+          test "$ok" -eq 1
+      - name: Preserve validated shard manifest
+        uses: actions/upload-artifact@v4
         with:
           name: word-supertonic3-runtime-manifest-${{ matrix.voice }}-${{ matrix.shard }}
           path: manifest-artifact/*.json
           retention-days: 3
+      - name: Backup shard to Hugging Face with retry
+        continue-on-error: true
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          ok=0
+          for try in 1 2 3; do
+            if hf upload "$HF_DATASET_REPO" "word-supertonic-runtime-out/$V-shard$S.tar" "$HF_DIR/$V-shard$S.tar" --repo-type dataset --commit-message "Runtime Word Supertonic 3 $V shard $S"; then ok=1; break; fi
+            echo "Hugging Face backup attempt $try failed for $V shard $S; GitHub Release primary is already published" >&2
+            sleep $((try*10))
+          done
+          test "$ok" -eq 1
 
   finalize:
     needs: [catalog,generate]
