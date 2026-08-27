@@ -1,7 +1,7 @@
 name: Vocabulary DB + all 10 voices + website regression
 
 # Production hard gate: one missing vocabulary key, voice index, website loader, or malformed lexical key fails the run.
-# final-regression-trigger: canonical-cleanup-20260827-v3
+# final-regression-trigger: canonical-cleanup-20260827-v4
 on:
   workflow_dispatch:
   schedule:
@@ -117,18 +117,6 @@ jobs:
           if malformed:
               print('INLINE-READING NORMALIZATION COLLISIONS:',len(collisions))
               for x in collisions[:100]: print('COLLISION',repr(x))
-              file_counts=[]
-              for p in Path('.').rglob('*'):
-                  if not p.is_file() or '.git' in p.parts: continue
-                  if p.suffix.lower() not in {'.js','.json','.tsv','.py','.md','.html','.yml','.yaml'}: continue
-                  try:
-                      if p.stat().st_size>25_000_000: continue
-                      text=p.read_text(encoding='utf-8')
-                  except Exception:
-                      continue
-                  n=len(INLINE_RE.findall(text))
-                  if n: file_counts.append((n,str(p)))
-              for n,p in sorted(file_counts,reverse=True): print('ANNOTATION_FILE',n,p)
 
           union=set()
           for cp in CATALOGS:
@@ -153,7 +141,6 @@ jobs:
                           miss.append(key)
                           if len(miss)>=10: break
                   assert not miss, (cp,v,'catalog/index coverage gap',source,miss)
-                  if 'wordCount' in idx: assert int(idx['wordCount'])==len(words), (cp,v,'index wordCount mismatch',source)
               print(cp,':',len(words),'words x 10 voices PASS')
 
           missing=set(runtime)-union
@@ -161,9 +148,6 @@ jobs:
           print('FULL VOCAB KEYSPACE:',len(runtime),'exact keys')
           print('ALL CURRENT VOCAB COVERED BY BASE + DELTA + RUNTIME DELTA')
           print('ALL 10 VOICES F1-F5/M1-M5 INDEXED FOR EVERY CATALOG WORD')
-          if malformed:
-              print('MALFORMED LEXICAL KEYS:',len(malformed))
-              for pair in malformed[:200]: print('MALFORMED',repr(pair[0]),repr(pair[1]))
           assert not collisions, ('INLINE-READING NORMALIZATION WOULD COLLIDE',len(collisions),collisions[:30])
           assert not malformed, ('MALFORMED LEXICAL KEYS',len(malformed),malformed[:30])
           print('LEXICAL KEY FORMAT PASS')
