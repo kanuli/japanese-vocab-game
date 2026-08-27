@@ -1,0 +1,76 @@
+name: Normalize inline-reading vocabulary data
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/normalize-inline-reading-vocab.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Syntax-check cleanup tools
+        run: |
+          python -m py_compile tools/normalize_inline_reading_vocab.py
+          node --check tools/normalize_inline_reading_js.js
+
+      - name: Normalize teacher audit and preserve audio catalog recordings
+        run: python tools/normalize_inline_reading_vocab.py
+
+      - name: Normalize and deduplicate runtime vocabulary JS sources
+        run: node tools/normalize_inline_reading_js.js
+
+      - name: Verify clean database and catalog audio resolvability
+        run: |
+          python - <<'PY'
+          import csv,json,re
+          from pathlib import Path
+          inline=re.compile(r'\[[ぁ-ゖァ-ヺー]+\]')
+          audit=[]; seen=set()
+          with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
+            for r in csv.DictReader(f,delimiter='\t'):
+              reading=(r.get('reading') or '').strip()
+              display=(r.get('display') or '').strip() or reading
+              assert reading and display
+              assert not inline.search(reading+display), ('inline reading remains',reading,display)
+              k=reading+'|'+display
+              assert k not in seen, ('duplicate clean key',k)
+              seen.add(k); audit.append(k)
+          assert len(audit)>=32000, len(audit)
+
+          union=set()
+          for p in ('word-supertonic3-catalog.json','word-supertonic3-delta-catalog.json','word-supertonic3-runtime-delta-catalog.json'):
+            c=json.loads(Path(p).read_text(encoding='utf-8'))
+            assert c.get('status')=='ready', p
+            union.update((c.get('words') or {}).keys())
+          missing=set(audit)-union
+          assert not missing, ('clean runtime keys missing audio',len(missing),sorted(missing)[:30])
+
+          for p in ('data/vocab_core_verified.js','data/advanced_vocab.js'):
+            text=Path(p).read_text(encoding='utf-8')
+            bad=inline.findall(text)
+            assert not bad, (p,'inline reading annotations remain',len(bad),bad[:20])
+          print('CLEAN DATABASE PASS:',len(audit),'exact keys')
+          print('CLEAN RUNTIME AUDIO RESOLVABILITY PASS')
+          PY
+
+      - name: Commit normalized vocabulary data
+        run: |
+          if git diff --quiet; then
+            echo 'No normalization changes required.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/jlpt_teacher_audit.tsv data/vocab_core_verified.js data/advanced_vocab.js data/vocab_audit.json \
+                  data/inline_reading_cleanup_report.json word-supertonic3-catalog.json word-voicevox-catalog.json word-aivis-catalog.json
+          git commit -m 'fix: normalize inline-reading vocabulary duplicates'
+          git push
