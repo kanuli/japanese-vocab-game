@@ -40,3 +40,5 @@ jobs:
             fi
           done
           exit "${failed}"
+
+# Triggered after workflow creation so GitHub evaluates it on push.
