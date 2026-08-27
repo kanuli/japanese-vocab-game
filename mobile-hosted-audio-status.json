@@ -1,9 +1,9 @@
 {
-  "version": 1,
+  "version": 2,
   "status": "failure",
-  "checkedAt": "2026-08-27T06:12:54Z",
-  "runId": "33045055004",
-  "headSha": "e448dabf8f8053a5e849970aedca8fe2522df4dd",
+  "checkedAt": "2026-08-27T06:21:03Z",
+  "runId": "33045540333",
+  "headSha": "ae448ccd63f90c3229cef36044d4379f303db232",
   "target": "mobile hosted audio stack",
   "checks": [
     "static-hosted-audio",
