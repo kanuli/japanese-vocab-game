@@ -40,3 +40,5 @@ jobs:
             fi
           done
           exit "${failed}"
+
+# Trigger one-time cleanup run.
