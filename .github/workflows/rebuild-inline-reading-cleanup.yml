@@ -1,0 +1,92 @@
+name: Rebuild inline-reading cleanup from original source
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rebuild-inline-reading-cleanup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PRECLEAN_SHA: 26efc977c5fb8e234f1f0b141b9f9308249a9c8f
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Restore authoritative pre-cleanup data
+        run: |
+          for p in \
+            data/jlpt_teacher_audit.tsv \
+            data/vocab_core_verified.js \
+            data/advanced_vocab.js \
+            data/vocab_audit.json \
+            word-supertonic3-catalog.json \
+            word-voicevox-catalog.json \
+            word-aivis-catalog.json
+          do
+            git show "$PRECLEAN_SHA:$p" > "$p"
+          done
+          echo "Restored source data from $PRECLEAN_SHA"
+
+      - name: Normalize with teacher-evidence-first merge policy
+        run: |
+          python -m py_compile tools/normalize_inline_reading_vocab.py
+          node --check tools/normalize_inline_reading_js.js
+          python tools/normalize_inline_reading_vocab.py
+          node tools/normalize_inline_reading_js.js
+
+      - name: Verify canonical data and audio resolution
+        run: |
+          python - <<'PY'
+          import csv,json,re
+          from pathlib import Path
+          inline=re.compile(r'\[[ぁ-ゖァ-ヺー]+\]')
+          keys=[]; seen=set()
+          with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
+            for row in csv.DictReader(f,delimiter='\t'):
+              reading=(row.get('reading') or '').strip()
+              display=(row.get('display') or '').strip() or reading
+              assert reading and display
+              assert not inline.search(reading+display), (reading,display)
+              key=reading+'|'+display
+              assert key not in seen, key
+              seen.add(key); keys.append(key)
+          assert len(keys)>=32000, len(keys)
+          union=set()
+          for p in ('word-supertonic3-catalog.json','word-supertonic3-delta-catalog.json','word-supertonic3-runtime-delta-catalog.json'):
+            c=json.loads(Path(p).read_text(encoding='utf-8'))
+            assert c.get('status')=='ready', p
+            union.update((c.get('words') or {}).keys())
+          missing=set(keys)-union
+          assert not missing, ('missing clean audio keys',len(missing),sorted(missing)[:30])
+          for p in ('data/vocab_core_verified.js','data/advanced_vocab.js'):
+            bad=inline.findall(Path(p).read_text(encoding='utf-8'))
+            assert not bad, (p,len(bad),bad[:20])
+          report=json.loads(Path('data/inline_reading_cleanup_report.json').read_text(encoding='utf-8'))
+          assert report['malformedRows']==175, report['malformedRows']
+          assert report['duplicateRowsRemoved']==115, report['duplicateRowsRemoved']
+          print('TEACHER-EVIDENCE-FIRST CLEAN DATABASE PASS',len(keys))
+          print('METADATA CONFLICT GROUPS REVIEWED BY RANKING POLICY',len(report.get('metadataConflictGroups',[])))
+          print('ALL CLEAN KEYS AUDIO-RESOLVABLE')
+          PY
+
+      - name: Commit corrected canonical merge
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/jlpt_teacher_audit.tsv data/vocab_core_verified.js data/advanced_vocab.js data/vocab_audit.json \
+                  data/inline_reading_cleanup_report.json word-supertonic3-catalog.json word-voicevox-catalog.json word-aivis-catalog.json
+          if git diff --cached --quiet; then
+            echo 'No corrected merge changes required.'
+            exit 0
+          fi
+          git commit -m 'fix: rebuild canonical vocab merge by teacher evidence'
+          git push
