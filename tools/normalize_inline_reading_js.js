@@ -33,6 +33,34 @@ function hasDirtyDisplay(item) {
   return vals.some(v => typeof v === 'string' && dirtyDisplays.has(v));
 }
 
+function gradeRank(item) {
+  const g = String(item?.grade ?? item?.teacherGrade ?? '').trim().toUpperCase();
+  return ({ A: 4, B: 3, C: 2, D: 1 })[g] || 0;
+}
+function statusRank(item) {
+  const s = String(item?.status ?? item?.teacherStatus ?? '').trim().toLowerCase();
+  if (['manual','verified','teacher-verified'].includes(s)) return 5;
+  if (s === 'direct') return 4;
+  if (s.startsWith('direct')) return 3;
+  if (['corroborated','validated'].includes(s)) return 2;
+  return s ? 1 : 0;
+}
+function commonRank(item) {
+  const v = item?.common ?? item?.teacherCommon;
+  return [true,1,'1','true','yes','y'].includes(typeof v === 'string' ? v.toLowerCase() : v) ? 1 : 0;
+}
+function itemRank(item, wasDirty) {
+  return [gradeRank(item), statusRank(item), commonRank(item), wasDirty ? 0 : 1,
+    Object.values(item || {}).filter(v => v != null && v !== '').length];
+}
+function compareRank(a, b) {
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    const d = (a[i] || 0) - (b[i] || 0);
+    if (d) return d;
+  }
+  return 0;
+}
+
 function mergeMissing(winner, loser) {
   const out = { ...winner };
   for (const [k, v] of Object.entries(loser || {})) {
@@ -58,17 +86,18 @@ function normalizeArray(items) {
       const normalized = normalizeDeep(original);
       const parts = lexicalParts(normalized);
       if (!parts) { out.push(normalized); continue; }
+      const rank = itemRank(original, wasDirty);
       if (!pos.has(parts.key)) {
-        pos.set(parts.key, { index: out.length, wasDirty });
+        pos.set(parts.key, { index: out.length, rank });
         out.push(normalized);
         continue;
       }
       stats.duplicatesRemoved++;
       const prior = pos.get(parts.key);
       const priorItem = out[prior.index];
-      if (prior.wasDirty && !wasDirty) {
+      if (compareRank(rank, prior.rank) > 0) {
         out[prior.index] = mergeMissing(normalized, priorItem);
-        pos.set(parts.key, { index: prior.index, wasDirty: false });
+        pos.set(parts.key, { index: prior.index, rank });
       } else {
         out[prior.index] = mergeMissing(priorItem, normalized);
       }
@@ -108,15 +137,13 @@ function loadExport(file) {
   sandbox.self = sandbox;
   vm.createContext(sandbox);
   vm.runInContext(source, sandbox, { filename: file, timeout: 30000 });
-
   const candidates = [];
   for (const name of candidateNames(source)) {
     let value;
     try { value = vm.runInContext(`typeof ${name} !== 'undefined' ? ${name} : undefined`, sandbox); }
     catch (_) { value = sandbox[name]; }
     if (value && (Array.isArray(value) || typeof value === 'object')) {
-      let size = 0;
-      try { size = JSON.stringify(value).length; } catch (_) {}
+      let size = 0; try { size = JSON.stringify(value).length; } catch (_) {}
       candidates.push({ name, value, size });
     }
   }
@@ -124,8 +151,7 @@ function loadExport(file) {
     if (['window','self','console'].includes(name)) continue;
     if (!value || !(Array.isArray(value) || typeof value === 'object')) continue;
     if (candidates.some(x => x.name === name)) continue;
-    let size = 0;
-    try { size = JSON.stringify(value).length; } catch (_) {}
+    let size = 0; try { size = JSON.stringify(value).length; } catch (_) {}
     candidates.push({ name, value, size });
   }
   candidates.sort((a, b) => b.size - a.size);
@@ -154,7 +180,6 @@ for (const file of TARGETS) {
   summaries.push({ file, global: exp.name, lexicalRowsBefore: before, lexicalRowsAfter: after,
     dirtyObjects: stats.dirtyObjects, duplicatesRemoved: stats.duplicatesRemoved, lexicalArrays: stats.lexicalArrays });
 }
-
 report.jsSources = summaries;
 fs.writeFileSync(REPORT, JSON.stringify(report, null, 2) + '\n', 'utf8');
 console.log(JSON.stringify(summaries, null, 2));
