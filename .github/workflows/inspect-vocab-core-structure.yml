@@ -1,0 +1,49 @@
+name: Inspect verified core export structure
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-vocab-core-structure.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect source and runtime exports
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('data/vocab_core_verified.js')
+          s=p.read_text(encoding='utf-8')
+          print('SIZE',p.stat().st_size)
+          print('WINDOW_ASSIGNMENTS',re.findall(r'window\.([A-Za-z_$][\w$]*)\s*=',s))
+          print('DECLARATIONS',re.findall(r'\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=',s)[:100])
+          print('INLINE_COUNT',len(re.findall(r'\[[ぁ-ゖァ-ヺー]+\]',s)))
+          print('HEAD',repr(s[:500]))
+          print('TAIL',repr(s[-500:]))
+          PY
+          node - <<'JS'
+          const fs=require('fs'),vm=require('vm');
+          const source=fs.readFileSync('data/vocab_core_verified.js','utf8');
+          const sandbox={console:{log(){},warn(){},error(){}}}; sandbox.window=sandbox; sandbox.self=sandbox;
+          vm.createContext(sandbox); vm.runInContext(source,sandbox,{timeout:30000});
+          for(const [k,v] of Object.entries(sandbox)){
+            if(['window','self','console'].includes(k)) continue;
+            let size=0; try{size=JSON.stringify(v).length}catch(_){}
+            const desc={name:k,type:Array.isArray(v)?'array':typeof v,size};
+            if(Array.isArray(v)) desc.length=v.length;
+            else if(v&&typeof v==='object'){
+              desc.keys=Object.keys(v).slice(0,30);
+              desc.arrayFields=Object.entries(v).filter(([,x])=>Array.isArray(x)).map(([n,x])=>[n,x.length]).slice(0,30);
+            }
+            console.log(JSON.stringify(desc));
+          }
+          JS
