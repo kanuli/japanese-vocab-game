@@ -35,23 +35,33 @@ jobs:
           run-id: 33010358885
           github-token: ${{ github.token }}
 
-      - name: Download 198 original successful manifests
-        uses: actions/download-artifact@v4
-        with:
-          pattern: word-supertonic3-runtime-manifest-*
-          path: word-supertonic-runtime-manifests
-          merge-multiple: true
-          run-id: 33010358885
-          github-token: ${{ github.token }}
+      - name: Download all 198 original manifests across artifact pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rm -rf .artifact-original word-supertonic-runtime-manifests
+          mkdir -p .artifact-original word-supertonic-runtime-manifests
+          gh run download "$SOURCE_RUN_ID" --repo "$GITHUB_REPOSITORY" \
+            --pattern 'word-supertonic3-runtime-manifest-*' \
+            --dir .artifact-original
+          find .artifact-original -type f -name '*.json' -exec cp '{}' word-supertonic-runtime-manifests/ \;
+          count="$(find word-supertonic-runtime-manifests -maxdepth 1 -name '*.json' | wc -l)"
+          echo "Original manifests downloaded: $count"
+          test "$count" -eq 198
 
-      - name: Download two repaired manifests
-        uses: actions/download-artifact@v4
-        with:
-          pattern: word-supertonic3-runtime-repair-manifest-*
-          path: word-supertonic-runtime-manifests
-          merge-multiple: true
-          run-id: 33042159898
-          github-token: ${{ github.token }}
+      - name: Download both repaired manifests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rm -rf .artifact-repair
+          mkdir -p .artifact-repair
+          gh run download "$REPAIR_RUN_ID" --repo "$GITHUB_REPOSITORY" \
+            --pattern 'word-supertonic3-runtime-repair-manifest-*' \
+            --dir .artifact-repair
+          find .artifact-repair -type f -name '*.json' -exec cp '{}' word-supertonic-runtime-manifests/ \;
+          count="$(find word-supertonic-runtime-manifests -maxdepth 1 -name '*.json' | wc -l)"
+          echo "Combined manifests downloaded: $count"
+          test "$count" -eq 200
 
       - name: Verify 200 manifests, build catalogs, and prove exact runtime coverage
         id: verify
