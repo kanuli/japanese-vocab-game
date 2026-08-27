@@ -1,0 +1,124 @@
+name: Vocabulary DB + all 10 voices + website regression
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '35 18 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'data/jlpt_teacher_audit.tsv'
+      - 'word-supertonic3-catalog.json'
+      - 'word-supertonic3-*-index.json'
+      - 'word-supertonic3-delta-catalog.json'
+      - 'word-supertonic3-delta-*-index.json'
+      - 'word-supertonic3-runtime-delta-catalog.json'
+      - 'word-supertonic3-runtime-delta-*-index.json'
+      - 'wordaudio-data.js'
+      - 'wordaudio-multivoice.js'
+      - 'wordaudio-delta-voices.js'
+      - 'wordaudio.html'
+      - 'wordlist.html'
+      - '.github/workflows/vocab-all-voice-site-regression.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JS syntax and website loader chain
+        run: |
+          node --check wordaudio-data.js
+          node --check wordaudio-multivoice.js
+          node --check wordaudio-delta-voices.js
+          python - <<'PY'
+          from pathlib import Path
+          for name in ('wordlist.html','wordaudio.html'):
+              s=Path(name).read_text(encoding='utf-8')
+              assert s.count('wordaudio-multivoice.js') == 1, (name,'multivoice loader count')
+              assert s.count('wordaudio-delta-voices.js') == 1, (name,'delta loader count')
+              assert s.index('wordaudio-multivoice.js') < s.index('wordaudio-delta-voices.js'), (name,'loader order')
+          js=Path('wordlist.js').read_text(encoding='utf-8')
+          for v in ('F1','F2','F3','F4','F5','M1','M2','M3','M4','M5','random'):
+              assert v in js, ('missing selectable voice',v)
+          print('SITE LOADER + VOICE SELECTOR PASS')
+          PY
+      - name: Audit the full vocabulary keyspace and every voice index
+        run: |
+          python - <<'PY'
+          import csv,json,re
+          from pathlib import Path
+
+          VOICES=('F1','F2','F3','F4','F5','M1','M2','M3','M4','M5')
+          CATALOGS=(
+            'word-supertonic3-catalog.json',
+            'word-supertonic3-delta-catalog.json',
+            'word-supertonic3-runtime-delta-catalog.json',
+          )
+
+          def load(p):
+              return json.loads(Path(p).read_text(encoding='utf-8'))
+
+          def local_index(meta):
+              raw=meta.get('indexUrl') or meta.get('indexGithubUrl')
+              if not raw: return None
+              raw=raw.split('?',1)[0]
+              if raw.startswith('./'): return raw[2:]
+              m=re.search(r'/([^/]+-index\.json)$',raw)
+              return m.group(1) if m else None
+
+          runtime=[]
+          seen=set()
+          with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
+              for r in csv.DictReader(f,delimiter='\t'):
+                  reading=(r.get('reading') or '').strip()
+                  display=(r.get('display') or '').strip() or reading
+                  level=(r.get('teacherLevel') or r.get('level') or '').strip()
+                  meaning=(r.get('meaning') or r.get('meaningTC') or r.get('traditionalChinese') or '').strip()
+                  assert reading and display, ('blank lexical key',r)
+                  assert not re.search(r'[\[\]<>\r\n]',reading+display), ('malformed lexical key',reading,display)
+                  k=reading+'|'+display
+                  assert k not in seen, ('duplicate exact key',k)
+                  seen.add(k); runtime.append(k)
+          assert len(runtime)>=32000, ('runtime vocabulary unexpectedly small',len(runtime))
+
+          union=set()
+          for cp in CATALOGS:
+              p=Path(cp)
+              assert p.is_file(), ('MISSING REQUIRED CATALOG',cp)
+              c=load(cp)
+              assert c.get('status')=='ready', (cp,'catalog not ready')
+              words=c.get('words') or {}
+              assert words, (cp,'no words')
+              union.update(words)
+              group=c.get('voices') or c.get('speakers') or {}
+              missing_voices=[v for v in VOICES if v not in group]
+              assert not missing_voices, (cp,'missing voices',missing_voices)
+              if 'voiceCount' in c: assert int(c['voiceCount'])==10, (cp,'voiceCount',c.get('voiceCount'))
+              if 'recordingCount' in c: assert int(c['recordingCount'])==len(words)*10, (cp,'recordingCount mismatch')
+
+              for v in VOICES:
+                  ip=local_index(group[v])
+                  assert ip and Path(ip).is_file(), (cp,v,'missing local index',ip)
+                  idx=load(ip)
+                  bundles=idx.get('bundles') or {}
+                  miss=[]
+                  for key,(wid,shard) in words.items():
+                      b=bundles.get(str(shard)) or {}
+                      if wid not in (b.get('members') or {}):
+                          miss.append(key)
+                          if len(miss)>=10: break
+                  assert not miss, (cp,v,'catalog/index coverage gap',miss)
+                  if 'wordCount' in idx: assert int(idx['wordCount'])==len(words), (cp,v,'index wordCount mismatch')
+              print(cp,':',len(words),'words x 10 voices PASS')
+
+          missing=set(runtime)-union
+          assert not missing, ('CURRENT WEBSITE VOCAB WITHOUT SUPERTONIC AUDIO',len(missing),sorted(missing)[:30])
+          print('FULL VOCAB KEYSPACE:',len(runtime),'exact keys')
+          print('ALL CURRENT VOCAB COVERED BY BASE + DELTA + RUNTIME DELTA')
+          print('ALL 10 VOICES F1-F5/M1-M5 INDEXED FOR EVERY CATALOG WORD')
+          PY
