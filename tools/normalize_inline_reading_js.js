@@ -19,19 +19,8 @@ function normalizeString(value) {
   return value;
 }
 
-function normalizeDeep(value) {
-  if (typeof value === 'string') return normalizeString(value);
-  if (Array.isArray(value)) return value.map(normalizeDeep);
-  if (value && typeof value === 'object') {
-    const out = {};
-    for (const [k, v] of Object.entries(value)) out[k] = normalizeDeep(v);
-    return out;
-  }
-  return value;
-}
-
 function lexicalParts(item) {
-  if (!item || typeof item !== 'object') return null;
+  if (!item || typeof item !== 'object' || Array.isArray(item)) return null;
   const reading = String(item.reading ?? item.word ?? '').trim();
   const display = String(item.kanji ?? item.displayWord ?? item.display ?? item.written ?? item.word ?? reading).trim();
   if (!reading || !display) return null;
@@ -39,7 +28,7 @@ function lexicalParts(item) {
 }
 
 function hasDirtyDisplay(item) {
-  if (!item || typeof item !== 'object') return false;
+  if (!item || typeof item !== 'object' || Array.isArray(item)) return false;
   const vals = [item.kanji, item.displayWord, item.display, item.written, item.word];
   return vals.some(v => typeof v === 'string' && dirtyDisplays.has(v));
 }
@@ -55,64 +44,115 @@ function mergeMissing(winner, loser) {
   return out;
 }
 
-function normalizeAndDedupeArray(items) {
-  const out = [];
-  const pos = new Map();
-  let dirtyObjects = 0, duplicatesRemoved = 0;
-  for (const original of items) {
-    const wasDirty = hasDirtyDisplay(original);
-    if (wasDirty) dirtyObjects++;
-    const normalized = normalizeDeep(original);
-    const parts = lexicalParts(normalized);
-    if (!parts) {
-      out.push(normalized);
-      continue;
+const stats = { dirtyObjects: 0, duplicatesRemoved: 0, lexicalArrays: 0 };
+
+function normalizeArray(items) {
+  const lexicalCount = items.reduce((n, x) => n + (lexicalParts(x) ? 1 : 0), 0);
+  if (items.length && lexicalCount >= Math.max(1, Math.floor(items.length * 0.5))) {
+    stats.lexicalArrays++;
+    const out = [];
+    const pos = new Map();
+    for (const original of items) {
+      const wasDirty = hasDirtyDisplay(original);
+      if (wasDirty) stats.dirtyObjects++;
+      const normalized = normalizeDeep(original);
+      const parts = lexicalParts(normalized);
+      if (!parts) { out.push(normalized); continue; }
+      if (!pos.has(parts.key)) {
+        pos.set(parts.key, { index: out.length, wasDirty });
+        out.push(normalized);
+        continue;
+      }
+      stats.duplicatesRemoved++;
+      const prior = pos.get(parts.key);
+      const priorItem = out[prior.index];
+      if (prior.wasDirty && !wasDirty) {
+        out[prior.index] = mergeMissing(normalized, priorItem);
+        pos.set(parts.key, { index: prior.index, wasDirty: false });
+      } else {
+        out[prior.index] = mergeMissing(priorItem, normalized);
+      }
     }
-    if (!pos.has(parts.key)) {
-      pos.set(parts.key, { index: out.length, wasDirty });
-      out.push(normalized);
-      continue;
-    }
-    duplicatesRemoved++;
-    const prior = pos.get(parts.key);
-    const priorItem = out[prior.index];
-    // Prefer the originally clean object; otherwise preserve the first row. Fill only blank fields.
-    if (prior.wasDirty && !wasDirty) {
-      out[prior.index] = mergeMissing(normalized, priorItem);
-      pos.set(parts.key, { index: prior.index, wasDirty: false });
-    } else {
-      out[prior.index] = mergeMissing(priorItem, normalized);
-    }
+    return out;
   }
-  return { items: out, dirtyObjects, duplicatesRemoved };
+  return items.map(normalizeDeep);
 }
 
-function loadGlobals(file) {
+function normalizeDeep(value) {
+  if (typeof value === 'string') return normalizeString(value);
+  if (Array.isArray(value)) return normalizeArray(value);
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(value)) out[k] = normalizeDeep(v);
+    return out;
+  }
+  return value;
+}
+
+function candidateNames(source) {
+  const names = new Set();
+  for (const re of [
+    /(?:window|globalThis|self)\.([A-Za-z_$][\w$]*)\s*=/g,
+    /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=/g,
+  ]) {
+    let m;
+    while ((m = re.exec(source))) names.add(m[1]);
+  }
+  return [...names];
+}
+
+function loadExport(file) {
   const source = fs.readFileSync(file, 'utf8');
   const sandbox = { console: { log() {}, warn() {}, error() {} } };
   sandbox.window = sandbox;
   sandbox.self = sandbox;
   vm.createContext(sandbox);
   vm.runInContext(source, sandbox, { filename: file, timeout: 30000 });
-  const arrays = Object.entries(sandbox)
-    .filter(([k, v]) => !['window','self','console'].includes(k) && Array.isArray(v))
-    .sort((a, b) => b[1].length - a[1].length);
-  if (!arrays.length) throw new Error(`${file}: no global vocabulary array found`);
-  return arrays;
+
+  const candidates = [];
+  for (const name of candidateNames(source)) {
+    let value;
+    try { value = vm.runInContext(`typeof ${name} !== 'undefined' ? ${name} : undefined`, sandbox); }
+    catch (_) { value = sandbox[name]; }
+    if (value && (Array.isArray(value) || typeof value === 'object')) {
+      let size = 0;
+      try { size = JSON.stringify(value).length; } catch (_) {}
+      candidates.push({ name, value, size });
+    }
+  }
+  for (const [name, value] of Object.entries(sandbox)) {
+    if (['window','self','console'].includes(name)) continue;
+    if (!value || !(Array.isArray(value) || typeof value === 'object')) continue;
+    if (candidates.some(x => x.name === name)) continue;
+    let size = 0;
+    try { size = JSON.stringify(value).length; } catch (_) {}
+    candidates.push({ name, value, size });
+  }
+  candidates.sort((a, b) => b.size - a.size);
+  if (!candidates.length) throw new Error(`${file}: no vocabulary object/array export found; names=${candidateNames(source).join(',')}`);
+  return candidates[0];
+}
+
+function countLexical(value) {
+  if (Array.isArray(value)) return value.reduce((n, x) => n + countLexical(x), 0);
+  if (value && typeof value === 'object') {
+    if (lexicalParts(value)) return 1;
+    return Object.values(value).reduce((n, x) => n + countLexical(x), 0);
+  }
+  return 0;
 }
 
 const summaries = [];
 for (const file of TARGETS) {
   if (!fs.existsSync(file)) continue;
-  const arrays = loadGlobals(file);
-  if (arrays.length !== 1) {
-    throw new Error(`${file}: expected exactly one global array, found ${arrays.map(x => x[0]).join(', ')}`);
-  }
-  const [name, items] = arrays[0];
-  const result = normalizeAndDedupeArray(items);
-  fs.writeFileSync(file, `window.${name} = ${JSON.stringify(result.items, null, 2)};\n`, 'utf8');
-  summaries.push({ file, global: name, rowsBefore: items.length, rowsAfter: result.items.length,
-    dirtyObjects: result.dirtyObjects, duplicatesRemoved: result.duplicatesRemoved });
+  stats.dirtyObjects = 0; stats.duplicatesRemoved = 0; stats.lexicalArrays = 0;
+  const exp = loadExport(file);
+  const before = countLexical(exp.value);
+  const normalized = normalizeDeep(exp.value);
+  const after = countLexical(normalized);
+  fs.writeFileSync(file, `window.${exp.name} = ${JSON.stringify(normalized, null, 2)};\n`, 'utf8');
+  summaries.push({ file, global: exp.name, lexicalRowsBefore: before, lexicalRowsAfter: after,
+    dirtyObjects: stats.dirtyObjects, duplicatesRemoved: stats.duplicatesRemoved, lexicalArrays: stats.lexicalArrays });
 }
 
 report.jsSources = summaries;
