@@ -1,0 +1,176 @@
+name: Finalize Word Supertonic 3 runtime repair
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-supertonic3-runtime-finalize-trigger'
+
+permissions:
+  actions: read
+  contents: write
+
+env:
+  SOURCE_RUN_ID: '33010358885'
+  REPAIR_RUN_ID: '33042159898'
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-supertonic3-runtime-v2
+  HF_DIR: word/supertonic3/runtime-v2
+
+jobs:
+  finalize-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Download frozen runtime source catalog
+        uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-runtime-delta-source
+          path: .
+          run-id: 33010358885
+          github-token: ${{ github.token }}
+
+      - name: Download 198 original successful manifests
+        uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-runtime-manifest-*
+          path: word-supertonic-runtime-manifests
+          merge-multiple: true
+          run-id: 33010358885
+          github-token: ${{ github.token }}
+
+      - name: Download two repaired manifests
+        uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-runtime-repair-manifest-*
+          path: word-supertonic-runtime-manifests
+          merge-multiple: true
+          run-id: 33042159898
+          github-token: ${{ github.token }}
+
+      - name: Verify 200 manifests, build catalogs, and prove exact runtime coverage
+        id: verify
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          import csv, json, subprocess, traceback
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          root=Path('word-supertonic-runtime-manifests')
+          source=json.load(open('word-supertonic3-runtime-delta-source.json',encoding='utf-8'))
+          voices=['F1','F2','F3','F4','F5','M1','M2','M3','M4','M5']
+          shards=range(int(source['shardCount']))
+          required=[f'{v}-shard{s}.json' for v in voices for s in shards]
+          files=sorted(p.name for p in root.glob('*.json'))
+          missing=[name for name in required if not (root/name).is_file()]
+          unexpected=sorted(set(files)-set(required))
+          status={
+            'version':1,
+            'checkedAt':datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),
+            'sourceRunId':33010358885,
+            'repairRunId':33042159898,
+            'manifestCount':len(files),
+            'expectedManifestCount':200,
+            'missingManifests':missing,
+            'unexpectedManifests':unexpected,
+            'status':'failure'
+          }
+          try:
+            assert len(files)==200, f'expected 200 manifests, got {len(files)}'
+            assert not missing, f'missing manifests: {missing}'
+            assert not unexpected, f'unexpected manifests: {unexpected}'
+
+            items=source['items']
+            mismatches=[]
+            for v in voices:
+              for s in shards:
+                p=root/f'{v}-shard{s}.json'
+                m=json.load(open(p,encoding='utf-8'))
+                expected={x['id'] for x in items if int(x['shard'])==s}
+                actual=set((m.get('members') or {}).keys())
+                if actual!=expected:
+                  mismatches.append({
+                    'manifest':p.name,
+                    'expected':len(expected),
+                    'actual':len(actual),
+                    'missingIds':sorted(expected-actual)[:10],
+                    'unexpectedIds':sorted(actual-expected)[:10]
+                  })
+            status['manifestCoverageMismatches']=mismatches
+            assert not mismatches, f'manifest coverage mismatches: {mismatches[:3]}'
+
+            subprocess.run(['python','scripts/build_word_supertonic_runtime_delta_catalog.py'],check=True)
+
+            base=json.load(open('word-supertonic3-catalog.json',encoding='utf-8'))
+            old=json.load(open('word-supertonic3-delta-catalog.json',encoding='utf-8'))
+            new=json.load(open('word-supertonic3-runtime-delta-catalog.json',encoding='utf-8'))
+            runtime=set()
+            with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
+              for r in csv.DictReader(f,delimiter='\t'):
+                reading=(r.get('reading') or '').strip()
+                display=(r.get('display') or '').strip() or reading
+                runtime.add(reading+'|'+display)
+            covered=set(base['words'])|set(old['words'])|set(new['words'])
+            current_missing=sorted(runtime-covered)
+            status.update({
+              'runtimeWordCount':len(runtime),
+              'sourceRuntimeWordCount':new['runtimeWordCount'],
+              'runtimeDeltaWordCount':new['wordCount'],
+              'runtimeDeltaRecordingCount':new['recordingCount'],
+              'missingCurrentKeys':current_missing[:50]
+            })
+            assert not current_missing, f'current runtime keys missing from hosted coverage: {current_missing[:20]}'
+            assert len(runtime)==new['runtimeWordCount'], (len(runtime),new['runtimeWordCount'])
+            assert new['voiceCount']==10
+            assert new['recordingCount']==new['wordCount']*10
+
+            key='もてなす|持てなす'
+            assert key in covered, key+' is not hosted'
+            sentinel={'key':key,'catalog':'base-or-v1','F1':True,'F3':True}
+            if key in new['words']:
+              wid,shard=new['words'][key]
+              sentinel.update({'catalog':'runtime-v2','id':wid,'shard':shard})
+              for v in ('F1','F3'):
+                idx=json.load(open(f'word-supertonic3-runtime-delta-{v}-index.json',encoding='utf-8'))
+                ok=wid in idx['bundles'][str(shard)]['members']
+                sentinel[v]=ok
+                assert ok, (v,key,wid,shard)
+            status['sentinel']=sentinel
+            status['status']='success'
+            print('MANIFEST COVERAGE: 200/200')
+            print('FULL SERVER SUPERTONIC COVERAGE:',len(runtime),'exact current runtime words')
+            print('SENTINEL:',json.dumps(sentinel,ensure_ascii=False))
+          except Exception as exc:
+            status['error']=str(exc)
+            status['traceback']=traceback.format_exc().splitlines()[-20:]
+            raise
+          finally:
+            Path('word-supertonic3-runtime-finalize-status.json').write_text(
+              json.dumps(status,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+            print(json.dumps(status,ensure_ascii=False,indent=2))
+          PY
+
+      - name: Commit catalogs or diagnostic status
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-supertonic3-runtime-finalize-status.json
+          git add word-supertonic3-runtime-delta-catalog.json word-supertonic3-runtime-delta-*-index.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo 'No finalize output changes'
+          else
+            git commit -m 'Finalize current Word List Supertonic runtime coverage'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+
+      - name: Enforce finalize result
+        if: steps.verify.outcome != 'success'
+        run: exit 1
