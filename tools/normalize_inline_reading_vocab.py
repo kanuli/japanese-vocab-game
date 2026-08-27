@@ -24,15 +24,35 @@ def truthy(value: str) -> int:
     return 1 if str(value or "").strip().lower() in {"1", "true", "yes", "y"} else 0
 
 
+def grade_rank(value: str) -> int:
+    return {"A": 4, "B": 3, "C": 2, "D": 1}.get(str(value or "").strip().upper(), 0)
+
+
+def status_rank(value: str) -> int:
+    s = str(value or "").strip().lower()
+    if s in {"manual", "verified", "teacher-verified"}:
+        return 5
+    if s == "direct":
+        return 4
+    if s.startswith("direct"):
+        return 3
+    if s in {"corroborated", "validated"}:
+        return 2
+    if s:
+        return 1
+    return 0
+
+
 def row_rank(row):
-    grade = str(row.get("grade") or row.get("teacherGrade") or "").strip().upper()
-    status = str(row.get("status") or row.get("teacherStatus") or "").strip().lower()
+    grade = row.get("grade") or row.get("teacherGrade") or ""
+    status = row.get("status") or row.get("teacherStatus") or ""
     display = str(row.get("display") or "").strip()
+    # Pedagogical evidence outranks formatting. Formatting is normalized after the winner is chosen.
     return (
-        1 if not INLINE_RE.search(display) else 0,
-        3 if grade == "A" else 2 if grade == "B" else 1 if grade == "C" else 0,
-        2 if status == "direct" else 1 if status else 0,
+        grade_rank(grade),
+        status_rank(status),
         truthy(row.get("common") or row.get("teacherCommon")),
+        1 if not INLINE_RE.search(display) else 0,
         sum(1 for v in row.values() if str(v or "").strip()),
     )
 
@@ -75,6 +95,7 @@ def normalize_audit():
     duplicate_groups = 0
     duplicate_rows_removed = 0
     for key, group in groups.items():
+        winner = max(group, key=row_rank)
         if len(group) > 1:
             duplicate_groups += 1
             duplicate_rows_removed += len(group) - 1
@@ -88,7 +109,11 @@ def normalize_audit():
                 if len(vals) > 1:
                     conflicts[field] = vals
             if conflicts:
-                conflict_groups.append({"key": key, "conflicts": conflicts})
+                conflict_groups.append({
+                    "key": key,
+                    "winner": {x: winner.get(x, "") for x in ("display", "level", "teacherLevel", "grade", "teacherGrade", "status", "teacherStatus") if x in fieldnames},
+                    "conflicts": conflicts,
+                })
         merged.append(merge_rows(group, fieldnames))
 
     seen = set()
@@ -147,7 +172,6 @@ def migrate_catalog(path: Path):
     data["words"] = words
     data["canonicalizedInlineReadingKeys"] = migrated
     data["legacyAnnotatedAliasKeys"] = legacy_collision_aliases
-    # Key renames do not add/remove recordings, so all count fields remain valid.
     path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     return {
         "file": str(path),
@@ -196,9 +220,9 @@ def main():
     report["catalogs"] = [migrate_catalog(p) for p in CATALOGS]
     report["normalizedJsonFiles"] = normalize_optional_json(display_map)
     report["policy"] = (
-        "Canonical clean lexical rows are preferred; malformed duplicates are merged into the clean key; "
-        "missing fields are filled from duplicates; audio catalog keys are renamed only when no clean key exists, "
-        "preserving the same wid/shard and all existing recordings."
+        "Teacher evidence (grade/status/common) selects the canonical duplicate before formatting normalization; "
+        "cleanliness is only a tie-breaker. Missing fields are filled from duplicates. Audio catalog keys are renamed "
+        "only when no clean key exists, preserving the same wid/shard and every existing recording."
     )
     REPORT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({
