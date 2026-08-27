@@ -1,6 +1,6 @@
 name: Vocabulary DB + all 10 voices + website regression
 
-# Production hard gate: one missing vocabulary key, voice index, or website loader fails the run.
+# Production hard gate: one missing vocabulary key, voice index, website loader, or malformed lexical key fails the run.
 on:
   workflow_dispatch:
   schedule:
@@ -74,14 +74,14 @@ jobs:
 
           runtime=[]
           seen=set()
+          malformed=[]
           with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
               for r in csv.DictReader(f,delimiter='\t'):
                   reading=(r.get('reading') or '').strip()
                   display=(r.get('display') or '').strip() or reading
-                  level=(r.get('teacherLevel') or r.get('level') or '').strip()
-                  meaning=(r.get('meaning') or r.get('meaningTC') or r.get('traditionalChinese') or '').strip()
                   assert reading and display, ('blank lexical key',r)
-                  assert not re.search(r'[\[\]<>\r\n]',reading+display), ('malformed lexical key',reading,display)
+                  if re.search(r'[\[\]<>\r\n]',reading+display):
+                      malformed.append((reading,display))
                   k=reading+'|'+display
                   assert k not in seen, ('duplicate exact key',k)
                   seen.add(k); runtime.append(k)
@@ -122,4 +122,9 @@ jobs:
           print('FULL VOCAB KEYSPACE:',len(runtime),'exact keys')
           print('ALL CURRENT VOCAB COVERED BY BASE + DELTA + RUNTIME DELTA')
           print('ALL 10 VOICES F1-F5/M1-M5 INDEXED FOR EVERY CATALOG WORD')
+          if malformed:
+              print('MALFORMED LEXICAL KEYS:',len(malformed))
+              for pair in malformed[:200]: print('MALFORMED',repr(pair[0]),repr(pair[1]))
+          assert not malformed, ('MALFORMED LEXICAL KEYS',len(malformed),malformed[:30])
+          print('LEXICAL KEY FORMAT PASS')
           PY
