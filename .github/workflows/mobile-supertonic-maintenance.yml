@@ -71,7 +71,7 @@ jobs:
           for p in ['index.html','grammar.html','wordaudio.html','vocab-plus-game.html','vocabulary-plus.html']:
               assert p in sh, (p,'generic voice loader missing')
           assert 'mocktest.html' not in sh.split('function loadGenericVoiceTest',1)[1].split('function loadResultHistory',1)[0], 'mocktest must be excluded from generic voice test'
-          assert Path('wordaudio.html').read_text(encoding='utf-8').count('wordaudio-multivoice.js?v=20260817v4')==1
+          assert Path('wordaudio.html').read_text(encoding='utf-8').count('wordaudio-multivoice.js?v=20260827v2')==1
           vv=json.load(open('word-voicevox-catalog.json',encoding='utf-8'))
           st=json.load(open('word-supertonic3-catalog.json',encoding='utf-8'))
           assert vv['status']=='ready' and vv['speakerCount']==43 and vv['wordCount']>22000 and vv['recordingCount']>900000
