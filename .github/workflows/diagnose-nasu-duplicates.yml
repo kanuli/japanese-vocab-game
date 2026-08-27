@@ -1,0 +1,38 @@
+name: Diagnose nasu vocabulary duplicates
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.nasu-duplicate-diagnostic-trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Find exact nasu variants and their source files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          needles=['為[な]す','為す','為る']
+          roots=[Path('data'),Path('tools'),Path('scripts')]
+          exts={'.tsv','.json','.js','.py','.txt','.csv'}
+          for root in roots:
+              for p in root.rglob('*'):
+                  if not p.is_file() or p.suffix.lower() not in exts: continue
+                  try: text=p.read_text(encoding='utf-8')
+                  except Exception: continue
+                  found=[]
+                  for i,line in enumerate(text.splitlines(),1):
+                      if any(n in line for n in needles):
+                          found.append((i,line[:1200]))
+                  if found:
+                      print(f'=== {p} ({len(found)} hits) ===')
+                      for i,line in found[:30]: print(f'{i}: {line}')
+          PY
