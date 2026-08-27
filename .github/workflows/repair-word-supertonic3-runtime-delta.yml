@@ -1,0 +1,190 @@
+name: Repair Word Supertonic 3 runtime delta — two failed shards
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-supertonic3-runtime-repair-trigger'
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+env:
+  SOURCE_RUN_ID: '33010358885'
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-supertonic3-runtime-v2
+  HF_DIR: word/supertonic3/runtime-v2
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - voice: F4
+            shard: 7
+          - voice: M4
+            shard: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download exact source catalog from original 198/200 run
+        uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-runtime-delta-source
+          path: .
+          run-id: 33010358885
+          github-token: ${{ github.token }}
+      - name: Install Supertonic 3 and ffmpeg
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+      - name: Generate only the missing shard
+        env:
+          VOICE: ${{ matrix.voice }}
+          SHARD: ${{ matrix.shard }}
+          CATALOG: word-supertonic3-runtime-delta-source.json
+          OUT_DIR: word-supertonic-runtime-out
+        run: python scripts/generate_word_supertonic_shard.py
+      - name: Validate and publish primary GitHub Release asset
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          v,s=os.environ['V'],int(os.environ['S'])
+          src=json.load(open('word-supertonic3-runtime-delta-source.json'))
+          expected=sum(1 for x in src['items'] if int(x['shard'])==s)
+          m=json.load(open(f'word-supertonic-runtime-out/{v}-shard{s}.json'))
+          assert expected>0 and m['count']==expected and len(m['members'])==expected
+          p=Path('word-supertonic-runtime-out')/m['asset']
+          assert p.is_file() and p.stat().st_size>1000
+          with tarfile.open(p,'r:') as tf:
+              assert len([x for x in tf.getmembers() if x.isfile()])==expected
+          print('validated',v,s,expected,p.stat().st_size)
+          PY
+          mkdir -p manifest-artifact
+          cp "word-supertonic-runtime-out/$V-shard$S.json" manifest-artifact/
+          ok=0
+          for try in 1 2 3; do
+            if gh release upload "$RELEASE_TAG" "word-supertonic-runtime-out/$V-shard$S.tar" --clobber; then ok=1; break; fi
+            echo "GitHub Release attempt $try failed for $V-$S" >&2
+            sleep $((try*5))
+          done
+          test "$ok" -eq 1
+      - name: Preserve repaired manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-runtime-repair-manifest-${{ matrix.voice }}-${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+      - name: Backup repaired shard to Hugging Face
+        continue-on-error: true
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          ok=0
+          for try in 1 2 3; do
+            if hf upload "$HF_DATASET_REPO" "word-supertonic-runtime-out/$V-shard$S.tar" "$HF_DIR/$V-shard$S.tar" --repo-type dataset --commit-message "Repair Runtime Word Supertonic 3 $V shard $S"; then ok=1; break; fi
+            echo "HF backup attempt $try failed for $V-$S; primary GitHub asset is already safe" >&2
+            sleep $((try*10))
+          done
+          test "$ok" -eq 1
+
+  finalize:
+    needs: repair
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Download exact source catalog from original run
+        uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-runtime-delta-source
+          path: .
+          run-id: 33010358885
+          github-token: ${{ github.token }}
+      - name: Reuse 198 successful manifests from original run
+        uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-runtime-manifest-*
+          path: word-supertonic-runtime-manifests
+          merge-multiple: true
+          run-id: 33010358885
+          github-token: ${{ github.token }}
+      - name: Add the two repaired manifests
+        uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-runtime-repair-manifest-*
+          path: word-supertonic-runtime-manifests
+          merge-multiple: true
+      - name: Prove all 200 voice shards and current-word coverage
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          voices=['F1','F2','F3','F4','F5','M1','M2','M3','M4','M5']
+          root=Path('word-supertonic-runtime-manifests')
+          files=list(root.glob('*.json'))
+          assert len(files)==200, f'expected 200 manifests, got {len(files)}'
+          missing=[f'{v}-{s}' for v in voices for s in range(20) if not (root/f'{v}-shard{s}.json').is_file()]
+          assert not missing, missing
+          print('MANIFEST COVERAGE 200/200')
+          PY
+          python scripts/build_word_supertonic_runtime_delta_catalog.py
+          python - <<'PY'
+          import csv,json
+          base=json.load(open('word-supertonic3-catalog.json'))
+          old=json.load(open('word-supertonic3-delta-catalog.json'))
+          new=json.load(open('word-supertonic3-runtime-delta-catalog.json'))
+          runtime=set()
+          with open('data/jlpt_teacher_audit.tsv',encoding='utf-8',newline='') as f:
+              for r in csv.DictReader(f,delimiter='\t'):
+                  reading=(r.get('reading') or '').strip(); display=(r.get('display') or '').strip() or reading
+                  runtime.add(reading+'|'+display)
+          covered=set(base['words'])|set(old['words'])|set(new['words'])
+          missing=runtime-covered
+          assert not missing, list(sorted(missing))[:20]
+          assert len(runtime)==new['runtimeWordCount'], (len(runtime),new['runtimeWordCount'])
+          assert new['voiceCount']==10 and new['recordingCount']==new['wordCount']*10
+          key='もてなす|持てなす'
+          assert key in covered, 'もてなす|持てなす is not hosted'
+          if key in new['words']:
+              wid,shard=new['words'][key]
+              for v in ('F1','F3'):
+                  idx=json.load(open(f'word-supertonic3-runtime-delta-{v}-index.json'))
+                  assert wid in idx['bundles'][str(shard)]['members'], (v,key,wid,shard)
+              print('SENTINEL OK:',key,'F1/F3 runtime member',wid,'shard',shard)
+          else:
+              print('SENTINEL OK:',key,'already covered by base/v1 delta')
+          print('FULL SERVER SUPERTONIC COVERAGE:',len(runtime),'exact current runtime words')
+          print('Runtime-delta recordings:',new['recordingCount'])
+          PY
+      - name: Commit repaired runtime catalogs and indexes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-supertonic3-runtime-delta-catalog.json word-supertonic3-runtime-delta-*-index.json
+          if git diff --cached --quiet; then
+            echo 'Runtime catalogs already current'
+          else
+            git commit -m 'Complete current Word List Supertonic runtime audio coverage'
+            git pull --rebase origin main
+            git push origin main
+          fi
