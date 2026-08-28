@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "status": "error",
+  "checkedAt": "2026-08-28T15:25:35Z",
+  "sourceCount": 10,
+  "reachableCount": 9,
+  "changedSources": [],
+  "errors": [
+    "jmdict-distribution"
+  ],
+  "teacherReviewRequired": false,
+  "policy": "TEACHER_ROBOT_MAINTENANCE.md",
+  "sources": [
+    {
+      "id": "jlpt-levels",
+      "name": "JLPT N1-N5 level summary",
+      "url": "https://www.jlpt.jp/e/about/levelsummary.html",
+      "authority": "official",
+      "sections": [
+        "vocabulary",
+        "grammar",
+        "listening",
+        "mocktest"
+      ],
+      "purpose": "Official competence descriptions and level framing",
+      "reachable": true,
+      "bytes": 20714,
+      "sha256": "2d065169c902ff5e92a5c2dc34dc4e17e4dbc90d59b9d35559da0c407b34496e",
+      "changed": false,
+      "error": null
+    },
+    {
+      "id": "jlpt-samples",
+      "name": "JLPT official sample questions",
+      "url": "https://www.jlpt.jp/e/samples/forlearners.html",
+      "authority": "official",
+      "sections": [
+        "vocabulary",
+        "grammar",
+        "reading",
+        "listening",
+        "mocktest"
+      ],
+      "purpose": "Official item types and sample-test structure",
+      "reachable": true,
+      "bytes": 14812,
+      "sha256": "235515ea8647157a354f902d90d118bc9794561d089557c4468784d37e0f55be",
+      "changed": false,
+      "error": null
+    },
+    {
+      "id": "jf-standard",
+      "name": "JF Standard for Japanese-Language Education",
+      "url": "https://www.jfstandard.jpf.go.jp/summaryen/ja/render.do",
+      "authority": "official",
+      "sections": [
+        "grammar",
+        "listening",
+        "conversation",
+        "mocktest"
+      ],
+      "purpose": "Can-do and CEFR-aligned communicative competence",
+      "reachable": true,
+      "bytes": 20012,
+      "sha256": "0a23374c39a9b080ce487d5502c4cfcba7bf759bc9bc976aeacd9a49ed68ad33",
+      "changed": false,
+      "error": null
+    },
+    {
+      "id": "jf-cando",
+      "name": "Minna no Can-do",
+      "url": "https://www.jfstandard.jpf.go.jp/cando/about/summary/ja/render.do",
+      "authority": "official",
+      "sections": [
+        "listening",
+        "conversation",
+        "mocktest"
+      ],
+      "purpose": "Communicative activity and learning-objective review",
+      "reachable": true,
+      "bytes": 52606,
+      "sha256": "85f41de46b23ed2a5d5d97d1815427bdfd69d43cc1c9f626588f4b5f4879f5d4",
+      "changed": false,
+      "error": null
+    },
+    {
+      "id": "marugoto",
+      "name": "Marugoto learning materials",
+      "url": "https://marugoto.jpf.go.jp/en/download/",
+      "authority": "official",
+      "sections": [
+        "vocabulary",
+        "grammar",
+        "listening",
+        "conversation"
+      ],
+      "purpose": "Everyday language, vocabulary and communicative scenarios",
+      "reachable": true,
+      "bytes": 25759,
+      "sha256": "16564f28e640cc44a61a8f086ae02ffe7492cd21df9f41ea0bf5c36e03fb5e36",
+      "changed": false,
+      "error": null
+    },
+    {
+      "id": "erin",
+      "name": "Erin's Challenge",
+      "url": "https://www.erin.jpf.go.jp/en/extra/materials/",
+      "authority": "official",
+      "sections": [
+        "vocabulary",
+        "grammar",
+        "listening",
+        "conversation",
+        "culture"
+      ],
+      "purpose": "Scenario, key-phrase, onomatopoeia and Traditional Chinese teaching material cross-check",
+      "reachable": true,
+      "bytes": 57352,
+      "sha256": "b55324ec755be46e280aa85762e95aa29db84568ffdffe4916f4b644da7c23a2",
+      "changed": false,
+      "error": null
+    },
+    {
+      "id": "jmdict-distribution",
+      "name": "JMdict distribution index including New Generation",
+      "url": "https://ftp.edrdg.org/pub/Nihongo/00INDEX.html",
+      "authority": "lexicographic",
+      "sections": [
+        "vocabulary",
+        "wordlist",
+        "translator",
+        "pronunciation"
+      ],
+      "purpose": "Daily dictionary updates, spellings, readings, senses and JMdict NG availability",
+      "reachable": false,
+      "bytes": 0,
+      "sha256": null,
+      "changed": false,
+      "error": "curl: (60) SSL: no alternative certificate subject name matches target host name 'ftp.edrdg.org'\nMore details here: https://curl.se/docs/sslcerts.html\n\ncurl failed to verify the legitimacy of the server and therefore could not\nestablish a secure connection to it. To learn more about this situation and\nhow to fix it, please visit the web page mentioned above."
+    },
+    {
+      "id": "jmdict-ng",
+      "name": "JMdict Next Generation documentation",
+      "url": "https://www.edrdg.org/jmdemo/web/doc/2026-03-xmlng.html",
+      "authority": "lexicographic",
+      "sections": [
+        "vocabulary",
+        "wordlist",
+        "translator",
+        "pronunciation"
+      ],
+      "purpose": "Track schema changes relevant to lexical import and future pitch-accent fields",
+      "reachable": true,
+      "bytes": 14343,
+      "sha256": "60ace2acd2ac0e5169d127e784e48d577b78c06f9d5b58215f3b00619940639c",
+      "changed": false,
+      "error": null
+    },
+    {
+      "id": "bccwj2",
+      "name": "NINJAL BCCWJ2",
+      "url": "https://www2.ninjal.ac.jp/BCCWJ2/index_en.html",
+      "authority": "corpus",
+      "sections": [
+        "vocabulary",
+        "grammar",
+        "conversation",
+        "translator"
+      ],
+      "purpose": "Contemporary written Japanese usage and contextual evidence",
+      "reachable": true,
+      "bytes": 10198,
+      "sha256": "b004c1b3adb6e91bc51e484eefc6ef4f89a03e9c0a40e3ecb3f25cef097b2750",
+      "changed": false,
+      "error": null
+    },
+    {
+      "id": "ojad",
+      "name": "Online Japanese Accent Dictionary",
+      "url": "https://www.gavo.t.u-tokyo.ac.jp/ojad/eng/pages/home",
+      "authority": "academic",
+      "sections": [
+        "pronunciation",
+        "wordaudio",
+        "conversation"
+      ],
+      "purpose": "Pitch accent and pronunciation reference",
+      "reachable": true,
+      "bytes": 117003,
+      "sha256": "14365f244c3cb83d861b4c6e6f9a39f0b876796c17cee2cc7dc555c84d08415a",
+      "changed": false,
+      "error": null
+    }
+  ]
+}
