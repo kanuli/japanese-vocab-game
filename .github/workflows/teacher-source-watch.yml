@@ -36,7 +36,37 @@ jobs:
           python - <<'PY'
           from __future__ import annotations
           import datetime, hashlib, json, re, subprocess
+          from html.parser import HTMLParser
           from pathlib import Path
+
+          SIGNATURE_VERSION=2
+
+          class VisibleText(HTMLParser):
+              SKIP={'script','style','noscript','template','svg'}
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.skip_depth=0
+                  self.parts=[]
+              def handle_starttag(self,tag,attrs):
+                  if tag.lower() in self.SKIP:
+                      self.skip_depth+=1
+              def handle_endtag(self,tag):
+                  if tag.lower() in self.SKIP and self.skip_depth:
+                      self.skip_depth-=1
+              def handle_data(self,data):
+                  if not self.skip_depth:
+                      s=re.sub(r'\s+',' ',data).strip()
+                      if s:
+                          self.parts.append(s)
+
+          def semantic_signature(body:bytes):
+              raw=body.decode('utf-8','replace')
+              parser=VisibleText()
+              parser.feed(raw)
+              # Hash learner-visible/semantic page text instead of volatile scripts,
+              # inline JSON, cache tokens, tracking parameters or HTML attributes.
+              semantic=re.sub(r'\s+',' ',' '.join(parser.parts)).strip()
+              return hashlib.sha256(semantic.encode('utf-8')).hexdigest(),len(semantic)
 
           cfg=json.load(open('teacher-source-watch.json',encoding='utf-8'))
           old={}
@@ -59,13 +89,29 @@ jobs:
                   if p.returncode:
                       raise RuntimeError(p.stderr.decode('utf-8','replace').strip() or f'curl exit {p.returncode}')
                   body=p.stdout
-                  text=body.decode('utf-8','replace')
-                  normalized=re.sub(r'\s+',' ',text).strip().encode('utf-8')
-                  sig=hashlib.sha256(normalized).hexdigest()
-                  prior=old.get(src['id'],{}).get('sha256')
-                  row.update({'reachable':True,'bytes':len(body),'sha256':sig,'changed':bool(prior and prior!=sig),'error':None})
+                  sig,semantic_chars=semantic_signature(body)
+                  prior_row=old.get(src['id'],{})
+                  prior=prior_row.get('sha256')
+                  comparable=prior_row.get('signatureVersion')==SIGNATURE_VERSION
+                  row.update({
+                      'reachable':True,
+                      'bytes':len(body),
+                      'semanticChars':semantic_chars,
+                      'signatureVersion':SIGNATURE_VERSION,
+                      'sha256':sig,
+                      'changed':bool(comparable and prior and prior!=sig),
+                      'error':None,
+                  })
               except Exception as e:
-                  row.update({'reachable':False,'bytes':0,'sha256':None,'changed':False,'error':str(e)[:500]})
+                  row.update({
+                      'reachable':False,
+                      'bytes':0,
+                      'semanticChars':0,
+                      'signatureVersion':SIGNATURE_VERSION,
+                      'sha256':None,
+                      'changed':False,
+                      'error':str(e)[:500],
+                  })
               out.append(row)
 
           errors=[x['id'] for x in out if not x['reachable']]
@@ -73,6 +119,7 @@ jobs:
           state='error' if errors else ('review_required' if changed_sources else 'ok')
           status={
               'version':1,
+              'signatureVersion':SIGNATURE_VERSION,
               'status':state,
               'checkedAt':checked,
               'sourceCount':len(out),
@@ -84,7 +131,7 @@ jobs:
               'sources':out,
           }
           Path('teacher-source-status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          print(json.dumps({k:status[k] for k in ('status','sourceCount','reachableCount','changedSources','errors','teacherReviewRequired')},ensure_ascii=False))
+          print(json.dumps({k:status[k] for k in ('status','signatureVersion','sourceCount','reachableCount','changedSources','errors','teacherReviewRequired')},ensure_ascii=False))
           PY
 
       - name: Publish source-watch status
