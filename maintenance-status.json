@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "status": "error",
-  "checkedAt": "2026-08-28T15:13:00Z",
-  "runId": 33184029004,
+  "status": "ok",
+  "checkedAt": "2026-08-28T15:18:02Z",
+  "runId": 33184349428,
   "pages": 11,
   "conversation": {
     "scenes": 61,
@@ -24,8 +24,8 @@
     "recordings": 26770
   },
   "checks": {
-    "static": false,
-    "browser": false,
-    "live": false
+    "static": true,
+    "browser": true,
+    "live": true
   }
 }
