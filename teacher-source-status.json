@@ -1,14 +1,13 @@
 {
   "version": 1,
-  "status": "review_required",
-  "checkedAt": "2026-08-28T15:27:27Z",
+  "signatureVersion": 2,
+  "status": "ok",
+  "checkedAt": "2026-08-28T15:28:40Z",
   "sourceCount": 10,
   "reachableCount": 10,
-  "changedSources": [
-    "ojad"
-  ],
+  "changedSources": [],
   "errors": [],
-  "teacherReviewRequired": true,
+  "teacherReviewRequired": false,
   "policy": "TEACHER_ROBOT_MAINTENANCE.md",
   "sources": [
     {
@@ -25,7 +24,9 @@
       "purpose": "Official competence descriptions and level framing",
       "reachable": true,
       "bytes": 20714,
-      "sha256": "2d065169c902ff5e92a5c2dc34dc4e17e4dbc90d59b9d35559da0c407b34496e",
+      "semanticChars": 4347,
+      "signatureVersion": 2,
+      "sha256": "1a458907fb1995d5a78532e817d1dd4effdad0e24dae874ab98e42af712dc185",
       "changed": false,
       "error": null
     },
@@ -44,7 +45,9 @@
       "purpose": "Official item types and sample-test structure",
       "reachable": true,
       "bytes": 14812,
-      "sha256": "235515ea8647157a354f902d90d118bc9794561d089557c4468784d37e0f55be",
+      "semanticChars": 846,
+      "signatureVersion": 2,
+      "sha256": "374a2a2aea028e6de5eb5e5c0c665e5b331e83d9a4b8b7167e0f4a9d9e713c2d",
       "changed": false,
       "error": null
     },
@@ -62,7 +65,9 @@
       "purpose": "Can-do and CEFR-aligned communicative competence",
       "reachable": true,
       "bytes": 20012,
-      "sha256": "0a23374c39a9b080ce487d5502c4cfcba7bf759bc9bc976aeacd9a49ed68ad33",
+      "semanticChars": 3925,
+      "signatureVersion": 2,
+      "sha256": "555d0a81d923a337c541a3988543b1666ab955225019527160550045edd572ed",
       "changed": false,
       "error": null
     },
@@ -79,7 +84,9 @@
       "purpose": "Communicative activity and learning-objective review",
       "reachable": true,
       "bytes": 52606,
-      "sha256": "85f41de46b23ed2a5d5d97d1815427bdfd69d43cc1c9f626588f4b5f4879f5d4",
+      "semanticChars": 9953,
+      "signatureVersion": 2,
+      "sha256": "449aa5ce748da52ce71c38b56c7923607bfb9bd66f84f82c5537126616abebf4",
       "changed": false,
       "error": null
     },
@@ -97,7 +104,9 @@
       "purpose": "Everyday language, vocabulary and communicative scenarios",
       "reachable": true,
       "bytes": 25759,
-      "sha256": "16564f28e640cc44a61a8f086ae02ffe7492cd21df9f41ea0bf5c36e03fb5e36",
+      "semanticChars": 2853,
+      "signatureVersion": 2,
+      "sha256": "8ae1349eac2a4b789fdc50a1b386808e1461c5e05e435135f86e583d5c6c0b1b",
       "changed": false,
       "error": null
     },
@@ -116,7 +125,9 @@
       "purpose": "Scenario, key-phrase, onomatopoeia and Traditional Chinese teaching material cross-check",
       "reachable": true,
       "bytes": 57352,
-      "sha256": "b55324ec755be46e280aa85762e95aa29db84568ffdffe4916f4b644da7c23a2",
+      "semanticChars": 8595,
+      "signatureVersion": 2,
+      "sha256": "673310731a73f823c86f62970e7aeecca343c0a2b9b2bc04deb36cf0efa4b0dc",
       "changed": false,
       "error": null
     },
@@ -134,7 +145,9 @@
       "purpose": "Daily dictionary updates, spellings, readings, senses and JMdict NG availability",
       "reachable": true,
       "bytes": 112424,
-      "sha256": "8b4c92272ac4470f79a0b2d02114fb3bc10a07671b973a4263c00c920f64a18f",
+      "semanticChars": 78123,
+      "signatureVersion": 2,
+      "sha256": "cbb9606b152693858421f49a6a42d630dc9673dac3ecbba53a4bd2d52c3cfa16",
       "changed": false,
       "error": null
     },
@@ -152,7 +165,9 @@
       "purpose": "Track schema changes relevant to lexical import and future pitch-accent fields",
       "reachable": true,
       "bytes": 14343,
-      "sha256": "60ace2acd2ac0e5169d127e784e48d577b78c06f9d5b58215f3b00619940639c",
+      "semanticChars": 8799,
+      "signatureVersion": 2,
+      "sha256": "1b73eb2a7201f9274b086426ddb2011e0baa1f3c82c4ed8a9fcbc459f6711bc6",
       "changed": false,
       "error": null
     },
@@ -170,7 +185,9 @@
       "purpose": "Contemporary written Japanese usage and contextual evidence",
       "reachable": true,
       "bytes": 10198,
-      "sha256": "b004c1b3adb6e91bc51e484eefc6ef4f89a03e9c0a40e3ecb3f25cef097b2750",
+      "semanticChars": 2086,
+      "signatureVersion": 2,
+      "sha256": "7317f3b76d50ac16605a5c9c6f9738798cdebb1eebeb69daf9f51d5e6586cefd",
       "changed": false,
       "error": null
     },
@@ -187,8 +204,10 @@
       "purpose": "Pitch accent and pronunciation reference",
       "reachable": true,
       "bytes": 117003,
-      "sha256": "d09a1b9ecfc044347a695c67642d3f1432b6e83c5667ba884f3b2702af00cad6",
-      "changed": true,
+      "semanticChars": 16361,
+      "signatureVersion": 2,
+      "sha256": "8c3b747aad18bd979be0ce223b691490702bb7216965d7626af5436bae92a824",
+      "changed": false,
       "error": null
     }
   ]
