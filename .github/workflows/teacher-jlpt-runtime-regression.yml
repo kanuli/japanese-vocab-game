@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
 
       - name: Verify committed teacher audit artifact
         run: |
@@ -60,7 +60,7 @@ jobs:
           npm install --silent "playwright@$PW_VERSION"
           npx playwright install --with-deps chromium >/dev/null
 
-      - name: Verify actual browser vocabulary levels and meanings
+      - name: Verify actual browser vocabulary against canonical Teacher audit
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/teacher-http.log 2>&1 &
           echo $! >/tmp/teacher-http.pid
@@ -84,22 +84,47 @@ jobs:
             if(!response||response.status()>=400) throw Error('wordlist HTTP '+(response?.status()||'none'));
             await page.waitForFunction(()=>Array.isArray(window.WA?.words)&&window.WA.words.length>=32000,null,{timeout:30000});
             await page.waitForTimeout(1000);
-            const result=await page.evaluate((expected)=>{
+            const result=await page.evaluate(async(expected)=>{
               const words=window.WA.words;
               const display=w=>w.kanji||w.displayWord||w.reading;
-              const byKey=new Map(words.map(w=>[`${w.reading}|${display(w)}`,w]));
+              const runtime=new Map(words.map(w=>[`${w.reading}|${display(w)}`,w]));
               const counts={N1:0,N2:0,N3:0,N4:0,N5:0};
               for(const w of words) if(counts[w.level]!==undefined) counts[w.level]++;
+
+              const auditResp=await fetch('./data/jlpt_teacher_audit.tsv?teacher='+Date.now(),{cache:'no-store'});
+              if(!auditResp.ok) throw Error('teacher TSV HTTP '+auditResp.status);
+              const tsv=(await auditResp.text()).replace(/^\uFEFF/,'').trimEnd();
+              const lines=tsv.split(/\r?\n/);
+              const header=lines.shift().split('\t');
+              const col=Object.fromEntries(header.map((x,i)=>[x,i]));
+              for(const need of ['reading','display','level']) if(col[need]===undefined) throw Error('teacher TSV missing '+need);
+              const audited=new Map();
+              for(const line of lines){
+                if(!line)continue;
+                const f=line.split('\t');
+                const k=`${f[col.reading]}|${f[col.display]}`;
+                if(audited.has(k)) throw Error('duplicate canonical teacher key '+k);
+                audited.set(k,f[col.level]);
+              }
+
+              const missingInRuntime=[],extraInRuntime=[],levelMismatch=[];
+              for(const [k,level] of audited){
+                const w=runtime.get(k);
+                if(!w){if(missingInRuntime.length<100)missingInRuntime.push(k);continue;}
+                if(w.level!==level&&levelMismatch.length<100)levelMismatch.push({key:k,audit:level,runtime:w.level});
+              }
+              for(const k of runtime.keys()) if(!audited.has(k)&&extraInRuntime.length<100) extraInRuntime.push(k);
+
               const sentinels={};
               for(const [key,level] of Object.entries(expected)){
-                const w=byKey.get(key);
+                const w=runtime.get(key);
                 sentinels[key]=w?{level:w.level,meaning:w.meaning,levelSource:w.levelSource||'',estimated:!!w.estimated}:null;
               }
               const estimatedN1=words.filter(w=>w.level==='N1'&&(w.estimated===true||String(w.levelSource||'').includes('estimate'))).map(w=>`${w.reading}|${display(w)}`);
 
               // Review-only heuristic: same reading, >=3 distinct written forms, identical
-              // normalized Traditional-Chinese meaning AND level. Some orthographic variants
-              // are legitimate, so this is surfaced for Teacher review rather than hard-failed.
+              // normalized Traditional-Chinese meaning AND level. Legitimate orthographic
+              // variants exist, so generic collisions are queued for Teacher review.
               const groups=new Map();
               const norm=s=>String(s||'').replace(/[\s　、，,。；;（）()]/g,'').trim();
               for(const w of words){
@@ -121,14 +146,16 @@ jobs:
                 }
                 for(const rows of buckets.values()) if(rows.length>=3) homophoneCollisions.push({reading,rows});
               }
-
-              const meta=window.VOCAB_JLPT_RECALIBRATION_META||window.ADVANCED_WORDS_BUNDLE_META?.jlptRecalibration||null;
-              const coreMeta=window.VOCAB_CORE_VERIFIED_META||null;
-              return {total:words.length,counts,sentinels,estimatedN1,homophoneCollisions,meta,coreMeta};
+              return {
+                total:words.length,auditRows:audited.size,counts,sentinels,estimatedN1,
+                missingInRuntime,extraInRuntime,levelMismatch,homophoneCollisions
+              };
             },expected);
             if(errors.length) throw Error('page errors: '+errors.join(' | '));
             if(result.total<32000) throw Error('runtime vocabulary underfilled '+result.total);
-            if(!result.meta||!String(result.meta.version||'').includes('teacher')) throw Error('teacher metadata missing/invalid '+JSON.stringify(result.meta));
+            if(result.total!==result.auditRows||result.missingInRuntime.length||result.extraInRuntime.length||result.levelMismatch.length){
+              throw Error('runtime/audit exact-key drift '+JSON.stringify({runtime:result.total,audit:result.auditRows,missing:result.missingInRuntime,extra:result.extraInRuntime,levelMismatch:result.levelMismatch}));
+            }
             if(result.estimatedN1.length) throw Error('runtime estimated N1 forbidden '+JSON.stringify(result.estimatedN1.slice(0,30)));
             for(const [key,level] of Object.entries(expected)){
               const row=result.sentinels[key];
@@ -139,8 +166,7 @@ jobs:
             const mai=result.sentinels['まい|まい'];
             if(!String(mai.meaning||'').includes('不會')) throw Error('まい meaning corrupted '+JSON.stringify(mai));
 
-            // Permanent regression for the historical まい/舞/枚/毎 contamination:
-            // all four exact keys must exist and must not collapse to one copied meaning.
+            // Permanent regression for the historical まい/舞/枚/毎 contamination.
             const maiKeys=['まい|まい','まい|舞','まい|枚','まい|毎'];
             const maiRows=maiKeys.map(k=>result.sentinels[k]);
             if(maiRows.some(x=>!x||!String(x.meaning||'').trim())) throw Error('まい homophone row missing '+JSON.stringify(maiRows));
@@ -151,7 +177,7 @@ jobs:
             if(result.counts.N5<1800||result.counts.N4<1500||result.counts.N3<4000) throw Error('lower-level underfill '+JSON.stringify(result.counts));
             for(const c of result.homophoneCollisions.slice(0,100)) console.warn('TEACHER_REVIEW homophone-meaning-collision '+JSON.stringify(c));
             console.log('TEACHER REVIEW CANDIDATES',result.homophoneCollisions.length);
-            console.log('TEACHER RUNTIME PASS',JSON.stringify({...result,homophoneCollisions:result.homophoneCollisions.slice(0,20)}));
+            console.log('TEACHER RUNTIME PASS',JSON.stringify({total:result.total,auditRows:result.auditRows,counts:result.counts,sentinels:result.sentinels,reviewCandidates:result.homophoneCollisions.length}));
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
