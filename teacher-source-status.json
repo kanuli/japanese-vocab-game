@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "status": "error",
-  "checkedAt": "2026-08-28T15:25:35Z",
+  "status": "review_required",
+  "checkedAt": "2026-08-28T15:27:27Z",
   "sourceCount": 10,
-  "reachableCount": 9,
-  "changedSources": [],
-  "errors": [
-    "jmdict-distribution"
+  "reachableCount": 10,
+  "changedSources": [
+    "ojad"
   ],
-  "teacherReviewRequired": false,
+  "errors": [],
+  "teacherReviewRequired": true,
   "policy": "TEACHER_ROBOT_MAINTENANCE.md",
   "sources": [
     {
@@ -123,7 +123,7 @@
     {
       "id": "jmdict-distribution",
       "name": "JMdict distribution index including New Generation",
-      "url": "https://ftp.edrdg.org/pub/Nihongo/00INDEX.html",
+      "url": "https://www.edrdg.org/pub/Nihongo/00INDEX.html",
       "authority": "lexicographic",
       "sections": [
         "vocabulary",
@@ -132,11 +132,11 @@
         "pronunciation"
       ],
       "purpose": "Daily dictionary updates, spellings, readings, senses and JMdict NG availability",
-      "reachable": false,
-      "bytes": 0,
-      "sha256": null,
+      "reachable": true,
+      "bytes": 112424,
+      "sha256": "8b4c92272ac4470f79a0b2d02114fb3bc10a07671b973a4263c00c920f64a18f",
       "changed": false,
-      "error": "curl: (60) SSL: no alternative certificate subject name matches target host name 'ftp.edrdg.org'\nMore details here: https://curl.se/docs/sslcerts.html\n\ncurl failed to verify the legitimacy of the server and therefore could not\nestablish a secure connection to it. To learn more about this situation and\nhow to fix it, please visit the web page mentioned above."
+      "error": null
     },
     {
       "id": "jmdict-ng",
@@ -187,8 +187,8 @@
       "purpose": "Pitch accent and pronunciation reference",
       "reachable": true,
       "bytes": 117003,
-      "sha256": "14365f244c3cb83d861b4c6e6f9a39f0b876796c17cee2cc7dc555c84d08415a",
-      "changed": false,
+      "sha256": "d09a1b9ecfc044347a695c67642d3f1432b6e83c5667ba884f3b2702af00cad6",
+      "changed": true,
       "error": null
     }
   ]
