@@ -1,0 +1,25 @@
+name: Post-teacher full-site maintenance bridge
+
+on:
+  workflow_run:
+    workflows: ['Teacher JLPT runtime regression']
+    types: [completed]
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch-full-maintenance:
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Dispatch full-site maintenance after Teacher PASS
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --method POST \
+            repos/${{ github.repository }}/actions/workflows/site-maintenance.yml/dispatches \
+            -f ref=main
+          echo 'Dispatched Full-site maintenance and browser smoke test after Teacher runtime PASS.'
