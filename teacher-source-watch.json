@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "policy": "TEACHER_ROBOT_MAINTENANCE.md",
+  "sources": [
+    {
+      "id": "jlpt-levels",
+      "name": "JLPT N1-N5 level summary",
+      "url": "https://www.jlpt.jp/e/about/levelsummary.html",
+      "authority": "official",
+      "sections": ["vocabulary", "grammar", "listening", "mocktest"],
+      "purpose": "Official competence descriptions and level framing"
+    },
+    {
+      "id": "jlpt-samples",
+      "name": "JLPT official sample questions",
+      "url": "https://www.jlpt.jp/e/samples/forlearners.html",
+      "authority": "official",
+      "sections": ["vocabulary", "grammar", "reading", "listening", "mocktest"],
+      "purpose": "Official item types and sample-test structure"
+    },
+    {
+      "id": "jf-standard",
+      "name": "JF Standard for Japanese-Language Education",
+      "url": "https://www.jfstandard.jpf.go.jp/summaryen/ja/render.do",
+      "authority": "official",
+      "sections": ["grammar", "listening", "conversation", "mocktest"],
+      "purpose": "Can-do and CEFR-aligned communicative competence"
+    },
+    {
+      "id": "jf-cando",
+      "name": "Minna no Can-do",
+      "url": "https://www.jfstandard.jpf.go.jp/cando/about/summary/ja/render.do",
+      "authority": "official",
+      "sections": ["listening", "conversation", "mocktest"],
+      "purpose": "Communicative activity and learning-objective review"
+    },
+    {
+      "id": "marugoto",
+      "name": "Marugoto learning materials",
+      "url": "https://marugoto.jpf.go.jp/en/download/",
+      "authority": "official",
+      "sections": ["vocabulary", "grammar", "listening", "conversation"],
+      "purpose": "Everyday language, vocabulary and communicative scenarios"
+    },
+    {
+      "id": "erin",
+      "name": "Erin's Challenge",
+      "url": "https://www.erin.jpf.go.jp/en/extra/materials/",
+      "authority": "official",
+      "sections": ["vocabulary", "grammar", "listening", "conversation", "culture"],
+      "purpose": "Scenario, key-phrase, onomatopoeia and Traditional Chinese teaching material cross-check"
+    },
+    {
+      "id": "jmdict-distribution",
+      "name": "JMdict distribution index including New Generation",
+      "url": "https://ftp.edrdg.org/pub/Nihongo/00INDEX.html",
+      "authority": "lexicographic",
+      "sections": ["vocabulary", "wordlist", "translator", "pronunciation"],
+      "purpose": "Daily dictionary updates, spellings, readings, senses and JMdict NG availability"
+    },
+    {
+      "id": "jmdict-ng",
+      "name": "JMdict Next Generation documentation",
+      "url": "https://www.edrdg.org/jmdemo/web/doc/2026-03-xmlng.html",
+      "authority": "lexicographic",
+      "sections": ["vocabulary", "wordlist", "translator", "pronunciation"],
+      "purpose": "Track schema changes relevant to lexical import and future pitch-accent fields"
+    },
+    {
+      "id": "bccwj2",
+      "name": "NINJAL BCCWJ2",
+      "url": "https://www2.ninjal.ac.jp/BCCWJ2/index_en.html",
+      "authority": "corpus",
+      "sections": ["vocabulary", "grammar", "conversation", "translator"],
+      "purpose": "Contemporary written Japanese usage and contextual evidence"
+    },
+    {
+      "id": "ojad",
+      "name": "Online Japanese Accent Dictionary",
+      "url": "https://www.gavo.t.u-tokyo.ac.jp/ojad/eng/pages/home",
+      "authority": "academic",
+      "sections": ["pronunciation", "wordaudio", "conversation"],
+      "purpose": "Pitch accent and pronunciation reference"
+    }
+  ]
+}
