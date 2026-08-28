@@ -1,0 +1,72 @@
+name: Teacher audit artifact consistency
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 3 * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/teacher-audit-consistency.yml'
+      - 'tools/sync_teacher_audit_metadata.py'
+      - 'tools/normalize_inline_reading_vocab.py'
+      - 'tools/export_teacher_review_queue.py'
+      - 'data/jlpt_teacher_audit.tsv'
+      - 'data/vocab_audit.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: teacher-audit-consistency
+  cancel-in-progress: true
+
+jobs:
+  synchronize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+
+      - name: Recompute canonical Teacher audit metadata
+        run: python tools/sync_teacher_audit_metadata.py
+
+      - name: Rebuild Teacher review queue from canonical TSV
+        run: python tools/export_teacher_review_queue.py
+
+      - name: Validate synchronized artifacts
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          with Path('data/jlpt_teacher_audit.tsv').open(encoding='utf-8',newline='') as f:
+            rows=list(csv.DictReader(f,delimiter='\t'))
+          audit=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))['jlptRecalibration']
+          queue=json.loads(Path('data/jlpt_teacher_review_queue.json').read_text(encoding='utf-8'))
+          assert len(rows)==audit['rowCount']==audit['canonicalExactKeyCount'],(len(rows),audit['rowCount'],audit.get('canonicalExactKeyCount'))
+          assert queue['sourceRows']==len(rows),(queue['sourceRows'],len(rows))
+          keys=[f"{r['reading']}|{r['display']}" for r in rows]
+          assert len(keys)==len(set(keys))
+          assert sum(audit['combinedCountsByLevel'].values())==len(rows)
+          assert sum(audit['teacherGradeCounts'].values())==len(rows)
+          assert sum(audit['teacherBasisCounts'].values())==len(rows)
+          assert audit['directRows']+audit['estimatedRows']==len(rows)
+          assert audit['estimatedN1WithoutRarityEvidence']==0
+          assert audit['duplicateExactKeys']==0
+          print('TEACHER ARTIFACT CONSISTENCY PASS',len(rows),'reviewRows',queue['reviewRows'])
+          PY
+
+      - name: Publish synchronized metadata
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/vocab_audit.json data/jlpt_teacher_review_queue.json data/jlpt_teacher_review_queue.tsv
+          if git diff --cached --quiet; then
+            echo 'Teacher audit artifacts already synchronized.'
+            exit 0
+          fi
+          git commit -m 'Synchronize canonical teacher audit metadata'
+          git pull --rebase origin main
+          git push origin main
