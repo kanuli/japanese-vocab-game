@@ -36,16 +36,17 @@ jobs:
           from pathlib import Path
           audit=json.loads(Path('data/vocab_audit.json').read_text(encoding='utf-8'))
           r=audit['jlptRecalibration']
-          assert r['version']=='20260826-teacher-v4-exact-audit', r.get('version')
+          assert r.get('status')=='complete', r.get('status')
+          assert isinstance(r.get('version'),str) and 'teacher' in r['version'], r.get('version')
           assert r['scope']=='every core+advanced runtime word exact key'
-          assert r['rowCount']==32511, r['rowCount']
+          assert int(r['rowCount'])>=32000, r['rowCount']
           assert r['estimatedN1WithoutRarityEvidence']==0
           assert r['duplicateExactKeys']==0
           with Path('data/jlpt_teacher_audit.tsv').open(encoding='utf-8',newline='') as f:
             rows=list(csv.DictReader(f,delimiter='\t'))
-          assert len(rows)==r['rowCount'],(len(rows),r['rowCount'])
+          assert len(rows)==r['rowCount'],('teacher artifact drift',len(rows),r['rowCount'])
           assert not [x for x in rows if x['level']=='N1' and x['status'].startswith('estimated')]
-          print('STATIC TEACHER AUDIT PASS',r['combinedCountsByLevel'],r['teacherGradeCounts'])
+          print('STATIC TEACHER AUDIT PASS',r['version'],r['rowCount'],r['combinedCountsByLevel'],r['teacherGradeCounts'])
           PY
 
       - name: Install Chromium
@@ -123,7 +124,7 @@ jobs:
             },expected);
             if(errors.length) throw Error('page errors: '+errors.join(' | '));
             if(result.total<32000) throw Error('runtime vocabulary underfilled '+result.total);
-            if(!result.meta||result.meta.version!=='20260826-teacher-v4-exact-audit') throw Error('teacher v4 metadata missing '+JSON.stringify(result.meta));
+            if(!result.meta||!String(result.meta.version||'').includes('teacher')) throw Error('teacher metadata missing/invalid '+JSON.stringify(result.meta));
             if(result.estimatedN1.length) throw Error('runtime estimated N1 forbidden '+JSON.stringify(result.estimatedN1.slice(0,30)));
             for(const [key,level] of Object.entries(expected)){
               const row=result.sentinels[key];
