@@ -53,7 +53,7 @@
     {
       "id": "jmdict-distribution",
       "name": "JMdict distribution index including New Generation",
-      "url": "https://ftp.edrdg.org/pub/Nihongo/00INDEX.html",
+      "url": "https://www.edrdg.org/pub/Nihongo/00INDEX.html",
       "authority": "lexicographic",
       "sections": ["vocabulary", "wordlist", "translator", "pronunciation"],
       "purpose": "Daily dictionary updates, spellings, readings, senses and JMdict NG availability"
