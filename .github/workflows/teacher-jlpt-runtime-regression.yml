@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '12 4 * * *'
+  workflow_run:
+    workflows: ['Teacher audit artifact consistency']
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -24,6 +27,7 @@ on:
 
 jobs:
   teacher-runtime:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
