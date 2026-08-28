@@ -1,2 +1,2 @@
-2026-08-28
-Re-run full-site maintenance after fixing the version-locked wordaudio-multivoice validation and adding wordaudio.html / wordaudio-multivoice.js to maintenance push paths. Require Static, Data, Browser and Live validation to complete; do not manually override maintenance-status.json.
+2026-08-28 retry-2
+Re-run full-site maintenance after removing the obsolete wordlist-audio.js validator dependency. Require Static, Data, Browser and Live validation to complete; do not manually override maintenance-status.json.
