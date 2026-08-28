@@ -83,7 +83,7 @@ jobs:
                   try: target.relative_to(root)
                   except ValueError: failures.append(f'{page}: reference escapes repo {raw}'); continue
                   if not target.exists(): failures.append(f'{page}: missing local reference {raw}')
-          required=['site-health.js','generic-voice-test.js','page-voice-audition.js','result-history.js','maintenance-playwright-version.txt','conversation.js','conversation-hosted-audio.js','mocktest.js','wordaudio-ai.js','wordaudio-controller.js','wordaudio-data.js','wordaudio-init.js','wordaudio-multivoice.js','wordaudio-player.js','wordaudio-voice.js','wordlist-audio.js','wordlist-voicevox.js','wordlist.js','translator-hosted-voice.js','pronunciation-furigana.js']
+          required=['site-health.js','generic-voice-test.js','page-voice-audition.js','result-history.js','maintenance-playwright-version.txt','conversation.js','conversation-hosted-audio.js','mocktest.js','wordaudio-ai.js','wordaudio-controller.js','wordaudio-data.js','wordaudio-init.js','wordaudio-multivoice.js','wordaudio-player.js','wordaudio-voice.js','wordlist-voicevox.js','wordlist.js','translator-hosted-voice.js','pronunciation-furigana.js']
           missing=[x for x in required if not Path(x).is_file()]
           if missing: failures.append('Missing core file: '+', '.join(missing))
           wordaudio_text=Path('wordaudio.html').read_text(encoding='utf-8')
@@ -93,7 +93,7 @@ jobs:
               print('\n'.join('FAIL '+x for x in failures),file=sys.stderr); raise SystemExit(1)
           print(f'Static maintenance OK: {len(pages)} pages; resources, IDs and health integration clean.')
           PY
-          for f in site-health.js generic-voice-test.js page-voice-audition.js result-history.js conversation.js conversation-hosted-audio.js mocktest.js wordaudio-ai.js wordaudio-controller.js wordaudio-data.js wordaudio-init.js wordaudio-list.js wordaudio-multivoice.js wordaudio-player.js wordaudio-voice.js wordlist-audio.js wordlist-voicevox.js wordlist.js translator-hosted-voice.js pronunciation-furigana.js; do node --check "$f"; done
+          for f in site-health.js generic-voice-test.js page-voice-audition.js result-history.js conversation.js conversation-hosted-audio.js mocktest.js wordaudio-ai.js wordaudio-controller.js wordaudio-data.js wordaudio-init.js wordaudio-list.js wordaudio-multivoice.js wordaudio-player.js wordaudio-voice.js wordlist-voicevox.js wordlist.js translator-hosted-voice.js pronunciation-furigana.js; do node --check "$f"; done
 
       - name: Validate full learning databases and hosted conversation audio
         id: data
