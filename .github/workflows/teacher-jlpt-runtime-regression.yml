@@ -2,6 +2,8 @@ name: Teacher JLPT runtime regression
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '12 4 * * *'
   push:
     branches: [main]
     paths:
@@ -17,6 +19,7 @@ on:
       - 'large_vocab_loader.js'
       - 'large_vocab_build.js'
       - 'large_vocab_sources.js'
+      - 'wordaudio-data.js'
       - 'wordlist.html'
 
 jobs:
@@ -52,7 +55,7 @@ jobs:
           npm install --silent "playwright@$PW_VERSION"
           npx playwright install --with-deps chromium >/dev/null
 
-      - name: Verify actual browser vocabulary levels
+      - name: Verify actual browser vocabulary levels and meanings
         run: |
           python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/teacher-http.log 2>&1 &
           echo $! >/tmp/teacher-http.pid
@@ -88,9 +91,35 @@ jobs:
                 sentinels[key]=w?{level:w.level,meaning:w.meaning,levelSource:w.levelSource||'',estimated:!!w.estimated}:null;
               }
               const estimatedN1=words.filter(w=>w.level==='N1'&&(w.estimated===true||String(w.levelSource||'').includes('estimate'))).map(w=>`${w.reading}|${display(w)}`);
+
+              // Review-only heuristic: same reading, >=3 distinct written forms, identical
+              // normalized Traditional-Chinese meaning AND level. Some orthographic variants
+              // are legitimate, so this is surfaced for Teacher review rather than hard-failed.
+              const groups=new Map();
+              const norm=s=>String(s||'').replace(/[\s　、，,。；;（）()]/g,'').trim();
+              for(const w of words){
+                const r=String(w.reading||'').trim(),d=String(display(w)||'').trim();
+                if(!r||!d) continue;
+                if(!groups.has(r)) groups.set(r,[]);
+                groups.get(r).push({display:d,meaning:String(w.meaning||''),level:String(w.level||'')});
+              }
+              const homophoneCollisions=[];
+              for(const [reading,items] of groups){
+                const distinct=[...new Map(items.map(x=>[x.display,x])).values()];
+                if(distinct.length<3) continue;
+                const buckets=new Map();
+                for(const x of distinct){
+                  const k=`${norm(x.meaning)}|${x.level}`;
+                  if(!norm(x.meaning)) continue;
+                  if(!buckets.has(k)) buckets.set(k,[]);
+                  buckets.get(k).push(x);
+                }
+                for(const rows of buckets.values()) if(rows.length>=3) homophoneCollisions.push({reading,rows});
+              }
+
               const meta=window.VOCAB_JLPT_RECALIBRATION_META||window.ADVANCED_WORDS_BUNDLE_META?.jlptRecalibration||null;
               const coreMeta=window.VOCAB_CORE_VERIFIED_META||null;
-              return {total:words.length,counts,sentinels,estimatedN1,meta,coreMeta};
+              return {total:words.length,counts,sentinels,estimatedN1,homophoneCollisions,meta,coreMeta};
             },expected);
             if(errors.length) throw Error('page errors: '+errors.join(' | '));
             if(result.total<32000) throw Error('runtime vocabulary underfilled '+result.total);
@@ -104,9 +133,20 @@ jobs:
             if(!String(suika.meaning||'').includes('西瓜')||String(suika.meaning||'').includes('天邊一朵雲')) throw Error('西瓜 meaning corrupted '+JSON.stringify(suika));
             const mai=result.sentinels['まい|まい'];
             if(!String(mai.meaning||'').includes('不會')) throw Error('まい meaning corrupted '+JSON.stringify(mai));
+
+            // Permanent regression for the historical まい/舞/枚/毎 contamination:
+            // all four exact keys must exist and must not collapse to one copied meaning.
+            const maiKeys=['まい|まい','まい|舞','まい|枚','まい|毎'];
+            const maiRows=maiKeys.map(k=>result.sentinels[k]);
+            if(maiRows.some(x=>!x||!String(x.meaning||'').trim())) throw Error('まい homophone row missing '+JSON.stringify(maiRows));
+            const maiMeanings=new Set(maiRows.map(x=>String(x.meaning||'').replace(/[\s　、，,。；;]/g,'').trim()));
+            if(maiMeanings.size!==4) throw Error('まい/舞/枚/毎 meanings collapsed '+JSON.stringify(maiRows));
+
             if(result.counts.N1>=14500) throw Error('N1 regression '+JSON.stringify(result.counts));
             if(result.counts.N5<1800||result.counts.N4<1500||result.counts.N3<4000) throw Error('lower-level underfill '+JSON.stringify(result.counts));
-            console.log('TEACHER RUNTIME PASS',JSON.stringify(result));
+            for(const c of result.homophoneCollisions.slice(0,100)) console.warn('TEACHER_REVIEW homophone-meaning-collision '+JSON.stringify(c));
+            console.log('TEACHER REVIEW CANDIDATES',result.homophoneCollisions.length);
+            console.log('TEACHER RUNTIME PASS',JSON.stringify({...result,homophoneCollisions:result.homophoneCollisions.slice(0,20)}));
             await browser.close();
           })().catch(e=>{console.error(e);process.exit(1)});
           NODE
