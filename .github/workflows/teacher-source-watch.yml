@@ -1,0 +1,98 @@
+name: Japanese teacher authoritative source watch
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 2 * * 1'
+  push:
+    branches: [main]
+    paths:
+      - 'TEACHER_ROBOT_MAINTENANCE.md'
+      - 'teacher-source-watch.json'
+      - 'scripts/robot_regression_guard.py'
+      - '.github/workflows/teacher-source-watch.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: japanese-teacher-source-watch
+  cancel-in-progress: true
+
+jobs:
+  teacher-source-watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+
+      - name: Run Robot regression guard
+        run: python scripts/robot_regression_guard.py
+
+      - name: Check authoritative Japanese-learning sources
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+          import datetime, hashlib, json, re, subprocess
+          from pathlib import Path
+
+          cfg=json.load(open('teacher-source-watch.json',encoding='utf-8'))
+          old={}
+          if Path('teacher-source-status.json').is_file():
+              try:
+                  prev=json.load(open('teacher-source-status.json',encoding='utf-8'))
+                  old={x.get('id'):x for x in prev.get('sources',[]) if x.get('id')}
+              except Exception:
+                  old={}
+
+          checked=datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z')
+          out=[]
+          for src in cfg['sources']:
+              row={k:src[k] for k in ('id','name','url','authority','sections','purpose') if k in src}
+              try:
+                  p=subprocess.run(
+                      ['curl','-fsSL','--compressed','--max-time','30','-A','Mozilla/5.0 JapaneseTeacherRobot/1.0',src['url']],
+                      stdout=subprocess.PIPE,stderr=subprocess.PIPE,check=False
+                  )
+                  if p.returncode:
+                      raise RuntimeError(p.stderr.decode('utf-8','replace').strip() or f'curl exit {p.returncode}')
+                  body=p.stdout
+                  text=body.decode('utf-8','replace')
+                  normalized=re.sub(r'\s+',' ',text).strip().encode('utf-8')
+                  sig=hashlib.sha256(normalized).hexdigest()
+                  prior=old.get(src['id'],{}).get('sha256')
+                  row.update({'reachable':True,'bytes':len(body),'sha256':sig,'changed':bool(prior and prior!=sig),'error':None})
+              except Exception as e:
+                  row.update({'reachable':False,'bytes':0,'sha256':None,'changed':False,'error':str(e)[:500]})
+              out.append(row)
+
+          errors=[x['id'] for x in out if not x['reachable']]
+          changed_sources=[x['id'] for x in out if x['changed']]
+          state='error' if errors else ('review_required' if changed_sources else 'ok')
+          status={
+              'version':1,
+              'status':state,
+              'checkedAt':checked,
+              'sourceCount':len(out),
+              'reachableCount':sum(1 for x in out if x['reachable']),
+              'changedSources':changed_sources,
+              'errors':errors,
+              'teacherReviewRequired':bool(changed_sources),
+              'policy':'TEACHER_ROBOT_MAINTENANCE.md',
+              'sources':out,
+          }
+          Path('teacher-source-status.json').write_text(json.dumps(status,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print(json.dumps({k:status[k] for k in ('status','sourceCount','reachableCount','changedSources','errors','teacherReviewRequired')},ensure_ascii=False))
+          PY
+
+      - name: Publish source-watch status
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add teacher-source-status.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Update Japanese teacher source watch status"
+          git pull --rebase origin main
+          git push origin main
