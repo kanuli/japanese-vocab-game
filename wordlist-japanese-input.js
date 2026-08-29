@@ -82,8 +82,9 @@ function convertRomajiInput(value){
 
 /* The legacy word-list attaches an immediate oninput render. Intercept trusted
    typing in capture phase, then release one synthetic input event after a short
-   idle period. This prevents filter + deinflection + sort work on every key. */
-var searchTimer=0,SEARCH_DELAY=180;
+   idle period. Deletion gets a slightly longer trailing delay so holding or
+   repeatedly tapping Backspace does not repeatedly rebuild the large list. */
+var searchTimer=0,SEARCH_DELAY=180,DELETE_DELAY=360;
 function fireSearch(){
   clearTimeout(searchTimer);
   searchTimer=0;
@@ -94,6 +95,16 @@ function fireSearch(){
 function scheduleSearch(delay){
   clearTimeout(searchTimer);
   searchTimer=setTimeout(fireSearch,delay==null?SEARCH_DELAY:delay);
+}
+function searchAfterPaint(){
+  clearTimeout(searchTimer);
+  searchTimer=0;
+  var run=function(){
+    if(typeof requestAnimationFrame==='function')requestAnimationFrame(fireSearch);
+    else setTimeout(fireSearch,0);
+  };
+  if(typeof requestAnimationFrame==='function')requestAnimationFrame(run);
+  else setTimeout(run,0);
 }
 input.addEventListener('input',function(e){
   if(e&&e.__wordlistDebounced){updateClear();return;}
@@ -106,7 +117,10 @@ input.addEventListener('input',function(e){
     }
   }
   updateClear();
-  if(!(e&&e.isComposing))scheduleSearch();
+  if(!(e&&e.isComposing)){
+    var deleting=!!(e&&e.inputType&&String(e.inputType).indexOf('delete')===0);
+    scheduleSearch(deleting?DELETE_DELAY:SEARCH_DELAY);
+  }
 },true);
 input.addEventListener('compositionend',function(){
   updateClear();
@@ -117,8 +131,10 @@ clear.addEventListener('click',function(){
   clearTimeout(searchTimer);
   input.value='';
   updateClear();
-  fireSearch();
-  input.focus({preventScroll:true});
+  try{input.focus({preventScroll:true});}catch(err){input.focus();}
+  /* Let the cleared field paint first; rebuilding the complete vocabulary list
+     happens on the following frame instead of blocking the tap feedback. */
+  searchAfterPaint();
 });
 updateClear();
 })();
