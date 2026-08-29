@@ -14,10 +14,24 @@ input.setAttribute('spellcheck','false');
 input.setAttribute('aria-label','日本語單字搜尋：可輸入漢字、假名、Romaji 或繁體中文');
 input.placeholder='搜尋原形／變化形、漢字、假名、Romaji 或繁體中文意思';
 
+/* Add a consistent clear button instead of relying on browser-specific
+   type=search controls, which are not equally visible on mobile browsers. */
+var wrap=document.createElement('div');
+wrap.className='word-search-wrap';
+input.parentNode.insertBefore(wrap,input);
+wrap.appendChild(input);
+var clear=document.createElement('button');
+clear.type='button';
+clear.className='word-search-clear';
+clear.setAttribute('aria-label','清除搜尋');
+clear.setAttribute('title','清除搜尋');
+clear.textContent='×';
+wrap.appendChild(clear);
+function updateClear(){clear.classList.toggle('visible',!!input.value);}
+
 /* Lightweight Hepburn/keyboard-style Romaji -> Hiragana conversion.
    It only converts lowercase ASCII segments, so uppercase acronyms such as AI
-   and non-Latin searches remain untouched. The current word-list search then
-   receives the converted kana during the same input event. */
+   and non-Latin searches remain untouched. */
 function romajiSegmentToHiragana(s){
   if(s==='konnichiwa')return 'こんにちは';
   if(s==='konbanwa')return 'こんばんは';
@@ -65,13 +79,46 @@ function romajiSegmentToHiragana(s){
 function convertRomajiInput(value){
   return String(value||'').replace(/[a-z']+/g,function(seg){return romajiSegmentToHiragana(seg);});
 }
+
+/* The legacy word-list attaches an immediate oninput render. Intercept trusted
+   typing in capture phase, then release one synthetic input event after a short
+   idle period. This prevents filter + deinflection + sort work on every key. */
+var searchTimer=0,SEARCH_DELAY=180;
+function fireSearch(){
+  clearTimeout(searchTimer);
+  searchTimer=0;
+  var ev=new Event('input',{bubbles:true});
+  ev.__wordlistDebounced=true;
+  input.dispatchEvent(ev);
+}
+function scheduleSearch(delay){
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(fireSearch,delay==null?SEARCH_DELAY:delay);
+}
 input.addEventListener('input',function(e){
-  if(e&&e.isComposing)return;
-  var converted=convertRomajiInput(input.value);
-  if(converted!==input.value){
-    var start=input.selectionStart,end=input.selectionEnd;
-    input.value=converted;
-    try{input.setSelectionRange(converted.length,converted.length);}catch(err){}
+  if(e&&e.__wordlistDebounced){updateClear();return;}
+  if(e)e.stopImmediatePropagation();
+  if(!(e&&e.isComposing)){
+    var converted=convertRomajiInput(input.value);
+    if(converted!==input.value){
+      input.value=converted;
+      try{input.setSelectionRange(converted.length,converted.length);}catch(err){}
+    }
   }
+  updateClear();
+  if(!(e&&e.isComposing))scheduleSearch();
 },true);
+input.addEventListener('compositionend',function(){
+  updateClear();
+  scheduleSearch(80);
+},true);
+
+clear.addEventListener('click',function(){
+  clearTimeout(searchTimer);
+  input.value='';
+  updateClear();
+  fireSearch();
+  input.focus({preventScroll:true});
+});
+updateClear();
 })();
