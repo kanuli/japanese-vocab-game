@@ -39,3 +39,5 @@ jobs:
           git add data/vocab_core_verified.js
           git commit -m 'fix: restore full verified core vocabulary'
           git push
+
+# watchdog retrigger: 2026-08-31
