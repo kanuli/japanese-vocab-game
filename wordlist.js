@@ -128,7 +128,7 @@ function smartMatch(w,q,variants){
       if(hasJapanese(f)&&f.length>=2&&v.length>f.length&&v.indexOf(f)>=0)return true;
     }
   }
-  return [w.meaning,w.level].some(function(x){return normSearch(x).indexOf(q)>=0;});
+  return false;
 }
 function filtered(){var levels=W.levels(),raw=(document.getElementById('search').value||'').trim(),q=normSearch(raw),variants=q?deinflectSearch(q):[];var a=(W.words||[]).filter(function(w){if(levels.indexOf(w.level)<0)return false;if(selectedKana&&firstKana(w)!==selectedKana)return false;if(!q)return true;return smartMatch(w,q,variants);});a.sort(function(a,b){return hira(a.reading||'').localeCompare(hira(b.reading||''),'ja')||String(a.displayWord||a.kanji||'').localeCompare(String(b.displayWord||b.kanji||''),'ja');});return a;}
 function setBusy(v){audioBusy=v;document.querySelectorAll('.play-btn').forEach(function(b){b.disabled=v;});var s=document.getElementById('sampleVoice');if(s)s.disabled=v;var voice=document.getElementById('voice');if(voice)voice.disabled=v;var eng=document.getElementById('audioEngine');if(eng)eng.disabled=v;}
