@@ -1,8 +1,11 @@
 {
-  "version": 1,
-  "status": "ok",
-  "checkedAt": "2026-09-01T17:04:47Z",
-  "runId": 33535517311,
+  "version": 2,
+  "status": "error",
+  "checkedAt": "2026-09-01T17:13:10Z",
+  "runId": 33536279538,
+  "auditedSha": "a3820cb87a46ff1f36a927b01c1428088b297c44",
+  "liveSha": "a3820cb87a46ff1f36a927b01c1428088b297c44",
+  "deploymentAligned": true,
   "pages": 11,
   "conversation": {
     "scenes": 61,
@@ -24,8 +27,10 @@
     "recordings": 26770
   },
   "checks": {
+    "pronunciationValidator": true,
     "static": true,
-    "browser": true,
-    "live": true
+    "browserLocal": true,
+    "liveStatic": true,
+    "liveBrowser": false
   }
 }
