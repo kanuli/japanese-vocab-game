@@ -1,11 +1,11 @@
 {
   "version": 2,
   "status": "error",
-  "checkedAt": "2026-09-01T17:13:10Z",
-  "runId": 33536279538,
-  "auditedSha": "a3820cb87a46ff1f36a927b01c1428088b297c44",
-  "liveSha": "a3820cb87a46ff1f36a927b01c1428088b297c44",
-  "deploymentAligned": true,
+  "checkedAt": "2026-09-01T17:24:23Z",
+  "runId": 33536656818,
+  "auditedSha": "3532247b532282a1d596c9e44cc7f2bbe98c4d01",
+  "liveSha": null,
+  "deploymentAligned": false,
   "pages": 11,
   "conversation": {
     "scenes": 61,
@@ -30,7 +30,7 @@
     "pronunciationValidator": true,
     "static": true,
     "browserLocal": true,
-    "liveStatic": true,
+    "liveStatic": false,
     "liveBrowser": false
   }
 }
