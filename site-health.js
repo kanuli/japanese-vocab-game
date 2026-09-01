@@ -56,19 +56,35 @@ function paint(el,state,label,detail){
   const map={ok:['#edf9f2','#177a4b','#b7dfc9'],warn:['#fff8e7','#8a5b00','#efd58b'],bad:['#fff0f0','#a4261d','#efb6b2']};
   const [bg,fg,bd]=map[state]||map.warn;el.style.background=bg;el.style.color=fg;el.style.borderColor=bd;el.textContent=label;el.dataset.detail=detail;
 }
-async function getJson(path){const r=await fetch(BASE+path+'?health='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(path+' HTTP '+r.status);return r.json();}
+async function fetchJsonUrl(url){const sep=url.includes('?')?'&':'?';const r=await fetch(url+sep+'health='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error(url+' HTTP '+r.status);return r.json();}
+async function getJson(path){return fetchJsonUrl(BASE+path);}
+async function getMaintenanceStatus(){
+  const pointer=await getJson('maintenance-status.json');
+  if(pointer&&pointer.statusUrl){return fetchJsonUrl(pointer.statusUrl);}
+  return pointer;
+}
+function maintenanceChecksOk(x){
+  const c=x?.checks||{};
+  if(x?.version>=3)return x.status==='ok'&&x.deploymentAligned===true&&c.pronunciationValidator===true&&c.static===true&&c.data===true&&c.browserLocal===true&&c.liveStatic===true&&c.liveBrowser===true&&c.revisionStillCurrent===true;
+  if(x?.version===2)return x.status==='ok'&&x.deploymentAligned===true&&c.pronunciationValidator===true&&c.static===true&&c.browserLocal===true&&c.liveStatic===true&&c.liveBrowser===true;
+  return x?.status==='ok'&&c.static===true&&c.browser===true&&c.live===true;
+}
 async function run(){
   setupJlptRangeUI();
   const el=mount();
   try{
-    const [m,hf,d]=await Promise.allSettled([getJson('maintenance-status.json'),getJson('huggingface-backup-status.json'),getJson('dependency-status.json')]);
+    const [m,hf,d]=await Promise.allSettled([getMaintenanceStatus(),getJson('huggingface-backup-status.json'),getJson('dependency-status.json')]);
     if(m.status!=='fulfilled') throw m.reason;
     const x=m.value||{},checked=Date.parse(x.checkedAt||'');const age=Number.isFinite(checked)?Date.now()-checked:Infinity;
-    const maintOk=x.status==='ok'&&x.checks?.static===true&&x.checks?.browser===true&&x.checks?.live===true;
+    const maintOk=maintenanceChecksOk(x);
     const hfOk=hf.status==='fulfilled'&&hf.value?.status==='ok';
     const stale=age>MAX_AGE;
     const dep=d.status==='fulfilled'?d.value:null;
-    const parts=[`Maintenance: ${maintOk?'PASS':'FAIL'}`,`最後檢查: ${x.checkedAt||'不明'}`,`Pages: ${x.pages??'?'}`,`Hugging Face: ${hfOk?'PASS':(hf.status==='fulfilled'?hf.value?.status||'異常':'未有狀態')}`];
+    const parts=[`Maintenance: ${maintOk?'PASS':'FAIL'}`,`最後檢查: ${x.checkedAt||'不明'}`,`Pages: ${x.pages??'?'}`];
+    if(x.auditedSha)parts.push(`Audited SHA: ${String(x.auditedSha).slice(0,12)}`);
+    if(x.liveSha)parts.push(`Live SHA: ${String(x.liveSha).slice(0,12)}`);
+    if(x.version>=2)parts.push(`Deployment 對齊: ${x.deploymentAligned?'PASS':'FAIL'}`);
+    parts.push(`Hugging Face: ${hfOk?'PASS':(hf.status==='fulfilled'?hf.value?.status||'異常':'未有狀態')}`);
     if(dep?.checkedAt)parts.push(`依賴版本檢查: ${dep.checkedAt}`);
     if(!maintOk){paint(el,'bad','⚠ 系統檢查異常',parts.join('\n'));return;}
     if(stale||!hfOk){paint(el,'warn',stale?'⚠ Maintenance 過期':'⚠ 備援檢查異常',parts.join('\n'));return;}
