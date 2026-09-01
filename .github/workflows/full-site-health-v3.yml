@@ -1,0 +1,277 @@
+name: Full-site health v3 — deployment-aligned
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 3 * * *'
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - '*.js'
+      - '*.css'
+      - 'data/**'
+      - 'conversation-*.json'
+      - 'word-*.json'
+      - 'teacher-source-watch.json'
+      - 'dependency-status.json'
+      - 'huggingface-backup-status.json'
+      - 'maintenance-status.json'
+      - 'scripts/robot_regression_guard.py'
+      - 'scripts/audit_tts_pronunciation.py'
+      - '.github/workflows/audit-word-voicevox-pronunciation.yml'
+      - '.github/workflows/audit-word-aivis-pronunciation.yml'
+      - '.github/workflows/full-site-health-v3.yml'
+      - '.github/workflows/site-maintenance.yml'
+      - '.site-maintenance-trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: full-site-health-v3
+  cancel-in-progress: true
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+
+      - name: Record audited revision
+        id: revision
+        run: |
+          SHA=$(git rev-parse HEAD)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Auditing repository revision $SHA"
+
+      - name: Guard validators and calibrate pronunciation gate
+        id: validators
+        run: |
+          python scripts/robot_regression_guard.py
+          python scripts/audit_tts_pronunciation.py --self-test
+
+      - name: Inventory and static validation
+        id: static
+        run: |
+          mapfile -t PAGES < <(git ls-files '*.html' | sort)
+          test "${#PAGES[@]}" -ge 11
+          printf '%s\n' "${PAGES[@]}" > /tmp/site-pages.txt
+          echo "count=${#PAGES[@]}" >> "$GITHUB_OUTPUT"
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from urllib.parse import unquote,urlsplit
+          import sys
+          root=Path('.').resolve(); pages=[Path(x) for x in Path('/tmp/site-pages.txt').read_text().splitlines() if x]; failures=[]; js=set()
+          class Scan(HTMLParser):
+              def __init__(self): super().__init__(); self.ids=[]; self.refs=[]; self.scripts=[]; self.title=False; self.body=False
+              def handle_starttag(self,tag,attrs):
+                  a=dict(attrs)
+                  if tag=='title': self.title=True
+                  if tag=='body': self.body=True
+                  if a.get('id'): self.ids.append(a['id'])
+                  if tag in {'script','img','audio','video','source','link','iframe'}:
+                      k='href' if tag=='link' else 'src'
+                      if a.get(k): self.refs.append(a[k])
+                  if tag=='script' and a.get('src'): self.scripts.append(a['src'])
+                  if tag=='a' and a.get('href'): self.refs.append(a['href'])
+          for page in pages:
+              text=page.read_text(encoding='utf-8'); s=Scan(); s.feed(text)
+              if not s.title or not s.body: failures.append(f'{page}: missing title/body')
+              if len(text)<300: failures.append(f'{page}: unexpectedly small')
+              seen=set(); dup=[]
+              for x in s.ids:
+                  if x in seen and x not in dup: dup.append(x)
+                  seen.add(x)
+              if dup: failures.append(f'{page}: duplicate IDs {dup}')
+              if text.count('site-health.js')!=1: failures.append(f'{page}: site-health.js count={text.count("site-health.js")}')
+              for raw in s.refs:
+                  raw=raw.strip()
+                  if not raw or raw.startswith(('#','mailto:','tel:','javascript:','data:','blob:')): continue
+                  u=urlsplit(raw)
+                  if u.scheme or u.netloc or raw.startswith('//'): continue
+                  path=unquote(u.path)
+                  if not path: continue
+                  target=(page.parent/path).resolve() if not path.startswith('/') else (root/path.lstrip('/')).resolve()
+                  try: target.relative_to(root)
+                  except ValueError: failures.append(f'{page}: reference escapes repo {raw}'); continue
+                  if not target.exists(): failures.append(f'{page}: missing local reference {raw}')
+              for raw in s.scripts:
+                  u=urlsplit(raw.strip())
+                  if u.scheme or u.netloc or raw.startswith('//'): continue
+                  path=unquote(u.path)
+                  if not path.endswith('.js'): continue
+                  target=(page.parent/path).resolve() if not path.startswith('/') else (root/path.lstrip('/')).resolve()
+                  try: rel=target.relative_to(root)
+                  except ValueError: continue
+                  if target.is_file(): js.add(str(rel))
+          if failures:
+              print('\n'.join('FAIL '+x for x in failures),file=sys.stderr); raise SystemExit(1)
+          Path('/tmp/referenced-js.txt').write_text('\n'.join(sorted(js))+'\n')
+          print('Static PASS',len(pages),'pages',len(js),'JS resources')
+          PY
+          while IFS= read -r f; do [ -z "$f" ] || node --check "$f"; done < /tmp/referenced-js.txt
+
+      - name: Validate learning databases and hosted audio indexes
+        id: data
+        run: |
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');global.window={};
+          for(let i=1;i<=5;i++)vm.runInThisContext(fs.readFileSync(`conversation-data-${i}.js`,'utf8'));
+          for(const f of ['conversation-expansion.js','conversation-world-expansion.js'])vm.runInThisContext(fs.readFileSync(f,'utf8'));
+          const scenes=window.SITUATION_SCENES||[];if(scenes.length!==61)throw Error(`scenes ${scenes.length}/61`);let groups=0,lines=0;const ids=new Set();
+          for(const s of scenes){if(ids.has(s.id))throw Error('duplicate '+s.id);ids.add(s.id);if(!Array.isArray(s.items)||s.items.length!==25)throw Error(`${s.id} groups`);for(const lv of ['N1','N2','N3','N4','N5'])if(s.items.filter(x=>x.level===lv).length!==5)throw Error(`${s.id} ${lv}`);for(const x of s.items){if(!Array.isArray(x.lines)||x.lines.length!==2)throw Error(`${s.id} dialogue`);for(const l of x.lines){if(!l.jp||!l.zh)throw Error(`${s.id} missing text`);lines++;}}groups+=25;}
+          if(groups!==1525||lines!==3050)throw Error(`${groups}/${lines}`);console.log('Conversation PASS',scenes.length,groups,lines);
+          NODE
+          node - <<'NODE'
+          const fs=require('fs'),vm=require('vm');global.window={};vm.runInThisContext(fs.readFileSync('conversation-furigana.js','utf8'));const m=window.CONVERSATION_FURIGANA_META||{};if(m.sceneCount!==61||m.totalLines!==3050||m.uniqueLines!==2677||m.mappedLines!==2677||Object.keys(window.CONVERSATION_FURIGANA||{}).length!==2677)throw Error(JSON.stringify(m));console.log('Furigana PASS',m.mappedLines);
+          NODE
+          python - <<'PY'
+          import json
+          vv=json.load(open('conversation-voicevox-index.json',encoding='utf-8')); st=json.load(open('conversation-supertonic-index.json',encoding='utf-8'))
+          assert (vv['version'],vv['status'],vv['sceneCount'],vv['conversationCount'],vv['sourceLineCount'],vv['utteranceCount'],vv['speakerCount'],vv['recordingCount'])==(2,'ready',61,1525,3050,2677,43,115111)
+          assert len(vv['speakers'])==43 and all(len(v['members'])==2677 for v in vv['speakers'].values())
+          assert (st['version'],st['status'],st['sceneCount'],st['conversationCount'],st['sourceLineCount'],st['utteranceCount'],st['voiceCount'],st['recordingCount'])==(2,'ready',61,1525,3050,2677,10,26770)
+          assert all(len(v['members'])==2677 for v in st['voices'].values())
+          print('Hosted audio indexes PASS')
+          PY
+
+      - name: Install Chromium
+        run: |
+          PW_VERSION=$(tr -d '[:space:]' < maintenance-playwright-version.txt)
+          npm init -y >/dev/null 2>&1
+          npm install --silent "playwright@$PW_VERSION"
+          npx playwright install --with-deps chromium >/dev/null
+
+      - name: Build browser smoke runner
+        run: |
+          cat >/tmp/maintenance-smoke.cjs <<'NODE'
+          const {chromium}=require(process.cwd()+'/node_modules/playwright'),fs=require('fs');
+          const pages=fs.readFileSync('/tmp/site-pages.txt','utf8').trim().split(/\r?\n/).filter(Boolean);const historyPages=new Set(['index.html','grammar.html','listening.html','mocktest.html']);const base=process.env.BASE_URL||'http://127.0.0.1:4173/';const isLive=/^https:\/\//.test(base);const attempts=isLive?3:1;const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          async function one(context,p){for(let n=1;n<=attempts;n++){const page=await context.newPage(),errors=[],bad=[];page.on('pageerror',e=>errors.push(String(e)));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)bad.push({status:r.status(),url:r.url()})});try{const res=await page.goto(base+p+'?maintenance='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});const st=res?.status()||0;if(!res||st>=400){const e=Error('HTTP '+(st||'none'));e.transient=st>=500&&st<600;throw e;}await page.waitForTimeout(2600);const s=await page.evaluate(()=>({title:document.title.trim(),text:(document.body?.innerText||'').trim().length,health:!!document.querySelector('#siteHealthBadge'),voiceTest:!!document.querySelector('#genericVoiceTest,#pageSampleVoice,#sampleVoice'),history:!!document.querySelector('#resultHistoryPanel')}));if(!s.title||s.text<20||!s.health)throw Error('invalid DOM/health '+JSON.stringify(s));if(p==='mocktest.html'&&s.voiceTest)throw Error('mocktest must not expose generic voice test');if(p!=='mocktest.html'&&!s.voiceTest)throw Error('missing voice test');if(historyPages.has(p)!==s.history)throw Error('result-history coverage mismatch');if(errors.length)throw Error(errors.join(' | '));if(bad.length){const e=Error(bad.map(x=>`${x.status()} ${x.url}`).join(' | '));e.transient=bad.every(x=>x.status>=500&&x.status<600);throw e;}console.log('PASS',p,n>1?`attempt=${n}`:'');await page.close();return true;}catch(e){await page.close();if(isLive&&e.transient&&n<attempts){console.warn('RETRY',p,n,e.message);await sleep(1500*n);continue;}console.error('FAIL',p,e.message);return false;}}return false;}
+          (async()=>{const browser=await chromium.launch({headless:true});const context=await browser.newContext({serviceWorkers:'block'});let failed=false;for(const p of pages)if(!(await one(context,p)))failed=true;await browser.close();if(failed)process.exit(1);})();
+          NODE
+
+      - name: Browser smoke — local 11 pages
+        id: browser_local
+        run: |
+          python3 -m http.server 4173 --bind 127.0.0.1 >/tmp/site-http.log 2>&1 & echo $! >/tmp/site-http.pid
+          trap 'kill $(cat /tmp/site-http.pid) 2>/dev/null || true' EXIT
+          for i in {1..30}; do curl -fsS http://127.0.0.1:4173/index.html >/dev/null && break; sleep 1; done
+          node /tmp/maintenance-smoke.cjs
+
+      - name: Wait for the same revision to be the successful Pages deployment
+        id: live_revision
+        env:
+          TARGET_SHA: ${{ steps.revision.outputs.sha }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json,os,time,urllib.request
+          repo=os.environ['GITHUB_REPOSITORY'];target=os.environ['TARGET_SHA'];token=os.environ['GH_TOKEN'];h={'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,'User-Agent':'full-site-health'}
+          def get(url):
+              with urllib.request.urlopen(urllib.request.Request(url,headers=h),timeout=30) as r:return json.loads(r.read().decode())
+          matched=None
+          for attempt in range(240):
+              main=get(f'https://api.github.com/repos/{repo}/branches/main')['commit']['sha']
+              if main!=target: raise SystemExit(f'Main advanced during audit: target={target} current={main}')
+              for d in get(f'https://api.github.com/repos/{repo}/deployments?environment=github-pages&per_page=30'):
+                  if d.get('sha')!=target: continue
+                  statuses=get(d['statuses_url']);state=statuses[0].get('state') if statuses else None
+                  print('Pages deployment',d.get('id'),'state',state)
+                  if state=='success': matched=d;break
+                  if state in {'failure','error','inactive'}: raise SystemExit(f'Pages deployment {d.get("id")} ended {state}')
+              if matched:break
+              time.sleep(5)
+          if not matched:raise SystemExit(f'No successful Pages deployment for audited SHA {target}')
+          open('/tmp/live-sha.txt','w').write(target+'\n')
+          PY
+          echo "sha=$(cat /tmp/live-sha.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Live static checks — 11 pages
+        id: live_static
+        run: |
+          while IFS= read -r p; do
+            ok=0
+            for n in 1 2 3; do
+              code=$(curl -sS -L --max-time 30 -o /tmp/live-page.html -w '%{http_code}' "https://kanuli.github.io/japanese-vocab-game/$p?maintenance=${{ github.run_id }}&attempt=$n" || true)
+              if [ "$code" = 200 ] && grep -qi '<title' /tmp/live-page.html; then ok=1; break; fi
+              if [[ "$code" =~ ^5[0-9][0-9]$ ]]; then echo "RETRY $p HTTP $code"; sleep "$n"; continue; fi
+              echo "LIVE FAIL $p HTTP $code" >&2; exit 1
+            done
+            test "$ok" = 1 || { echo "LIVE FAIL $p persistent 5xx" >&2; exit 1; }
+            echo "LIVE PASS $p"
+          done < /tmp/site-pages.txt
+
+      - name: Browser smoke — live 11 pages
+        id: browser_live
+        env:
+          BASE_URL: https://kanuli.github.io/japanese-vocab-game/
+        run: node /tmp/maintenance-smoke.cjs
+
+      - name: Confirm audited revision is still current after live checks
+        id: current_revision
+        env:
+          TARGET_SHA: ${{ steps.revision.outputs.sha }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          current=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/$GITHUB_REPOSITORY/branches/main" | python -c "import json,sys;print(json.load(sys.stdin)['commit']['sha'])")
+          echo "current=$current target=$TARGET_SHA"
+          test "$current" = "$TARGET_SHA"
+
+      - name: Build machine-readable status
+        if: always()
+        env:
+          OVERALL: ${{ job.status }}
+          AUDITED_SHA: ${{ steps.revision.outputs.sha }}
+          LIVE_SHA: ${{ steps.live_revision.outputs.sha }}
+          VALIDATOR: ${{ steps.validators.outcome }}
+          STATIC: ${{ steps.static.outcome }}
+          DATA: ${{ steps.data.outcome }}
+          BROWSER_LOCAL: ${{ steps.browser_local.outcome }}
+          LIVE_STATIC: ${{ steps.live_static.outcome }}
+          BROWSER_LIVE: ${{ steps.browser_live.outcome }}
+          CURRENT_REVISION: ${{ steps.current_revision.outcome }}
+          PAGE_COUNT: ${{ steps.static.outputs.count }}
+        run: |
+          python - <<'PY'
+          import datetime,json,os
+          ok=lambda x:x=='success'; audited=os.environ.get('AUDITED_SHA') or None; live=os.environ.get('LIVE_SHA') or None
+          aligned=bool(audited and live and audited==live and ok(os.environ.get('CURRENT_REVISION')))
+          local=ok(os.environ.get('BROWSER_LOCAL')); ls=ok(os.environ.get('LIVE_STATIC')); lb=ok(os.environ.get('BROWSER_LIVE')); static=ok(os.environ.get('STATIC')); validators=ok(os.environ.get('VALIDATOR')); data=ok(os.environ.get('DATA'))
+          all_ok=validators and static and data and local and ls and lb and aligned
+          status={'version':3,'status':'ok' if all_ok else 'error','statusSource':'health-status branch (not GitHub Pages source)','checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'runId':int(os.environ['GITHUB_RUN_ID']),'auditedSha':audited,'liveSha':live,'deploymentAligned':aligned,'pages':int(os.environ.get('PAGE_COUNT') or 0),'conversation':{'scenes':61,'groups':1525,'lines':3050},'furigana':{'mapped':2677,'unique':2677},'voicevox':{'voices':43,'utterances':2677,'recordings':115111},'supertonic':{'voices':10,'utterances':2677,'recordings':26770},'checks':{'pronunciationValidator':validators,'static':static,'data':data,'browser':local,'live':ls and lb and aligned,'browserLocal':local,'liveStatic':ls,'liveBrowser':lb,'revisionStillCurrent':ok(os.environ.get('CURRENT_REVISION'))},'scope':{'liveBrowserRuntime':True,'deploymentShaGate':True,'pronunciationValidatorCalibration':True,'transient5xxRetryOnly':True,'healthMetadataOffPagesBranch':True}}
+          open('/tmp/maintenance-status.json','w',encoding='utf-8').write(json.dumps(status,ensure_ascii=False,indent=2)+'\n');print(json.dumps(status,ensure_ascii=False))
+          PY
+
+      - name: Publish status to non-Pages health-status branch
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import base64,json,os,urllib.error,urllib.request
+          repo=os.environ['GITHUB_REPOSITORY'];token=os.environ['GH_TOKEN'];branch='health-status';path='maintenance-status.json';raw=open('/tmp/maintenance-status.json','rb').read();h={'Accept':'application/vnd.github+json','Authorization':'Bearer '+token,'User-Agent':'full-site-health-v3','Content-Type':'application/json'}
+          url=f'https://api.github.com/repos/{repo}/contents/{path}?ref={branch}';sha=None
+          try:
+              with urllib.request.urlopen(urllib.request.Request(url,headers=h),timeout=30) as r:sha=json.loads(r.read().decode()).get('sha')
+          except urllib.error.HTTPError as e:
+              if e.code!=404:raise
+          body={'message':'Update full-site health status','content':base64.b64encode(raw).decode(),'branch':branch}
+          if sha:body['sha']=sha
+          req=urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/{path}',data=json.dumps(body).encode(),headers=h,method='PUT')
+          with urllib.request.urlopen(req,timeout=30) as r:print('health-status update',json.loads(r.read().decode())['commit']['sha'])
+          PY
+
+      - name: Verify published health status endpoint
+        if: always()
+        run: |
+          curl -fsSL --retry 3 --retry-all-errors --retry-delay 1 "https://raw.githubusercontent.com/kanuli/japanese-vocab-game/health-status/maintenance-status.json?run=${{ github.run_id }}" -o /tmp/published-status.json
+          python - <<'PY'
+          import json,os
+          d=json.load(open('/tmp/published-status.json'));assert d['runId']==int(os.environ['GITHUB_RUN_ID']);print('Published health status',d['status'],d.get('auditedSha'),d.get('liveSha'))
+          PY
