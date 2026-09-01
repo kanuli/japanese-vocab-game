@@ -1,0 +1,229 @@
+name: Regenerate Word Supertonic 3 v3 — all 10 voices with pronunciation QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-supertonic3-all-v3-trigger'
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-supertonic3-v3
+  HF_PREFIX: word/supertonic3/v3
+
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Derive exact 22,333-word catalog
+        run: python scripts/build_word_shared_audio_catalog.py
+      - name: Validate source identity
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('word-shared-audio-catalog.json',encoding='utf-8'))
+          assert d['wordCount']==22333 and d['shardCount']==20
+          assert len(d['items'])==22333 and len(d['words'])==22333
+          assert min(d['shardCounts'])>=900 and max(d['shardCounts'])<=1300
+          readings={x['reading'] for x in d['items']}
+          assert 'あんさつ' in readings and 'ごみばこ' in readings
+          print('v3 catalog:',d['wordCount'],'words; regression probes present')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-v3-catalog
+          path: word-shared-audio-catalog.json
+          retention-days: 3
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" \
+            --title 'Supertonic 3 vocabulary v3 — pronunciation hardened' \
+            --notes 'Full 22,333-word regeneration for F1-F5 and M1-M5. Supertonic 1.3.1, 16 steps, 0.95 learning speed, Japanese terminal punctuation, 96 kbps MP3, deterministic pronunciation QA samples and regression gates. Production switches only after all 223,330 recordings and pronunciation QA pass.'
+
+  generate:
+    needs: [catalog,prepare-storage]
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        voice: [F1,F2,F3,F4,F5,M1,M2,M3,M4,M5]
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-v3-catalog
+          path: .
+      - name: Install current Supertonic and ffmpeg
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python -m pip install --quiet --disable-pip-version-check 'supertonic==1.3.1' 'numpy<3'
+      - name: Generate learning-quality voice shard
+        env:
+          VOICE: ${{ matrix.voice }}
+          SHARD: ${{ matrix.shard }}
+          OUT_DIR: word-supertonic-out
+          TOTAL_STEPS: '16'
+          SPEED: '0.95'
+          ADD_TERMINAL_PUNCT: '1'
+          MP3_BITRATE: '96k'
+          MANIFEST_VERSION: '3'
+          QA_SAMPLE_COUNT: '12'
+          QA_SAMPLE_DIR: word-supertonic3-v3-qa
+        run: python scripts/generate_word_supertonic_shard.py
+      - name: Validate structural shard output
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+        run: |
+          python - <<'PY'
+          import json,os,tarfile
+          from pathlib import Path
+          v,s=os.environ['V'],os.environ['S']
+          m=json.load(open(f'word-supertonic-out/{v}-shard{s}.json',encoding='utf-8'))
+          assert m['version']==3 and m['voice']==v and m['count']>=900
+          assert len(m['members'])==m['count']
+          assert m['synthesis']=={'steps':16,'speed':0.95,'terminalPunctuation':True,'bitrate':'96k'}
+          assert m['pronunciationQaSampleCount']>=12
+          p=Path('word-supertonic-out')/m['asset']
+          assert p.is_file() and p.stat().st_size>100000
+          with tarfile.open(p,'r:') as tf:
+              assert len([x for x in tf.getmembers() if x.isfile()])==m['count']
+          print('Validated',v,s,m['count'],'QA',m['pronunciationQaSampleCount'])
+          PY
+      - name: Publish fresh v3 shard
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+          HF_XET_HIGH_PERFORMANCE: '1'
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "word-supertonic-out/$V-shard$S.tar" "$HF_PREFIX/$V-shard$S.tar" --repo-type dataset --commit-message "Word Supertonic v3 $V shard $S"
+          gh release upload "$RELEASE_TAG" "word-supertonic-out/$V-shard$S.tar" --clobber
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-v3-manifest-${{ matrix.voice }}-${{ matrix.shard }}
+          path: word-supertonic-out/${{ matrix.voice }}-shard${{ matrix.shard }}.json
+          retention-days: 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-v3-qa-${{ matrix.voice }}-${{ matrix.shard }}
+          path: word-supertonic3-v3-qa/*
+          retention-days: 3
+
+  pronunciation-qa:
+    needs: generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-v3-qa-*
+          path: word-supertonic3-v3-qa
+          merge-multiple: true
+      - name: Install Japanese pronunciation validator
+        run: python -m pip install --quiet --disable-pip-version-check 'faster-whisper>=1.1,<2' 'pykakasi>=2.3,<3'
+      - name: ASR pronunciation regression gate
+        run: python scripts/validate_word_supertonic_pronunciation_samples.py word-supertonic3-v3-qa
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-v3-pronunciation-qa-report
+          path: word-supertonic3-pronunciation-qa.json
+          retention-days: 14
+
+  finalize:
+    needs: [catalog,generate,pronunciation-qa]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-v3-catalog
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-v3-manifest-*
+          path: word-supertonic3-v3-manifests
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-v3-pronunciation-qa-report
+          path: .
+      - name: Verify complete production gate and build v3 indexes
+        run: |
+          test "$(find word-supertonic3-v3-manifests -name '*.json' | wc -l)" -eq 200
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          c=json.load(open('word-shared-audio-catalog.json',encoding='utf-8'))
+          qa=json.load(open('word-supertonic3-pronunciation-qa.json',encoding='utf-8'))
+          assert qa['status']=='pass' and len(qa['voices'])==10
+          labels={'F1':'🌙 沉穩低柔女聲（F1）','F2':'🌸 明亮活潑女聲（F2）','F3':'🎙️ 專業播音女聲（F3）','F4':'✨ 清晰自信女聲（F4）','F5':'💕 溫柔療癒女聲（F5）','M1':'⚡ 活力自信男聲（M1）','M2':'🌑 低沉穩重男聲（M2）','M3':'🧭 權威專業男聲（M3）','M4':'🙂 柔和親切男聲（M4）','M5':'📖 溫暖舒緩男聲（M5）'}
+          voices={}
+          for v,label in labels.items():
+              bundles={};seen=set()
+              for shard in range(20):
+                  p=Path('word-supertonic3-v3-manifests')/f'{v}-shard{shard}.json'
+                  m=json.loads(p.read_text(encoding='utf-8'))
+                  assert m['version']==3 and m['voice']==v
+                  expected={x['id'] for x in c['items'] if int(x['shard'])==shard}
+                  assert set(m['members'])==expected
+                  seen|=expected
+                  asset=m['asset']
+                  bundles[str(shard)]={
+                      'githubUrl':f'https://github.com/kanuli/japanese-vocab-game/releases/download/word-supertonic3-v3/{asset}',
+                      'hfUrl':f'https://huggingface.co/datasets/kanuli1983/japanese-listening-voicevox-backup/resolve/main/word/supertonic3/v3/{asset}?download=true',
+                      'members':m['members']
+                  }
+              assert len(seen)==22333
+              idx={'version':3,'engine':'supertonic-3','voice':v,'label':label,'wordCount':22333,
+                   'shardCount':20,'generation':'v3-supertonic-1.3.1-steps16-speed0.95-pronqa',
+                   'pronunciationQa':qa['voices'][v],'bundles':bundles}
+              ip=Path(f'word-supertonic3-{v}-index.json')
+              ip.write_text(json.dumps(idx,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
+              voices[v]={'label':label,'indexUrl':f'./{ip.name}?v=3','generation':idx['generation'],
+                         'pronunciationQa':qa['voices'][v]}
+          prod={'version':3,'status':'ready','engine':'supertonic-3','storage':'github-releases+hf-range-bundles',
+                'wordCount':22333,'voiceCount':10,'recordingCount':223330,'shardCount':20,'words':c['words'],
+                'generation':'v3-supertonic-1.3.1-steps16-speed0.95-pronqa','pronunciationQaStatus':'pass','voices':voices}
+          Path('word-supertonic3-catalog.json').write_text(json.dumps(prod,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
+          print('v3 production ready:',prod['recordingCount'],'recordings; QA PASS')
+          PY
+      - name: Commit atomic production switch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-supertonic3-catalog.json word-supertonic3-*-index.json
+          git commit -m 'Publish pronunciation-hardened Supertonic vocabulary v3'
+          git pull --rebase origin main
+          git push origin main
