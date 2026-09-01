@@ -15,11 +15,16 @@ on:
       - 'word-*.json'
       - 'teacher-source-watch.json'
       - 'scripts/robot_regression_guard.py'
+      - 'scripts/audit_tts_pronunciation.py'
+      - '.github/workflows/audit-word-voicevox-pronunciation.yml'
+      - '.github/workflows/audit-word-aivis-pronunciation.yml'
       - '.github/workflows/site-maintenance.yml'
       - '.site-maintenance-trigger'
 
 permissions:
   contents: write
+
+actions:
 
 concurrency:
   group: daily-site-maintenance
@@ -28,14 +33,25 @@ concurrency:
 jobs:
   maintenance:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v7.0.1
         with:
           ref: main
 
+      - name: Record audited revision
+        id: revision
+        run: |
+          SHA=$(git rev-parse HEAD)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Auditing repository revision $SHA"
+
       - name: Guard maintenance validator against stale rules
         run: python scripts/robot_regression_guard.py
+
+      - name: Calibrate pronunciation validator fixtures
+        id: pronunciation_validator
+        run: python scripts/audit_tts_pronunciation.py --self-test
 
       - name: Inventory all web pages
         id: inventory
@@ -150,13 +166,43 @@ jobs:
           trap 'kill $(cat /tmp/site-http.pid) 2>/dev/null || true' EXIT
           for i in {1..30}; do curl -fsS http://127.0.0.1:4173/index.html >/dev/null && break; sleep 1; done
           cat >/tmp/maintenance-smoke.cjs <<'NODE'
-          const {chromium}=require(process.cwd()+'/node_modules/playwright'),fs=require('fs');const pages=fs.readFileSync('/tmp/site-pages.txt','utf8').trim().split(/\r?\n/).filter(Boolean);const historyPages=new Set(['index.html','grammar.html','listening.html','mocktest.html']);
-          (async()=>{const browser=await chromium.launch({headless:true});const context=await browser.newContext({serviceWorkers:'block'});let failed=false;for(const p of pages){const page=await context.newPage(),errors=[],bad=[];page.on('pageerror',e=>errors.push(String(e)));page.on('response',r=>{if(r.url().startsWith('http://127.0.0.1:4173/')&&r.status()>=400)bad.push(`${r.status()} ${r.url()}`)});try{const res=await page.goto('http://127.0.0.1:4173/'+p+'?maintenance='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});if(!res||res.status()>=400)throw Error('HTTP '+(res?.status()||'none'));await page.waitForTimeout(2600);const s=await page.evaluate(()=>({title:document.title.trim(),text:(document.body?.innerText||'').trim().length,health:!!document.querySelector('#siteHealthBadge'),voiceTest:!!document.querySelector('#genericVoiceTest,#pageSampleVoice,#sampleVoice'),history:!!document.querySelector('#resultHistoryPanel')}));if(!s.title||s.text<20||!s.health)throw Error('invalid DOM/health '+JSON.stringify(s));if(p==='mocktest.html'&&s.voiceTest)throw Error('mocktest must not expose generic voice test');if(p!=='mocktest.html'&&!s.voiceTest)throw Error('missing voice test '+JSON.stringify(s));if(historyPages.has(p)!==s.history)throw Error('result history coverage mismatch '+JSON.stringify(s));if(errors.length)throw Error(errors.join(' | '));if(bad.length)throw Error(bad.join(' | '));console.log('PASS',p,s.title,'voice='+s.voiceTest,'history='+s.history);}catch(e){failed=true;console.error('FAIL',p,e.message);}await page.close();}await browser.close();if(failed)process.exit(1);})();
+          const {chromium}=require(process.cwd()+'/node_modules/playwright'),fs=require('fs');const pages=fs.readFileSync('/tmp/site-pages.txt','utf8').trim().split(/\r?\n/).filter(Boolean);const historyPages=new Set(['index.html','grammar.html','listening.html','mocktest.html']);const base=process.env.BASE_URL||'http://127.0.0.1:4173/';
+          (async()=>{const browser=await chromium.launch({headless:true});const context=await browser.newContext({serviceWorkers:'block'});let failed=false;for(const p of pages){const page=await context.newPage(),errors=[],bad=[];page.on('pageerror',e=>errors.push(String(e)));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)bad.push(`${r.status()} ${r.url()}`)});try{const res=await page.goto(base+p+'?maintenance='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});if(!res||res.status()>=400)throw Error('HTTP '+(res?.status()||'none'));await page.waitForTimeout(2600);const s=await page.evaluate(()=>({title:document.title.trim(),text:(document.body?.innerText||'').trim().length,health:!!document.querySelector('#siteHealthBadge'),voiceTest:!!document.querySelector('#genericVoiceTest,#pageSampleVoice,#sampleVoice'),history:!!document.querySelector('#resultHistoryPanel')}));if(!s.title||s.text<20||!s.health)throw Error('invalid DOM/health '+JSON.stringify(s));if(p==='mocktest.html'&&s.voiceTest)throw Error('mocktest must not expose generic voice test');if(p!=='mocktest.html'&&!s.voiceTest)throw Error('missing voice test '+JSON.stringify(s));if(historyPages.has(p)!==s.history)throw Error('result history coverage mismatch '+JSON.stringify(s));if(errors.length)throw Error(errors.join(' | '));if(bad.length)throw Error(bad.join(' | '));console.log('PASS',p,s.title,'voice='+s.voiceTest,'history='+s.history);}catch(e){failed=true;console.error('FAIL',p,e.message);}await page.close();}await browser.close();if(failed)process.exit(1);})();
           NODE
           node /tmp/maintenance-smoke.cjs
 
-      - name: Verify every live GitHub Pages page
-        id: live
+      - name: Wait until audited revision is the successful GitHub Pages deployment
+        id: live_revision
+        env:
+          TARGET_SHA: ${{ steps.revision.outputs.sha }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python - <<'PY'
+          import json,os,time,urllib.request
+          repo=os.environ['GITHUB_REPOSITORY']; target=os.environ['TARGET_SHA']; token=os.environ.get('GH_TOKEN','')
+          headers={'Accept':'application/vnd.github+json','User-Agent':'site-maintenance'}
+          if token: headers['Authorization']='Bearer '+token
+          def get(url):
+              r=urllib.request.Request(url,headers=headers)
+              with urllib.request.urlopen(r,timeout=30) as x:return json.loads(x.read().decode())
+          matched=None
+          for attempt in range(90):
+              deployments=get(f'https://api.github.com/repos/{repo}/deployments?environment=github-pages&per_page=30')
+              for d in deployments:
+                  if d.get('sha')!=target: continue
+                  statuses=get(d['statuses_url'])
+                  state=statuses[0].get('state') if statuses else None
+                  print('Pages deployment',d.get('id'),'sha',d.get('sha'),'state',state)
+                  if state=='success': matched=d; break
+              if matched: break
+              time.sleep(5)
+          if not matched: raise SystemExit(f'No successful github-pages deployment found for audited SHA {target}')
+          open('/tmp/live-sha.txt','w').write(target+'\n')
+          PY
+          echo "sha=$(cat /tmp/live-sha.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Verify every live GitHub Pages page statically
+        id: live_static
         run: |
           while IFS= read -r p; do
             code=$(curl -sS -L --max-time 30 -o /tmp/live-page.html -w '%{http_code}' "https://kanuli.github.io/japanese-vocab-game/$p?maintenance=${{ github.run_id }}")
@@ -170,31 +216,44 @@ jobs:
           d=json.load(open('/tmp/live-st.json')); assert (d.get('version'),d.get('voiceCount'),d.get('utteranceCount'),d.get('recordingCount'))==(2,10,2677,26770)
           PY
 
+      - name: Browser smoke test every live GitHub Pages page
+        id: live_browser
+        env:
+          BASE_URL: https://kanuli.github.io/japanese-vocab-game/
+        run: node /tmp/maintenance-smoke.cjs
+
       - name: Maintenance summary
         if: success()
         run: |
           echo 'FULL-SITE MAINTENANCE PASSED'
+          echo 'Audited SHA: ${{ steps.revision.outputs.sha }}'
+          echo 'Live SHA:    ${{ steps.live_revision.outputs.sha }}'
+          echo 'Pronunciation validator fixtures: PASS'
           echo 'Conversation: 61 scenes / 1,525 dialogues / 3,050 lines'
           echo 'Furigana: 2,677 / 2,677'
           echo 'VOICEVOX: 43 × 2,677 = 115,111'
           echo 'Supertonic: 10 × 2,677 = 26,770'
           echo 'Voice Test: all 10 non-mock pages covered; mock excluded'
           echo 'Result history: vocab / grammar / listening / mock test covered'
-          echo 'HTML pages tested: ${{ steps.inventory.outputs.count }}'
+          echo 'HTML pages tested locally AND live: ${{ steps.inventory.outputs.count }}'
 
       - name: Publish machine-readable maintenance status
         if: always()
         env:
           OVERALL: ${{ job.status }}
+          AUDITED_SHA: ${{ steps.revision.outputs.sha }}
+          LIVE_SHA: ${{ steps.live_revision.outputs.sha }}
+          PRON_OUTCOME: ${{ steps.pronunciation_validator.outcome }}
           STATIC_OUTCOME: ${{ steps.static.outcome }}
           BROWSER_OUTCOME: ${{ steps.browser.outcome }}
-          LIVE_OUTCOME: ${{ steps.live.outcome }}
+          LIVE_STATIC_OUTCOME: ${{ steps.live_static.outcome }}
+          LIVE_BROWSER_OUTCOME: ${{ steps.live_browser.outcome }}
           PAGE_COUNT: ${{ steps.inventory.outputs.count }}
         run: |
           python - <<'PY'
           import json,os,datetime
           ok=lambda x:x=='success'
-          status={'version':1,'status':'ok' if os.environ['OVERALL']=='success' else 'error','checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'runId':int(os.environ['GITHUB_RUN_ID']),'pages':int(os.environ.get('PAGE_COUNT') or 0),'conversation':{'scenes':61,'groups':1525,'lines':3050},'furigana':{'mapped':2677,'unique':2677},'voicevox':{'voices':43,'utterances':2677,'recordings':115111},'supertonic':{'voices':10,'utterances':2677,'recordings':26770},'checks':{'static':ok(os.environ.get('STATIC_OUTCOME')),'browser':ok(os.environ.get('BROWSER_OUTCOME')),'live':ok(os.environ.get('LIVE_OUTCOME'))}}
+          status={'version':2,'status':'ok' if os.environ['OVERALL']=='success' else 'error','checkedAt':datetime.datetime.now(datetime.timezone.utc).replace(microsecond=0).isoformat().replace('+00:00','Z'),'runId':int(os.environ['GITHUB_RUN_ID']),'auditedSha':os.environ.get('AUDITED_SHA') or None,'liveSha':os.environ.get('LIVE_SHA') or None,'deploymentAligned':bool(os.environ.get('AUDITED_SHA')) and os.environ.get('AUDITED_SHA')==os.environ.get('LIVE_SHA'),'pages':int(os.environ.get('PAGE_COUNT') or 0),'conversation':{'scenes':61,'groups':1525,'lines':3050},'furigana':{'mapped':2677,'unique':2677},'voicevox':{'voices':43,'utterances':2677,'recordings':115111},'supertonic':{'voices':10,'utterances':2677,'recordings':26770},'checks':{'pronunciationValidator':ok(os.environ.get('PRON_OUTCOME')),'static':ok(os.environ.get('STATIC_OUTCOME')),'browserLocal':ok(os.environ.get('BROWSER_OUTCOME')),'liveStatic':ok(os.environ.get('LIVE_STATIC_OUTCOME')),'liveBrowser':ok(os.environ.get('LIVE_BROWSER_OUTCOME'))}}
           open('maintenance-status.json','w',encoding='utf-8').write(json.dumps(status,ensure_ascii=False,indent=2)+'\n');print(json.dumps(status,ensure_ascii=False))
           PY
           git config user.name 'github-actions[bot]'; git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
