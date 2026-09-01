@@ -1,0 +1,43 @@
+name: Audit vocabulary pronunciation — AivisSpeech
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-aivis-audit-trigger'
+      - 'scripts/audit_tts_pronunciation.py'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Start official AivisSpeech Engine
+        run: |
+          mkdir -p "$HOME/.local/share/AivisSpeech-Engine"
+          sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
+          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
+          for i in $(seq 1 300); do
+            if curl -fsS http://127.0.0.1:10101/speakers >/dev/null; then exit 0; fi
+            if [ "$i" = 300 ]; then docker logs aivis-engine || true; exit 1; fi
+            sleep 2
+          done
+      - name: Audit configured AivisSpeech styles
+        run: python scripts/audit_tts_pronunciation.py --engine aivis --base http://127.0.0.1:10101 --out aivis-pronunciation-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aivis-pronunciation-audit
+          path: aivis-pronunciation-audit.json
+          retention-days: 14
+      - if: always()
+        run: docker stop aivis-engine || true
