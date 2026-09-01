@@ -164,8 +164,41 @@ jobs:
           trap 'kill $(cat /tmp/site-http.pid) 2>/dev/null || true' EXIT
           for i in {1..30}; do curl -fsS http://127.0.0.1:4173/index.html >/dev/null && break; sleep 1; done
           cat >/tmp/maintenance-smoke.cjs <<'NODE'
-          const {chromium}=require(process.cwd()+'/node_modules/playwright'),fs=require('fs');const pages=fs.readFileSync('/tmp/site-pages.txt','utf8').trim().split(/\r?\n/).filter(Boolean);const historyPages=new Set(['index.html','grammar.html','listening.html','mocktest.html']);const base=process.env.BASE_URL||'http://127.0.0.1:4173/';
-          (async()=>{const browser=await chromium.launch({headless:true});const context=await browser.newContext({serviceWorkers:'block'});let failed=false;for(const p of pages){const page=await context.newPage(),errors=[],bad=[];page.on('pageerror',e=>errors.push(String(e)));page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)bad.push(`${r.status()} ${r.url()}`)});try{const res=await page.goto(base+p+'?maintenance='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});if(!res||res.status()>=400)throw Error('HTTP '+(res?.status()||'none'));await page.waitForTimeout(2600);const s=await page.evaluate(()=>({title:document.title.trim(),text:(document.body?.innerText||'').trim().length,health:!!document.querySelector('#siteHealthBadge'),voiceTest:!!document.querySelector('#genericVoiceTest,#pageSampleVoice,#sampleVoice'),history:!!document.querySelector('#resultHistoryPanel')}));if(!s.title||s.text<20||!s.health)throw Error('invalid DOM/health '+JSON.stringify(s));if(p==='mocktest.html'&&s.voiceTest)throw Error('mocktest must not expose generic voice test');if(p!=='mocktest.html'&&!s.voiceTest)throw Error('missing voice test '+JSON.stringify(s));if(historyPages.has(p)!==s.history)throw Error('result history coverage mismatch '+JSON.stringify(s));if(errors.length)throw Error(errors.join(' | '));if(bad.length)throw Error(bad.join(' | '));console.log('PASS',p,s.title,'voice='+s.voiceTest,'history='+s.history);}catch(e){failed=true;console.error('FAIL',p,e.message);}await page.close();}await browser.close();if(failed)process.exit(1);})();
+          const {chromium}=require(process.cwd()+'/node_modules/playwright'),fs=require('fs');
+          const pages=fs.readFileSync('/tmp/site-pages.txt','utf8').trim().split(/\r?\n/).filter(Boolean);
+          const historyPages=new Set(['index.html','grammar.html','listening.html','mocktest.html']);
+          const base=process.env.BASE_URL||'http://127.0.0.1:4173/';
+          const isLive=/^https:\/\//.test(base); const maxAttempts=isLive?3:1;
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          async function checkPage(context,p){
+            for(let attempt=1;attempt<=maxAttempts;attempt++){
+              const page=await context.newPage(),errors=[],bad=[]; let transient=false;
+              page.on('pageerror',e=>errors.push(String(e)));
+              page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)bad.push({status:r.status(),url:r.url()})});
+              try{
+                const res=await page.goto(base+p+'?maintenance='+Date.now(),{waitUntil:'domcontentloaded',timeout:30000});
+                const status=res?.status()||0;
+                if(!res||status>=400){const e=new Error('HTTP '+(status||'none'));e.transient=status>=500&&status<600;throw e;}
+                await page.waitForTimeout(2600);
+                const s=await page.evaluate(()=>({title:document.title.trim(),text:(document.body?.innerText||'').trim().length,health:!!document.querySelector('#siteHealthBadge'),voiceTest:!!document.querySelector('#genericVoiceTest,#pageSampleVoice,#sampleVoice'),history:!!document.querySelector('#resultHistoryPanel')}));
+                if(!s.title||s.text<20||!s.health)throw Error('invalid DOM/health '+JSON.stringify(s));
+                if(p==='mocktest.html'&&s.voiceTest)throw Error('mocktest must not expose generic voice test');
+                if(p!=='mocktest.html'&&!s.voiceTest)throw Error('missing voice test '+JSON.stringify(s));
+                if(historyPages.has(p)!==s.history)throw Error('result history coverage mismatch '+JSON.stringify(s));
+                if(errors.length)throw Error(errors.join(' | '));
+                if(bad.length){const e=new Error(bad.map(x=>`${x.status} ${x.url}`).join(' | '));e.transient=bad.every(x=>x.status>=500&&x.status<600);throw e;}
+                console.log('PASS',p,s.title,'voice='+s.voiceTest,'history='+s.history,attempt>1?`attempt=${attempt}`:'');
+                await page.close(); return true;
+              }catch(e){
+                transient=!!e.transient;
+                await page.close();
+                if(isLive&&transient&&attempt<maxAttempts){console.warn('RETRY',p,`attempt=${attempt}`,e.message);await sleep(1500*attempt);continue;}
+                console.error('FAIL',p,e.message); return false;
+              }
+            }
+            return false;
+          }
+          (async()=>{const browser=await chromium.launch({headless:true});const context=await browser.newContext({serviceWorkers:'block'});let failed=false;for(const p of pages)if(!(await checkPage(context,p)))failed=true;await browser.close();if(failed)process.exit(1);})();
           NODE
           node /tmp/maintenance-smoke.cjs
 
@@ -203,12 +236,17 @@ jobs:
         id: live_static
         run: |
           while IFS= read -r p; do
-            code=$(curl -sS -L --max-time 30 -o /tmp/live-page.html -w '%{http_code}' "https://kanuli.github.io/japanese-vocab-game/$p?maintenance=${{ github.run_id }}")
-            test "$code" = 200 || { echo "LIVE FAIL $p HTTP $code" >&2; exit 1; }
-            grep -qi '<title' /tmp/live-page.html || { echo "LIVE FAIL $p missing title" >&2; exit 1; }
+            ok=0
+            for attempt in 1 2 3; do
+              code=$(curl -sS -L --max-time 30 -o /tmp/live-page.html -w '%{http_code}' "https://kanuli.github.io/japanese-vocab-game/$p?maintenance=${{ github.run_id }}&attempt=$attempt" || true)
+              if [ "$code" = 200 ] && grep -qi '<title' /tmp/live-page.html; then ok=1; break; fi
+              if [[ "$code" =~ ^5[0-9][0-9]$ ]]; then echo "LIVE RETRY $p HTTP $code attempt=$attempt"; sleep "$attempt"; continue; fi
+              echo "LIVE FAIL $p HTTP $code" >&2; exit 1
+            done
+            test "$ok" = 1 || { echo "LIVE FAIL $p persistent transient-server error" >&2; exit 1; }
             echo "LIVE PASS $p"
           done < /tmp/site-pages.txt
-          curl -fsSL --max-time 30 "https://kanuli.github.io/japanese-vocab-game/conversation-supertonic-index.json?maintenance=${{ github.run_id }}" -o /tmp/live-st.json
+          curl -fsSL --retry 3 --retry-all-errors --retry-delay 1 --max-time 30 "https://kanuli.github.io/japanese-vocab-game/conversation-supertonic-index.json?maintenance=${{ github.run_id }}" -o /tmp/live-st.json
           python - <<'PY'
           import json
           d=json.load(open('/tmp/live-st.json')); assert (d.get('version'),d.get('voiceCount'),d.get('utteranceCount'),d.get('recordingCount'))==(2,10,2677,26770)
