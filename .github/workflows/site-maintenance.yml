@@ -24,8 +24,6 @@ on:
 permissions:
   contents: write
 
-actions:
-
 concurrency:
   group: daily-site-maintenance
   cancel-in-progress: false
