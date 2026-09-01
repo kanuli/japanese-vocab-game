@@ -1,2 +1,2 @@
-2026-08-28 retry-2
-Re-run full-site maintenance after removing the obsolete wordlist-audio.js validator dependency. Require Static, Data, Browser and Live validation to complete; do not manually override maintenance-status.json.
+2026-09-02 full-site revalidation after pronunciation-auditor fix
+Re-run full-site maintenance on current main/live code after the pronunciation auditor redesign. Require Static, Data, Browser and Live validation to complete; do not manually override maintenance-status.json.
