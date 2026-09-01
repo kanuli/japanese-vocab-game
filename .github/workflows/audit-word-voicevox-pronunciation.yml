@@ -1,4 +1,4 @@
-name: Audit vocabulary pronunciation — VOICEVOX
+name: Audit vocabulary pronunciation sentinels — VOICEVOX
 
 on:
   workflow_dispatch:
@@ -7,12 +7,24 @@ on:
     paths:
       - '.word-voicevox-audit-trigger'
       - 'scripts/audit_tts_pronunciation.py'
+      - '.github/workflows/audit-word-voicevox-pronunciation.yml'
 
 permissions:
   contents: read
 
 jobs:
+  validator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.11'
+      - name: Calibrate pronunciation validator fixtures
+        run: python scripts/audit_tts_pronunciation.py --self-test
+
   audit:
+    needs: validator
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
@@ -20,8 +32,8 @@ jobs:
       matrix:
         start: [0,9,18,27,36]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
         with:
           python-version: '3.11'
       - name: Start official VOICEVOX Engine
@@ -33,11 +45,11 @@ jobs:
             if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
             sleep 2
           done
-      - name: Audit VOICEVOX voice batch
+      - name: Audit VOICEVOX sentinel batch
         env:
           START: ${{ matrix.start }}
         run: python scripts/audit_tts_pronunciation.py --engine voicevox --base http://127.0.0.1:50021 --start "$START" --limit 9 --out "voicevox-pronunciation-audit-$START.json"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5.0.0
         if: always()
         with:
           name: voicevox-pronunciation-audit-${{ matrix.start }}
