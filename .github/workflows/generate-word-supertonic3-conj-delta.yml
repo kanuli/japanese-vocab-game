@@ -1,0 +1,130 @@
+name: Generate Word Supertonic 3 conjugation delta F3
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  id-token: write
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-supertonic3-conj-v1
+  HF_DIR: word/supertonic3/conj-v1
+jobs:
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      shards: ${{ steps.meta.outputs.shards }}
+      wordCount: ${{ steps.meta.outputs.wordCount }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Collect vocab and build missing-reading source
+        run: |
+          python scripts/collect_conjugation_words.py
+          python scripts/build_word_supertonic_conj_delta_source.py
+      - name: Record shard matrix
+        id: meta
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads(Path("word-supertonic3-conj-source.json").read_text(encoding="utf-8"))
+          shards=list(range(int(d.get("shardCount") or 0)))
+          with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as f:
+              f.write("shards="+json.dumps(shards)+"\nwordCount="+str(d.get("wordCount") or 0)+"\n")
+          print("shards", shards, "new", d.get("wordCount"))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-conj-source
+          path: |
+            word-supertonic3-conj-source.json
+            word-supertonic3-conj-plan.json
+          retention-days: 3
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title "Supertonic 3 conjugation readings F3" --notes "F3 audio for unique conjugated readings not already hosted. GitHub Releases primary, Hugging Face backup."
+  generate:
+    needs: [catalog, prepare-storage]
+    if: needs.catalog.outputs.wordCount != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        voice: [F3]
+        shard: ${{ fromJson(needs.catalog.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-conj-source
+          path: .
+      - name: Install TTS toolchain
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg && python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+      - name: Generate one conjugation shard
+        env:
+          VOICE: ${{ matrix.voice }}
+          SHARD: ${{ matrix.shard }}
+          CATALOG: word-supertonic3-conj-source.json
+          OUT_DIR: word-supertonic-conj-out
+        run: python scripts/generate_word_supertonic_shard.py
+      - name: Publish shard to GitHub Release
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p manifest-artifact
+          cp "word-supertonic-conj-out/$V-shard$S.json" manifest-artifact/
+          gh release upload "$RELEASE_TAG" "word-supertonic-conj-out/$V-shard$S.tar" --clobber
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-supertonic3-conj-manifest-${{ matrix.voice }}-${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 3
+      - name: Backup shard to Hugging Face
+        continue-on-error: true
+        env:
+          V: ${{ matrix.voice }}
+          S: ${{ matrix.shard }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "word-supertonic-conj-out/$V-shard$S.tar" "$HF_DIR/$V-shard$S.tar" --repo-type dataset --commit-message "Conj Word Supertonic 3 $V shard $S"
+  finalize:
+    needs: [catalog, generate]
+    if: needs.catalog.outputs.wordCount != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-supertonic3-conj-source
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-supertonic3-conj-manifest-*
+          path: word-supertonic-conj-manifests
+          merge-multiple: true
+      - name: Build ready catalog and F3 index
+        run: python scripts/build_word_supertonic_conj_delta_catalog.py
+      - name: Commit text catalog indexes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-supertonic3-conj-catalog.json word-supertonic3-conj-F3-index.json word-supertonic3-conj-plan.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish F3 conjugation hosted audio indexes'; git pull --rebase origin main; git push origin main; fi
