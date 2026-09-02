@@ -1,0 +1,27 @@
+name: Wordlist conjugation
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  conjugation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Syntax-check conjugation sources
+        run: node --check wordlist-conjugation.js && node --check wordlist-conjugation-ui.js && node --check wordlist.js
+      - name: Unit tests
+        run: node wordlist-conjugation.test.js
+      - name: Copy browser test package manifest
+        run: cp package-conj-ci.json package.json
+      - uses: microsoft/playwright-github-action@v1
+      - name: Overlay desktop and mobile checks
+        run: node wordlist-conjugation.playwright.js
