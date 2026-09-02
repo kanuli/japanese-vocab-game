@@ -11,7 +11,7 @@ HF=os.environ.get("HF_DATASET_REPO","kanuli1983/japanese-listening-voicevox-back
 TAG=os.environ.get("RELEASE_TAG","word-supertonic3-conj-v1")
 HF_DIR=os.environ.get("HF_DIR","word/supertonic3/conj-v1")
 VOICES=os.environ.get("VOICES","F3").split(",")
-LABELS={"F1":"沉穩低柔女聲（F1）","F2":"明亮活漂女聲（F2）","F3":"專業播音女聲（F3）","F4":"清晰自信女聲（F4）","F5":"溫柔療癒女聲（F5）","M1":"活力自信男聲（M1）","M2":"低沉穩重男聲（M2）","M3":"權威專業男聲（M3）","M4":"柔和親切男聲（M4）","M5":"溫暖舒緩男聲（M5）"}
+LABELS={"F1":"沉穩低柔女聲（F1）","F2":"明亮活潑女聲（F2）","F3":"專業播音女聲（F3）","F4":"清晰自信女聲（F4）","F5":"溫柔療癒女聲（F5）","M1":"活力自信男聲（M1）","M2":"低沉穩重男聲（M2）","M3":"權威專業男聲（M3）","M4":"柔和親切男聲（M4）","M5":"溫暖舒緩男聲（M5）"}
 d=json.loads(CAT.read_text(encoding="utf-8")); words=d.get("words") or {}; items=d.get("items") or []
 wc=int(d.get("wordCount",0)); sc=int(d.get("shardCount",0))
 if d.get("status")!="catalog" or wc<1 or len(items)!=wc or len(words)!=wc:
