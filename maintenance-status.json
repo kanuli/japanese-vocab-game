@@ -1,12 +1,12 @@
 {
   "version": 3,
-  "status": "error",
+  "status": "ok",
   "statusSource": "health-status branch (not GitHub Pages source)",
-  "checkedAt": "2026-09-02T18:56:59Z",
-  "runId": 33670210288,
-  "auditedSha": "5156f25e282d2a7a23812fc45480899cdfef77d8",
-  "liveSha": null,
-  "deploymentAligned": false,
+  "checkedAt": "2026-09-02T18:59:15Z",
+  "runId": 33670388652,
+  "auditedSha": "962ea568c5bce290a7c096604f9384abafc2461b",
+  "liveSha": "962ea568c5bce290a7c096604f9384abafc2461b",
+  "deploymentAligned": true,
   "pages": 11,
   "conversation": {
     "scenes": 61,
@@ -32,11 +32,11 @@
     "static": true,
     "data": true,
     "browser": true,
-    "live": false,
+    "live": true,
     "browserLocal": true,
-    "liveStatic": false,
-    "liveBrowser": false,
-    "revisionStillCurrent": false
+    "liveStatic": true,
+    "liveBrowser": true,
+    "revisionStillCurrent": true
   },
   "scope": {
     "liveBrowserRuntime": true,
