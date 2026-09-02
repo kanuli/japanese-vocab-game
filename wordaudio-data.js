@@ -1,11 +1,11 @@
 (()=>{"use strict";
 const W=window.WA=window.WA||{},URLS=["https://raw.githubusercontent.com/5mdld/anki-jlpt-decks/main/deck-source/notes.csv","https://cdn.jsdelivr.net/gh/5mdld/anki-jlpt-decks@main/deck-source/notes.csv"],F=["Notetype","Deck","NoteID","VocabKanji","VocabPitch","VocabPoS","VocabFurigana","VocabDefSC","VocabDefTC","VocabPlus","VocabAudio","SentType1","SentKanji1","SentFurigana1","SentDefSC1","SentDefTC1","SentAudio1","SentType2","SentKanji2","SentFurigana2","SentDefSC2","SentDefTC2","SentAudio2","SentType3","SentKanji3","SentFurigana3","SentDefSC3","SentDefTC3","SentAudio3","SentType4","SentKanji4","SentFurigana4","SentDefSC4","SentDefTC4","SentAudio4","Sort","Alt1","Alt2","Tags"];
 W.$=s=>document.querySelector(s);W.$$=s=>[...document.querySelectorAll(s)];W.load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};W.save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
-const strip=s=>{const d=document.createElement("div");d.innerHTML=String(s??"").replace(/\[sound:[^\]]+\]/gi," ").replace(/<br\s*\/?>/gi,"；");return(d.textContent||"").replace(/\s+/g," ").trim()},kanji=s=>/[\u3400-\u4DBF\u4E00-\u9FFF々丼ヵヶ]/.test(s||""),kana=s=>!!s&&/^[\u3041-\u3096\u30a1-\u30fa\u30fc・\u30fd\u30fe\u309d\u309e]+$/.test(String(s).replace(/\s+/g,""));
+const strip=s=>{const d=document.createElement("div");d.innerHTML=String(s??"").replace(/\[sound:[^\]]+\]/gi," ").replace(/<br\s*\/?>/gi,"；");return(d.textContent||"").replace(/\s+/g," ").trim()},kanji=s=>/[\u3400-\u4DBF\u4E00-\u9FFF\u3005\u3006\u30f5\u30f6]/.test(s||""),kana=s=>!!s&&/^[\u3041-\u3096\u30a1-\u30fa\u30fc\u30fb\u30fd\u30fe\u309d\u309e]+$/.test(String(s).replace(/\s+/g,""));
 // Some upstream Anki display fields contain furigana markup such as 為[な]す.
 // The bracketed kana is pronunciation annotation, not part of the lexical display key.
-const display=s=>strip(s).replace(/([\u3400-\u4DBF\u4E00-\u9FFF々丼ヵヶ])\[([\u3041-\u3096\u30a1-\u30fa\u30fc・\u30fd\u30fe\u309d\u309e]+)\]/g,"$1").replace(/\s+/g,"");
-const reading=(f,w)=>{let s=String(f||w||"").replace(/[\u3400-\u4DBF\u4E00-\u9FFF々丼ヵヶ]+\[([^\]]+)\]/g,"$1").replace(/\[([^\]]+)\]/g,"$1");s=strip(s).replace(/\s+/g,"");return kana(s)?s:(kana(w)?w:"")};
+const display=s=>strip(s).replace(/([\u3400-\u4DBF\u4E00-\u9FFF\u3005\u3006\u30f5\u30f6])\[([\u3041-\u3096\u30a1-\u30fa\u30fc\u30fb\u30fd\u30fe\u309d\u309e]+)\]/g,"$1").replace(/\s+/g,"");
+const reading=(f,w)=>{let s=String(f||w||"").replace(/[\u3400-\u4DBF\u4E00-\u9FFF\u3005\u3006\u30f5\u30f6]+\[([^\]]+)\]/g,"$1").replace(/\[([^\]]+)\]/g,"$1");s=strip(s).replace(/\s+/g,"");return kana(s)?s:(kana(w)?w:"")};
 const exactLevel={"なす|為す":"N2"};
 W.key=w=>`${w.reading}|${display(w.kanji||w.displayWord||w.reading)}`;
 function norm(x,n){
