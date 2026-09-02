@@ -1,0 +1,39 @@
+name: Full-site health recovery after Pages
+
+on:
+  workflow_run:
+    workflows:
+      - pages build and deployment
+    types:
+      - completed
+
+permissions:
+  actions: write
+  contents: read
+
+concurrency:
+  group: full-site-health-pages-recovery
+  cancel-in-progress: true
+
+jobs:
+  dispatch-health:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch deployment-aligned full-site health
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          DEPLOYED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          echo "Successful Pages deployment completed for $DEPLOYED_SHA"
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/$REPO/actions/workflows/full-site-health-v3.yml/dispatches" \
+            -d '{"ref":"main"}'
+          echo "Full-site health v3 dispatch accepted."
