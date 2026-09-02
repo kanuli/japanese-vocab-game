@@ -63,17 +63,19 @@ function closeModal(){
 async function speakForm(ev,written,reading){
   if(ev){ev.preventDefault();ev.stopPropagation();}
   var W=root.WA||window.WA;
-  var text=reading||written;
+  var query=api.audioQuery?api.audioQuery(written,reading):{text:reading||written,word:{reading:reading||written,kanji:written||'',displayWord:written||reading}};
+  var text=query.text;
   if(!text)return;
   var status=document.getElementById('audioStatus');
-  if(status)status.textContent='🔊 正在播放：'+written+(reading&&reading!==written?'（'+reading+'）':'');
+  if(status)status.textContent='🔊 正在播放：'+(written||text)+(reading&&reading!==written?'（'+reading+'）':'');
   try{
     if(!W||!W.speak){
       if(status)status.textContent='⚠️ 語音模組尚未載入。';
       return;
     }
-    var used=await W.speak(text,{reading:text,kanji:written,displayWord:written});
-    if(status)status.textContent=used?'✅ 已播放：'+written:'⚠️ 語音暫時無法播放。';
+    /* Speak kana. Hosted lookup tries exact reading|written then reading-only. */
+    var used=await W.speak(text,query.word);
+    if(status)status.textContent=used?'✅ 已播放：'+(written||text):'⚠️ 語音暫時無法播放。';
   }catch(e){
     if(status)status.textContent='⚠️ 播放失敗：'+(e&&e.message?e.message:String(e));
   }
@@ -91,7 +93,7 @@ function ensureModal(){
     +'<div class="conj-head"><h2 id="conjTitle">動詞活用</h2>'
     +'<button type="button" class="conj-close" aria-label="關閉活用表">×</button></div>'
     +'<p class="conj-sub" id="conjSub"></p>'
-    +'<div class="conj-list" id="conjList"></div></div>';
+    +'<div class="conj-body" id="conjList"></div></div>';
   document.body.appendChild(overlay);
   dialog=overlay.querySelector('.conj-dialog');
   titleEl=overlay.querySelector('#conjTitle');
@@ -129,27 +131,35 @@ function ensureModal(){
   });
 }
 
+function renderRow(row){
+  if(!row.written){
+    return '<div class="conj-row conj-row-na"><div class="conj-label">'+esc(row.label)
+      +'</div><div class="conj-value muted">—</div></div>';
+  }
+  return '<div class="conj-row"><div class="conj-label">'+esc(row.label)+'</div>'
+    +'<div class="conj-value"><span class="conj-written">'+esc(row.written)+'</span>'
+    +(row.reading&&row.reading!==row.written?'<span class="conj-reading">'+esc(row.reading)+'</span>':'')
+    +'<button type="button" class="btn conj-audio-btn" data-written="'+esc(row.written)+'" data-reading="'+esc(row.reading||row.written)+'" aria-label="播放 '+esc(row.written)+'">🔊</button>'
+    +'</div></div>';
+}
+
+function renderSection(title,rows){
+  var html='<section class="conj-section"><h3 class="conj-section-title">'+esc(title)+'</h3>'
+    +'<div class="conj-list">';
+  (rows||[]).forEach(function(row){html+=renderRow(row);});
+  return html+'</div></section>';
+}
+
 function renderForms(result,sourceWord){
   var sub=overlay.querySelector('#conjSub');
   var shown=sourceWord.kanji||sourceWord.displayWord||sourceWord.reading||result.written;
   sub.textContent=shown+(result.reading&&result.reading!==shown?'　'+result.reading:'')
     +(sourceWord.meaning?'　'+sourceWord.meaning:'');
-  var html='';
-  result.forms.forEach(function(row){
-    if(!row.written){
-      html+='<div class="conj-row conj-row-na"><div class="conj-label">'+esc(row.label)
-        +'</div><div class="conj-value muted">—</div></div>';
-      return;
-    }
-    html+='<div class="conj-row"><div class="conj-label">'+esc(row.label)+'</div>'
-      +'<div class="conj-value"><span class="conj-written">'+esc(row.written)+'</span>'
-      +(row.reading&&row.reading!==row.written?'<span class="conj-reading">'+esc(row.reading)+'</span>':'')
-      +'<button type="button" class="btn conj-audio-btn" data-written="'+esc(row.written)+'" data-reading="'+esc(row.reading||row.written)+'" aria-label="播放 '+esc(row.written)+'">🔊</button>'
-      +'</div></div>';
-  });
-  listEl.innerHTML=html;
+  listEl.innerHTML=renderSection('基本活用',result.forms)+renderSection('常用延伸',result.extended||[]);
   listEl.querySelectorAll('.conj-audio-btn').forEach(function(btn){
     btn.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
       speakForm(e,btn.getAttribute('data-written'),btn.getAttribute('data-reading'));
     });
   });
