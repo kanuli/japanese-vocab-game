@@ -1,6 +1,6 @@
 /* Verb conjugation for the vocabulary list page.
    Generate forms from dictionary form + verb class + explicit exceptions.
-   Do not store all 12 conjugated forms on every vocab item. */
+   Do not store all conjugated forms on every vocab item. */
 (function(root){
 'use strict';
 
@@ -18,6 +18,21 @@ var FORM_DEFS=[
   ['passive','受身形（被動形）'],
   ['causative','使役形'],
   ['causativePassive','使役被動形']
+];
+
+var EXTENDED_DEFS=[
+  ['pastNai','過去否定形'],
+  ['masuNai','ます否定形'],
+  ['masuTa','ます過去形'],
+  ['masuTaNai','ます過去否定形'],
+  ['teiru','ている形'],
+  ['teita','ていた形'],
+  ['tai','たい形'],
+  ['takunai','たくない形'],
+  ['tara','たら形'],
+  ['tekudasai','てください形'],
+  ['naidekudasai','ないでください形'],
+  ['nakereba','なければならない形']
 ];
 
 var GODAN={
@@ -39,8 +54,8 @@ var GODAN_RU={
   '茂る':1,'照る':1,'知る':1,'足る':1,'しゃべる':1,'喋る':1,'混じる':1,
   '交じる':1,'嘲る':1,'遮る':1,'罵る':1,'捻る':1,'翻る':1,'蘇る':1,
   '滅入る':1,'漲る':1,'滾る':1,'弄る':1,'貪る':1,'覆る':1,'契る':1,
-  '詰る':1,'選る':1,'煎る':1,'炒る':1,'要る':1,'交る':1,'喋る':1,
-  'ねじる':1,'ひねる':1,'かじる':1,'かじる':1,'齧る':1,'詰る':1
+  '詰る':1,'選る':1,'煎る':1,'炒る':1,'交る':1,
+  'ねじる':1,'ひねる':1,'かじる':1,'齧る':1
 };
 
 var HONORIFIC={
@@ -57,6 +72,11 @@ var NON_VERB_POS=/^(noun|adj|adv|conj|particle|other|名$|イ形|ナ形|副$|接
 
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function toHira(s){return String(s||'').replace(/[ァ-ヶ]/g,function(c){return String.fromCharCode(c.charCodeAt(0)-96);});}
+function normalizeReading(s){
+  s=String(s==null?'':s);
+  try{s=s.normalize('NFKC');}catch(e){}
+  return toHira(s).replace(/\s+/g,'');
+}
 function isKana(s){return !!s&&KANA_RE.test(String(s).replace(/\s+/g,''));}
 function writtenOf(w){return String((w&&(w.kanji||w.displayWord||w.reading))||'').trim();}
 function readingOf(w){return toHira(String((w&&w.reading)||'').trim());}
@@ -81,13 +101,14 @@ function pair(written,reading,from,to){
   return form(w,r);
 }
 
-function pack(dict,map){
+function pack(dict,map,defs){
+  defs=defs||FORM_DEFS;
   var out={},i,id;
-  for(i=0;i<FORM_DEFS.length;i++){
-    id=FORM_DEFS[i][0];
+  for(i=0;i<defs.length;i++){
+    id=defs[i][0];
     out[id]=map[id]==null?null:map[id];
   }
-  out.dict=out.dict||dict;
+  if(defs===FORM_DEFS)out.dict=out.dict||dict;
   return out;
 }
 
@@ -136,16 +157,20 @@ function godanForms(written,reading,ending,teOverride){
   });
 }
 
-function suruForms(prefixW,prefixR){
+function suruForms(prefixW,prefixR,potentialKind){
   function add(s){return form(prefixW+s,prefixR+s);}
   var dict=add('する');
+  var potential=null;
+  if(!prefixW&&!prefixR)potential=form('できる','できる');
+  else if(potentialKind==='dekiru')potential=add('できる');
+  else if(potentialKind==='serareru')potential=add('せられる');
   return pack(dict,{
     dict:dict,
     masu:add('します'),
     nai:add('しない'),
     ta:add('した'),
     te:add('して'),
-    potential:add('できる'),
+    potential:potential,
     volitional:add('しよう'),
     imperative:add('しろ'),
     prohibitive:add('するな'),
@@ -164,8 +189,7 @@ function kuruFormsSimple(written,reading){
   else if(written.endsWith('くる'))wPrefix=written.slice(0,-2);
   else wPrefix=rPrefix;
   function F(wSuf,rSuf){
-    var w=wPrefix+(written.endsWith('来る')||written==='来る'?wSuf:rSuf);
-    if(!wPrefix&&(written==='来る'||written==='くる'))w=(written==='来る'?wSuf:rSuf);
+    var w;
     if(written.endsWith('来る'))w=wPrefix+wSuf;
     else if(written.endsWith('くる'))w=wPrefix+rSuf;
     else w=wPrefix+wSuf;
@@ -212,25 +236,6 @@ function aruForms(written,reading){
   });
 }
 
-function naiForms(){
-  var dict=form('ない','ない');
-  return pack(dict,{
-    dict:dict,
-    masu:form('ありません','ありません'),
-    nai:form('ない','ない'),
-    ta:form('なかった','なかった'),
-    te:form('なくて','なくて'),
-    potential:null,
-    volitional:null,
-    imperative:null,
-    prohibitive:null,
-    ba:form('なければ','なければ'),
-    passive:null,
-    causative:null,
-    causativePassive:null
-  });
-}
-
 function verbGroup(pos){
   pos=String(pos||'');
   var m=pos.match(/動([123])/);
@@ -261,14 +266,19 @@ function writtenHasOkurigana(written,ending){
   return written===ending||written.endsWith(ending);
 }
 
+function isBareSuru(written,reading){
+  return (written==='する'||written==='')&&reading==='する';
+}
+
 function classify(word){
   var written=writtenOf(word),reading=readingOf(word),pos=posOf(word);
   if(!reading||!isKana(reading))return null;
 
   var wKey=written,rKey=reading,group=verbGroup(pos);
 
-  if((wKey==='ない'||rKey==='ない')&&(wKey==='ない'||/イ形|adj|補形/.test(pos))){
-    return {type:'nai',written:'ない',reading:'ない'};
+  /* Standalone ない is an adjective/auxiliary, not a verb. Keep 動詞のない形. */
+  if((wKey==='ない'||rKey==='ない')&&wKey!=='亡い'){
+    if(!/動[123]/.test(pos)&&!/^(verb|動詞)/i.test(pos))return null;
   }
   if(isNonVerb(pos))return null;
   if(looksLikeAdverbSuru(pos))return null;
@@ -287,14 +297,17 @@ function classify(word){
   }
 
   if(wKey==='する'||rKey==='する'||wKey.endsWith('する')||rKey.endsWith('する')){
-    return {type:'suru',written:written.endsWith('する')?written:written+'する',reading:reading.endsWith('する')?reading:reading+'する'};
+    var nounSuru=/名/.test(pos);
+    var writtenSuru=written.endsWith('する')?written:written+'する';
+    var readingSuru=reading.endsWith('する')?reading:reading+'する';
+    return {type:'suru',written:writtenSuru,reading:readingSuru,nounSuru:nounSuru,bare:isBareSuru(wKey,rKey)};
   }
 
   if(group==='3'){
     /* 名・動3 and similar: conjugate as ～する rather than inventing a godan/ichidan form. */
     if(/名/.test(pos)||pos.indexOf('動3')>=0){
       if(!wKey.endsWith('する')&&!rKey.endsWith('する')&&!wKey.endsWith('来る')&&rKey!=='くる'){
-        return {type:'suru',written:written+'する',reading:reading+'する'};
+        return {type:'suru',written:written+'する',reading:reading+'する',nounSuru:/名/.test(pos),bare:false};
       }
     }
     return null;
@@ -319,7 +332,7 @@ function classify(word){
 
   /* No textbook group: conservative shape rules. Never assume every る verb is 一段. */
   if(/^(verb|動詞)/i.test(pos)||!pos){
-    if(reading.endsWith('する'))return {type:'suru',written:written.endsWith('する')?written:written+'する',reading:reading};
+    if(reading.endsWith('する'))return {type:'suru',written:written.endsWith('する')?written:written+'する',reading:reading,nounSuru:/名/.test(pos),bare:isBareSuru(written,reading)};
     if(written==='来る'||reading==='くる')return {type:'kuru',written:written,reading:reading};
     if(written==='行く'||reading==='いく'||reading==='ゆく')return {type:'iku',written:written,reading:reading};
     var end=endsWithGodan(reading);
@@ -358,6 +371,46 @@ function applyHonorific(base,honorific){
   return base;
 }
 
+function swapSuffix(item,from,to){
+  if(!item||!item.written||!item.reading)return null;
+  var w=replaceEnd(item.written,from,to);
+  var r=replaceEnd(item.reading,from,to);
+  if(w==null||r==null)return null;
+  return form(w,r);
+}
+
+function addSuffix(item,suffix){
+  if(!item||!item.written||!item.reading)return null;
+  return form(item.written+suffix,item.reading+suffix);
+}
+
+function deriveExtended(forms){
+  var nai=forms&&forms.nai,masu=forms&&forms.masu,te=forms&&forms.te,ta=forms&&forms.ta;
+  return pack(null,{
+    pastNai:swapSuffix(nai,'ない','なかった'),
+    masuNai:swapSuffix(masu,'ます','ません'),
+    masuTa:swapSuffix(masu,'ます','ました'),
+    masuTaNai:swapSuffix(masu,'ます','ませんでした'),
+    teiru:addSuffix(te,'いる'),
+    teita:addSuffix(te,'いた'),
+    tai:swapSuffix(masu,'ます','たい'),
+    takunai:swapSuffix(masu,'ます','たくない'),
+    tara:addSuffix(ta,'ら'),
+    tekudasai:addSuffix(te,'ください'),
+    naidekudasai:swapSuffix(nai,'ない','ないでください'),
+    nakereba:swapSuffix(nai,'ない','なければならない')
+  },EXTENDED_DEFS);
+}
+
+function rowsFrom(defs,map){
+  var rows=[],i,id,label,item;
+  for(i=0;i<defs.length;i++){
+    id=defs[i][0];label=defs[i][1];item=map?map[id]:null;
+    rows.push({id:id,label:label,written:item?item.written:null,reading:item?item.reading:null});
+  }
+  return rows;
+}
+
 function conjugate(word){
   var cls=classify(word);
   if(!cls)return null;
@@ -368,23 +421,23 @@ function conjugate(word){
   else if(cls.type==='suru'){
     var pw=cls.written.endsWith('する')?cls.written.slice(0,-2):cls.written;
     var pr=cls.reading.endsWith('する')?cls.reading.slice(0,-2):cls.reading;
-    forms=suruForms(pw,pr);
+    var kind;
+    if(!pw&&!pr)kind='dekiru';
+    else if(cls.nounSuru)kind='dekiru';
+    else kind='serareru';
+    forms=suruForms(pw,pr,kind);
   }
   else if(cls.type==='kuru')forms=kuruFormsSimple(cls.written,cls.reading);
   else if(cls.type==='aru')forms=aruForms(cls.written,cls.reading);
-  else if(cls.type==='nai')forms=naiForms();
   else if(cls.type==='honorific'){
     forms=godanForms(cls.written,cls.reading,'る');
     forms=applyHonorific(forms,cls.honorific);
   }
   if(!forms)return null;
-  var rows=[],i,id,label,item;
-  for(i=0;i<FORM_DEFS.length;i++){
-    id=FORM_DEFS[i][0];label=FORM_DEFS[i][1];item=forms[id];
-    rows.push({id:id,label:label,written:item?item.written:null,reading:item?item.reading:null});
-  }
-  if(!rows[0].written)return null;
-  return {type:cls.type,written:cls.written,reading:cls.reading,forms:rows};
+  var basic=rowsFrom(FORM_DEFS,forms);
+  if(!basic[0]||!basic[0].written)return null;
+  var extended=rowsFrom(EXTENDED_DEFS,deriveExtended(forms));
+  return {type:cls.type,written:cls.written,reading:cls.reading,forms:basic,extended:extended,nounSuru:!!cls.nounSuru};
 }
 
 function canConjugate(word){
@@ -392,11 +445,46 @@ function canConjugate(word){
   return !!(result&&result.forms&&result.forms[0]&&result.forms[0].written);
 }
 
+function audioQuery(written,reading){
+  var kana=normalizeReading(reading)||String(written||'');
+  return {
+    text:kana,
+    word:{reading:kana,kanji:written||'',displayWord:written||kana}
+  };
+}
+
+function lemmaKey(word){
+  return String((word&&word.reading)||'')+'|'+String((word&&(word.kanji||word.displayWord||word.reading))||'');
+}
+
+function hostedLookup(catalogWords,word){
+  if(!catalogWords||!word)return null;
+  var exact=lemmaKey(word);
+  if(Object.prototype.hasOwnProperty.call(catalogWords,exact)){
+    return {hit:'exact',key:exact,entry:catalogWords[exact]};
+  }
+  var reading=normalizeReading(word.reading);
+  if(!reading)return null;
+  var key,parts,nr;
+  for(key in catalogWords){
+    if(!Object.prototype.hasOwnProperty.call(catalogWords,key))continue;
+    parts=String(key).split('|');
+    nr=normalizeReading(parts[0]);
+    if(nr===reading)return {hit:'reading',key:key,entry:catalogWords[key]};
+  }
+  return null;
+}
+
 var api={
   FORM_DEFS:FORM_DEFS,
+  EXTENDED_DEFS:EXTENDED_DEFS,
   classify:classify,
   conjugate:conjugate,
-  canConjugate:canConjugate
+  canConjugate:canConjugate,
+  normalizeReading:normalizeReading,
+  audioQuery:audioQuery,
+  hostedLookup:hostedLookup,
+  lemmaKey:lemmaKey
 };
 
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
