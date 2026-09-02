@@ -161,7 +161,7 @@ expectForms({kanji:'ある',reading:'ある',pos:'自動1・補動'},{
 },'ある');
 
 expectForms({kanji:'ない',reading:'ない',pos:'イ形・補形'},{
-  dict:'ない',masu:'ありますせん',nai:'ない',ta:'なかった',te:'なくて',ba:'なければ',
+  dict:'ない',masu:'ありません',nai:'ない',ta:'なかった',te:'なくて',ba:'なければ',
   potential:null,imperative:null
 },'ない');
 
