@@ -31,7 +31,9 @@ function updateClear(){clear.classList.toggle('visible',!!input.value);}
 
 /* Lightweight Hepburn/keyboard-style Romaji -> Hiragana conversion.
    It only converts lowercase ASCII segments, so uppercase acronyms such as AI
-   and non-Latin searches remain untouched. */
+   and non-Latin searches remain untouched. A trailing single "n" is kept
+   pending so incremental typing works like a Japanese IME: n -> n, na -> な,
+   ni -> に, while nn / n' / n before a consonant still yields ん. */
 function romajiSegmentToHiragana(s){
   if(s==='konnichiwa')return 'こんにちは';
   if(s==='konbanwa')return 'こんばんは';
@@ -60,7 +62,7 @@ function romajiSegmentToHiragana(s){
     var c=s.charAt(i),next=s.charAt(i+1);
     if(c==='n'){
       if(next==="'"){out+='ん';i+=2;continue;}
-      if(!next){out+='ん';i++;continue;}
+      if(!next){out+='n';i++;continue;}
       if(next==='n'){out+='ん';i++;continue;}
       if(!/[aeiouy]/.test(next)){out+='ん';i++;continue;}
     }
