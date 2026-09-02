@@ -1,6 +1,10 @@
 name: Generate Word Supertonic 3 conjugation delta F3
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-supertonic3-conj-trigger'
 permissions:
   contents: write
   id-token: write
