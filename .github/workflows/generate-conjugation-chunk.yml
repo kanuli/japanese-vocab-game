@@ -1,0 +1,80 @@
+name: Generate conjugation chunk (small resumable)
+
+on:
+  workflow_dispatch:
+    inputs:
+      inventory_version:
+        description: Frozen inventory version (v1 or smoke-v1)
+        required: true
+        default: smoke-v1
+        type: string
+      provider:
+        description: TTS provider
+        required: true
+        type: choice
+        options: [supertonic3, voicevox, aivis]
+        default: supertonic3
+      voice:
+        description: Voice / speaker / style key (F3, s01, a01)
+        required: true
+        default: F3
+        type: string
+      chunk_start:
+        description: Inclusive generation chunk index
+        required: true
+        default: '0'
+        type: string
+      chunk_end:
+        description: Inclusive generation chunk index (max start+3)
+        required: true
+        default: '0'
+        type: string
+      speaker_name:
+        required: false
+        type: string
+      style_id:
+        required: false
+        type: string
+      style_name:
+        required: false
+        type: string
+
+concurrency:
+  group: conj-${{ github.event.inputs.provider }}-${{ github.event.inputs.voice }}-chunk-${{ github.event.inputs.chunk_start }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  HF_DIR: word/conj-chunks
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Bound chunk window and run worker
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INV: ${{ github.event.inputs.inventory_version }}
+          PROVIDER: ${{ github.event.inputs.provider }}
+          VOICE: ${{ github.event.inputs.voice }}
+          CS: ${{ github.event.inputs.chunk_start }}
+          CE: ${{ github.event.inputs.chunk_end }}
+          SPEAKER_NAME_IN: ${{ github.event.inputs.speaker_name }}
+          STYLE_ID_IN: ${{ github.event.inputs.style_id }}
+          STYLE_NAME_IN: ${{ github.event.inputs.style_name }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+        run: bash scripts/run_conjugation_chunk_worker.sh
