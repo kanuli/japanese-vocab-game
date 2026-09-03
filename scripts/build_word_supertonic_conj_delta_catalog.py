@@ -8,9 +8,10 @@ MANIFESTS=Path(os.environ.get("MANIFEST_DIR","word-supertonic-conj-manifests"))
 OUT=Path(os.environ.get("OUT","word-supertonic3-conj-catalog.json"))
 REPO=os.environ.get("GITHUB_REPO","kanuli/japanese-vocab-game")
 HF=os.environ.get("HF_DATASET_REPO","kanuli1983/japanese-listening-voicevox-backup")
-TAG=os.environ.get("RELEASE_TAG","word-supertonic3-conj-v1")
-HF_DIR=os.environ.get("HF_DIR","word/supertonic3/conj-v1")
-VOICES=os.environ.get("VOICES","F3").split(",")
+TAG=os.environ.get("RELEASE_TAG","word-supertonic3-conj-v2")
+HF_DIR=os.environ.get("HF_DIR","word/supertonic3/conj-v2")
+VOICES=os.environ.get("VOICES","F1,F2,F3,F4,F5,M1,M2,M3,M4,M5").split(",")
+INDEX_PREFIX=os.environ.get("INDEX_PREFIX","word-supertonic3-conj-v2")
 LABELS={"F1":"沉穩低柔女聲（F1）","F2":"明亮活潑女聲（F2）","F3":"專業播音女聲（F3）","F4":"清晰自信女聲（F4）","F5":"溫柔療癒女聲（F5）","M1":"活力自信男聲（M1）","M2":"低沉穩重男聲（M2）","M3":"權威專業男聲（M3）","M4":"柔和親切男聲（M4）","M5":"溫暖舒緩男聲（M5）"}
 d=json.loads(CAT.read_text(encoding="utf-8")); words=d.get("words") or {}; items=d.get("items") or []
 wc=int(d.get("wordCount",0)); sc=int(d.get("shardCount",0))
@@ -42,7 +43,7 @@ for voice in VOICES:
     if len(seen)!=wc:
         raise SystemExit(f"{voice}: expected {wc} IDs, got {len(seen)}")
     idx={"version":1,"engine":"supertonic-3-conj-delta","voice":voice,"label":label,"wordCount":wc,"shardCount":sc,"bundles":bundles}
-    ip=Path(f"word-supertonic3-conj-{voice}-index.json")
+    ip=Path(f"{INDEX_PREFIX}-{voice}-index.json")
     ip.write_text(json.dumps(idx, ensure_ascii=False, separators=(",", ":"))+"\n", encoding="utf-8")
     voices[voice]={"label":label,"indexUrl":f"./{ip.name}?v=1","indexGithubUrl":f"https://github.com/{REPO}/releases/download/{TAG}/{ip.name}"}
 out={
