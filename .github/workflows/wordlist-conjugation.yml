@@ -10,16 +10,23 @@ permissions:
 jobs:
   conjugation:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
       - name: Syntax-check conjugation sources
-        run: node --check wordlist-conjugation.js && node --check wordlist-conjugation-ui.js && node --check wordlist.js
+        run: node --check wordlist-conjugation.js && node --check wordlist-conjugation-ui.js && node --check wordlist.js && node --check wordaudio-multivoice.js && node --check wordaudio-delta-voices.js && node --check wordlist-conjugation-catalog.test.js && node --check wordlist-conjugation-hosted.playwright.js && node --check scripts/audit_conjugation_hosted_catalogs.js
       - name: Unit tests
         run: node wordlist-conjugation.test.js
+      - name: Catalog integrity
+        run: node wordlist-conjugation-catalog.test.js
+      - name: Unique inventory and coverage audit
+        run: python scripts/collect_conjugation_words.py && CONJ_MAX_NEW=0 SHARD_COUNT=20 python scripts/build_word_supertonic_conj_delta_source.py && node scripts/audit_conjugation_hosted_catalogs.js
       - name: Install Playwright Chromium
         run: |
           cp package-conj-ci.json package.json
@@ -27,3 +34,5 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Overlay desktop and mobile checks
         run: node wordlist-conjugation.playwright.js
+      - name: Hosted lookup desktop and mobile checks
+        run: node wordlist-conjugation-hosted.playwright.js
