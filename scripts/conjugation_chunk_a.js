@@ -161,9 +161,11 @@ function planChunk(inv, chunk, opts) {
   var items = [];
   var reused = [];
   var skippedValid = [];
+  var isSmoke = !!(inv.smoke || String(inv.inventoryVersion || '').indexOf('smoke') === 0);
   for (var i = 0; i < rows.length; i++) {
     var id = rows[i][0], reading = rows[i][1], written = rows[i][2];
-    var reuse = (voice === reuseOnlyFor || opts.reuseAnyVoice) && legacy[reading];
+    // Smoke must synthesize new clips; never reuse published F3 v1 by reading only.
+    var reuse = !opts.disableReuse && !isSmoke && (voice === reuseOnlyFor || opts.reuseAnyVoice) && legacy[reading];
     if (reuse && opts.provider === 'supertonic3') {
       reused.push({ id: id, reading: reading, written: written, legacy: legacy[reading] });
       continue;
@@ -187,7 +189,15 @@ function planChunk(inv, chunk, opts) {
 }
 
 function generatorCatalog(inv, chunk, plan) {
-  var items = plan.toGenerate;
+  var items = (plan.toGenerate || []).map(function (x) {
+    return {
+      id: x.id,
+      key: x.key,
+      reading: x.reading,
+      written: x.written,
+      shard: 0
+    };
+  });
   return {
     version: 1,
     status: 'catalog',
@@ -195,6 +205,8 @@ function generatorCatalog(inv, chunk, plan) {
     inventoryVersion: inv.inventoryVersion,
     freezeHash: inv.freezeHash,
     chunk: chunk,
+    // generate_word_supertonic_shard.py requires SHARD in range(shardCount).
+    // One generation window is always shard 0 when there is anything to synthesize.
     shardCount: items.length ? 1 : 0,
     wordCount: items.length,
     items: items,
