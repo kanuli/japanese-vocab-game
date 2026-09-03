@@ -2,6 +2,11 @@ name: Generate Word VOICEVOX conjugation unique readings
 
 on:
   workflow_dispatch:
+    inputs:
+      allow_mega_generation:
+        description: 'DANGEROUS. Default false. Do not run the giant conjugation matrix. Use generate-conjugation-chunk.yml instead. 43 VOICEVOX speakers x shards.'
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -18,7 +23,17 @@ env:
   HF_DIR: word/voicevox/conj-v1
 
 jobs:
+  mega-disabled:
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.allow_mega_generation != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Giant matrix is disabled
+        run: |
+          echo 'Giant conjugation generation is disabled.'
+          echo 'Use .github/workflows/generate-conjugation-chunk.yml'
+          echo 'Set allow_mega_generation=true only if you intentionally want the old 10x20 / 43-speaker / all-style matrix.'
   discover:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     outputs:
@@ -72,6 +87,7 @@ jobs:
         run: docker stop voicevox-engine || true
 
   catalog:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -118,6 +134,7 @@ jobs:
           retention-days: 7
 
   prepare-storage:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -127,7 +144,7 @@ jobs:
 
   generate-0:
     needs: [discover, catalog, prepare-storage]
-    if: needs.catalog.outputs.wordCount != '0'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true' && (needs.catalog.outputs.wordCount != '0')
     uses: ./.github/workflows/_generate-word-voicevox-conj-batch.yml
     with:
       speakers: ${{ needs.discover.outputs.batch0 }}
@@ -137,7 +154,7 @@ jobs:
 
   generate-1:
     needs: [discover, catalog, prepare-storage]
-    if: needs.catalog.outputs.wordCount != '0'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true' && (needs.catalog.outputs.wordCount != '0')
     uses: ./.github/workflows/_generate-word-voicevox-conj-batch.yml
     with:
       speakers: ${{ needs.discover.outputs.batch1 }}
@@ -147,7 +164,7 @@ jobs:
 
   generate-2:
     needs: [discover, catalog, prepare-storage]
-    if: needs.catalog.outputs.wordCount != '0'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true' && (needs.catalog.outputs.wordCount != '0')
     uses: ./.github/workflows/_generate-word-voicevox-conj-batch.yml
     with:
       speakers: ${{ needs.discover.outputs.batch2 }}
@@ -157,7 +174,7 @@ jobs:
 
   generate-3:
     needs: [discover, catalog, prepare-storage]
-    if: needs.catalog.outputs.wordCount != '0'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true' && (needs.catalog.outputs.wordCount != '0')
     uses: ./.github/workflows/_generate-word-voicevox-conj-batch.yml
     with:
       speakers: ${{ needs.discover.outputs.batch3 }}
@@ -167,7 +184,7 @@ jobs:
 
   finalize:
     needs: [catalog, generate-0, generate-1, generate-2, generate-3]
-    if: needs.catalog.outputs.wordCount != '0'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true' && (needs.catalog.outputs.wordCount != '0')
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
