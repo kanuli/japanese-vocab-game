@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "inventoryVersion": "v1",
+  "inventoryFreezeHash": "dce92b8dae91165f4e2fe7c9fee62489d24230242588d46eab7472889fcbbfc0",
+  "chunkSize": 400,
+  "chunkCount": 212,
+  "publicBundleCount": 20,
+  "uniqueReadingCount": 84557,
+  "updatedAt": "2026-09-03T05:46:00Z",
+  "note": "Checkpoint. One failure must never require restarting previously successful units. Generation chunks are not public runtime shards; compact later into ~20 range-readable public bundles. Do not advertise 100% hosted coverage until a voice's chunks are complete.",
+  "providers": {
+    "supertonic3": {
+      "F3": {
+        "v1": {
+          "coverageComplete": false,
+          "expectedReadings": 84557,
+          "generatedReadings": 0,
+          "reusedReadings": 8000,
+          "coverageNote": "Partial published v1 F3 (8000 of 84557). Keep previous valid lookup. Incomplete = miss then documented fallback. Do not regenerate valid F3 clips.",
+          "legacyReuse": {
+            "releaseTag": "word-supertonic3-conj-v1",
+            "catalog": "word-supertonic3-conj-catalog.json",
+            "voice": "F3",
+            "readingCount": 8000,
+            "publicShardCount": 8,
+            "readingToSource": "catalog words map: reading|written -> [legacyId, publicShard]",
+            "note": "reading×voice mapped via existing v1 F3 catalog. Reuse, do not duplicate."
+          },
+          "chunks": {}
+        }
+      }
+    },
+    "voicevox": {},
+    "aivis": {}
+  }
+}
