@@ -1,31 +1,19 @@
 {
-  "version": 1,
+  "version": 2,
   "status": "catalog",
   "engine": "supertonic-3-conj-delta-source",
-  "coverageRule": "unique NFKC kana readings of basic+extended conjugations missing from hosted catalogs",
-  "verbCount": 3670,
-  "uniqueReadingCount": 84557,
-  "alreadyHostedReadingCount": 2295,
-  "newReadingCount": 8000,
-  "capped": true,
-  "cap": 8000,
-  "wordCount": 8000,
-  "shardCount": 8,
-  "shardCounts": [
-    1000,
-    1000,
-    1000,
-    1000,
-    1000,
-    1000,
-    1000,
-    1000
-  ],
-  "voices": [
-    "F3"
-  ],
+  "coverageRule": "unique NFKC kana readings of basic+extended conjugations missing from same-engine hosted catalogs",
+  "capped": false,
+  "cap": 0,
+  "voices": ["F1", "F2", "F3", "F4", "F5", "M1", "M2", "M3", "M4", "M5"],
+  "shardCount": 20,
+  "releaseTag": "word-supertonic3-conj-v2",
+  "hfDir": "word/supertonic3/conj-v2",
   "hostedAudioStatus": "pending-actions",
-  "releaseTag": "word-supertonic3-conj-v1",
-  "hfDir": "word/supertonic3/conj-v1",
-  "note": "Clips appear after generate-word-supertonic3-conj-delta.yml publishes GitHub Release word-supertonic3-conj-v1. Do not mark hosted conjugation audio PASS until the ready catalog exists."
+  "reuse": {
+    "v1Release": "word-supertonic3-conj-v1",
+    "v1Voices": ["F3"],
+    "v1Readings": 8000
+  },
+  "note": "Uncapped inventory. Clips appear after generate-word-supertonic3-conj-delta.yml publishes GitHub Release word-supertonic3-conj-v2. Device TTS is not hosted PASS."
 }
