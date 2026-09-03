@@ -1,0 +1,199 @@
+name: Generate Word VOICEVOX conjugation unique readings
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.word-voicevox-conj-trigger'
+
+permissions:
+  actions: read
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-voicevox-conj-v1
+  HF_DIR: word/voicevox/conj-v1
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      batch0: ${{ steps.matrix.outputs.batch0 }}
+      batch1: ${{ steps.matrix.outputs.batch1 }}
+      batch2: ${{ steps.matrix.outputs.batch2 }}
+      batch3: ${{ steps.matrix.outputs.batch3 }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+      - name: Build canonical speaker batches matching wordlist catalog
+        id: matrix
+        run: |
+          curl -fsS http://127.0.0.1:50021/speakers -o /tmp/speakers.json
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          catalog=json.loads(Path('word-voicevox-catalog.json').read_text(encoding='utf-8'))
+          wanted=list((catalog.get('speakers') or {}).keys())
+          if len(wanted)<1: raise SystemExit('word-voicevox-catalog.json has no speakers')
+          speakers=json.load(open('/tmp/speakers.json',encoding='utf-8'))
+          preferred=('ノーマル','Normal','NORMAL','通常','ふつう','人間ver.','つぼみ')
+          by_name={}
+          for sp in speakers:
+              name=str(sp.get('name','')).strip(); styles=list(sp.get('styles') or [])
+              if not name or not styles: continue
+              style=next((x for x in styles if str(x.get('name','')).strip() in preferred),styles[0])
+              by_name[name]={'name':name,'style_id':int(style['id']),'style':str(style.get('name','')).strip()}
+          rows=[]
+          for key in wanted:
+              meta=catalog['speakers'][key]
+              name=str(meta.get('speaker') or '')
+              if name not in by_name: raise SystemExit(f'VOICEVOX engine missing wordlist speaker {key} {name}')
+              row=dict(by_name[name]); row['key']=key; rows.append(row)
+          batches=[rows[i:i+12] for i in range(0,len(rows),12)]
+          while len(batches)<4: batches.append([])
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as out:
+              for i,b in enumerate(batches[:4]):
+                  out.write(f'batch{i}='+json.dumps(b,ensure_ascii=False,separators=(',',':'))+'\n')
+          print('speakers', len(rows), 'batches', [len(b) for b in batches[:4]])
+          PY
+      - if: always()
+        run: docker stop voicevox-engine || true
+
+  catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      shards: ${{ steps.meta.outputs.shards }}
+      wordCount: ${{ steps.meta.outputs.wordCount }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build uncapped VOICEVOX conjugation source
+        env:
+          CONJ_MAX_NEW: '0'
+          SHARD_COUNT: '20'
+          ENGINE: voicevox-conj-delta-source
+          ID_PREFIX: conj-voicevox-v1
+          OUT: word-voicevox-conj-source.json
+          PLAN_OUT: word-voicevox-conj-plan.json
+          AUDIT_OUT: word-voicevox-conj-audit.json
+          RELEASE_TAG: word-voicevox-conj-v1
+          HF_DIR: word/voicevox/conj-v1
+          SKIP_CATALOGS: word-voicevox-catalog.json,word-voicevox-delta-catalog.json
+        run: |
+          python scripts/collect_conjugation_words.py
+          python scripts/build_word_supertonic_conj_delta_source.py
+      - id: meta
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads(Path('word-voicevox-conj-source.json').read_text(encoding='utf-8'))
+          shards=list(range(int(d.get('shardCount') or 0)))
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as f:
+              f.write('shards='+json.dumps(shards)+'\nwordCount='+str(d.get('wordCount') or 0)+'\n')
+          print('VV conj shards', shards, 'new', d.get('wordCount'), 'capped', d.get('capped'))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-voicevox-conj-source
+          path: |
+            word-voicevox-conj-source.json
+            word-voicevox-conj-plan.json
+            word-voicevox-conj-audit.json
+          retention-days: 7
+
+  prepare-storage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title "VOICEVOX conjugation unique readings" --notes "Unique conjugated readings not already in the lemma VOICEVOX catalog. Speakers match the wordlist selector (s01-s43). Device TTS is not hosted PASS."
+
+  generate-0:
+    needs: [discover, catalog, prepare-storage]
+    if: needs.catalog.outputs.wordCount != '0'
+    uses: ./.github/workflows/_generate-word-voicevox-conj-batch.yml
+    with:
+      speakers: ${{ needs.discover.outputs.batch0 }}
+      shards: ${{ needs.catalog.outputs.shards }}
+      batch: '0'
+    secrets: inherit
+
+  generate-1:
+    needs: [discover, catalog, prepare-storage]
+    if: needs.catalog.outputs.wordCount != '0'
+    uses: ./.github/workflows/_generate-word-voicevox-conj-batch.yml
+    with:
+      speakers: ${{ needs.discover.outputs.batch1 }}
+      shards: ${{ needs.catalog.outputs.shards }}
+      batch: '1'
+    secrets: inherit
+
+  generate-2:
+    needs: [discover, catalog, prepare-storage]
+    if: needs.catalog.outputs.wordCount != '0'
+    uses: ./.github/workflows/_generate-word-voicevox-conj-batch.yml
+    with:
+      speakers: ${{ needs.discover.outputs.batch2 }}
+      shards: ${{ needs.catalog.outputs.shards }}
+      batch: '2'
+    secrets: inherit
+
+  generate-3:
+    needs: [discover, catalog, prepare-storage]
+    if: needs.catalog.outputs.wordCount != '0'
+    uses: ./.github/workflows/_generate-word-voicevox-conj-batch.yml
+    with:
+      speakers: ${{ needs.discover.outputs.batch3 }}
+      shards: ${{ needs.catalog.outputs.shards }}
+      batch: '3'
+    secrets: inherit
+
+  finalize:
+    needs: [catalog, generate-0, generate-1, generate-2, generate-3]
+    if: needs.catalog.outputs.wordCount != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-voicevox-conj-source
+          path: .
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: word-voicevox-conj-manifest-*
+          path: word-voicevox-conj-manifests
+          merge-multiple: true
+      - name: Build VOICEVOX conj catalog
+        env:
+          CATALOG: word-voicevox-conj-source.json
+          MANIFEST_DIR: word-voicevox-conj-manifests
+          OUT: word-voicevox-conj-catalog.json
+          RELEASE_TAG: word-voicevox-conj-v1
+          HF_DIR: word/voicevox/conj-v1
+        run: python scripts/build_word_voicevox_conj_delta_catalog.py
+      - name: Commit VOICEVOX conj text catalogs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-voicevox-conj-catalog.json word-voicevox-conj-*-index.json word-voicevox-conj-plan.json word-voicevox-conj-audit.json
+          if git diff --cached --quiet; then echo current; else git commit -m 'Publish VOICEVOX conjugation hosted audio indexes'; git pull --rebase origin main; git push origin main; fi

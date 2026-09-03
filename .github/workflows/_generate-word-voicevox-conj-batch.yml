@@ -1,0 +1,106 @@
+name: VOICEVOX conj batch (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      speakers:
+        required: true
+        type: string
+      shards:
+        required: true
+        type: string
+      batch:
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  RELEASE_TAG: word-voicevox-conj-v1
+  HF_DIR: word/voicevox/conj-v1
+
+jobs:
+  generate:
+    if: inputs.speakers != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        speaker: ${{ fromJson(inputs.speakers) }}
+        shard: ${{ fromJson(inputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          name: word-voicevox-conj-source
+          path: .
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Start official VOICEVOX Engine
+        run: |
+          docker pull voicevox/voicevox_engine:cpu-latest
+          docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
+          for i in $(seq 1 120); do
+            if curl -fsS http://127.0.0.1:50021/version >/dev/null; then break; fi
+            if [ "$i" = 120 ]; then docker logs voicevox-engine || true; exit 1; fi
+            sleep 2
+          done
+      - name: Generate or skip published shard
+        env:
+          SHARD: ${{ matrix.shard }}
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SPEAKER_NAME: ${{ matrix.speaker.name }}
+          STYLE_ID: ${{ matrix.speaker.style_id }}
+          STYLE_NAME: ${{ matrix.speaker.style }}
+          CATALOG: word-voicevox-conj-source.json
+          OUTPUT_DIR: word-voicevox-conj-out
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$OUTPUT_DIR" manifest-artifact
+          ASSET="$SPEAKER_KEY-shard$SHARD.tar"
+          if gh release view "$RELEASE_TAG" --json assets -q '.assets[].name' | grep -Fxq "$ASSET"; then
+            echo "Idempotent skip $ASSET"
+            gh release download "$RELEASE_TAG" -p "$ASSET" -D "$OUTPUT_DIR"
+            python - <<'PY'
+            import json,os,tarfile
+            from pathlib import Path
+            k,s=os.environ['SPEAKER_KEY'],int(os.environ['SHARD'])
+            tar=Path('word-voicevox-conj-out')/f'{k}-shard{s}.tar'
+            members={}
+            with tarfile.open(tar,'r:') as tf:
+                for m in tf.getmembers():
+                    if m.isfile(): members[Path(m.name).stem]=[int(m.offset_data),int(m.size)]
+            src=json.load(open('word-voicevox-conj-source.json'))
+            expected={x['id'] for x in src['items'] if int(x['shard'])==s}
+            if set(members)!=expected: raise SystemExit(f'coverage mismatch skip {k} {s}')
+            manifest={'version':1,'speakerKey':k,'speaker':os.environ['SPEAKER_NAME'],'style':os.environ['STYLE_NAME'],'styleId':int(os.environ['STYLE_ID']),'credit':'VOICEVOX:'+os.environ['SPEAKER_NAME'],'shard':s,'count':len(members),'asset':tar.name,'members':members}
+            Path(f'word-voicevox-conj-out/{k}-shard{s}.json').write_text(json.dumps(manifest,ensure_ascii=False,separators=(',',':')),encoding='utf-8')
+            PY
+          else
+            python scripts/generate_word_voicevox_shard.py
+            gh release upload "$RELEASE_TAG" "$OUTPUT_DIR/$ASSET" --clobber
+          fi
+          cp "$OUTPUT_DIR/$SPEAKER_KEY-shard$SHARD.json" manifest-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: word-voicevox-conj-manifest-${{ matrix.speaker.key }}-${{ matrix.shard }}
+          path: manifest-artifact/*.json
+          retention-days: 7
+      - name: Hugging Face backup
+        continue-on-error: true
+        env:
+          SPEAKER_KEY: ${{ matrix.speaker.key }}
+          SHARD: ${{ matrix.shard }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+        run: |
+          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+          hf upload "$HF_DATASET_REPO" "word-voicevox-conj-out/$SPEAKER_KEY-shard$SHARD.tar" "$HF_DIR/$SPEAKER_KEY-shard$SHARD.tar" --repo-type dataset --commit-message "VOICEVOX conj $SPEAKER_KEY shard $SHARD"
+      - if: always()
+        run: docker stop voicevox-engine || true
