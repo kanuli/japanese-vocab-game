@@ -19,14 +19,31 @@ Path("chunks.txt").write_text("\n".join(map(str,chunks))+"\n")
 print("chunks", chunks, "tag", os.environ["TAG"], "unique", inv.get("uniqueReadingCount"), "chunkSize", inv.get("chunkSize"))
 PY
 gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Conjugation generation chunks $TAG" --notes "Small resumable conjugation audio chunks. Not public runtime shards. Compact later into ~20 range-readable bundles."
+SAVED_HF_OIDC="${HF_OIDC_RESOURCE-}"
+# Public model download must not use dataset OIDC (invalid_grant / aborted grant).
+unset HF_OIDC_RESOURCE HF_TOKEN HUGGINGFACE_HUB_TOKEN HUGGING_FACE_HUB_TOKEN || true
 sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libsndfile1
 if [ "$PROVIDER" = supertonic3 ]; then
   retry python -m pip install --quiet --disable-pip-version-check 'numpy>=1.21,<2' 'supertonic==1.2.2'
   python -c "from supertonic import TTS; print('imported TTS ok')"
-  # Dataset-scoped GitHub OIDC must not wrap public SuperTonic model download.
-  SAVED_HF_OIDC_RESOURCE="${HF_OIDC_RESOURCE-}"
-  unset HF_OIDC_RESOURCE HF_TOKEN HUGGING_FACE_HUB_TOKEN || true
-  export HF_HUB_DISABLE_IMPLICIT_TOKEN=1
+  python - <<'PY'
+import time, traceback
+from supertonic import TTS
+last=None
+for i in range(1,4):
+    try:
+        print("prewarm TTS attempt", i, flush=True)
+        TTS(auto_download=True)
+        print("prewarm TTS ok", flush=True)
+        break
+    except Exception as e:
+        last=e
+        print("prewarm TTS failed", i, type(e).__name__, e, flush=True)
+        traceback.print_exc()
+        time.sleep(8*i)
+else:
+    raise SystemExit("TTS model download failed: %s: %s" % (type(last).__name__, last))
+PY
 elif [ "$PROVIDER" = voicevox ]; then
   retry docker pull voicevox/voicevox_engine:cpu-latest
   docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
@@ -64,7 +81,12 @@ while IFS= read -r CHUNK; do
     continue
   fi
   export CHUNK ASSET INVENTORY="$INV_FILE" OUT_DIR=conj-chunk-out CATALOG_OUT=conj-chunk-out/chunk-catalog.json SKIP_OUT=conj-chunk-out/skip.json ASSET_NAME="$ASSET"
-  if [ -f word-supertonic3-conj-catalog.json ]; then export LEGACY_CATALOG=word-supertonic3-conj-catalog.json; fi
+  if echo "$INV" | grep -q "^smoke"; then
+    unset LEGACY_CATALOG || true
+    echo "smoke inventory: disable F3 v1 legacy reuse so clips are newly synthesized"
+  elif [ -f word-supertonic3-conj-catalog.json ]; then
+    export LEGACY_CATALOG=word-supertonic3-conj-catalog.json
+  fi
   if [ "$PROVIDER" = aivis ]; then export MODEL=aivis-model.json; fi
   rm -f conj-chunk-out/skip.json
   GEN_OK=0
@@ -77,7 +99,6 @@ while IFS= read -r CHUNK; do
       break
     fi
     cat /tmp/gen.out /tmp/gen.err || true
-    GEN_ERR=$(python -c "import pathlib; print(pathlib.Path('/tmp/gen.err').read_text(errors='replace')[-1500:])")
     sleep $((attempt*8))
   done
   if [ -f conj-chunk-out/skip.json ]; then
@@ -95,12 +116,51 @@ PY
   fi
   if [ "$GEN_OK" != 1 ]; then
     echo "generation failed after retries"; OVERALL=1
-    export GEN_ERR
     python - <<'PY'
 import json,datetime,os
 from pathlib import Path
-err=os.environ.get('GEN_ERR','generation failed')[:1500]
-Path('conj-chunk-out/record.json').write_text(json.dumps({'status':'failed','expectedCount':0,'generatedCount':0,'validation':{'ok':False},'persistedAsset':None,'githubAvailable':False,'retry':3,'error':err,'failedReadingIds':[],'timestamp':datetime.datetime.utcnow().isoformat()+'Z'}))
+
+def read_tail(p, n=2000):
+    path=Path(p)
+    if not path.is_file():
+        return ""
+    return path.read_text(errors="replace")[-n:]
+
+plan={}
+if Path("conj-chunk-out/chunk-plan.json").is_file():
+    try:
+        plan=json.loads(Path("conj-chunk-out/chunk-plan.json").read_text(encoding="utf-8"))
+    except Exception:
+        plan={}
+inv={}
+inv_file=os.environ.get("INV_FILE","")
+if inv_file and Path(inv_file).is_file():
+    try:
+        inv=json.loads(Path(inv_file).read_text(encoding="utf-8"))
+    except Exception:
+        inv={}
+chunk=int(os.environ.get("CHUNK") or 0)
+cs=int(inv.get("chunkSize") or 0)
+rows=inv.get("readings") or []
+fallback=len(rows[chunk*cs:chunk*cs+cs]) if cs else 0
+expected=plan.get("expected", fallback)
+blob="\n".join(x for x in [read_tail("/tmp/gen.out", 2000), read_tail("/tmp/gen.err", 2000)] if x).strip()[-2000:]
+err=blob or "generation failed"
+Path("conj-chunk-out").mkdir(parents=True, exist_ok=True)
+Path("conj-chunk-out/record.json").write_text(json.dumps({
+    "status":"failed",
+    "expectedCount":expected,
+    "generatedCount":0,
+    "validation":{"ok":False},
+    "persistedAsset":None,
+    "githubAvailable":False,
+    "retry":3,
+    "error":err,
+    "failedReadingIds":[],
+    "timestamp":datetime.datetime.utcnow().isoformat()+"Z"
+}, ensure_ascii=False))
+print("recorded gen error expected", expected, "bytes", len(err), flush=True)
+print(err[:400], flush=True)
 PY
     node scripts/conjugation_chunk_pipeline.js update-status --status word-conjugation-generation-status.json --inventory "$INV_FILE" --provider "$PROVIDER" --voice "$VOICE" --inventory_version "$INV" --chunk "$CHUNK" --record conj-chunk-out/record.json --failed --out word-conjugation-generation-status.json || true
     echo "::endgroup::"; continue
@@ -137,8 +197,7 @@ PY
     sleep $((attempt*8))
   done
   HF_OK=false
-  if [ -n "${SAVED_HF_OIDC_RESOURCE-}" ]; then export HF_OIDC_RESOURCE="$SAVED_HF_OIDC_RESOURCE"; fi
-  unset HF_HUB_DISABLE_IMPLICIT_TOKEN || true
+  if [ -n "${SAVED_HF_OIDC}" ]; then export HF_OIDC_RESOURCE="$SAVED_HF_OIDC"; fi
   if python -m pip show huggingface_hub >/dev/null 2>&1 || python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'; then
     if hf upload "$HF_DATASET_REPO" "staging/$ASSET" "$HF_DIR/$ASSET" --repo-type dataset --commit-message "conj chunk $PROVIDER $VOICE $CHUNK"; then HF_OK=true; fi
   fi || true
