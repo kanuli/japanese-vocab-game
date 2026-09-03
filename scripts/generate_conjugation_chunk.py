@@ -42,7 +42,12 @@ def main() -> int:
         "--plan",
         str(out_dir / "chunk-plan.json"),
     ]
-    if os.environ.get("LEGACY_CATALOG"):
+    inv_meta = load_json(inventory)
+    is_smoke = bool(inv_meta.get("smoke")) or str(inv_meta.get("inventoryVersion") or "").startswith("smoke")
+    if is_smoke:
+        cmd += ["--no-legacy-reuse"]
+        print("smoke inventory: F3 v1 legacy reuse disabled", flush=True)
+    elif os.environ.get("LEGACY_CATALOG"):
         cmd += ["--legacy-catalog", os.environ["LEGACY_CATALOG"]]
     subprocess.check_call(cmd)
     plan = load_json(out_dir / "chunk-plan.json")

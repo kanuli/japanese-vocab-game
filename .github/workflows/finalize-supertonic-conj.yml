@@ -8,6 +8,10 @@ on:
         required: true
         default: v1
         type: string
+  push:
+    branches: [main]
+    paths:
+      - '.word-conj-smoke-f3-finalize-trigger'
 
 permissions:
   contents: write
@@ -27,7 +31,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           PROVIDER: supertonic3
-          INV: ${{ github.event.inputs.inventory_version }}
+          INV: ${{ github.event.inputs.inventory_version || 'smoke-v1' }}
         run: |
           set -euo pipefail
           INV_FILE="word-conjugation-reading-inventory-${INV}.json"
