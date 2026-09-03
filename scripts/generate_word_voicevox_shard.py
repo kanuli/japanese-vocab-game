@@ -65,13 +65,26 @@ def build_tar(mp3_dir,ids,tar_path):
     if set(members)!=set(ids):raise RuntimeError('TAR members do not match IDs')
     return members
 
+def catalog_rows(data):
+    sc=int(data.get('shardCount') or 0)
+    if SHARD not in range(sc):raise RuntimeError(f'invalid shard {SHARD} / {sc}')
+    items=data.get('items')
+    if isinstance(items, list) and items:
+        rows=[w for w in items if int(w['shard'])==SHARD]
+        return rows, sc, 'items'
+    words=data.get('words')
+    if isinstance(words, list):
+        if data.get('version')!=1 or sc!=5:raise RuntimeError('unsupported lemma catalog')
+        rows=[w for w in words if int(w['shard'])==SHARD]
+        if len(rows)<4000:raise RuntimeError(f'shard unexpectedly small: {len(rows)}')
+        return rows, sc, 'lemma'
+    raise RuntimeError('catalog has neither items nor lemma words list')
+
 def main():
     wait_engine();sid,style=verify_voice()
     data=json.loads(CATALOG.read_text(encoding='utf-8'))
-    if data.get('version')!=1 or int(data.get('shardCount',0))!=5:raise RuntimeError('unsupported catalog')
-    if SHARD not in range(5):raise RuntimeError(f'invalid shard {SHARD}')
-    words=[w for w in data['words'] if int(w['shard'])==SHARD]
-    if len(words)<4000:raise RuntimeError(f'shard unexpectedly small: {len(words)}')
+    words,sc,kind=catalog_rows(data)
+    if not words:raise RuntimeError(f'empty shard {SHARD} ({kind})')
     work=OUTPUT_DIR/'mp3';work.mkdir(parents=True,exist_ok=True)
     print(f'Generating {len(words)} vocabulary items for {SPEAKER_NAME}/{style}, shard {SHARD}')
     for i,w in enumerate(words,1):
