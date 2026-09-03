@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import hashlib,json,os,shutil,subprocess,tarfile,tempfile
+import hashlib,json,os,shutil,subprocess,tarfile,tempfile,time,traceback
 from pathlib import Path
 from supertonic import TTS
 
@@ -49,7 +49,30 @@ qa_ids|={w['id'] for w in rows if str(w.get('reading','')).strip() in KNOWN_REGR
 
 OUT.mkdir(parents=True,exist_ok=True)
 if QA_DIR: QA_DIR.mkdir(parents=True,exist_ok=True)
-tts=TTS(auto_download=True);style=tts.get_voice_style(voice_name=VOICE)
+
+def _clear_hf_auth():
+    # Dataset OIDC/tokens make public SuperTonic model download fail with invalid_grant.
+    for k in ('HF_TOKEN','HUGGINGFACE_HUB_TOKEN','HUGGING_FACE_HUB_TOKEN','HF_OIDC_RESOURCE'):
+        os.environ.pop(k, None)
+
+def make_tts():
+    _clear_hf_auth()
+    last=None
+    for attempt in range(1,4):
+        try:
+            print('TTS init attempt',attempt,'auto_download=True',flush=True)
+            engine=TTS(auto_download=True)
+            voice_style=engine.get_voice_style(voice_name=VOICE)
+            print('TTS ready',VOICE,flush=True)
+            return engine,voice_style
+        except Exception as e:
+            last=e
+            print('TTS init failed attempt',attempt,type(e).__name__,e,flush=True)
+            traceback.print_exc()
+            time.sleep(8*attempt)
+    raise RuntimeError(f'TTS init failed after retries: {type(last).__name__}: {last}') from last
+
+tts,style=make_tts()
 qa_rows=[]
 
 with tempfile.TemporaryDirectory(prefix=f'word-st3-{VOICE}-{SHARD}-') as td:
@@ -59,10 +82,15 @@ with tempfile.TemporaryDirectory(prefix=f'word-st3-{VOICE}-{SHARD}-') as td:
         if not reading: raise RuntimeError(f'Empty reading for {w["id"]}')
         text=reading
         if ADD_STOP and text[-1] not in '。！？!?': text+='。'
-        wav,_=tts.synthesize(
-            text=text,voice_style=style,total_steps=STEPS,speed=SPEED,
-            max_chunk_length=100,silence_duration=.10,lang='ja',verbose=False
-        )
+        try:
+            wav,_=tts.synthesize(
+                text=text,voice_style=style,total_steps=STEPS,speed=SPEED,
+                max_chunk_length=100,silence_duration=.10,lang='ja',verbose=False
+            )
+        except Exception as e:
+            print('synthesize failed id',w.get('id'),'reading',reading,type(e).__name__,e,flush=True)
+            traceback.print_exc()
+            raise
         wp=tmp/f"{w['id']}.wav";mp=tmp/f"{w['id']}.mp3"
         tts.save_audio(wav,str(wp))
         subprocess.run([
