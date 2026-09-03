@@ -6,7 +6,7 @@
   "chunkCount": 212,
   "publicBundleCount": 20,
   "uniqueReadingCount": 84557,
-  "updatedAt": "2026-09-03T06:39:33.380236Z",
+  "updatedAt": "2026-09-03T06:48:04.876371Z",
   "note": "Checkpoint. One failure must never require restarting previously successful units. Generation chunks are not public runtime shards; compact later into ~20 range-readable public bundles. Do not advertise 100% hosted coverage until a voice's chunks are complete.",
   "providers": {
     "supertonic3": {
@@ -31,22 +31,37 @@
         "smoke-v1": {
           "coverageComplete": false,
           "expectedReadings": 84557,
-          "generatedReadings": 0,
+          "generatedReadings": 40,
           "reusedReadings": 0,
           "chunks": {
             "0": {
-              "status": "failed",
-              "expectedCount": 0,
-              "generatedCount": 0,
+              "status": "complete",
+              "expectedCount": 40,
+              "generatedCount": 40,
+              "reusedCount": 0,
               "validation": {
-                "ok": false
+                "ok": true,
+                "tar": "supertonic3-F3-invsmoke-v1-chunk000.tar",
+                "expectedCount": 40,
+                "memberCount": 40,
+                "idsMatch": true,
+                "tarOpens": true,
+                "sha256": "5ed739f675d71fa4c57154cc81e9a061641d32cf42de4395b7a175e476a32e93",
+                "size": 839680,
+                "nonZeroAudio": true,
+                "sampleDecode": true,
+                "failedReadingIds": [],
+                "errors": []
               },
-              "persistedAsset": null,
-              "githubAvailable": false,
-              "retry": 3,
-              "error": " in __init__\n    self.model = load_model(\n                 ^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/supertonic/loader.py\", line 338, in load_model\n    download_model(model_dir, model_name)\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/supertonic/loader.py\", line 154, in download_model\n    raise RuntimeError(\nRuntimeError: Failed to download model from Supertone/supertonic-3. Please check your internet connection and try again. Error: (Request ID: Root=1-6a991603-32ddc4042ce6cb1d3a455bbd;3a5aced5-746f-4c40-b387-88b30cd4e1d3)\n\nBad request:\ninvalid_grant: This operation was aborted\nTraceback (most recent call last):\n  File \"/home/runner/work/japanese-vocab-game/japanese-vocab-game/scripts/generate_conjugation_chunk.py\", line 129, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/home/runner/work/japanese-vocab-game/japanese-vocab-game/scripts/generate_conjugation_chunk.py\", line 82, in main\n    subprocess.check_call([sys.executable, str(ROOT / \"scripts\" / \"generate_word_supertonic_shard.py\")], env=env)\n  File \"/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/subprocess.py\", line 413, in check_call\n    raise CalledProcessError(retcode, cmd)\nsubprocess.CalledProcessError: Command '['/opt/hostedtoolcache/Python/3.11.16/x64/bin/python', '/home/runner/work/japanese-vocab-game/japanese-vocab-game/scripts/generate_word_supertonic_shard.py']' returned non-zero exit status 1.",
-              "failedReadingIds": [],
-              "timestamp": "2026-09-03T06:39:33.380236Z",
+              "persistedAsset": "supertonic3-F3-invsmoke-v1-chunk000.tar",
+              "sha256": "5ed739f675d71fa4c57154cc81e9a061641d32cf42de4395b7a175e476a32e93",
+              "size": 839680,
+              "githubAvailable": true,
+              "hfAvailable": false,
+              "githubRelease": "word-conj-chunks-smoke",
+              "timestamp": "2026-09-03T06:48:04.876371Z",
+              "retry": 0,
+              "error": null,
               "chunk": 0
             }
           }
