@@ -1,0 +1,72 @@
+name: Finalize Aivis conjugation coverage
+
+on:
+  workflow_dispatch:
+    inputs:
+      inventory_version:
+        description: Frozen inventory version
+        required: true
+        default: v1
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Inspect durable status and release assets (no audio gen, no download-artifact)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROVIDER: aivis
+          INV: ${{ github.event.inputs.inventory_version }}
+        run: |
+          set -euo pipefail
+          INV_FILE="word-conjugation-reading-inventory-${INV}.json"
+          test -f "$INV_FILE"
+          TAG=word-conj-chunks-v1
+          if echo "$INV" | grep -q '^smoke'; then TAG=word-conj-chunks-smoke; fi
+          gh release view "$TAG" --json assets -q '.assets[].name' > /tmp/release-assets.txt || true
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          names=Path('/tmp/release-assets.txt').read_text().split()
+          Path('/tmp/release-assets.json').write_text(json.dumps(names))
+          print('durable assets', len(names))
+          PY
+          SPEAKERS=""
+          if [ "aivis" = voicevox ]; then SPEAKERS=$(python -c "import json;print(','.join(json.load(open('word-voicevox-speakers.json'))))"); fi
+          node scripts/conjugation_chunk_pipeline.js finalize-report \
+            --inventory "$INV_FILE" \
+            --status word-conjugation-generation-status.json \
+            --provider "$PROVIDER" \
+            --inventory_version "$INV" \
+            --release-assets /tmp/release-assets.json \
+            --speakers "$SPEAKERS" \
+            --honest-partial true \
+            --out "word-conjugation-finalize-${PROVIDER}.json"
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path(f"word-conjugation-finalize-{os.environ['PROVIDER']}.json").read_text())
+          print(r.get('status'), 'voices', [(v['voice'], v['status'], v.get('missingChunkIds')) for v in r.get('voices') or []])
+          if r.get('usedActionsArtifacts'):
+              raise SystemExit('finalizer must not use Actions artifacts')
+          print('FINALIZER', r['status'])
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-conjugation-finalize-aivis.json word-conjugation-generation-status.json || true
+          if git diff --cached --quiet; then echo no catalog change; else
+            git commit -m "Report aivis conjugation coverage (no audio gen)"
+            git pull --rebase origin main
+            git push origin main
+          fi
