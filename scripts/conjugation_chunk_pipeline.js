@@ -139,7 +139,7 @@ function mapLegacyF3(status, inv, catalog) {
     voice: 'F3',
     readingCount: count,
     publicShardCount: Number(catalog && catalog.shardCount) || 8,
-    note: 'reading	imesvoice mapped via catalog words map; do not regenerate valid F3 clips'
+    note: 'reading\u00d7voice mapped via catalog words map; do not regenerate valid F3 clips'
   };
   slot.reusedReadings = count;
   slot.expectedReadings = inv.uniqueReadingCount || inv.readings.length;
@@ -187,11 +187,14 @@ function main(argv) {
     var inv = loadInventory(opts.inventory);
     assertFrozen(inv);
     var chunk = parseInt(opts.chunk, 10);
-    var legacy = opts['legacy-catalog'] ? legacyReadingMap(loadJson(opts['legacy-catalog'])) : Object.create(null);
+    var isSmoke = !!(inv.smoke || String(inv.inventoryVersion || '').indexOf('smoke') === 0);
+    var noReuse = !!opts['no-legacy-reuse'] || isSmoke;
+    var legacy = (!noReuse && opts['legacy-catalog']) ? legacyReadingMap(loadJson(opts['legacy-catalog'])) : Object.create(null);
     var plan = planChunk(inv, chunk, {
       provider: opts.provider,
       voice: opts.voice,
-      legacyMap: legacy
+      legacyMap: legacy,
+      disableReuse: noReuse
     });
     var cat = generatorCatalog(inv, chunk, plan);
     writeJson(opts.out, cat);
