@@ -19,9 +19,10 @@ Path("chunks.txt").write_text("\n".join(map(str,chunks))+"\n")
 print("chunks", chunks, "tag", os.environ["TAG"], "unique", inv.get("uniqueReadingCount"), "chunkSize", inv.get("chunkSize"))
 PY
 gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Conjugation generation chunks $TAG" --notes "Small resumable conjugation audio chunks. Not public runtime shards. Compact later into ~20 range-readable bundles."
-sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libsndfile1
 if [ "$PROVIDER" = supertonic3 ]; then
-  retry python -m pip install --quiet --disable-pip-version-check 'supertonic==1.2.2'
+  retry python -m pip install --quiet --disable-pip-version-check 'numpy>=1.21,<2' 'supertonic==1.2.2'
+  python -c "from supertonic import TTS; print('imported TTS ok')"
 elif [ "$PROVIDER" = voicevox ]; then
   retry docker pull voicevox/voicevox_engine:cpu-latest
   docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
@@ -63,9 +64,16 @@ while IFS= read -r CHUNK; do
   if [ "$PROVIDER" = aivis ]; then export MODEL=aivis-model.json; fi
   rm -f conj-chunk-out/skip.json
   GEN_OK=0
+  GEN_ERR="generation failed"
   for attempt in 1 2 3; do
     echo "synth attempt $attempt"
-    if python scripts/generate_conjugation_chunk.py; then GEN_OK=1; break; fi
+    if python -u scripts/generate_conjugation_chunk.py > /tmp/gen.out 2> /tmp/gen.err; then
+      GEN_OK=1
+      cat /tmp/gen.out
+      break
+    fi
+    cat /tmp/gen.out /tmp/gen.err || true
+    GEN_ERR=$(python -c "import pathlib; print(pathlib.Path('/tmp/gen.err').read_text(errors='replace')[-1500:])")
     sleep $((attempt*8))
   done
   if [ -f conj-chunk-out/skip.json ]; then
@@ -83,10 +91,12 @@ PY
   fi
   if [ "$GEN_OK" != 1 ]; then
     echo "generation failed after retries"; OVERALL=1
+    export GEN_ERR
     python - <<'PY'
-import json,datetime
+import json,datetime,os
 from pathlib import Path
-Path('conj-chunk-out/record.json').write_text(json.dumps({'status':'failed','expectedCount':0,'generatedCount':0,'validation':{'ok':False},'persistedAsset':None,'githubAvailable':False,'retry':3,'error':'generation failed','failedReadingIds':[],'timestamp':datetime.datetime.utcnow().isoformat()+'Z'}))
+err=os.environ.get('GEN_ERR','generation failed')[:1500]
+Path('conj-chunk-out/record.json').write_text(json.dumps({'status':'failed','expectedCount':0,'generatedCount':0,'validation':{'ok':False},'persistedAsset':None,'githubAvailable':False,'retry':3,'error':err,'failedReadingIds':[],'timestamp':datetime.datetime.utcnow().isoformat()+'Z'}))
 PY
     node scripts/conjugation_chunk_pipeline.js update-status --status word-conjugation-generation-status.json --inventory "$INV_FILE" --provider "$PROVIDER" --voice "$VOICE" --inventory_version "$INV" --chunk "$CHUNK" --record conj-chunk-out/record.json --failed --out word-conjugation-generation-status.json || true
     echo "::endgroup::"; continue
