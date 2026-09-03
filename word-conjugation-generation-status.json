@@ -6,7 +6,7 @@
   "chunkCount": 212,
   "publicBundleCount": 20,
   "uniqueReadingCount": 84557,
-  "updatedAt": "2026-09-03T06:11:15.195354Z",
+  "updatedAt": "2026-09-03T06:29:48.752634Z",
   "note": "Checkpoint. One failure must never require restarting previously successful units. Generation chunks are not public runtime shards; compact later into ~20 range-readable public bundles. Do not advertise 100% hosted coverage until a voice's chunks are complete.",
   "providers": {
     "supertonic3": {
@@ -46,7 +46,7 @@
               "retry": 3,
               "error": "generation failed",
               "failedReadingIds": [],
-              "timestamp": "2026-09-03T06:11:15.195354Z",
+              "timestamp": "2026-09-03T06:29:48.752634Z",
               "chunk": 0
             }
           }
