@@ -38,9 +38,13 @@ on:
       style_name:
         required: false
         type: string
+  push:
+    branches: [main]
+    paths:
+      - '.word-conj-smoke-f3-trigger'
 
 concurrency:
-  group: conj-${{ github.event.inputs.provider }}-${{ github.event.inputs.voice }}-chunk-${{ github.event.inputs.chunk_start }}
+  group: conj-${{ github.event.inputs.provider || 'supertonic3' }}-${{ github.event.inputs.voice || 'F3' }}-chunk-${{ github.event.inputs.chunk_start || '0' }}
   cancel-in-progress: false
 
 permissions:
@@ -68,11 +72,11 @@ jobs:
       - name: Bound chunk window and run worker
         env:
           GH_TOKEN: ${{ github.token }}
-          INV: ${{ github.event.inputs.inventory_version }}
-          PROVIDER: ${{ github.event.inputs.provider }}
-          VOICE: ${{ github.event.inputs.voice }}
-          CS: ${{ github.event.inputs.chunk_start }}
-          CE: ${{ github.event.inputs.chunk_end }}
+          INV: ${{ github.event.inputs.inventory_version || 'smoke-v1' }}
+          PROVIDER: ${{ github.event.inputs.provider || 'supertonic3' }}
+          VOICE: ${{ github.event.inputs.voice || 'F3' }}
+          CS: ${{ github.event.inputs.chunk_start || '0' }}
+          CE: ${{ github.event.inputs.chunk_end || '0' }}
           SPEAKER_NAME_IN: ${{ github.event.inputs.speaker_name }}
           STYLE_ID_IN: ${{ github.event.inputs.style_id }}
           STYLE_NAME_IN: ${{ github.event.inputs.style_name }}
