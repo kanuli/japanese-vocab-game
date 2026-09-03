@@ -1,0 +1,39 @@
+name: Freeze conjugation reading inventory
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_freeze:
+        description: 'Type freeze to rebuild and commit word-conjugation-reading-inventory-v1.json. Workers must then consume the new freezeHash.'
+        required: true
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  freeze:
+    if: github.event.inputs.confirm_freeze == 'freeze'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build frozen inventory from WordlistConjugation
+        run: |
+          python scripts/collect_conjugation_words.py
+          CHUNK_SIZE=400 PUBLIC_BUNDLE_COUNT=20 LEGACY_F3_CATALOG=word-supertonic3-conj-catalog.json node scripts/build_conjugation_reading_inventory.js
+      - name: Commit inventory only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-conjugation-reading-inventory-v1.json word-conjugation-reading-inventory-v1.meta.json word-conjugation-reading-inventory-smoke-v1.json
+          if git diff --cached --quiet; then echo unchanged; else git commit -m 'Freeze conjugation reading inventory v1'; git pull --rebase origin main; git push origin main; fi
