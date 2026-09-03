@@ -75,8 +75,25 @@ async function speakForm(ev,written,reading){
     }
     /* Speak kana. Hosted lookup tries exact reading|written then reading-only. */
     var used=await W.speak(text,query.word);
+    var rec=(W&&W.lastSpeak)||{};
+    api.lastSpeak=Object.assign({},rec,{
+      requestedReading:text,
+      written:written||'',
+      formReading:reading||text,
+      hostedHit:!!rec.hostedHit,
+      fallbackUsed:!!rec.fallbackUsed,
+      playbackSuccess:!!(used&&!rec.playbackFailure&&(rec.playbackSuccess||rec.hostedHit)),
+      provider:rec.provider||(used&&used.engine)||'',
+      selectedVoice:rec.selectedVoice||(used&&used.key)||'',
+      resolvedUrl:rec.resolvedUrl||used&&used.url||''
+    });
+    if(typeof window!=='undefined'){
+      window.W=window.W||W;
+      if(window.W) window.W.lastSpeak=api.lastSpeak;
+    }
     if(status)status.textContent=used?'✅ 已播放：'+(written||text):'⚠️ 語音暫時無法播放。';
   }catch(e){
+    api.lastSpeak=Object.assign({},(W&&W.lastSpeak)||{},{requestedReading:text,written:written||'',playbackSuccess:false,playbackFailure:true,error:String(e&&e.message||e)});
     if(status)status.textContent='⚠️ 播放失敗：'+(e&&e.message?e.message:String(e));
   }
 }
