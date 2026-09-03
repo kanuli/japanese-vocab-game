@@ -24,10 +24,10 @@ function write(p, obj) {
 
 function tinyWords() {
   return [
-    { kanji: '食べる', reading: 'たべる', pos: '他動2' },
-    { kanji: '書く', reading: 'かく', pos: '他動1' },
-    { kanji: 'する', reading: 'する', pos: '自他動3' },
-    { kanji: '高校', reading: 'こうこう', pos: '名' }
+    { kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d82' },
+    { kanji: '\u66f8\u304f', reading: '\u304b\u304f', pos: '\u4ed6\u52d81' },
+    { kanji: '\u3059\u308b', reading: '\u3059\u308b', pos: '\u81ea\u4ed6\u52d83' },
+    { kanji: '\u9ad8\u6821', reading: '\u3053\u3046\u3053\u3046', pos: '\u540d' }
   ];
 }
 
@@ -151,8 +151,41 @@ ok(typeof conj.hostedCoverageComplete === 'function', 'runtime coverage helper e
 ok(conj.hostedCoverageComplete({ status: 'ready', coverageComplete: true }) === true, 'complete catalog advertised only when flag true');
 ok(conj.hostedCoverageComplete({ status: 'ready', coverageComplete: false }) === false, 'ready but incomplete is not 100%');
 ok(conj.hostedCoverageComplete({ status: 'ready' }) === false, 'missing coverageComplete is not 100%');
-ok(conj.canConjugate({ kanji: '食べる', reading: 'たべる', pos: '他動2' }) === true, 'grammar classifier unchanged');
-ok(conj.conjugate({ kanji: '食べる', reading: 'たべる', pos: '他動2' }).forms.find(function (x) { return x.id === 'nai'; }).written === '食べない', 'ない形 grammar unchanged');
+ok(conj.canConjugate({ kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d82' }) === true, 'grammar classifier unchanged');
+
+var smokeInv = {
+  inventoryVersion: 'smoke-v1',
+  freezeHash: 'x',
+  chunkSize: 2,
+  chunkCount: 1,
+  smoke: true,
+  uniqueReadingCount: 2,
+  readings: [['aaaa', '\u3042\u3046', '\u4f1a\u3046'], ['bbbb', '\u3042\u305d\u3076', '\u904a\u3076']]
+};
+var legacyHit = {
+  '\u3042\u3046': { key: '\u3042\u3046|\u4f1a\u3046', id: 'legacy-au', shard: 3, source: 'word-supertonic3-conj-v1' },
+  '\u3042\u305d\u3076': { key: '\u3042\u305d\u3076|\u904a\u3076', id: 'legacy-asobu', shard: 4, source: 'word-supertonic3-conj-v1' }
+};
+var smokePlan = P.planChunk(smokeInv, 0, { provider: 'supertonic3', voice: 'F3', legacyMap: legacyHit });
+ok(smokePlan.expected === 2 && smokePlan.toGenerate.length === 2 && smokePlan.reused.length === 0 && smokePlan.allReused === false, 'smoke disables F3 v1 reading reuse');
+var smokeCat = P.generatorCatalog(smokeInv, 0, smokePlan);
+ok(smokeCat.shardCount === 1 && smokeCat.items.length === 2 && smokeCat.items.every(function (x) { return x.shard === 0; }), 'smoke catalog shardCount=1 and every item shard=0');
+
+var v1Inv = {
+  inventoryVersion: 'v1',
+  freezeHash: 'x',
+  chunkSize: 2,
+  chunkCount: 1,
+  uniqueReadingCount: 2,
+  readings: smokeInv.readings
+};
+var v1Plan = P.planChunk(v1Inv, 0, { provider: 'supertonic3', voice: 'F3', legacyMap: legacyHit });
+ok(v1Plan.reused.length === 2 && v1Plan.toGenerate.length === 0 && v1Plan.allReused === true, 'v1 F3 still reuses published catalog readings');
+var v1PartialLegacy = { '\u3042\u3046': legacyHit['\u3042\u3046'] };
+var v1Mix = P.planChunk(v1Inv, 0, { provider: 'supertonic3', voice: 'F3', legacyMap: v1PartialLegacy });
+ok(v1Mix.reused.length === 1 && v1Mix.toGenerate.length === 1 && v1Mix.toGenerate[0].reading === '\u3042\u305d\u3076', 'v1 mixed reuse still synthesizes missing readings');
+
+ok(conj.conjugate({ kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d82' }).forms.find(function (x) { return x.id === 'nai'; }).written === '\u98df\u3079\u306a\u3044', '\u306a\u3044\u5f62 grammar unchanged');
 
 ok(inv.publicBundleCount === 20, 'public bundle count is 20 not thousands of gen chunks');
 ok(inv.chunkCount !== inv.publicBundleCount || inv.uniqueReadingCount <= inv.chunkSize * 20, 'gen chunks may exceed public bundles');
