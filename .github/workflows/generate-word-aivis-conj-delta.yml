@@ -2,230 +2,35 @@ name: Generate Word AivisSpeech conjugation unique readings
 
 on:
   workflow_dispatch:
+    inputs:
+      allow_mega_generation:
+        description: 'DANGEROUS. Default false. Giant Aivis all-styles matrix is disabled. Use generate-conjugation-chunk.yml.'
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
       - '.word-aivis-conj-trigger'
 
 permissions:
-  contents: write
-  id-token: write
-
-env:
-  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
-  RELEASE_TAG: word-aivis-conj-v1
-  HF_DIR: word/aivis/conj-v1
+  contents: read
 
 jobs:
-  catalog:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    outputs:
-      shards: ${{ steps.meta.outputs.shards }}
-      wordCount: ${{ steps.meta.outputs.wordCount }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Build uncapped Aivis conjugation source
-        env:
-          CONJ_MAX_NEW: "0"
-          SHARD_COUNT: "20"
-          ENGINE: aivisspeech-conj-delta-source
-          ID_PREFIX: conj-aivis-v1
-          OUT: word-aivis-conj-source.json
-          PLAN_OUT: word-aivis-conj-plan.json
-          AUDIT_OUT: word-aivis-conj-audit.json
-          RELEASE_TAG: word-aivis-conj-v1
-          HF_DIR: word/aivis/conj-v1
-          SKIP_CATALOGS: word-aivis-catalog.json,word-aivis-delta-catalog.json
-          VOICES: a01,a02,a03,a04
-        run: |
-          python scripts/collect_conjugation_words.py
-          python scripts/build_word_supertonic_conj_delta_source.py
-      - id: meta
-        run: |
-          python - <<'PY'
-          import json,os
-          from pathlib import Path
-          d=json.loads(Path("word-aivis-conj-source.json").read_text(encoding="utf-8"))
-          shards=list(range(int(d.get("shardCount") or 0)))
-          with open(os.environ["GITHUB_OUTPUT"],"a",encoding="utf-8") as f:
-              f.write("shards="+json.dumps(shards)+"\nwordCount="+str(d.get("wordCount") or 0)+"\n")
-          print("Aivis conj shards", shards, "new", d.get("wordCount"), "capped", d.get("capped"))
-          PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: word-aivis-conj-source
-          path: |
-            word-aivis-conj-source.json
-            word-aivis-conj-plan.json
-            word-aivis-conj-audit.json
-          retention-days: 7
-
-  model:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Start official AivisSpeech and audit default model
-        run: |
-          mkdir -p "$HOME/.local/share/AivisSpeech-Engine"
-          sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
-          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
-          docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
-          for i in $(seq 1 300); do curl -fsS http://127.0.0.1:10101/speakers >/dev/null && break; test "$i" != 300 || { docker logs aivis-engine; exit 1; }; sleep 2; done
-          MAX_STYLES=4 OUT=aivis-model.json python scripts/discover_aivis_model.py
-          python - <<'PY'
-          import json
-          m=json.load(open('aivis-model.json'))
-          keys=[s['key'] for s in m['styles']]
-          print('Aivis styles', keys)
-          assert keys==['a01','a02','a03','a04'] or set(keys)<=set(['a01','a02','a03','a04'])
-          PY
-          docker stop aivis-engine
-      - uses: actions/upload-artifact@v4
-        with:
-          name: word-aivis-conj-model
-          path: aivis-model.json
-          retention-days: 7
-
-  prepare-storage:
-    needs: model
+  mega-disabled:
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.allow_mega_generation != 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh release view "$RELEASE_TAG" >/dev/null 2>&1 || gh release create "$RELEASE_TAG" --title "AivisSpeech conjugation unique readings" --notes "Unique conjugated readings not already in the lemma Aivis catalog. Styles a01–a04 match the wordlist selector. Device TTS is not hosted PASS."
-
-  generate:
-    needs: [catalog, model, prepare-storage]
-    if: needs.catalog.outputs.wordCount != '0'
+      - name: Giant matrix is disabled
+        run: |
+          echo 'Giant Aivis conjugation generation is disabled.'
+          echo 'Use .github/workflows/generate-conjugation-chunk.yml'
+          echo 'Do not workflow_dispatch this matrix. Old job history is preserved in git.'
+  refuse-mega:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.allow_mega_generation == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 360
-    strategy:
-      fail-fast: false
-      max-parallel: 4
-      matrix:
-        shard: ${{ fromJson(needs.catalog.outputs.shards) }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - uses: actions/download-artifact@v4
-        with:
-          name: word-aivis-conj-source
-          path: .
-      - uses: actions/download-artifact@v4
-        with:
-          name: word-aivis-conj-model
-          path: .
-      - name: Install ffmpeg
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-      - name: Start official AivisSpeech
+      - name: Mega generation retired
         run: |
-          mkdir -p "$HOME/.local/share/AivisSpeech-Engine"
-          sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
-          docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
-          docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
-          for i in $(seq 1 300); do curl -fsS http://127.0.0.1:10101/speakers >/dev/null && break; test "$i" != 300 || { docker logs aivis-engine; exit 1; }; sleep 2; done
-      - name: Generate or skip already-published styles for one shard
-        env:
-          SHARD: ${{ matrix.shard }}
-          MODEL: aivis-model.json
-          CATALOG: word-aivis-conj-source.json
-          OUT_DIR: word-aivis-conj-out
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p "$OUT_DIR" manifest-artifact
-          python - <<'PY'
-          import json,os,subprocess
-          from pathlib import Path
-          s=os.environ['SHARD']
-          model=json.load(open('aivis-model.json'))
-          keys=[st['key'] for st in model['styles']]
-          missing=[]
-          for k in keys:
-              asset=f'{k}-shard{s}.tar'
-              r=subprocess.run(['gh','release','view',os.environ['RELEASE_TAG'],'--json','assets','-q','.assets[].name'],capture_output=True,text=True)
-              names=set(r.stdout.split())
-              if asset in names:
-                  print('skip', asset)
-                  subprocess.check_call(['gh','release','download',os.environ['RELEASE_TAG'],'-p',asset,'-D','word-aivis-conj-out'])
-                  env=os.environ.copy(); env.update({'VOICE':k,'SHARD':s,'TAR':f'word-aivis-conj-out/{asset}','OUT':f'word-aivis-conj-out/{k}-shard{s}.json'})
-                  subprocess.check_call(['python','scripts/manifest_from_tar.py'],env=env)
-              else:
-                  missing.append(k)
-          Path('/tmp/aivis-missing.json').write_text(json.dumps(missing))
-          print('need generate', missing)
-          PY
-          NEED=$(python -c "import json;print(len(json.load(open('/tmp/aivis-missing.json'))))")
-          if [ "$NEED" != 0 ]; then
-            python scripts/generate_word_aivis_shard.py
-            for p in word-aivis-conj-out/a*-shard$SHARD.tar; do
-              gh release upload "$RELEASE_TAG" "$p" --clobber
-            done
-          fi
-          cp word-aivis-conj-out/a*-shard$SHARD.json manifest-artifact/
-      - uses: actions/upload-artifact@v4
-        with:
-          name: word-aivis-conj-manifests-shard-${{ matrix.shard }}
-          path: manifest-artifact/*.json
-          retention-days: 7
-      - name: Hugging Face backup
-        continue-on-error: true
-        env:
-          S: ${{ matrix.shard }}
-          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
-        run: |
-          python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
-          for p in word-aivis-conj-out/a*-shard$S.tar; do
-            f=$(basename "$p")
-            hf upload "$HF_DATASET_REPO" "$p" "$HF_DIR/$f" --repo-type dataset --commit-message "Aivis conj shard $S $f"
-          done
-      - if: always()
-        run: docker stop aivis-engine || true
-
-  finalize:
-    needs: [catalog, model, generate]
-    if: needs.catalog.outputs.wordCount != '0'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-      - uses: actions/download-artifact@v4
-        with:
-          name: word-aivis-conj-source
-          path: .
-      - uses: actions/download-artifact@v4
-        with:
-          name: word-aivis-conj-model
-          path: .
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: word-aivis-conj-manifests-shard-*
-          path: word-aivis-conj-manifests
-          merge-multiple: true
-      - name: Build Aivis conj catalog
-        env:
-          CATALOG: word-aivis-conj-source.json
-          MODEL: aivis-model.json
-          MANIFEST_DIR: word-aivis-conj-manifests
-          OUT: word-aivis-conj-catalog.json
-          RELEASE_TAG: word-aivis-conj-v1
-          HF_DIR: word/aivis/conj-v1
-        run: python scripts/build_word_aivis_conj_delta_catalog.py
-      - name: Commit Aivis conj text catalogs
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add word-aivis-conj-catalog.json word-aivis-conj-*-index.json word-aivis-conj-plan.json word-aivis-conj-audit.json
-          if git diff --cached --quiet; then echo current; else git commit -m 'Publish AivisSpeech conjugation hosted audio indexes'; git pull --rebase origin main; git push origin main; fi
+          echo 'allow_mega_generation=true is not enough to relaunch all Aivis styles x shards.'
+          echo 'Use generate-conjugation-chunk.yml for small resumable chunks.'
+          exit 1
