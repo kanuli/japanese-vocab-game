@@ -1,0 +1,3 @@
+function hostedCoverageComplete(catalog){
+  return !!(catalog && catalog.status==='ready' && catalog.coverageComplete===true);
+}
