@@ -23,6 +23,10 @@ sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg libsndfile1
 if [ "$PROVIDER" = supertonic3 ]; then
   retry python -m pip install --quiet --disable-pip-version-check 'numpy>=1.21,<2' 'supertonic==1.2.2'
   python -c "from supertonic import TTS; print('imported TTS ok')"
+  # Dataset-scoped GitHub OIDC must not wrap public SuperTonic model download.
+  SAVED_HF_OIDC_RESOURCE="${HF_OIDC_RESOURCE-}"
+  unset HF_OIDC_RESOURCE HF_TOKEN HUGGING_FACE_HUB_TOKEN || true
+  export HF_HUB_DISABLE_IMPLICIT_TOKEN=1
 elif [ "$PROVIDER" = voicevox ]; then
   retry docker pull voicevox/voicevox_engine:cpu-latest
   docker run --rm -d --name voicevox-engine -p 127.0.0.1:50021:50021 voicevox/voicevox_engine:cpu-latest
@@ -133,6 +137,8 @@ PY
     sleep $((attempt*8))
   done
   HF_OK=false
+  if [ -n "${SAVED_HF_OIDC_RESOURCE-}" ]; then export HF_OIDC_RESOURCE="$SAVED_HF_OIDC_RESOURCE"; fi
+  unset HF_HUB_DISABLE_IMPLICIT_TOKEN || true
   if python -m pip show huggingface_hub >/dev/null 2>&1 || python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'; then
     if hf upload "$HF_DATASET_REPO" "staging/$ASSET" "$HF_DIR/$ASSET" --repo-type dataset --commit-message "conj chunk $PROVIDER $VOICE $CHUNK"; then HF_OK=true; fi
   fi || true
