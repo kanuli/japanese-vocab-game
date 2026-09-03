@@ -1,0 +1,18 @@
+{
+  "inventoryVersion": "v1",
+  "idPrefix": "conj-inv-v1",
+  "vocabSource": "word-supertonic3-conj-words.json",
+  "vocabSourceHash": "b122a5b151948d4629db1184242a3096a52da74b218d0320190c160e1548925e",
+  "classifier": "wordlist-conjugation.js",
+  "verbCount": 3670,
+  "formInstanceCount": 91746,
+  "uniqueReadingCount": 84557,
+  "duplicateCount": 7189,
+  "skippedCount": 6841,
+  "chunkSize": 400,
+  "chunkCount": 212,
+  "publicBundleCount": 20,
+  "publicBundleSize": 4228,
+  "freezeHash": "dce92b8dae91165f4e2fe7c9fee62489d24230242588d46eab7472889fcbbfc0",
+  "note": "Generation chunks are not public runtime shards. Compact later into ~20 range-readable public bundles. Workers must consume this file and must not rebuild inventory."
+}
