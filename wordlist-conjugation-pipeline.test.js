@@ -24,9 +24,9 @@ function write(p, obj) {
 
 function tinyWords() {
   return [
-    { kanji: '食べる', reading: 'たべる', pos: '他勔2' },
-    { kanji: '書く', reading: 'かく', pos: '他勔1' },
-    { kanji: 'する', reading: 'する', pos: '自他勔3' },
+    { kanji: '食べる', reading: 'たべる', pos: '他動2' },
+    { kanji: '書く', reading: 'かく', pos: '他動1' },
+    { kanji: 'する', reading: 'する', pos: '自他動3' },
     { kanji: '高校', reading: 'こうこう', pos: '名' }
   ];
 }
@@ -151,8 +151,8 @@ ok(typeof conj.hostedCoverageComplete === 'function', 'runtime coverage helper e
 ok(conj.hostedCoverageComplete({ status: 'ready', coverageComplete: true }) === true, 'complete catalog advertised only when flag true');
 ok(conj.hostedCoverageComplete({ status: 'ready', coverageComplete: false }) === false, 'ready but incomplete is not 100%');
 ok(conj.hostedCoverageComplete({ status: 'ready' }) === false, 'missing coverageComplete is not 100%');
-ok(conj.canConjugate({ kanji: '食べる', reading: 'たべる', pos: '他勔2' }) === true, 'grammar classifier unchanged');
-ok(conj.conjugate({ kanji: '食べる', reading: 'たべる', pos: '他勔2' }).forms.find(function (x) { return x.id === 'nai'; }).written === '食べない', 'ない形 grammar unchanged');
+ok(conj.canConjugate({ kanji: '食べる', reading: 'たべる', pos: '他動2' }) === true, 'grammar classifier unchanged');
+ok(conj.conjugate({ kanji: '食べる', reading: 'たべる', pos: '他動2' }).forms.find(function (x) { return x.id === 'nai'; }).written === '食べない', 'ない形 grammar unchanged');
 
 ok(inv.publicBundleCount === 20, 'public bundle count is 20 not thousands of gen chunks');
 ok(inv.chunkCount !== inv.publicBundleCount || inv.uniqueReadingCount <= inv.chunkSize * 20, 'gen chunks may exceed public bundles');
