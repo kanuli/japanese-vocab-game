@@ -6,7 +6,7 @@ const path=require('path');
 const ROOT=process.cwd();
 const PORT=Number(process.env.CONJ_HOSTED_PORT||4174);
 const MIME={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.mp3':'audio/mpeg','.ico':'image/x-icon'};
-const MP3=Buffer.from('SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAAFbgBtbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1t//////////////////////////////////////////////////////////////////8AAAAATGF2YzU4LjI5AAAAAAAAAAAAAAAAJAAAAAAAAAU+8B1XAAAAAAAAAAAAAAAAAAAA//sQzAADwAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV','base64');
+const MP3=Buffer.from('SUQzBAAAAAAAIlRTU0UAAAAOAAADTGF2ZjYxLjcuMTAzAAAAAAAAAAAAAAD/4zjAAAAAAAAAAAAASW5mbwAAAA8AAAAHAAAC0ABmZmZmZmZmZmZmZmZmZoCAgICAgICAgICAgICAmZmZmZmZmZmZmZmZmZmzs7Ozs7Ozs7Ozs7Ozs7PMzMzMzMzMzMzMzMzMzObm5ubm5ubm5ubm5ubm//////////////////8AAAAATGF2YzYxLjE5AAAAAAAAAAAAAAAAJAQgAAAAAAAAAtA/N3DCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/4xjEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVX/4xjEOwAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVX/4xjEdgAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVX/4xjEsQAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/4xjExAAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/4xjExAAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/4xjExAAAAA0gAAAAAVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=','base64');
 const FORMS=[
   {lemma:'食べる', written:'食べます', reading:'たべます'},
   {lemma:'食べる', written:'食べなかった', reading:'たべなかった'},
@@ -118,13 +118,16 @@ async function setEngineVoice(page, engine, voice){
 async function clickForm(page, written){
   const btn=page.locator('.conj-row').filter({has:page.locator('.conj-written',{hasText:written})}).locator('.conj-audio-btn').first();
   await btn.waitFor();
+  const seq0=await page.evaluate(()=>Number((window.WA&&WA.__speakSeq)||0));
   await btn.click();
-  await page.waitForFunction(()=>{
-    const rec=(window.WordlistConjugation&&WordlistConjugation.lastSpeak)||(window.WA&&WA.lastSpeak);
-    return !!(rec&&rec.requestedReading);
-  },{timeout:20000});
+  await page.waitForFunction((seq0)=>{
+    const rec=(window.WA&&WA.lastSpeak)||(window.WordlistConjugation&&WordlistConjugation.lastSpeak)||{};
+    if(!rec||rec.pending) return false;
+    if(!(Number(rec.seq)>Number(seq0))) return false;
+    return !!(rec.hostedHit||rec.fallbackUsed||rec.playbackFailure||rec.hostedMiss);
+  }, seq0, {timeout:20000});
   return page.evaluate(()=>{
-    const rec=(window.WordlistConjugation&&WordlistConjugation.lastSpeak)||(window.WA&&WA.lastSpeak)||{};
+    const rec=(window.WA&&WA.lastSpeak)||(window.WordlistConjugation&&WordlistConjugation.lastSpeak)||{};
     return {
       requestedReading:rec.requestedReading||'',
       selectedVoice:rec.selectedVoice||'',
