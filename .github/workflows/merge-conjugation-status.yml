@@ -1,0 +1,175 @@
+name: Merge conjugation status and reports (no audio gen)
+
+on:
+  workflow_dispatch:
+    inputs:
+      inventory_version:
+        description: Frozen inventory version to merge (v1 or smoke-v1)
+        required: true
+        default: smoke-v1
+        type: string
+
+# All status/report merges are serialized repository-wide. Generation workers
+# may run in parallel because they publish unique durable fragments instead.
+concurrency:
+  group: conj-status-merge
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Download durable fragments and merge central status
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INV: ${{ github.event.inputs.inventory_version }}
+        run: |
+          set -euo pipefail
+          INV_FILE="word-conjugation-reading-inventory-${INV}.json"
+          test -f "$INV_FILE"
+          TAG=word-conj-chunks-v1
+          if echo "$INV" | grep -q '^smoke'; then TAG=word-conj-chunks-smoke; fi
+
+          rm -rf /tmp/conj-status-fragments
+          mkdir -p /tmp/conj-status-fragments
+          gh release download "$TAG" -p 'status-*.json' -D /tmp/conj-status-fragments || true
+          gh release view "$TAG" --json assets -q '.assets[].name' > /tmp/release-assets.txt || true
+
+          python - <<'PY'
+          import json, os, re
+          from pathlib import Path
+
+          inv_path = Path(f"word-conjugation-reading-inventory-{os.environ['INV']}.json")
+          status_path = Path('word-conjugation-generation-status.json')
+          inv = json.loads(inv_path.read_text(encoding='utf-8'))
+          status = json.loads(status_path.read_text(encoding='utf-8'))
+          inv_version = str(inv['inventoryVersion'])
+          chunk_count = int(inv.get('chunkCount') or 0)
+          expected_readings = int(inv.get('uniqueReadingCount') or len(inv.get('readings') or []))
+          providers = status.setdefault('providers', {})
+          for provider in ('supertonic3', 'voicevox', 'aivis'):
+              providers.setdefault(provider, {})
+
+          pat = re.compile(r'^status-(supertonic3|voicevox|aivis)-([A-Za-z0-9]+)-(.+)-chunk(\d{3})\.json$')
+          merged = 0
+          ignored = 0
+          newest = status.get('updatedAt')
+
+          for frag in sorted(Path('/tmp/conj-status-fragments').glob('status-*.json')):
+              m = pat.match(frag.name)
+              if not m:
+                  ignored += 1
+                  continue
+              provider, voice, frag_inv, chunk_s = m.groups()
+              if frag_inv != inv_version:
+                  continue
+              chunk = int(chunk_s)
+              if chunk < 0 or (chunk_count and chunk >= chunk_count):
+                  raise SystemExit(f'fragment chunk out of range: {frag.name}')
+              rec = json.loads(frag.read_text(encoding='utf-8'))
+              if rec.get('status') not in ('complete', 'failed'):
+                  raise SystemExit(f'invalid fragment status: {frag.name}')
+              rec['chunk'] = chunk
+              slot = providers[provider].setdefault(voice, {}).setdefault(inv_version, {
+                  'coverageComplete': False,
+                  'expectedReadings': expected_readings,
+                  'generatedReadings': 0,
+                  'reusedReadings': 0,
+                  'chunks': {}
+              })
+              slot.setdefault('chunks', {})
+              old = slot['chunks'].get(str(chunk))
+              old_ts = str((old or {}).get('timestamp') or '')
+              new_ts = str(rec.get('timestamp') or '')
+              if old and old_ts and new_ts and new_ts < old_ts:
+                  continue
+              slot['chunks'][str(chunk)] = rec
+              slot['expectedReadings'] = expected_readings
+              if new_ts and (not newest or new_ts > newest):
+                  newest = new_ts
+              merged += 1
+
+          def is_complete(rec):
+              if not rec or rec.get('status') != 'complete':
+                  return False
+              validation = rec.get('validation') or {}
+              if rec.get('reused') is True:
+                  return validation.get('ok') is True
+              return (validation.get('ok') is True and bool(rec.get('persistedAsset'))
+                      and rec.get('githubAvailable') is True)
+
+          # Recompute only this inventory version. Other inventory checkpoints
+          # remain untouched in the shared status document.
+          for provider in ('supertonic3', 'voicevox', 'aivis'):
+              for voice_data in providers.get(provider, {}).values():
+                  slot = voice_data.get(inv_version)
+                  if not slot:
+                      continue
+                  chunks = slot.setdefault('chunks', {})
+                  complete = [r for r in chunks.values() if is_complete(r)]
+                  slot['generatedReadings'] = sum(int(r.get('generatedCount') or 0) for r in complete)
+                  slot['reusedReadings'] = sum(int(r.get('reusedCount') or 0) for r in complete)
+                  slot['expectedReadings'] = expected_readings
+                  slot['coverageComplete'] = bool(chunk_count) and len(complete) == chunk_count
+
+          if newest:
+              status['updatedAt'] = newest
+          status_path.write_text(json.dumps(status, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('MERGE fragments', merged, 'ignored', ignored, 'inventory', inv_version)
+          PY
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          names=Path('/tmp/release-assets.txt').read_text().split()
+          Path('/tmp/release-assets.json').write_text(json.dumps(names))
+          print('durable assets', len(names))
+          PY
+
+          for PROVIDER in supertonic3 voicevox aivis; do
+            SPEAKERS=""
+            if [ "$PROVIDER" = voicevox ]; then
+              SPEAKERS=$(python -c "import json;print(','.join(json.load(open('word-voicevox-speakers.json'))))")
+            fi
+            node scripts/conjugation_chunk_pipeline.js finalize-report \
+              --inventory "$INV_FILE" \
+              --status word-conjugation-generation-status.json \
+              --provider "$PROVIDER" \
+              --inventory_version "$INV" \
+              --release-assets /tmp/release-assets.json \
+              --speakers "$SPEAKERS" \
+              --honest-partial true \
+              --out "word-conjugation-finalize-${PROVIDER}.json"
+          done
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add word-conjugation-generation-status.json \
+            word-conjugation-finalize-supertonic3.json \
+            word-conjugation-finalize-voicevox.json \
+            word-conjugation-finalize-aivis.json
+          if git diff --cached --quiet; then
+            echo 'MERGE PASS — no status/report change'
+            exit 0
+          fi
+          git commit -m "Merge conjugation status fragments ${INV}"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin main; then
+              echo 'MERGE PASS — central status committed'
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt*4))
+          done
+          echo 'MERGE FAIL — status push failed after retries'
+          exit 1
