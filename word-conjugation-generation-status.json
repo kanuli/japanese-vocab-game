@@ -6,7 +6,7 @@
   "chunkCount": 212,
   "publicBundleCount": 20,
   "uniqueReadingCount": 84557,
-  "updatedAt": "2026-09-03T06:48:04.876371Z",
+  "updatedAt": "2026-09-04T09:29:20.034041Z",
   "note": "Checkpoint. One failure must never require restarting previously successful units. Generation chunks are not public runtime shards; compact later into ~20 range-readable public bundles. Do not advertise 100% hosted coverage until a voice's chunks are complete.",
   "providers": {
     "supertonic3": {
@@ -68,7 +68,48 @@
         }
       }
     },
-    "voicevox": {},
+    "voicevox": {
+      "s01": {
+        "smoke-v1": {
+          "coverageComplete": false,
+          "expectedReadings": 84557,
+          "generatedReadings": 40,
+          "reusedReadings": 0,
+          "chunks": {
+            "0": {
+              "status": "complete",
+              "expectedCount": 40,
+              "generatedCount": 40,
+              "reusedCount": 0,
+              "validation": {
+                "ok": true,
+                "tar": "voicevox-s01-invsmoke-v1-chunk000.tar",
+                "expectedCount": 40,
+                "memberCount": 40,
+                "idsMatch": true,
+                "tarOpens": true,
+                "sha256": "2877b363e91b6d385600053663b5e9844d6f4211c3e07bf16e09b9879422feb4",
+                "size": 235520,
+                "nonZeroAudio": true,
+                "sampleDecode": true,
+                "failedReadingIds": [],
+                "errors": []
+              },
+              "persistedAsset": "voicevox-s01-invsmoke-v1-chunk000.tar",
+              "sha256": "2877b363e91b6d385600053663b5e9844d6f4211c3e07bf16e09b9879422feb4",
+              "size": 235520,
+              "githubAvailable": true,
+              "hfAvailable": false,
+              "githubRelease": "word-conj-chunks-smoke",
+              "timestamp": "2026-09-04T09:29:20.034041Z",
+              "retry": 0,
+              "error": null,
+              "chunk": 0
+            }
+          }
+        }
+      }
+    },
     "aivis": {}
   }
 }
