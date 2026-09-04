@@ -24,9 +24,9 @@ function write(p, obj) {
 
 function tinyWords() {
   return [
-    { kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d82' },
-    { kanji: '\u66f8\u304f', reading: '\u304b\u304f', pos: '\u4ed6\u52d81' },
-    { kanji: '\u3059\u308b', reading: '\u3059\u308b', pos: '\u81ea\u4ed6\u52d83' },
+    { kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d52' },
+    { kanji: '\u66f8\u304f', reading: '\u304b\u304f', pos: '\u4ed6\u52d51' },
+    { kanji: '\u3059\u308b', reading: '\u3059\u308b', pos: '\u81ea\u4ed6\u52d53' },
     { kanji: '\u9ad8\u6821', reading: '\u3053\u3046\u3053\u3046', pos: '\u540d' }
   ];
 }
@@ -151,7 +151,7 @@ ok(typeof conj.hostedCoverageComplete === 'function', 'runtime coverage helper e
 ok(conj.hostedCoverageComplete({ status: 'ready', coverageComplete: true }) === true, 'complete catalog advertised only when flag true');
 ok(conj.hostedCoverageComplete({ status: 'ready', coverageComplete: false }) === false, 'ready but incomplete is not 100%');
 ok(conj.hostedCoverageComplete({ status: 'ready' }) === false, 'missing coverageComplete is not 100%');
-ok(conj.canConjugate({ kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d82' }) === true, 'grammar classifier unchanged');
+ok(conj.canConjugate({ kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d52' }) === true, 'grammar classifier unchanged');
 
 var smokeInv = {
   inventoryVersion: 'smoke-v1',
@@ -185,7 +185,7 @@ var v1PartialLegacy = { '\u3042\u3046': legacyHit['\u3042\u3046'] };
 var v1Mix = P.planChunk(v1Inv, 0, { provider: 'supertonic3', voice: 'F3', legacyMap: v1PartialLegacy });
 ok(v1Mix.reused.length === 1 && v1Mix.toGenerate.length === 1 && v1Mix.toGenerate[0].reading === '\u3042\u305d\u3076', 'v1 mixed reuse still synthesizes missing readings');
 
-ok(conj.conjugate({ kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d82' }).forms.find(function (x) { return x.id === 'nai'; }).written === '\u98df\u3079\u306a\u3044', '\u306a\u3044\u5f62 grammar unchanged');
+ok(conj.conjugate({ kanji: '\u98df\u3079\u308b', reading: '\u305f\u3079\u308b', pos: '\u4ed6\u52d52' }).forms.find(function (x) { return x.id === 'nai'; }).written === '\u98df\u3079\u306a\u3044', '\u306a\u3044\u5f62 grammar unchanged');
 
 ok(inv.publicBundleCount === 20, 'public bundle count is 20 not thousands of gen chunks');
 ok(inv.chunkCount !== inv.publicBundleCount || inv.uniqueReadingCount <= inv.chunkSize * 20, 'gen chunks may exceed public bundles');
