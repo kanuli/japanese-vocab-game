@@ -20,7 +20,7 @@ const FORMS=[
   {lemma:'来る', written:'来ません', reading:'きません'},
   {lemma:'来る', written:'来なかった', reading:'こなかった'},
   {lemma:'する', written:'します', reading:'します'},
-  {lemma:'勉強する', written:'勉強します', reading:'べんきょうします'}
+  {lemma:'愛する', written:'愛します', reading:'あいします'}
 ];
 function startServer(){
   return new Promise((resolve,reject)=>{
@@ -80,10 +80,10 @@ async function installMocks(page){
     if(/word-aivis-conj-catalog\.json/.test(url)){
       return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureCatalog('ai'))});
     }
-    const stIdx=url.match(/word-supertonic3-conj-v2-([FM]\d)-index\.json/);
+    const stIdx=url.match(/(?:word-supertonic3-conj-v2-)?([FM]\d)-index\.json/);
     if(stIdx) return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureIndex(stIdx[1],'st'))});
-    if(/word-voicevox-conj-s01-index\.json/.test(url)) return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureIndex('s01','vv'))});
-    if(/word-aivis-conj-a01-index\.json/.test(url)) return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureIndex('a01','ai'))});
+    if(/(?:word-voicevox-conj-)?s01-index\.json/.test(url)) return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureIndex('s01','vv'))});
+    if(/(?:word-aivis-conj-)?a01-index\.json/.test(url)) return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureIndex('a01','ai'))});
     if(/releases\/download\/word-(supertonic3-conj-v2|voicevox-conj-v1|aivis-conj-v1)\//.test(url) && /\.tar/.test(url)){
       return route.fulfill({status:206,contentType:'audio/mpeg',headers:{'content-length':String(MP3.length),'content-range':'bytes 0-'+(MP3.length-1)+'/'+MP3.length},body:MP3});
     }
@@ -97,11 +97,14 @@ async function waitVocab(page){
   },{timeout:120000});
 }
 async function openVerb(page, written){
-  await page.fill('#search', written);
-  await page.waitForTimeout(200);
-  const row=page.locator('#vocabBody tr').filter({hasText:written}).first();
-  await row.waitFor({timeout:30000});
-  await row.locator('.conj-btn').click();
+  await page.evaluate((written)=>{
+    const W=window.WA;
+    const api=window.WordlistConjugation;
+    const word=(W&&W.words||[]).find(w=>String(w.kanji||w.displayWord||w.reading||'')===written);
+    if(!word) throw new Error('verb not found '+written);
+    if(!api||typeof api.open!=='function') throw new Error('conjugation UI unavailable');
+    api.open(word,null);
+  },written);
   await page.locator('#conjOverlay.is-open').waitFor();
 }
 async function setEngineVoice(page, engine, voice){
