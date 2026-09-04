@@ -1,9 +1,9 @@
 {
   "version": 2,
   "status": "ok",
-  "checkedAt": "2026-09-03T08:54:45Z",
+  "checkedAt": "2026-09-04T08:48:38Z",
   "dataset": "kanuli1983/japanese-listening-voicevox-backup",
-  "totalFiles": 5115,
+  "totalFiles": 5138,
   "listening": {
     "expected": 3310,
     "found": 3310
