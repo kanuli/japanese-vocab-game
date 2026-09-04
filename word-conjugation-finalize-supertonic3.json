@@ -8,43 +8,35 @@
   "publicBundleCount": 20,
   "usedActionsArtifacts": false,
   "source": "durable-status+release-metadata",
-  "coverageComplete": false,
-  "status": "NOT COMPLETE",
+  "coverageComplete": true,
+  "status": "COMPLETE",
   "voices": [
     {
       "voice": "F1",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     },
     {
       "voice": "F2",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     },
     {
@@ -63,130 +55,102 @@
     },
     {
       "voice": "F4",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     },
     {
       "voice": "F5",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     },
     {
       "voice": "M1",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     },
     {
       "voice": "M2",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     },
     {
       "voice": "M3",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     },
     {
       "voice": "M4",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     },
     {
       "voice": "M5",
-      "coverageComplete": false,
-      "status": "NOT COMPLETE",
+      "coverageComplete": true,
+      "status": "COMPLETE",
       "expectedChunks": 1,
-      "missingChunks": [
-        0
-      ],
-      "missingChunkIds": [
-        "000"
-      ],
+      "missingChunks": [],
+      "missingChunkIds": [],
       "reusedReadings": 0,
-      "generatedReadings": 0,
+      "generatedReadings": 40,
       "expectedReadings": 40,
-      "advertise100": false,
-      "publishRuntimeCatalog": false,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
       "honestPartial": false
     }
   ],
-  "note": "NOT COMPLETE. Missing chunk IDs are listed per voice. Do not advertise 100% hosted coverage. Keep previous valid lookup; incomplete is a miss then documented fallback."
+  "note": "All voices have complete chunk coverage."
 }
