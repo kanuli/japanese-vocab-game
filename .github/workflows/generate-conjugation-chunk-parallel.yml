@@ -1,0 +1,93 @@
+name: Generate conjugation chunk (parallel-safe)
+
+on:
+  workflow_dispatch:
+    inputs:
+      inventory_version:
+        description: Frozen inventory version (v1 or smoke-v1)
+        required: true
+        default: smoke-v1
+        type: string
+      provider:
+        description: TTS provider
+        required: true
+        type: choice
+        options: [supertonic3, voicevox, aivis]
+        default: supertonic3
+      voice:
+        description: Voice / speaker / style key (F3, s01, a01)
+        required: true
+        default: F3
+        type: string
+      chunk_start:
+        description: Inclusive generation chunk index
+        required: true
+        default: '0'
+        type: string
+      chunk_end:
+        description: Inclusive generation chunk index (max start+3)
+        required: true
+        default: '0'
+        type: string
+      speaker_name:
+        required: false
+        type: string
+      style_id:
+        required: false
+        type: string
+      style_name:
+        required: false
+        type: string
+
+# Use the same group prefix as the original small worker so an old/manual run for
+# the exact same unit cannot overlap this parallel-safe path.
+concurrency:
+  group: conj-${{ github.event.inputs.provider }}-${{ github.event.inputs.voice }}-chunk-${{ github.event.inputs.chunk_start }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  HF_DATASET_REPO: kanuli1983/japanese-listening-voicevox-backup
+  HF_DIR: word/conj-chunks
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run bounded worker without shared-status push
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INV: ${{ github.event.inputs.inventory_version }}
+          PROVIDER: ${{ github.event.inputs.provider }}
+          VOICE: ${{ github.event.inputs.voice }}
+          CS: ${{ github.event.inputs.chunk_start }}
+          CE: ${{ github.event.inputs.chunk_end }}
+          SPEAKER_NAME_IN: ${{ github.event.inputs.speaker_name }}
+          STYLE_ID_IN: ${{ github.event.inputs.style_id }}
+          STYLE_NAME_IN: ${{ github.event.inputs.style_name }}
+          HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+        run: |
+          set -euo pipefail
+          # The existing worker already enforces one voice and a maximum 1-4
+          # chunks, validates the tar, uploads the durable GitHub release asset,
+          # and uploads a unique status fragment. Its only unsafe parallel action
+          # is the final git commit/push of the shared central status JSON.
+          # Export a no-op git function only inside this worker process. The
+          # release operations use `gh`, so durable audio + fragment publishing
+          # still occurs normally; the final shared-status commit becomes a no-op.
+          git() { return 0; }
+          export -f git
+          bash scripts/run_conjugation_chunk_worker.sh
