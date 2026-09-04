@@ -1,0 +1,48 @@
+{
+  "provider": "voicevox",
+  "inventoryVersion": "smoke-v1",
+  "freezeHash": "95f2a90c49503ae83585eb91c34301fd9e9604318d03b932f9c16dcfc23bf82f",
+  "uniqueReadingCount": 40,
+  "chunkSize": 40,
+  "chunkCount": 1,
+  "publicBundleCount": 20,
+  "usedActionsArtifacts": false,
+  "source": "durable-status+release-metadata",
+  "coverageComplete": false,
+  "status": "NOT COMPLETE",
+  "voices": [
+    {
+      "voice": "s01",
+      "coverageComplete": true,
+      "status": "COMPLETE",
+      "expectedChunks": 1,
+      "missingChunks": [],
+      "missingChunkIds": [],
+      "reusedReadings": 0,
+      "generatedReadings": 40,
+      "expectedReadings": 40,
+      "advertise100": true,
+      "publishRuntimeCatalog": true,
+      "honestPartial": false
+    },
+    {
+      "voice": "s02",
+      "coverageComplete": false,
+      "status": "NOT COMPLETE",
+      "expectedChunks": 1,
+      "missingChunks": [
+        0
+      ],
+      "missingChunkIds": [
+        "000"
+      ],
+      "reusedReadings": 0,
+      "generatedReadings": 0,
+      "expectedReadings": 40,
+      "advertise100": false,
+      "publishRuntimeCatalog": false,
+      "honestPartial": false
+    }
+  ],
+  "note": "NOT COMPLETE. Missing chunk IDs are listed per voice. Do not advertise 100% hosted coverage. Keep previous valid lookup; incomplete is a miss then documented fallback."
+}

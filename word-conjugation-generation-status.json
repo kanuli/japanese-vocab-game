@@ -29,8 +29,8 @@
           "chunks": {}
         },
         "smoke-v1": {
-          "coverageComplete": false,
-          "expectedReadings": 84557,
+          "coverageComplete": true,
+          "expectedReadings": 40,
           "generatedReadings": 40,
           "reusedReadings": 0,
           "chunks": {
@@ -71,8 +71,8 @@
     "voicevox": {
       "s01": {
         "smoke-v1": {
-          "coverageComplete": false,
-          "expectedReadings": 84557,
+          "coverageComplete": true,
+          "expectedReadings": 40,
           "generatedReadings": 40,
           "reusedReadings": 0,
           "chunks": {
