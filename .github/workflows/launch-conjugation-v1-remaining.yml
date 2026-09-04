@@ -1,0 +1,91 @@
+name: Launch remaining conjugation v1 generation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/launch-conjugation-v1-remaining.yml'
+  workflow_dispatch:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Dispatch all remaining bounded production jobs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          total=0
+
+          dispatch_one() {
+            local provider="$1"
+            local voice="$2"
+            local start="$3"
+            local end="$4"
+            local attempt
+
+            echo "DISPATCH provider=${provider} voice=${voice} chunks=${start}-${end}"
+            for attempt in 1 2 3; do
+              if gh workflow run generate-conjugation-chunk-parallel.yml \
+                --repo "$GH_REPO" \
+                --ref main \
+                -f inventory_version=v1 \
+                -f provider="$provider" \
+                -f voice="$voice" \
+                -f chunk_start="$start" \
+                -f chunk_end="$end"; then
+                total=$((total + 1))
+                sleep 1
+                return 0
+              fi
+              echo "Dispatch attempt ${attempt} failed; retrying..." >&2
+              sleep $((attempt * 5))
+            done
+
+            echo "ERROR: failed to dispatch ${provider}/${voice} ${start}-${end}" >&2
+            return 1
+          }
+
+          dispatch_ranges() {
+            local provider="$1"
+            local voice="$2"
+            local first="$3"
+            local last="$4"
+            local s e
+
+            for ((s=first; s<=last; s+=4)); do
+              e=$((s + 3))
+              if (( e > last )); then e="$last"; fi
+              dispatch_one "$provider" "$voice" "$s" "$e"
+            done
+          }
+
+          # F1/F2/F4/F5/M1-M5: chunk000 is already durable and chunks001-004
+          # are in the currently running batch, so start safely at chunk005.
+          for voice in F1 F2 F4 F5 M1 M2 M3 M4 M5; do
+            dispatch_ranges supertonic3 "$voice" 5 211
+          done
+
+          # F3 has 8,000 legacy readings corresponding to chunks000-019. Run
+          # those bounded jobs so the worker can reuse/persist them into v1
+          # durable chunk status. chunk020 is already complete; chunks021-024
+          # are in the current batch, so continue new work from chunk025.
+          dispatch_ranges supertonic3 F3 0 19
+          dispatch_ranges supertonic3 F3 25 211
+
+          # VOICEVOX chunk000 is already durable and chunks001-004 are in the
+          # current batch, so continue from chunk005 for both configured voices.
+          for voice in s01 s02; do
+            dispatch_ranges voicevox "$voice" 5 211
+          done
+
+          echo "LAUNCH PASS — dispatched ${total} bounded v1 workflows"
