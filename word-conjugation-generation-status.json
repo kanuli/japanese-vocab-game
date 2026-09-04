@@ -6,7 +6,7 @@
   "chunkCount": 212,
   "publicBundleCount": 20,
   "uniqueReadingCount": 84557,
-  "updatedAt": "2026-09-04T10:31:56.571951Z",
+  "updatedAt": "2026-09-04T10:53:34.452417Z",
   "note": "Checkpoint. One failure must never require restarting previously successful units. Generation chunks are not public runtime shards; compact later into ~20 range-readable public bundles. Do not advertise 100% hosted coverage until a voice's chunks are complete.",
   "providers": {
     "supertonic3": {
@@ -468,8 +468,209 @@
             }
           }
         }
+      },
+      "s02": {
+        "smoke-v1": {
+          "coverageComplete": true,
+          "expectedReadings": 40,
+          "generatedReadings": 40,
+          "reusedReadings": 0,
+          "chunks": {
+            "0": {
+              "status": "complete",
+              "expectedCount": 40,
+              "generatedCount": 40,
+              "reusedCount": 0,
+              "validation": {
+                "ok": true,
+                "tar": "voicevox-s02-invsmoke-v1-chunk000.tar",
+                "expectedCount": 40,
+                "memberCount": 40,
+                "idsMatch": true,
+                "tarOpens": true,
+                "sha256": "f9b5c88b439d63298f4906dc34ff671674d8f4298392b94d22569ac4d67133bf",
+                "size": 266240,
+                "nonZeroAudio": true,
+                "sampleDecode": true,
+                "failedReadingIds": [],
+                "errors": []
+              },
+              "persistedAsset": "voicevox-s02-invsmoke-v1-chunk000.tar",
+              "sha256": "f9b5c88b439d63298f4906dc34ff671674d8f4298392b94d22569ac4d67133bf",
+              "size": 266240,
+              "githubAvailable": true,
+              "hfAvailable": false,
+              "githubRelease": "word-conj-chunks-smoke",
+              "timestamp": "2026-09-04T10:53:34.452417Z",
+              "retry": 0,
+              "error": null,
+              "chunk": 0
+            }
+          }
+        }
       }
     },
-    "aivis": {}
+    "aivis": {
+      "a01": {
+        "smoke-v1": {
+          "coverageComplete": true,
+          "expectedReadings": 40,
+          "generatedReadings": 40,
+          "reusedReadings": 0,
+          "chunks": {
+            "0": {
+              "status": "complete",
+              "expectedCount": 40,
+              "generatedCount": 40,
+              "reusedCount": 0,
+              "validation": {
+                "ok": true,
+                "tar": "aivis-a01-invsmoke-v1-chunk000.tar",
+                "expectedCount": 40,
+                "memberCount": 40,
+                "idsMatch": true,
+                "tarOpens": true,
+                "sha256": "b68c0090a9514b8852b647db33f0a264d7d4ae00a2fe7bbc498a7c1622c7fb0e",
+                "size": 430080,
+                "nonZeroAudio": true,
+                "sampleDecode": true,
+                "failedReadingIds": [],
+                "errors": []
+              },
+              "persistedAsset": "aivis-a01-invsmoke-v1-chunk000.tar",
+              "sha256": "b68c0090a9514b8852b647db33f0a264d7d4ae00a2fe7bbc498a7c1622c7fb0e",
+              "size": 430080,
+              "githubAvailable": true,
+              "hfAvailable": false,
+              "githubRelease": "word-conj-chunks-smoke",
+              "timestamp": "2026-09-04T10:52:47.238473Z",
+              "retry": 0,
+              "error": null,
+              "chunk": 0
+            }
+          }
+        }
+      },
+      "a02": {
+        "smoke-v1": {
+          "coverageComplete": true,
+          "expectedReadings": 40,
+          "generatedReadings": 40,
+          "reusedReadings": 0,
+          "chunks": {
+            "0": {
+              "status": "complete",
+              "expectedCount": 40,
+              "generatedCount": 40,
+              "reusedCount": 0,
+              "validation": {
+                "ok": true,
+                "tar": "aivis-a02-invsmoke-v1-chunk000.tar",
+                "expectedCount": 40,
+                "memberCount": 40,
+                "idsMatch": true,
+                "tarOpens": true,
+                "sha256": "7b5a47dee9ed02ee397d56a5c6b437de071ff69be14a5949f26deb66fe05573a",
+                "size": 430080,
+                "nonZeroAudio": true,
+                "sampleDecode": true,
+                "failedReadingIds": [],
+                "errors": []
+              },
+              "persistedAsset": "aivis-a02-invsmoke-v1-chunk000.tar",
+              "sha256": "7b5a47dee9ed02ee397d56a5c6b437de071ff69be14a5949f26deb66fe05573a",
+              "size": 430080,
+              "githubAvailable": true,
+              "hfAvailable": false,
+              "githubRelease": "word-conj-chunks-smoke",
+              "timestamp": "2026-09-04T10:52:48.080038Z",
+              "retry": 0,
+              "error": null,
+              "chunk": 0
+            }
+          }
+        }
+      },
+      "a03": {
+        "smoke-v1": {
+          "coverageComplete": true,
+          "expectedReadings": 40,
+          "generatedReadings": 40,
+          "reusedReadings": 0,
+          "chunks": {
+            "0": {
+              "status": "complete",
+              "expectedCount": 40,
+              "generatedCount": 40,
+              "reusedCount": 0,
+              "validation": {
+                "ok": true,
+                "tar": "aivis-a03-invsmoke-v1-chunk000.tar",
+                "expectedCount": 40,
+                "memberCount": 40,
+                "idsMatch": true,
+                "tarOpens": true,
+                "sha256": "617c854da96d6db9141d81d1a9dc79b18edefaab86b0bbd9a9b3aaa79067cccf",
+                "size": 430080,
+                "nonZeroAudio": true,
+                "sampleDecode": true,
+                "failedReadingIds": [],
+                "errors": []
+              },
+              "persistedAsset": "aivis-a03-invsmoke-v1-chunk000.tar",
+              "sha256": "617c854da96d6db9141d81d1a9dc79b18edefaab86b0bbd9a9b3aaa79067cccf",
+              "size": 430080,
+              "githubAvailable": true,
+              "hfAvailable": false,
+              "githubRelease": "word-conj-chunks-smoke",
+              "timestamp": "2026-09-04T10:52:48.697902Z",
+              "retry": 0,
+              "error": null,
+              "chunk": 0
+            }
+          }
+        }
+      },
+      "a04": {
+        "smoke-v1": {
+          "coverageComplete": true,
+          "expectedReadings": 40,
+          "generatedReadings": 40,
+          "reusedReadings": 0,
+          "chunks": {
+            "0": {
+              "status": "complete",
+              "expectedCount": 40,
+              "generatedCount": 40,
+              "reusedCount": 0,
+              "validation": {
+                "ok": true,
+                "tar": "aivis-a04-invsmoke-v1-chunk000.tar",
+                "expectedCount": 40,
+                "memberCount": 40,
+                "idsMatch": true,
+                "tarOpens": true,
+                "sha256": "d517f5af84434b60b9496b375c456b1ec255a23cda9738e65242abd5b3e27b92",
+                "size": 430080,
+                "nonZeroAudio": true,
+                "sampleDecode": true,
+                "failedReadingIds": [],
+                "errors": []
+              },
+              "persistedAsset": "aivis-a04-invsmoke-v1-chunk000.tar",
+              "sha256": "d517f5af84434b60b9496b375c456b1ec255a23cda9738e65242abd5b3e27b92",
+              "size": 430080,
+              "githubAvailable": true,
+              "hfAvailable": false,
+              "githubRelease": "word-conj-chunks-smoke",
+              "timestamp": "2026-09-04T10:53:03.487437Z",
+              "retry": 0,
+              "error": null,
+              "chunk": 0
+            }
+          }
+        }
+      }
+    }
   }
 }
