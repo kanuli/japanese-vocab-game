@@ -70,7 +70,9 @@ elif [ "$PROVIDER" = aivis ]; then
 fi
 mkdir -p conj-chunk-out staging
 OVERALL=0
-while IFS= read -r CHUNK; do
+# Read chunk indexes on fd 3 so child commands in the loop cannot consume the
+# remaining chunk list from stdin. This keeps 1-4 chunk runs truly resumable.
+while IFS= read -r CHUNK <&3; do
   [ -n "$CHUNK" ] || continue
   echo "::group::chunk $CHUNK"
   ASSET=$(node scripts/conjugation_chunk_pipeline.js asset-name --provider "$PROVIDER" --voice "$VOICE" --inventory_version "$INV" --chunk "$CHUNK")
@@ -220,7 +222,7 @@ PY
   retry gh release upload "$TAG" "$FRAG" --clobber || true
   echo "PUBLISH PASS $ASSET"
   echo "::endgroup::"
-done < chunks.txt
+done 3< chunks.txt
 git config user.name 'github-actions[bot]'
 git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 git add word-conjugation-generation-status.json
