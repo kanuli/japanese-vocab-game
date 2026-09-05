@@ -1,10 +1,6 @@
 name: Launch remaining conjugation v1 generation
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/launch-conjugation-v1-remaining.yml'
   workflow_dispatch:
 
 permissions:
@@ -70,20 +66,18 @@ jobs:
           }
 
           # F1/F2/F4/F5/M1-M5: chunk000 is already durable and chunks001-004
-          # are in the currently running batch, so start safely at chunk005.
+          # were dispatched separately, so continue safely at chunk005.
           for voice in F1 F2 F4 F5 M1 M2 M3 M4 M5; do
             dispatch_ranges supertonic3 "$voice" 5 211
           done
 
-          # F3 has 8,000 legacy readings corresponding to chunks000-019. Run
-          # those bounded jobs so the worker can reuse/persist them into v1
-          # durable chunk status. chunk020 is already complete; chunks021-024
-          # are in the current batch, so continue new work from chunk025.
+          # F3 chunk020 was already complete and chunks021-024 were dispatched
+          # separately. The remaining bounded ranges are 000-019 and 025-211.
           dispatch_ranges supertonic3 F3 0 19
           dispatch_ranges supertonic3 F3 25 211
 
-          # VOICEVOX chunk000 is already durable and chunks001-004 are in the
-          # current batch, so continue from chunk005 for both configured voices.
+          # VOICEVOX chunk000 was already durable and chunks001-004 were
+          # dispatched separately, so continue from chunk005.
           for voice in s01 s02; do
             dispatch_ranges voicevox "$voice" 5 211
           done
