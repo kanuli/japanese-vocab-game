@@ -1,0 +1,73 @@
+name: Recover failed conjugation v1 generation once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/recover-conjugation-v1-failed-once.yml'
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Merge durable status then rerun failed generation jobs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BATCH_SHA: c15da28d84421eb995ef2858e8321d56ff6c833a
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Dispatching a fresh v1 status merge before recovery..."
+          BEFORE=$(gh run list --repo "$GH_REPO" --workflow merge-conjugation-status.yml --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId // 0')
+          gh workflow run merge-conjugation-status.yml --repo "$GH_REPO" --ref main -f inventory_version=v1
+
+          MERGE_ID=""
+          for attempt in $(seq 1 60); do
+            MERGE_ID=$(gh run list --repo "$GH_REPO" --workflow merge-conjugation-status.yml --event workflow_dispatch --limit 10 --json databaseId --jq "map(select(.databaseId != ${BEFORE})) | .[0].databaseId // empty")
+            [ -n "$MERGE_ID" ] && break
+            sleep 2
+          done
+          [ -n "$MERGE_ID" ] || { echo "Could not resolve dispatched merge run" >&2; exit 1; }
+          echo "Watching merge run $MERGE_ID"
+          gh run watch "$MERGE_ID" --repo "$GH_REPO" --exit-status
+
+          echo "Central status merge passed; collecting failed mass-generation runs..."
+          mapfile -t IDS < <(
+            gh run list --repo "$GH_REPO" \
+              --workflow generate-conjugation-chunk-parallel.yml \
+              --event workflow_dispatch \
+              --status failure \
+              --limit 1000 \
+              --json databaseId,headSha \
+              --jq ".[] | select(.headSha == \"${BATCH_SHA}\") | .databaseId"
+          )
+
+          echo "Found ${#IDS[@]} failed mass-generation runs to recover"
+          rerun=0
+          failed=0
+          for id in "${IDS[@]}"; do
+            ok=0
+            for attempt in 1 2 3; do
+              if gh run rerun "$id" --repo "$GH_REPO" --failed; then
+                ok=1
+                rerun=$((rerun + 1))
+                break
+              fi
+              sleep $((attempt * 3))
+            done
+            if [ "$ok" -ne 1 ]; then
+              echo "Failed to queue rerun for $id" >&2
+              failed=$((failed + 1))
+            fi
+            sleep 1
+          done
+
+          echo "RECOVERY DISPATCH rerun=$rerun failed_to_queue=$failed"
+          [ "$failed" -eq 0 ]
