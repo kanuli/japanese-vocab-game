@@ -3,8 +3,8 @@ set -euo pipefail
 retry() { n=0; until "$@"; do n=$((n+1)); echo "retry $n: $*"; if [ "$n" -ge 3 ]; then return 1; fi; sleep $((n*8)); done; }
 INV_FILE="word-conjugation-reading-inventory-${INV}.json"
 test -f "$INV_FILE"
-if echo "$INV" | grep -q "^smoke"; then TAG=word-conj-chunks-smoke; else TAG=word-conj-chunks-v1; fi
-export TAG INV_FILE
+if echo "$INV" | grep -q "^smoke"; then BASE_TAG=word-conj-chunks-smoke; else BASE_TAG=word-conj-chunks-v1; fi
+export BASE_TAG INV_FILE
 python - <<'PY'
 import json,os,sys
 from pathlib import Path
@@ -16,9 +16,8 @@ n=int(inv.get("chunkCount") or 0)
 if cs<0 or (n>0 and ce>=n): sys.exit(f"chunk out of range 0..{n-1}")
 chunks=list(range(cs,ce+1))
 Path("chunks.txt").write_text("\n".join(map(str,chunks))+"\n")
-print("chunks", chunks, "tag", os.environ["TAG"], "unique", inv.get("uniqueReadingCount"), "chunkSize", inv.get("chunkSize"))
+print("chunks", chunks, "baseTag", os.environ["BASE_TAG"], "unique", inv.get("uniqueReadingCount"), "chunkSize", inv.get("chunkSize"))
 PY
-gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "Conjugation generation chunks $TAG" --notes "Small resumable conjugation audio chunks. Not public runtime shards. Compact later into ~20 range-readable bundles."
 SAVED_HF_OIDC="${HF_OIDC_RESOURCE-}"
 # Public model download must not use dataset OIDC (invalid_grant / aborted grant).
 unset HF_OIDC_RESOURCE HF_TOKEN HUGGINGFACE_HUB_TOKEN HUGGING_FACE_HUB_TOKEN || true
@@ -75,8 +74,30 @@ OVERALL=0
 while IFS= read -r CHUNK <&3; do
   [ -n "$CHUNK" ] || continue
   echo "::group::chunk $CHUNK"
+
+  # GitHub limits a release to 1000 assets. Keep smoke on its single release,
+  # but shard v1 generation releases by 20 chunk indexes. Even with all 16
+  # configured voices and both audio + status assets this stays <=640 assets.
+  if echo "$INV" | grep -q "^smoke"; then
+    TAG="$BASE_TAG"
+  else
+    printf -v BUCKET '%02d' "$((CHUNK / 20))"
+    TAG="${BASE_TAG}-b${BUCKET}"
+  fi
+  export TAG
+  if ! gh release view "$TAG" >/dev/null 2>&1; then
+    gh release create "$TAG" --title "Conjugation generation chunks $TAG" --notes "Small resumable conjugation audio chunks. Not public runtime shards. Compact later into ~20 range-readable bundles." >/dev/null 2>&1 || gh release view "$TAG" >/dev/null
+  fi
+
   ASSET=$(node scripts/conjugation_chunk_pipeline.js asset-name --provider "$PROVIDER" --voice "$VOICE" --inventory_version "$INV" --chunk "$CHUNK")
-  gh release view "$TAG" --json assets -q '.assets[].name' > /tmp/release-assets.txt || true
+  : > /tmp/release-assets.txt
+  gh release view "$TAG" --json assets -q '.assets[].name' >> /tmp/release-assets.txt || true
+  # Old v1 assets remain valid durable evidence and must still participate in
+  # resume checks after release sharding.
+  if [ "$TAG" != "$BASE_TAG" ]; then
+    gh release view "$BASE_TAG" --json assets -q '.assets[].name' >> /tmp/release-assets.txt || true
+  fi
+  sort -u /tmp/release-assets.txt -o /tmp/release-assets.txt
   if node scripts/conjugation_chunk_pipeline.js skip-check --status word-conjugation-generation-status.json --provider "$PROVIDER" --voice "$VOICE" --inventory_version "$INV" --chunk "$CHUNK" --release-assets /tmp/release-assets.txt; then
     echo "SKIP — ALREADY COMPLETE $ASSET"
     echo "::endgroup::"
@@ -86,8 +107,10 @@ while IFS= read -r CHUNK <&3; do
   if echo "$INV" | grep -q "^smoke"; then
     unset LEGACY_CATALOG || true
     echo "smoke inventory: disable F3 v1 legacy reuse so clips are newly synthesized"
-  elif [ -f word-supertonic3-conj-catalog.json ]; then
+  elif [ "$PROVIDER" = supertonic3 ] && [ "$VOICE" = F3 ] && [ -f word-supertonic3-conj-catalog.json ]; then
     export LEGACY_CATALOG=word-supertonic3-conj-catalog.json
+  else
+    unset LEGACY_CATALOG || true
   fi
   if [ "$PROVIDER" = aivis ]; then export MODEL=aivis-model.json; fi
   rm -f conj-chunk-out/skip.json
@@ -106,13 +129,20 @@ while IFS= read -r CHUNK <&3; do
   if [ -f conj-chunk-out/skip.json ]; then
     echo "generator skip $(cat conj-chunk-out/skip.json)"
     python - <<'PY'
-import json,datetime
+import json,datetime,os
 from pathlib import Path
 plan=json.loads(Path('conj-chunk-out/chunk-plan.json').read_text()) if Path('conj-chunk-out/chunk-plan.json').is_file() else {}
-rec={'status':'complete','reused':True,'expectedCount':plan.get('expected',0),'generatedCount':0,'reusedCount':len(plan.get('reused') or []),'validation':{'ok':True,'reason':'legacy reuse, no synth'},'persistedAsset':None,'sha256':None,'size':0,'githubAvailable':True,'hfAvailable':False,'timestamp':datetime.datetime.utcnow().isoformat()+'Z','retry':0,'error':None}
+rec={'status':'complete','reused':True,'expectedCount':plan.get('expected',0),'generatedCount':0,'reusedCount':len(plan.get('reused') or []),'validation':{'ok':True,'reason':'legacy reuse, no synth'},'persistedAsset':None,'sha256':None,'size':0,'githubAvailable':True,'hfAvailable':False,'githubRelease':os.environ['TAG'],'timestamp':datetime.datetime.utcnow().isoformat()+'Z','retry':0,'error':None}
 Path('conj-chunk-out/record.json').write_text(json.dumps(rec))
 PY
     node scripts/conjugation_chunk_pipeline.js update-status --status word-conjugation-generation-status.json --inventory "$INV_FILE" --provider "$PROVIDER" --voice "$VOICE" --inventory_version "$INV" --chunk "$CHUNK" --record conj-chunk-out/record.json --out word-conjugation-generation-status.json
+    FRAG="status-${PROVIDER}-${VOICE}-${INV}-chunk$(printf '%03d' "$CHUNK").json"
+    cp conj-chunk-out/record.json "$FRAG"
+    if retry gh release upload "$TAG" "$FRAG" --clobber; then
+      echo "REUSE STATUS PASS $FRAG"
+    else
+      echo "reuse status publish failed"; OVERALL=1
+    fi
     echo "::endgroup::"
     continue
   fi
@@ -219,8 +249,12 @@ PY
   node scripts/conjugation_chunk_pipeline.js update-status --status word-conjugation-generation-status.json --inventory "$INV_FILE" --provider "$PROVIDER" --voice "$VOICE" --inventory_version "$INV" --chunk "$CHUNK" --record conj-chunk-out/record.json --out word-conjugation-generation-status.json
   FRAG="status-${PROVIDER}-${VOICE}-${INV}-chunk$(printf '%03d' "$CHUNK").json"
   cp conj-chunk-out/record.json "$FRAG"
-  retry gh release upload "$TAG" "$FRAG" --clobber || true
-  echo "PUBLISH PASS $ASSET"
+  if ! retry gh release upload "$TAG" "$FRAG" --clobber; then
+    echo "status fragment publish failed"; OVERALL=1
+    echo "::endgroup::"
+    continue
+  fi
+  echo "PUBLISH PASS $ASSET release=$TAG"
   echo "::endgroup::"
 done 3< chunks.txt
 git config user.name 'github-actions[bot]'
