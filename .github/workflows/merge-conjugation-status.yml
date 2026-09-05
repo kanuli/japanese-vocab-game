@@ -21,7 +21,7 @@ permissions:
 jobs:
   merge:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -37,13 +37,32 @@ jobs:
           set -euo pipefail
           INV_FILE="word-conjugation-reading-inventory-${INV}.json"
           test -f "$INV_FILE"
-          TAG=word-conj-chunks-v1
-          if echo "$INV" | grep -q '^smoke'; then TAG=word-conj-chunks-smoke; fi
 
           rm -rf /tmp/conj-status-fragments
           mkdir -p /tmp/conj-status-fragments
-          gh release download "$TAG" -p 'status-*.json' -D /tmp/conj-status-fragments || true
-          gh release view "$TAG" --json assets -q '.assets[].name' > /tmp/release-assets.txt || true
+          : > /tmp/release-assets.txt
+
+          if echo "$INV" | grep -q '^smoke'; then
+            TAGS=(word-conj-chunks-smoke)
+          else
+            # Keep the original v1 release as durable legacy evidence, then
+            # include all 20-chunk release buckets introduced after the GitHub
+            # 1000-assets-per-release limit was reached.
+            TAGS=(word-conj-chunks-v1)
+            for b in $(seq -w 0 10); do TAGS+=("word-conj-chunks-v1-b${b}"); done
+          fi
+
+          for TAG in "${TAGS[@]}"; do
+            if ! gh release view "$TAG" >/dev/null 2>&1; then
+              echo "release absent, skip: $TAG"
+              continue
+            fi
+            DEST="/tmp/conj-status-fragments/$TAG"
+            mkdir -p "$DEST"
+            gh release download "$TAG" -p 'status-*.json' -D "$DEST" || true
+            gh release view "$TAG" --json assets -q '.assets[].name' >> /tmp/release-assets.txt || true
+          done
+          sort -u /tmp/release-assets.txt -o /tmp/release-assets.txt
 
           python - <<'PY'
           import json, os, re
@@ -65,7 +84,10 @@ jobs:
           ignored = 0
           newest = status.get('updatedAt')
 
-          for frag in sorted(Path('/tmp/conj-status-fragments').glob('status-*.json')):
+          # rglob is intentional: each release is downloaded into its own
+          # directory so duplicate legacy/bucket fragment names can coexist.
+          # Timestamp comparison below selects the newest durable record.
+          for frag in sorted(Path('/tmp/conj-status-fragments').rglob('status-*.json')):
               m = pat.match(frag.name)
               if not m:
                   ignored += 1
