@@ -19,3 +19,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: gh workflow run merge-conjugation-status.yml --repo "$GH_REPO" --ref main -f inventory_version=v1
+
+# Final rerun after SuperTonic M2 chunk106 durable repair.
