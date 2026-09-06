@@ -1,0 +1,142 @@
+name: Publish conjugation runtime v1 (no TTS)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/publish_conjugation_v1_runtime.py
+      - .github/workflows/publish-conjugation-runtime-v1.yml
+
+permissions:
+  contents: write
+
+env:
+  PYTHONUNBUFFERED: "1"
+
+concurrency:
+  group: conjugation-runtime-v1-publication
+  cancel-in-progress: false
+
+jobs:
+  publish-voice:
+    name: Publish ${{ matrix.provider }} ${{ matrix.voice }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - {provider: supertonic3, voice: F1}
+          - {provider: supertonic3, voice: F2}
+          - {provider: supertonic3, voice: F3}
+          - {provider: supertonic3, voice: F4}
+          - {provider: supertonic3, voice: F5}
+          - {provider: supertonic3, voice: M1}
+          - {provider: supertonic3, voice: M2}
+          - {provider: supertonic3, voice: M3}
+          - {provider: supertonic3, voice: M4}
+          - {provider: supertonic3, voice: M5}
+          - {provider: voicevox, voice: s01}
+          - {provider: voicevox, voice: s02}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Syntax check publisher
+        run: python -m py_compile scripts/publish_conjugation_v1_runtime.py
+
+      - name: Compact existing generation audio and publish runtime bundles
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          out="runtime-out/${{ matrix.provider }}-${{ matrix.voice }}"
+          mkdir -p "$out"
+          python scripts/publish_conjugation_v1_runtime.py publish-voice \
+            --provider "${{ matrix.provider }}" \
+            --voice "${{ matrix.voice }}" \
+            --repo "$GITHUB_REPOSITORY" \
+            --inventory word-conjugation-reading-inventory-v1.json \
+            --out "$out"
+
+      - name: Upload runtime index and validation report
+        uses: actions/upload-artifact@v4
+        with:
+          name: conjugation-runtime-${{ matrix.provider }}-${{ matrix.voice }}
+          path: runtime-out/${{ matrix.provider }}-${{ matrix.voice }}/*.json
+          if-no-files-found: error
+          retention-days: 7
+
+  finalize:
+    name: Finalize runtime indexes and catalogs
+    needs: publish-voice
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download all validated runtime indexes
+        uses: actions/download-artifact@v4
+        with:
+          pattern: conjugation-runtime-*
+          path: runtime-artifacts
+          merge-multiple: true
+
+      - name: Build final hosted catalogs and revalidate full coverage
+        run: |
+          set -euo pipefail
+          python scripts/publish_conjugation_v1_runtime.py build-catalogs \
+            --repo "$GITHUB_REPOSITORY" \
+            --inventory word-conjugation-reading-inventory-v1.json \
+            --artifact-dir runtime-artifacts \
+            --out-root .
+
+      - name: Conjugation regression tests
+        run: |
+          set -euo pipefail
+          node wordlist-conjugation.test.js
+          node wordlist-conjugation-pipeline.test.js
+
+      - name: Commit runtime publication atomically
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            word-supertonic3-conj-v2-*-index.json \
+            word-voicevox-conj-*-index.json \
+            word-supertonic3-conj-v2-catalog.json \
+            word-voicevox-conj-catalog.json \
+            word-conjugation-runtime-publication-v1.report.json
+          if git diff --cached --quiet; then
+            echo "Runtime publication files already current"
+            exit 0
+          fi
+          git commit -m "Publish conjugation runtime catalogs v1"
+          for attempt in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "RUNTIME PUBLICATION COMMIT: PASS"
+              exit 0
+            fi
+            echo "push retry $attempt/5"
+            git rebase --abort >/dev/null 2>&1 || true
+            git reset --hard HEAD
+            sleep $((attempt * 3))
+          done
+          echo "RUNTIME PUBLICATION COMMIT: FAIL" >&2
+          exit 1
