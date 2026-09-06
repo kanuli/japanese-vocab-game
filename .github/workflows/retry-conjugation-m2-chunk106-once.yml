@@ -1,0 +1,31 @@
+name: Retry SuperTonic M2 chunk106 once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/retry-conjugation-m2-chunk106-once.yml'
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  retry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch only M2 chunk106
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          gh workflow run generate-conjugation-chunk-parallel.yml \
+            --repo "$GH_REPO" \
+            --ref main \
+            -f inventory_version=v1 \
+            -f provider=supertonic3 \
+            -f voice=M2 \
+            -f chunk_start=106 \
+            -f chunk_end=106
+          echo 'DISPATCH PASS — supertonic3 M2 chunk106'
