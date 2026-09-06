@@ -72,6 +72,35 @@ def make_tts():
             time.sleep(8*attempt)
     raise RuntimeError(f'TTS init failed after retries: {type(last).__name__}: {last}') from last
 
+def synthesize_with_shape_fallback(text,reading,row_id):
+    # SuperTonic 1.2.x can very rarely round duration/latent lengths to adjacent
+    # frames (for example 28 vs 29) and raise a numpy broadcast ValueError.
+    # Keep the exact Japanese text unchanged and only vary speed slightly so the
+    # duration lands on a valid frame boundary. The normal production setting is
+    # always attempted first; fallback is used only for this specific model bug.
+    speeds=[]
+    for s in (SPEED,1.0,0.90,1.05):
+        if s not in speeds:speeds.append(s)
+    last=None
+    for i,speed in enumerate(speeds,1):
+        try:
+            wav,_=tts.synthesize(
+                text=text,voice_style=style,total_steps=STEPS,speed=speed,
+                max_chunk_length=100,silence_duration=.10,lang='ja',verbose=False
+            )
+            if i>1:
+                print('shape fallback PASS id',row_id,'reading',reading,'speed',speed,flush=True)
+            return wav,speed
+        except ValueError as e:
+            last=e
+            msg=str(e)
+            if 'could not be broadcast together with shapes' not in msg:
+                raise
+            print('shape fallback retry id',row_id,'reading',reading,'speed',speed,msg,flush=True)
+        except Exception:
+            raise
+    raise last
+
 tts,style=make_tts()
 qa_rows=[]
 
@@ -83,10 +112,7 @@ with tempfile.TemporaryDirectory(prefix=f'word-st3-{VOICE}-{SHARD}-') as td:
         text=reading
         if ADD_STOP and text[-1] not in '。！？!?': text+='。'
         try:
-            wav,_=tts.synthesize(
-                text=text,voice_style=style,total_steps=STEPS,speed=SPEED,
-                max_chunk_length=100,silence_duration=.10,lang='ja',verbose=False
-            )
+            wav,used_speed=synthesize_with_shape_fallback(text,reading,w.get('id'))
         except Exception as e:
             print('synthesize failed id',w.get('id'),'reading',reading,type(e).__name__,e,flush=True)
             traceback.print_exc()
@@ -107,7 +133,7 @@ with tempfile.TemporaryDirectory(prefix=f'word-st3-{VOICE}-{SHARD}-') as td:
             qa_rows.append({
                 'voice':VOICE,'shard':SHARD,'id':w['id'],'reading':reading,
                 'written':str(w.get('written','')),'file':qname,
-                'knownRegression':reading in KNOWN_REGRESSIONS
+                'knownRegression':reading in KNOWN_REGRESSIONS,'synthesisSpeed':used_speed
             })
         if n%100==0 or n==len(rows):
             print(VOICE,SHARD,n,'/',len(rows),'steps',STEPS,'speed',SPEED,flush=True)
@@ -128,7 +154,8 @@ if set(members)!=expected: raise SystemExit('TAR coverage mismatch')
 manifest={
     'version':MANIFEST_VERSION,'engine':'supertonic-3','voice':VOICE,'shard':SHARD,
     'count':len(rows),'asset':tar.name,'members':members,
-    'synthesis':{'steps':STEPS,'speed':SPEED,'terminalPunctuation':ADD_STOP,'bitrate':BITRATE},
+    'synthesis':{'steps':STEPS,'speed':SPEED,'terminalPunctuation':ADD_STOP,'bitrate':BITRATE,
+                 'shapeMismatchSpeedFallbacks':[1.0,0.90,1.05]},
     'pronunciationQaSampleCount':len(qa_rows)
 }
 (OUT/f'{VOICE}-shard{SHARD}.json').write_text(json.dumps(manifest,ensure_ascii=False,separators=(',',':'))+'\n',encoding='utf-8')
