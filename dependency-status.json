@@ -1,20 +1,20 @@
 {
   "version": 1,
   "status": "ok",
-  "checkedAt": "2026-08-31T10:04:59Z",
+  "checkedAt": "2026-09-07T08:38:46Z",
   "playwright": {
     "previous": "1.62.1",
-    "latest": "1.62.1",
-    "current": "1.62.1",
+    "latest": "1.63.0",
+    "current": "1.63.0",
     "candidateTest": "pass",
-    "autoUpdated": false
+    "autoUpdated": true
   },
   "githubActions": {
     "checkout": "v7.0.1",
     "setupPython": "v7.0.0",
     "configurePages": "v6.0.0",
     "uploadPagesArtifact": "v5.0.0",
-    "deployPages": "v5.0.0",
+    "deployPages": "v5.0.1",
     "policy": "report-only; major workflow actions are not blindly replaced"
   },
   "voicevoxEngine": {
