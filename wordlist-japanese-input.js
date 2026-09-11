@@ -11,8 +11,8 @@ input.setAttribute('autocomplete','off');
 input.setAttribute('autocapitalize','off');
 input.setAttribute('autocorrect','off');
 input.setAttribute('spellcheck','false');
-input.setAttribute('aria-label','日本語單字搜尋：可輸入漢字、假名、Romaji 或繁體中文');
-input.placeholder='搜尋原形／變化形、漢字、假名、Romaji 或繁體中文意思';
+input.setAttribute('aria-label','日本語單字搜尋：可輸入漢字、平假名、片假名或 Romaji');
+input.placeholder='搜尋原形／變化形、漢字、平假名、片假名或 Romaji';
 
 /* Add a consistent clear button instead of relying on browser-specific
    type=search controls, which are not equally visible on mobile browsers. */
