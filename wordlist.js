@@ -76,10 +76,10 @@ function smartMatch(w,q,variants){
   var jp=[w.kanji,w.displayWord,w.reading].map(normSearch).filter(Boolean),i,j,f,v;
   for(i=0;i<jp.length;i++){
     f=jp[i];
+    if(f.indexOf(q)>=0)return true;
     for(j=0;j<variants.length;j++){
       v=variants[j];
-      if(f.indexOf(v)>=0)return true;
-      if(hasJapanese(f)&&f.length>=2&&v.length>f.length&&v.indexOf(f)>=0)return true;
+      if(v!==q&&f===v)return true;
     }
   }
   return false;
