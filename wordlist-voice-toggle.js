@@ -18,7 +18,10 @@ toggle.setAttribute('aria-controls','voiceToggleContent');
 var content=document.createElement('div');
 content.id='voiceToggleContent';
 content.className='voice-toggle-content';
-children.forEach(function(node){content.appendChild(node);});
+children.forEach(function(node){
+  if(node.nodeType===1&&node.tagName==='H2')return;
+  content.appendChild(node);
+});
 card.appendChild(toggle);
 card.appendChild(content);
 
