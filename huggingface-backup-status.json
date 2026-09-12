@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "status": "ok",
-  "checkedAt": "2026-09-11T08:52:53Z",
+  "status": "error",
+  "checkedAt": "2026-09-12T08:36:19Z",
   "dataset": "kanuli1983/japanese-listening-voicevox-backup",
   "totalFiles": 7688,
   "listening": {
@@ -33,6 +33,8 @@
     "enforced": true
   },
   "listeningIndex": true,
-  "publicSamples": true,
-  "sampleErrors": []
+  "publicSamples": false,
+  "sampleErrors": [
+    "voicevox/N1/N1-0-0.mp3: <urlopen error [Errno 104] Connection reset by peer>"
+  ]
 }
