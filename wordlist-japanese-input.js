@@ -154,7 +154,10 @@ clear.addEventListener('click',function(){
   var content=document.createElement('div');
   content.id='kanaToggleContent';
   content.className='kana-toggle-content';
-  children.forEach(function(node){content.appendChild(node);});
+  children.forEach(function(node){
+    if(node.nodeType===1&&node.classList&&node.classList.contains('kana-title'))return;
+    content.appendChild(node);
+  });
   block.appendChild(toggle);
   block.appendChild(content);
 
