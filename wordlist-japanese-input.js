@@ -138,5 +138,41 @@ clear.addEventListener('click',function(){
      happens on the following frame instead of blocking the tap feedback. */
   searchAfterPaint();
 });
+
+/* Kana index disclosure control. Mobile starts collapsed to save vertical space;
+   desktop starts expanded. This only changes presentation and leaves the
+   existing kana filtering buttons and their event handlers untouched. */
+(function initKanaToggle(){
+  var block=document.querySelector('.kana-block');
+  if(!block||block.querySelector('.kana-toggle'))return;
+  var children=[];
+  while(block.firstChild)children.push(block.removeChild(block.firstChild));
+  var toggle=document.createElement('button');
+  toggle.type='button';
+  toggle.className='kana-toggle';
+  toggle.setAttribute('aria-controls','kanaToggleContent');
+  var content=document.createElement('div');
+  content.id='kanaToggleContent';
+  content.className='kana-toggle-content';
+  children.forEach(function(node){content.appendChild(node);});
+  block.appendChild(toggle);
+  block.appendChild(content);
+
+  var style=document.createElement('style');
+  style.textContent='.kana-toggle{appearance:none;width:100%;border:0;background:transparent;color:#172033;padding:0;display:flex;align-items:center;justify-content:space-between;gap:10px;font:inherit;font-weight:850;text-align:left;cursor:pointer;min-height:40px}.kana-toggle::after{content:"▾";font-size:14px;color:#667085;transition:transform .16s ease}.kana-block.kana-collapsed .kana-toggle::after{transform:rotate(-90deg)}.kana-toggle-content{margin-top:2px}.kana-block.kana-collapsed .kana-toggle-content{display:none}.kana-toggle:focus-visible{outline:2px solid #3568dd;outline-offset:4px;border-radius:6px}@media(max-width:820px){.kana-block{padding:12px 14px}.kana-toggle{min-height:44px}}';
+  document.head.appendChild(style);
+
+  var isMobile=window.matchMedia&&window.matchMedia('(max-width: 820px)').matches;
+  function setOpen(open){
+    block.classList.toggle('kana-collapsed',!open);
+    toggle.setAttribute('aria-expanded',open?'true':'false');
+    toggle.textContent=open?'五十音索引｜按開頭平假名篩選':'五十音索引｜按此展開';
+  }
+  setOpen(!isMobile);
+  toggle.addEventListener('click',function(){
+    setOpen(toggle.getAttribute('aria-expanded')!=='true');
+  });
+})();
+
 updateClear();
 })();
