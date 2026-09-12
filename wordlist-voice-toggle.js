@@ -36,4 +36,16 @@ setOpen(!isMobile);
 toggle.addEventListener('click',function(){
   setOpen(toggle.getAttribute('aria-expanded')!=='true');
 });
+
+/* Load the adjective/noun inflection extension only after the established
+   verb engine and its UI have finished loading. This keeps verb behaviour
+   untouched and lets the list refresh its 活用 buttons once extended. */
+document.addEventListener('DOMContentLoaded',function(){
+  if(window.__wordlistAdjNounInflectionLoaded)return;
+  window.__wordlistAdjNounInflectionLoaded=true;
+  var s=document.createElement('script');
+  s.src='./wordlist-adjective-noun-inflection.js?v=20260912v1';
+  s.onload=function(){if(window.WA&&typeof window.WA.available==='function')window.WA.available();};
+  document.head.appendChild(s);
+},{once:true});
 })();
