@@ -1,13 +1,15 @@
 {
   "version": 1,
   "signatureVersion": 2,
-  "status": "ok",
-  "checkedAt": "2026-09-07T07:32:57Z",
+  "status": "review_required",
+  "checkedAt": "2026-09-14T08:06:47Z",
   "sourceCount": 10,
   "reachableCount": 10,
-  "changedSources": [],
+  "changedSources": [
+    "bccwj2"
+  ],
   "errors": [],
-  "teacherReviewRequired": false,
+  "teacherReviewRequired": true,
   "policy": "TEACHER_ROBOT_MAINTENANCE.md",
   "sources": [
     {
@@ -184,11 +186,11 @@
       ],
       "purpose": "Contemporary written Japanese usage and contextual evidence",
       "reachable": true,
-      "bytes": 10198,
-      "semanticChars": 2086,
+      "bytes": 10440,
+      "semanticChars": 2157,
       "signatureVersion": 2,
-      "sha256": "7317f3b76d50ac16605a5c9c6f9738798cdebb1eebeb69daf9f51d5e6586cefd",
-      "changed": false,
+      "sha256": "98c765b3ec700c9710a8163da4d0691e846f24a8294a85c350196fa648185182",
+      "changed": true,
       "error": null
     },
     {
