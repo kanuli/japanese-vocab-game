@@ -7,7 +7,8 @@
 //
 // IMPORTANT:
 // - Never place a Supabase service-role / secret key in this repository.
-// - Google/Azure translation secrets belong only in Supabase Edge Function Secrets.
+// - GEMINI_API_KEY belongs only in Supabase Edge Function Secrets.
+// - Do not enable paid billing for the no-card translation setup.
 // - Enable Authentication -> Passkeys in Supabase and configure the WebAuthn
 //   RP ID / allowed origin for the actual website hostname/origin.
 // - See supabase/passkey-setup.md for the one-time setup.
@@ -20,7 +21,7 @@ window.JP_TRANSLATOR_CLOUD_CONFIG = Object.freeze({
 // It rebinds only the Translate action after the page finishes loading.
 (()=>{
   const s=document.createElement('script');
-  s.src='./translator-translation-router.js?v=20260919v1';
+  s.src='./translator-translation-router.js?v=20260919v2';
   s.async=true;
   document.head.appendChild(s);
 })();
