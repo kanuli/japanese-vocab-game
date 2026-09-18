@@ -29,28 +29,32 @@ function startChromeTranslator(target){
   return promise;
 }
 
-async function edgeTranslate(text,target){
+async function edgeTranslateBilingual(text){
   if(!apiUrl||!publishableKey)throw Error('cloud router not configured');
   const response=await fetch(apiUrl,{
     method:'POST',
     cache:'no-store',
     headers:{'Content-Type':'application/json','apikey':publishableKey},
-    body:JSON.stringify({text,source:'ja',target})
+    body:JSON.stringify({text,source:'ja'})
   });
   let data=null;
   try{data=await response.json()}catch(_e){}
   if(!response.ok)throw Error(data?.message||data?.error||`cloud router HTTP ${response.status}`);
-  const translation=String(data?.translation||'').trim();
-  if(!translation)throw Error('cloud router returned an empty translation');
-  return{text:translation,provider:String(data?.provider||'cloud')};
+  const zh=String(data?.zh||'').trim(),en=String(data?.en||'').trim();
+  if(!zh||!en)throw Error('cloud router returned an incomplete bilingual translation');
+  return{zh,en,provider:String(data?.provider||'cloud')};
 }
 
-async function chromeTranslate(text,target,translatorPromise){
-  const translator=await translatorPromise;
-  if(!translator)throw Error('Chrome Translator unavailable');
-  const translated=String(await translator.translate(text)).trim();
-  if(!translated)throw Error('Chrome Translator returned an empty translation');
-  return{text:translated,provider:'chrome-translator'};
+async function chromeTranslateBilingual(text,zhPromise,enPromise){
+  const [zhTranslator,enTranslator]=await Promise.all([zhPromise,enPromise]);
+  if(!zhTranslator||!enTranslator)throw Error('Chrome Translator bilingual pair unavailable');
+  const [zh,en]=await Promise.all([
+    zhTranslator.translate(text),
+    enTranslator.translate(text)
+  ]);
+  const zhText=String(zh||'').trim(),enText=String(en||'').trim();
+  if(!zhText||!enText)throw Error('Chrome Translator returned an incomplete bilingual translation');
+  return{zh:zhText,en:enText,provider:'chrome-translator'};
 }
 
 async function myMemoryOne(text,target){
@@ -66,13 +70,22 @@ async function myMemoryTranslate(text,target){
   const parts=byteLength(text)<=430?[text]:myMemoryChunks(text);
   const output=[];
   for(const part of parts)output.push(await myMemoryOne(part,target));
-  return{text:output.join('\n'),provider:'mymemory'};
+  return output.join('\n');
 }
 
-async function translateTarget(text,target,chromePromise){
-  try{return await edgeTranslate(text,target)}catch(err){console.warn('Gemini Free unavailable; trying free browser fallback.',err)}
-  try{return await chromeTranslate(text,target,chromePromise)}catch(err){console.warn('Chrome Translator unavailable; trying MyMemory.',err)}
-  return myMemoryTranslate(text,target);
+async function myMemoryTranslateBilingual(text){
+  const [zh,en]=await Promise.all([
+    myMemoryTranslate(text,'zh-TW'),
+    myMemoryTranslate(text,'en')
+  ]);
+  if(!zh||!en)throw Error('MyMemory returned an incomplete bilingual translation');
+  return{zh,en,provider:'mymemory'};
+}
+
+async function translateBilingual(text,zhChrome,enChrome){
+  try{return await edgeTranslateBilingual(text)}catch(err){console.warn('Gemini Free bilingual translation unavailable; trying Chrome Translator for both languages.',err)}
+  try{return await chromeTranslateBilingual(text,zhChrome,enChrome)}catch(err){console.warn('Chrome Translator bilingual pair unavailable; trying MyMemory for both languages.',err)}
+  return myMemoryTranslateBilingual(text);
 }
 
 async function translate(){
@@ -80,8 +93,8 @@ async function translate(){
   const text=jp?.value.trim()||'';
   if(!text){setStatus('請先輸入日文句子。','bad');return}
 
-  // Start Chrome's on-device translators while the click still has user activation.
-  // They remain fallback-only; Gemini Free is the grammar-aware primary engine.
+  // Prepare both on-device language packs during user activation. They are used
+  // only as an atomic pair so zh/en never come from different providers.
   const zhChrome=startChromeTranslator('zh-TW');
   const enChrome=startChromeTranslator('en');
 
@@ -91,14 +104,11 @@ async function translate(){
   if($('#speakzh'))$('#speakzh').disabled=true;
   if($('#copyen'))$('#copyen').disabled=true;
   if($('#speaken'))$('#speaken').disabled=true;
-  setStatus('正在以免費多引擎路由翻譯繁體中文及 English…','loading');
+  setStatus('正在以同一翻譯引擎產生繁體中文及 English…','loading');
 
   try{
-    const [z,e]=await Promise.all([
-      translateTarget(text,'zh-TW',zhChrome),
-      translateTarget(text,'en',enChrome)
-    ]);
-    setOutput(zh,z.text);setOutput(en,e.text);
+    const result=await translateBilingual(text,zhChrome,enChrome);
+    setOutput(zh,result.zh);setOutput(en,result.en);
     if($('#copyzh'))$('#copyzh').disabled=false;
     if($('#speakzh'))$('#speakzh').disabled=false;
     if($('#copyen'))$('#copyen').disabled=false;
@@ -106,11 +116,10 @@ async function translate(){
 
     const autoSave=$('#historyAutoSave');
     if(autoSave?.checked)$('#saveHistory')?.click();
-    const engines=[...new Set([providerLabel(z.provider),providerLabel(e.provider)])].join(' + ');
-    setStatus(`✅ 翻譯完成（${engines}）。${autoSave?.checked?'已自動保存紀錄。':''}`,'ok');
+    setStatus(`✅ 翻譯完成（${providerLabel(result.provider)}，繁中 + English 同一引擎）。${autoSave?.checked?'已自動保存紀錄。':''}`,'ok');
   }catch(err){
-    console.error('All translation providers failed',err);
-    setStatus('翻譯暫時失敗：Gemini Free、Chrome Translator 及 MyMemory 均不可用。','bad');
+    console.error('All bilingual translation providers failed',err);
+    setStatus('翻譯暫時失敗：Gemini Free、Chrome Translator 及 MyMemory 均無法完整產生兩種語言。','bad');
   }finally{if(button)button.disabled=false}
 }
 
@@ -121,7 +130,7 @@ function install(){
   button.addEventListener('pointerdown',()=>{startChromeTranslator('zh-TW');startChromeTranslator('en')},{passive:true});
   jp.onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();translate()}};
   const notice=$('.notice');
-  if(notice)notice.textContent='翻譯採用零信用卡免費多引擎路由：Gemini API Free Tier → Chrome 內建 Translator → MyMemory 最後備援。Gemini API key 只存於 Supabase Edge Function Secrets，不會放入網站或 GitHub。Gemini 免費額度/限速用盡時會自動切換，不會轉成付費。';
+  if(notice)notice.textContent='翻譯採用零信用卡免費多引擎路由：Gemini API Free Tier → Chrome 內建 Translator → MyMemory 最後備援。繁體中文與 English 會鎖定使用同一個翻譯引擎，避免文法理解不一致。Gemini API key 只存於 Supabase Edge Function Secrets，不會放入網站或 GitHub。';
 }
 
 window.JPTranslationRouter=Object.freeze({translate,startChromeTranslator});
