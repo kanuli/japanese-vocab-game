@@ -21,7 +21,7 @@ window.JP_TRANSLATOR_CLOUD_CONFIG = Object.freeze({
 // It rebinds only the Translate action after the page finishes loading.
 (()=>{
   const s=document.createElement('script');
-  s.src='./translator-translation-router.js?v=20260919v2';
+  s.src='./translator-translation-router.js?v=20260919v3';
   s.async=true;
   document.head.appendChild(s);
 })();
