@@ -11,7 +11,7 @@ function decodeHtml(text){const x=document.createElement('textarea');x.innerHTML
 function byteLength(text){return new TextEncoder().encode(text).length}
 function myMemoryChunks(text,max=430){const parts=text.trim().split(/(?<=[。！？!?])/u).filter(Boolean),out=[];let cur='';for(const part of parts){if(byteLength(cur+part)<=max){cur+=part;continue}if(cur.trim())out.push(cur.trim());cur='';for(const ch of part){if(byteLength(cur+ch)>max){if(cur.trim())out.push(cur.trim());cur=ch}else cur+=ch}}if(cur.trim())out.push(cur.trim());return out}
 function chromeTarget(target){return target==='zh-TW'?'zh-Hant':target}
-function providerLabel(provider){return ({'google-nmt':'Google NMT','azure-translator':'Azure Translator','chrome-translator':'Chrome Translator','mymemory':'MyMemory'})[provider]||provider||'Translator'}
+function providerLabel(provider){return ({'gemini-3.5-flash':'Gemini 3.5 Flash Free','gemini-3.1-flash-lite':'Gemini 3.1 Flash-Lite Free','chrome-translator':'Chrome Translator','mymemory':'MyMemory'})[provider]||provider||'Translator'}
 
 function startChromeTranslator(target){
   if(!('Translator' in self))return Promise.resolve(null);
@@ -70,7 +70,7 @@ async function myMemoryTranslate(text,target){
 }
 
 async function translateTarget(text,target,chromePromise){
-  try{return await edgeTranslate(text,target)}catch(err){console.warn('Cloud translation router unavailable; trying free browser fallback.',err)}
+  try{return await edgeTranslate(text,target)}catch(err){console.warn('Gemini Free unavailable; trying free browser fallback.',err)}
   try{return await chromeTranslate(text,target,chromePromise)}catch(err){console.warn('Chrome Translator unavailable; trying MyMemory.',err)}
   return myMemoryTranslate(text,target);
 }
@@ -81,7 +81,7 @@ async function translate(){
   if(!text){setStatus('請先輸入日文句子。','bad');return}
 
   // Start Chrome's on-device translators while the click still has user activation.
-  // They are fallback-only; cloud NMT remains the first choice.
+  // They remain fallback-only; Gemini Free is the grammar-aware primary engine.
   const zhChrome=startChromeTranslator('zh-TW');
   const enChrome=startChromeTranslator('en');
 
@@ -110,7 +110,7 @@ async function translate(){
     setStatus(`✅ 翻譯完成（${engines}）。${autoSave?.checked?'已自動保存紀錄。':''}`,'ok');
   }catch(err){
     console.error('All translation providers failed',err);
-    setStatus('翻譯暫時失敗：Google/Azure、Chrome Translator 及 MyMemory 均不可用。','bad');
+    setStatus('翻譯暫時失敗：Gemini Free、Chrome Translator 及 MyMemory 均不可用。','bad');
   }finally{if(button)button.disabled=false}
 }
 
@@ -121,7 +121,7 @@ function install(){
   button.addEventListener('pointerdown',()=>{startChromeTranslator('zh-TW');startChromeTranslator('en')},{passive:true});
   jp.onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();translate()}};
   const notice=$('.notice');
-  if(notice)notice.textContent='翻譯採用免費多引擎路由：Google Cloud NMT → Azure Translator → Chrome 內建 Translator → MyMemory 最後備援。Google/Azure 私人金鑰只存於 Supabase Edge Function Secrets，不會放入網站或 GitHub。翻譯紀錄仍保存在本機，登入後可同步至 Supabase。';
+  if(notice)notice.textContent='翻譯採用零信用卡免費多引擎路由：Gemini API Free Tier → Chrome 內建 Translator → MyMemory 最後備援。Gemini API key 只存於 Supabase Edge Function Secrets，不會放入網站或 GitHub。Gemini 免費額度/限速用盡時會自動切換，不會轉成付費。';
 }
 
 window.JPTranslationRouter=Object.freeze({translate,startChromeTranslator});
