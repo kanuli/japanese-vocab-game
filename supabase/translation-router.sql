@@ -1,5 +1,5 @@
 -- Free translation-router quota guard.
--- Run once in Supabase SQL Editor before enabling Google/Azure provider secrets.
+-- Run once in Supabase SQL Editor before enabling the Gemini Free provider secret.
 
 create table if not exists public.translation_provider_usage (
   provider text not null,
@@ -54,7 +54,7 @@ revoke all on function public.reserve_translation_quota(text, text, bigint, bigi
 grant execute on function public.reserve_translation_quota(text, text, bigint, bigint) to service_role;
 
 comment on table public.translation_provider_usage is
-'Internal monthly character counters used by the Supabase translation-router Edge Function. Not readable by browser clients.';
+'Internal character counters used by the Supabase translation-router Edge Function. Not readable by browser clients.';
 
 comment on function public.reserve_translation_quota(text, text, bigint, bigint) is
-'Atomically reserves characters under a provider monthly safety cap; returns false when the cap would be exceeded.';
+'Atomically reserves characters under a provider safety cap; returns false when the cap would be exceeded.';
