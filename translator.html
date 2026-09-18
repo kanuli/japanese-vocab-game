@@ -66,13 +66,28 @@ textarea:focus,select:focus,input:focus{outline:2px solid #bdd0ff;outline-offset
 .history-lang{font-size:11px;color:var(--muted);font-weight:900;margin-bottom:3px}
 .history-text{font-size:14px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
 .history-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.cloud-sync{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.cloud-sync summary{cursor:pointer;font-weight:900;display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none}
+.cloud-sync summary::-webkit-details-marker{display:none}
+.cloud-status{font-size:12px;font-weight:800;color:var(--muted);border:1px solid var(--line);background:#fafbfe;border-radius:999px;padding:5px 9px}
+.cloud-status[data-state="ok"]{color:var(--ok);border-color:#b9dfca;background:var(--okbg)}
+.cloud-status[data-state="bad"]{color:var(--bad);border-color:#efb6b1;background:var(--badbg)}
+.cloud-status[data-state="loading"]{color:#6d5a20;border-color:#efd58b;background:#fff8e7}
+.cloud-body{margin-top:11px;background:#fafbfe;border:1px solid var(--line);border-radius:12px;padding:12px}
+.cloud-hint{font-size:12px;line-height:1.55;color:var(--muted);margin-bottom:10px}
+.cloud-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.cloud-field label{display:block;font-size:11px;font-weight:900;color:var(--muted);margin-bottom:4px}
+.cloud-field input{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;background:#fff;color:var(--text)}
+.cloud-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .notice{margin-top:14px;background:#fff8e7;border:1px solid #efd58b;border-radius:11px;padding:10px 12px;font-size:12px;line-height:1.6;color:#66551f}
 .footer{font-size:11px;color:var(--muted);line-height:1.65;margin:16px 2px}
-@media(max-width:720px){.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.results,.settings,.history-translation{grid-template-columns:1fr}textarea{font-size:19px;min-height:150px}.row .btn{flex:1 1 calc(50% - 8px)}.history-controls .btn{flex:1 1 auto}.history-search{flex-basis:100%}}
+@media(max-width:720px){.wrap{padding:12px}.top{align-items:flex-start;flex-direction:column}.results,.settings,.history-translation,.cloud-grid{grid-template-columns:1fr}textarea{font-size:19px;min-height:150px}.row .btn{flex:1 1 calc(50% - 8px)}.history-controls .btn,.cloud-actions .btn{flex:1 1 auto}.history-search{flex-basis:100%}}
 </style>
 <script type="module" src="./vendor/supertonic-browser.js"></script>
 <script src="./mobile-supertonic-guard.js?v=20260817v4"></script>
 <script defer src="./site-health.js?v=20260817v1"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="./translator-cloud-config.js?v=20260919v1"></script>
 </head>
 <body>
 <div class="wrap">
@@ -110,8 +125,20 @@ textarea:focus,select:focus,input:focus{outline:2px solid #bdd0ff;outline-offset
 <div class="history-head"><div><div id="historyTitle" class="history-title">🕘 翻譯紀錄</div><div id="historyCount" class="muted">0 筆紀錄</div></div><label class="autosave"><input id="historyAutoSave" type="checkbox" checked>自動保存</label></div>
 <div class="history-controls"><input id="historySearch" class="history-search" type="search" placeholder="搜尋日文、繁體中文或 English"><button id="saveHistory" class="btn small">💾 保存目前翻譯</button><button id="clearHistory" class="btn small danger">清除全部</button></div>
 <div id="historyList" class="history-list"><div class="history-empty">完成翻譯後，紀錄會顯示在這裡。</div></div>
+<details class="cloud-sync" id="cloudSyncPanel">
+<summary><span>☁️ 跨裝置同步</span><span id="cloudStatus" class="cloud-status" data-state="idle">本機模式</span></summary>
+<div class="cloud-body">
+<div id="cloudConfigHint" class="cloud-hint">設定雲端連線後，可在 PC、iPhone、iPad 等裝置登入同一 Email，自動同步翻譯紀錄。</div>
+<div class="cloud-grid">
+<div class="cloud-field"><label for="cloudUrl">Supabase Project URL</label><input id="cloudUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://xxxx.supabase.co"></div>
+<div class="cloud-field"><label for="cloudKey">Publishable / anon key</label><input id="cloudKey" type="password" autocomplete="off" placeholder="Supabase public key"></div>
+<div class="cloud-field"><label for="cloudEmail">登入 Email</label><input id="cloudEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com"></div>
+</div>
+<div class="cloud-actions"><button id="cloudSaveConfig" class="btn small">儲存雲端設定</button><button id="cloudLogin" class="btn small primary">Email 登入連結</button><button id="cloudSyncNow" class="btn small">立即同步</button><button id="cloudLogout" class="btn small">登出</button></div>
+</div>
+</details>
 </section>
-<div class="notice">不需要私人 API key。日語可選 VOICEVOX、Supertonic 3、AivisSpeech / Style-Bert-VITS；已收錄句子優先使用本站伺服器預錄，任意新句由 Supertonic 3 即時生成，裝置 Speech Synthesis 作最後備援。翻譯使用 MyMemory 公開服務，適合日常句子練習，免費公開服務可能有每日用量限制。翻譯紀錄只保存在目前瀏覽器的本機儲存空間，不會上傳到 GitHub。</div>
+<div class="notice">不需要私人 API key。日語可選 VOICEVOX、Supertonic 3、AivisSpeech / Style-Bert-VITS；已收錄句子優先使用本站伺服器預錄，任意新句由 Supertonic 3 即時生成，裝置 Speech Synthesis 作最後備援。翻譯使用 MyMemory 公開服務。翻譯紀錄會先保存在本機；完成雲端設定並登入後，會同步至你自己的 Supabase 帳戶資料並可跨裝置使用。</div>
 <div class="footer">Japanese Learning｜語音・翻譯練習工具</div>
 </div>
 <script src="./translator-hosted-voice.js?v=20260817v3"></script>
@@ -134,7 +161,7 @@ async function one(t,target){const u='https://api.mymemory.translated.net/get?q=
 async function all(t,target,label){let a=chunks(t),o=[];for(let i=0;i<a.length;i++){st(`正在翻譯 ${label}：${i+1}/${a.length}…`,'loading');o.push(await one(a[i],target))}return o.join('\n')}
 
 function readHistory(){try{const value=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');return Array.isArray(value)?value:[]}catch(e){console.warn('translation history read failed',e);return []}}
-function writeHistory(items){try{localStorage.setItem(HISTORY_KEY,JSON.stringify(items.slice(0,HISTORY_LIMIT)));return true}catch(e){console.warn('translation history write failed',e);st('翻譯完成，但瀏覽器無法保存紀錄；本機儲存空間可能已滿。','bad');return false}}
+function writeHistory(items){try{const saved=items.slice(0,HISTORY_LIMIT);localStorage.setItem(HISTORY_KEY,JSON.stringify(saved));window.dispatchEvent(new CustomEvent('jpTranslatorHistoryChanged',{detail:{history:saved}}));return true}catch(e){console.warn('translation history write failed',e);st('翻譯完成，但瀏覽器無法保存紀錄；本機儲存空間可能已滿。','bad');return false}}
 function autoSaveEnabled(){return localStorage.getItem(AUTO_SAVE_KEY)!=='false'}
 function currentTranslation(){const sourceText=jp.value.trim(),zhText=zh.classList.contains('placeholder')?'':zh.textContent.trim(),enText=en.classList.contains('placeholder')?'':en.textContent.trim();if(!sourceText||!zhText||!enText)return null;return{sourceText,zhText,enText}}
 function saveTranslation(showStatus=false){const cur=currentTranslation();if(!cur){if(showStatus)st('目前沒有完整翻譯可以保存。','bad');return false}let items=readHistory(),existing=items.find(x=>x&&x.sourceText===cur.sourceText);const record={id:existing?.id||(`${Date.now()}-${Math.random().toString(36).slice(2,8)}`),sourceText:cur.sourceText,zhText:cur.zhText,enText:cur.enText,sourceLanguage:'ja',targetLanguages:['zh-TW','en'],inputType:'text',createdAt:new Date().toISOString(),favorite:Boolean(existing?.favorite)};items=[record,...items.filter(x=>x&&x.id!==record.id&&x.sourceText!==record.sourceText)];if(!writeHistory(items))return false;renderHistory();if(showStatus)st('✅ 已保存目前翻譯。','ok');return true}
@@ -173,12 +200,14 @@ $('#historySearch').oninput=renderHistory;
 $('#saveHistory').onclick=()=>saveTranslation(true);
 $('#clearHistory').onclick=clearHistory;
 $('#historyAutoSave').checked=autoSaveEnabled();
-$('#historyAutoSave').onchange=e=>{try{localStorage.setItem(AUTO_SAVE_KEY,e.target.checked?'true':'false')}catch(err){console.warn(err)}st(e.target.checked?'已開啟翻譯紀錄自動保存。':'已關閉自動保存；仍可手動保存目前翻譯。')};
+$('#historyAutoSave').onchange=e=>{try{localStorage.setItem(AUTO_SAVE_KEY,e.target.checked?'true':'false');window.dispatchEvent(new CustomEvent('jpTranslatorSettingsChanged',{detail:{autoSave:e.target.checked}}))}catch(err){console.warn(err)}st(e.target.checked?'已開啟翻譯紀錄自動保存。':'已關閉自動保存；仍可手動保存目前翻譯。')};
+window.addEventListener('jpTranslatorCloudApplied',()=>{$('#historyAutoSave').checked=autoSaveEnabled();renderHistory()});
 if('speechSynthesis'in window){loadvoices();speechSynthesis.onvoiceschanged=loadvoices}
 if(!localSuperAllowed())$('#engine').value='voicevox';
 renderHistory();
 syncEngine();
 })();
 </script>
+<script src="./translator-cloud-sync.js?v=20260919v1"></script>
 </body>
 </html>
