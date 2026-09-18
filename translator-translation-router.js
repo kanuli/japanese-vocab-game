@@ -19,7 +19,7 @@ function startChromeTranslator(target){
   if(chromeTranslators.has(key))return chromeTranslators.get(key);
   let promise;
   try{
-    promise=Translator.create({
+    promise=self.Translator.create({
       sourceLanguage:'ja',
       targetLanguage,
       monitor(m){m.addEventListener('downloadprogress',e=>{if(Number.isFinite(e.loaded))console.debug(`Chrome Translator ${key}: ${Math.round(e.loaded*100)}%`)})}
