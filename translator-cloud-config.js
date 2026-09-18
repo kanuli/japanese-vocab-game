@@ -10,11 +10,7 @@
 // - Enable Authentication -> Passkeys in Supabase and configure the WebAuthn
 //   RP ID / allowed origin for the actual website hostname/origin.
 // - See supabase/passkey-setup.md for the one-time setup.
-//
-// Leave blank to configure from the page itself. Once a shared Supabase project
-// is ready, these two public values can be committed here so every device only
-// needs Passkey authentication for normal use.
 window.JP_TRANSLATOR_CLOUD_CONFIG = Object.freeze({
-  url: '',
-  anonKey: ''
+  url: 'https://qrznpvldluxxjbxdzeml.supabase.co',
+  anonKey: 'sb_publishable_4lYT4c8o7fT7PbadkvJ4aA_KJT3pbTz'
 });
