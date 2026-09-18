@@ -1,0 +1,2 @@
+[functions.translate-router]
+verify_jwt = false
