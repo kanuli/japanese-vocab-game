@@ -1,3 +1,5 @@
-# Production deployment trigger: 2026-09-19 atomic bilingual translator
+project_id = "japanese-vocab-game"
+
+# Production Edge Function deployment configuration.
 [functions.translate-router]
 verify_jwt = false
