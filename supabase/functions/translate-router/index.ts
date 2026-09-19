@@ -10,7 +10,7 @@ type BilingualTranslation = {
   en: string
 }
 
-const ROUTER_VERSION = '20260919-atomic-v2'
+const ROUTER_VERSION = '20260919-atomic-v3'
 const GEMINI_DAILY_CHAR_SAFETY = 100_000
 const MAX_INPUT_CHARS = 20_000
 const GEMINI_MODELS = [
