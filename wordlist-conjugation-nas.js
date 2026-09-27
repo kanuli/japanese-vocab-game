@@ -67,6 +67,20 @@ async function playBytes(bytes,speed){
     if(p&&p.catch)p.catch(function(err){finish(false,err);});
   });
 }
+function publishNasStatus(out){
+  var W=root.WA||{},rec=W.lastSpeak||{};
+  if(!rec.nas||!rec.playbackSuccess||rec.playbackFailure)return;
+  var provider=String(rec.provider||out&&out.engine||'');
+  var voice=String(rec.selectedVoice||rec.key||out&&out.key||'');
+  var msg=rec.conjugation
+    ? '✅ NAS Japanese API 動詞活用已播放｜'+provider+'｜'+voice
+    : '✅ NAS Japanese API 已播放｜'+provider+'｜'+voice;
+  setTimeout(function(){
+    var audioStatus=el('audioStatus'),voiceStatus=el('voiceStatus');
+    if(audioStatus)audioStatus.textContent=msg;
+    if(voiceStatus)voiceStatus.textContent=msg;
+  },0);
+}
 function install(){
   var W=root.WA=root.WA||{};
   if(typeof W.speak!=='function'||W.__conjugationNasInstalled)return;
@@ -77,17 +91,27 @@ function install(){
     var engine=String(el('audioEngine')&&el('audioEngine').value||'');
     var voice=String(el('voice')&&el('voice').value||'');
     if(!overrideWord||!inConjugationModal()||engine!=='supertonic3'||voice!=='F3'){
-      return baseSpeak.apply(W,arguments);
+      var ordinary=await baseSpeak.apply(W,arguments);
+      publishNasStatus(ordinary);
+      return ordinary;
     }
 
     var term=termOf(overrideWord);
-    if(!term)return baseSpeak.apply(W,arguments);
+    if(!term){
+      var noTerm=await baseSpeak.apply(W,arguments);
+      publishNasStatus(noTerm);
+      return noTerm;
+    }
 
     try{
       var lookupUrl=NAS_BASE+'/api/v1/conjugation/'+encodeURIComponent(term)+'?engine=supertonic3&voice=F3';
       var d=await fetchJson(lookupUrl,5000);
       var row=chooseResult(d,overrideWord,text);
-      if(!row||!row.audio_url)return baseSpeak.apply(W,arguments);
+      if(!row||!row.audio_url){
+        var miss=await baseSpeak.apply(W,arguments);
+        publishNasStatus(miss);
+        return miss;
+      }
 
       var audioUrl=/^https?:\/\//i.test(row.audio_url)?row.audio_url:NAS_BASE+row.audio_url;
       var st=el('voiceStatus');
@@ -117,11 +141,13 @@ function install(){
       };
       if(root.W)root.W.lastSpeak=W.lastSpeak;
       if(root.WordlistConjugation)root.WordlistConjugation.lastSpeak=W.lastSpeak;
-      if(st)st.textContent='✅ NAS Japanese API 動詞活用已播放｜supertonic3｜F3';
+      publishNasStatus({engine:'supertonic3',key:'F3'});
       return {engine:'supertonic3',nas:true,conjugation:true,key:'F3',url:audioUrl};
     }catch(err){
       console.warn('NAS conjugation F3 failed; using existing GitHub/HF fallback',err);
-      return baseSpeak.apply(W,arguments);
+      var fallback=await baseSpeak.apply(W,arguments);
+      publishNasStatus(fallback);
+      return fallback;
     }
   };
 
