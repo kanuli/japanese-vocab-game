@@ -1,0 +1,62 @@
+name: Audit common dictionary vocabulary coverage
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tools/audit_common_dictionary_coverage.py
+      - data/vocab_common_fixups.js
+      - .github/workflows/audit-common-vocab-coverage.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-common-dictionary-vocabulary-coverage
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install audit dependency
+        run: pip install opencc-python-reimplemented
+      - name: Download structured Traditional Chinese dictionary
+        run: |
+          curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
+          zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
+      - name: Audit common dictionary coverage
+        env:
+          TOMOSHI_DB: /tmp/tomoshi.db
+        run: python tools/audit_common_dictionary_coverage.py
+      - name: Validate report structure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/vocab_common_coverage_audit.json')
+          d=json.loads(p.read_text(encoding='utf-8'))
+          assert d['version']=='20261003-common-dictionary-entryid-v1',d.get('version')
+          assert d['counts']['runtimeRows']>=32000,d['counts']
+          assert d['counts']['commonDictionaryEntries']>0,d['counts']
+          assert isinstance(d.get('candidates'),list)
+          print('COMMON DICTIONARY COVERAGE AUDIT PASS',json.dumps(d['counts'],ensure_ascii=False))
+          PY
+      - name: Commit coverage report
+        run: |
+          if git diff --quiet -- data/vocab_common_coverage_audit.json; then
+            echo "Common dictionary coverage report already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/vocab_common_coverage_audit.json
+          git commit -m "Refresh common dictionary vocabulary coverage audit"
+          git pull --rebase origin main
+          git push
