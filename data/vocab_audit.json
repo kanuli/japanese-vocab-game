@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-03T08:07:49.856946+00:00",
+  "generated": "2026-10-03T08:11:46.798495+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
@@ -16444,7 +16444,7 @@
     "policyRevision": "v5-source-lineage",
     "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated.",
     "independentTeacherAnchors": 113,
-    "runtimeExtendedAuditRows": 32629
+    "runtimeExtendedAuditRows": 32635
   },
   "reviewIssues": [
     {
@@ -17474,26 +17474,26 @@
     "version": "20260826-teacher-runtime-v2-lineage",
     "scope": "all generated core+advanced keys plus every additive runtime vocabulary supplement loaded by advanced_words.js",
     "baseTeacherRows": 32518,
-    "supplementConfiguredUniqueKeys": 402,
+    "supplementConfiguredUniqueKeys": 408,
     "supplementUniqueKeysAlreadyAudited": 291,
-    "supplementUniqueKeysAddedToAudit": 111,
-    "rowCount": 32629,
+    "supplementUniqueKeysAddedToAudit": 117,
+    "rowCount": 32635,
     "countsByLevel": {
-      "N5": 2750,
-      "N4": 2578,
+      "N5": 2753,
+      "N4": 2581,
       "N3": 10837,
       "N2": 11291,
       "N1": 5173
     },
     "gradeCounts": {
       "A": 5699,
-      "D": 19338,
+      "D": 19344,
       "B": 7552,
       "C": 40
     },
     "directSupplementRowsAdded": 25,
     "conflictingDirectSupplementRowsAdded": 1,
-    "estimatedSupplementRowsAdded": 86,
+    "estimatedSupplementRowsAdded": 92,
     "estimatedN1": 0,
     "duplicateExactKeys": 0,
     "rankLogMediansUsed": {
@@ -17504,8 +17504,8 @@
     },
     "overlay": {
       "version": "20260826-teacher-runtime-v2-lineage",
-      "generated": "2026-10-03T08:08:33.168071+00:00",
-      "configuredKeys": 402,
+      "generated": "2026-10-03T08:12:29.121423+00:00",
+      "configuredKeys": 408,
       "rule": "apply v5 source-lineage-aware teacher level after all additive runtime supplements",
       "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated."
     },

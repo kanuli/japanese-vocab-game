@@ -1289,9 +1289,11 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 アフェア	アフェア	N5	D	estimated	model+frequency+world-distribution	1	29986	1017890	{}
 アブサン	アブサン	N5	D	estimated	model+frequency+world-distribution	1	29988	1018110	{}
 アプリ	アプリ	N5	D	estimated	model+frequency+world-distribution	1	26572	1018190	{}
+アペタイザー	アペタイザー	N5	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	29991	1018350	"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1018350""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 アマ	アマ	N5	D	estimated	model+frequency+world-distribution	1	26576	1018530	{}
 アリア	アリア	N5	D	estimated	model+frequency+world-distribution	1	26585	1019100	{}
 アルト	アルト	N5	D	estimated	model+frequency+world-distribution	1	26589	1019400	{}
+アルミサッシ	アルミサッシ	N5	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	30010	1019630	"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1019630""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 アルミホイル	アルミホイル	N5	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	30011	1019660	"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1019660""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 アロハ	アロハ	N5	D	estimated	model+frequency+world-distribution	1	26594	1019820	{}
 アロー	アロー	N5	D	estimated	model+frequency+world-distribution	1	29892	1649030	{}
@@ -2651,6 +2653,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 リーク	リーク	N5	D	estimated	model+frequency+world-distribution	1	29614	1140460	{}
 リース	リース	N5	D	estimated	model+frequency+world-distribution	1	29616	1140530	{}
 リーチ	リーチ	N5	D	estimated	model+frequency+world-distribution	1	29620	1140630	{}
+リーディング	リーディング	N5	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	29621		"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[""1140650"",""2860890""],""tomoshiAmbiguous"":true,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 リート	リート	N5	D	estimated	model+frequency+world-distribution	1	29622	1140700	{}
 リール	リール	N5	D	estimated	model+frequency+world-distribution	1	29626	1140840	{}
 ルアー	ルアー	N5	D	estimated	model+frequency+world-distribution	1	29720	1143950	{}
@@ -4382,6 +4385,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 アベック	アベック	N4	D	estimated	model+frequency+world-distribution	1	22896	1018310	{}
 アベニュー	アベニュー	N4	D	estimated	model+frequency+world-distribution	1	26575	1018320	{}
 アベレージ	アベレージ	N4	D	estimated	model+frequency+world-distribution	1	29990	1018330	{}
+アボート	アボート	N4	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	29992	1018400	"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""1018400""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 アメニティ	アメニティ	N4	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	29999	1018760	"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""1018760""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 アメフト	アメフト	N4	D	estimated	model+frequency+world-distribution	1	26580	1018770	{}
 アメリカ	アメリカ	N4	A	direct	manual-secondary-exact	1	23566	1149830	"{""manual-secondary-exact"":""N4"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N4"",""waller-exact"":""N4"",""existing-direct"":""N4"",""waller-entry-context"":""N4""}"
@@ -4398,6 +4402,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 アルパイン	アルパイン	N4	D	estimated	model+frequency+world-distribution	1	26590	1019460	{}
 アルファ	Α	N4	D	estimated	model+frequency+world-distribution	1	26591	1019520	{}
 アルプス	アルプス	N4	D	estimated	model+frequency+world-distribution	1	26592	1019570	{}
+アレイ	アレイ	N4	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	30012		"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""1019690"",""1149960"",""2841467""],""tomoshiAmbiguous"":true,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 アンカー	アンカー	N4	D	estimated	model+frequency+world-distribution	1	26596	1019850	{}
 アングラ	アングラ	N4	D	estimated	model+frequency+world-distribution	1	26597	1019880	{}
 アンダー	アンダー	N4	D	estimated	model+frequency+world-distribution	1	26602	1020070	{}
@@ -5290,6 +5295,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 リミテッド	リミテッド	N4	D	estimated	model+frequency+world-distribution	1	29689	1143000	{}
 リュージュ	リュージュ	N4	D	estimated	model+frequency+world-distribution	1	29694	1143130	{}
 リンケージ	リンケージ	N4	D	estimated	model+frequency+world-distribution	1	29705	1143470	{}
+リーマン	リーマン	N4	D	estimated	runtime-estimate:rank-calibrated+legacy-weak-prior	1	29625	1140830	"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N2"",""exactEvidence"":{},""tomoshiEntryIds"":[""1140830""],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 ルイジアナ	ルイジアナ	N4	D	estimated	model+frequency+world-distribution	1	29721	1143960	{}
 ルネサンス	ルネサンス	N4	D	estimated	model+frequency+world-distribution	1	29726	1144100	{}
 ルミノール	ルミノール	N4	D	estimated	model+frequency+world-distribution	1	29730	1144220	{}
