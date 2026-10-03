@@ -1,6 +1,6 @@
 {
   "version": "20261003-common-dictionary-entryid-v1",
-  "generated": "2026-10-03T08:07:49.559333+00:00",
+  "generated": "2026-10-03T08:09:40.831191+00:00",
   "status": "review_required",
   "scope": "Tomoshi/JMdict entries marked common, compared to complete runtime teacher audit at JMdict entry-ID level",
   "policy": {
@@ -10,22 +10,22 @@
     "meaning": "Traditional Chinese meaning must resolve through Tomoshi zh-TW for the same JMdict entry ID."
   },
   "counts": {
-    "runtimeRows": 32621,
+    "runtimeRows": 32629,
     "dictionaryEntries": 217538,
     "commonDictionaryEntries": 30164,
-    "coveredCommonEntryIds": 29974,
-    "missingCommonEntryIdsRaw": 190,
-    "reviewableMissingCommonEntries": 187,
+    "coveredCommonEntryIds": 29987,
+    "missingCommonEntryIdsRaw": 177,
+    "reviewableMissingCommonEntries": 174,
     "missingWithoutUsableZhTw": 3,
     "missingRejectedByJapaneseShape": 0,
     "P1": 0,
     "P2": 0,
-    "P3": 187
+    "P3": 174
   },
   "runtimeResolution": {
-    "runtimeRows": 32621,
-    "exactResolvedRows": 31654,
-    "ambiguousRowsConservativelyCovered": 766,
+    "runtimeRows": 32629,
+    "exactResolvedRows": 31657,
+    "ambiguousRowsConservativelyCovered": 771,
     "unresolvedRuntimeRows": 201
   },
   "candidates": [
@@ -43,32 +43,6 @@
       "reviewPriority": "P3"
     },
     {
-      "entryId": "1077270",
-      "reading": "だんトツ",
-      "display": "断トツ",
-      "meaning": "遠遠領先；遙遙領先；壓倒性優勢；最優秀；出類拔萃",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 23207,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1107460",
-      "reading": "ファースト",
-      "display": "ファースト",
-      "meaning": "第一；首位；一壘；一壘手",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 23381,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
       "entryId": "2397590",
       "reading": "パー",
       "display": "パー",
@@ -77,32 +51,6 @@
       "directJlptLevel": null,
       "directJlptSource": null,
       "frequencyRank": 26076,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "2858155",
-      "reading": "ファースト",
-      "display": "ファースト",
-      "meaning": "快速的；迅速的",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 26324,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1067080",
-      "reading": "スイート",
-      "display": "スイート",
-      "meaning": "甜的；甜味的；甜的（酒類）；甜蜜的；悅耳的；宜人的；令人愉快的",
-      "pos": "adj",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 27669,
       "preferredWrittenCommon": false,
       "preferredReadingCommon": false,
       "reviewPriority": "P3"
@@ -129,32 +77,6 @@
       "directJlptLevel": null,
       "directJlptSource": null,
       "frequencyRank": 28905,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1128080",
-      "reading": "マスト",
-      "display": "マスト",
-      "meaning": "桅杆；桅",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29278,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1134620",
-      "reading": "モード",
-      "display": "モード",
-      "meaning": "模式；設定；方式；方法；狀態；心態；模式；感受；時尚；流行風格",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29451,
       "preferredWrittenCommon": false,
       "preferredReadingCommon": false,
       "reviewPriority": "P3"
@@ -199,32 +121,6 @@
       "reviewPriority": "P3"
     },
     {
-      "entryId": "1146580",
-      "reading": "ロード",
-      "display": "ロード",
-      "meaning": "道路；路",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29804,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "2842054",
-      "reading": "マスト",
-      "display": "マスト",
-      "meaning": "必需的；不可或缺的；必備的；強制性的",
-      "pos": "adj",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29917,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
       "entryId": "2842178",
       "reading": "ラム",
       "display": "ラム",
@@ -238,19 +134,6 @@
       "reviewPriority": "P3"
     },
     {
-      "entryId": "2851234",
-      "reading": "モード",
-      "display": "モード",
-      "meaning": "時尚；流行",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29923,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
       "entryId": "2860890",
       "reading": "リーディング",
       "display": "リーディング",
@@ -259,32 +142,6 @@
       "directJlptLevel": null,
       "directJlptSource": null,
       "frequencyRank": 29936,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "2860924",
-      "reading": "ロード",
-      "display": "ロード",
-      "meaning": "負荷；載荷；載入；裝入（程式或資料至記憶體）",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29937,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "2862667",
-      "reading": "スイート",
-      "display": "スイート",
-      "meaning": "（酒店的）套房；套房",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29939,
       "preferredWrittenCommon": false,
       "preferredReadingCommon": false,
       "reviewPriority": "P3"
@@ -389,19 +246,6 @@
       "directJlptLevel": null,
       "directJlptSource": null,
       "frequencyRank": 29998,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1018760",
-      "reading": "アメニティ",
-      "display": "アメニティ",
-      "meaning": "舒適；便利；生活環境的舒適性",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29999,
       "preferredWrittenCommon": false,
       "preferredReadingCommon": false,
       "reviewPriority": "P3"
@@ -545,19 +389,6 @@
       "directJlptLevel": null,
       "directJlptSource": null,
       "frequencyRank": 30010,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1019660",
-      "reading": "アルミホイル",
-      "display": "アルミホイル",
-      "meaning": "鋁箔；鋁箔紙；錫箔紙",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 30011,
       "preferredWrittenCommon": false,
       "preferredReadingCommon": false,
       "reviewPriority": "P3"
