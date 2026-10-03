@@ -1,6 +1,6 @@
 {
   "version": "20261003-common-dictionary-entryid-v1",
-  "generated": "2026-10-03T08:11:50.439349+00:00",
+  "generated": "2026-10-03T08:20:25.187893+00:00",
   "status": "review_required",
   "scope": "Tomoshi/JMdict entries marked common, compared to complete runtime teacher audit at JMdict entry-ID level",
   "policy": {
@@ -10,22 +10,22 @@
     "meaning": "Traditional Chinese meaning must resolve through Tomoshi zh-TW for the same JMdict entry ID."
   },
   "counts": {
-    "runtimeRows": 32629,
+    "runtimeRows": 32635,
     "dictionaryEntries": 217538,
     "commonDictionaryEntries": 30164,
-    "coveredCommonEntryIds": 29987,
-    "missingCommonEntryIdsRaw": 177,
-    "reviewableMissingCommonEntries": 174,
+    "coveredCommonEntryIds": 29994,
+    "missingCommonEntryIdsRaw": 170,
+    "reviewableMissingCommonEntries": 167,
     "missingWithoutUsableZhTw": 3,
     "missingRejectedByJapaneseShape": 0,
     "P1": 0,
     "P2": 0,
-    "P3": 174
+    "P3": 167
   },
   "runtimeResolution": {
-    "runtimeRows": 32629,
-    "exactResolvedRows": 31657,
-    "ambiguousRowsConservativelyCovered": 771,
+    "runtimeRows": 32635,
+    "exactResolvedRows": 31661,
+    "ambiguousRowsConservativelyCovered": 773,
     "unresolvedRuntimeRows": 201
   },
   "candidates": [
@@ -95,32 +95,6 @@
       "reviewPriority": "P3"
     },
     {
-      "entryId": "1140650",
-      "reading": "リーディング",
-      "display": "リーディング",
-      "meaning": "閱讀",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29621,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1140830",
-      "reading": "リーマン",
-      "display": "リーマン",
-      "meaning": "上班族；公司職員；公司員工",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29625,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
       "entryId": "2842178",
       "reading": "ラム",
       "display": "ラム",
@@ -129,45 +103,6 @@
       "directJlptLevel": null,
       "directJlptSource": null,
       "frequencyRank": 29918,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "2860890",
-      "reading": "リーディング",
-      "display": "リーディング",
-      "meaning": "領先的；主導的",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29936,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1018350",
-      "reading": "アペタイザー",
-      "display": "アペタイザー",
-      "meaning": "開胃菜；前菜",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29991,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1018400",
-      "reading": "アボート",
-      "display": "アボート",
-      "meaning": "中止；放棄；異常終止",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 29992,
       "preferredWrittenCommon": false,
       "preferredReadingCommon": false,
       "reviewPriority": "P3"
@@ -376,32 +311,6 @@
       "directJlptLevel": null,
       "directJlptSource": null,
       "frequencyRank": 30009,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1019630",
-      "reading": "アルミサッシ",
-      "display": "アルミサッシ",
-      "meaning": "鋁合金窗框；鋁窗框；鋁合金窗",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 30010,
-      "preferredWrittenCommon": false,
-      "preferredReadingCommon": false,
-      "reviewPriority": "P3"
-    },
-    {
-      "entryId": "1019690",
-      "reading": "アレイ",
-      "display": "アレイ",
-      "meaning": "陣列；排列",
-      "pos": "noun",
-      "directJlptLevel": null,
-      "directJlptSource": null,
-      "frequencyRank": 30012,
       "preferredWrittenCommon": false,
       "preferredReadingCommon": false,
       "reviewPriority": "P3"
