@@ -7,6 +7,8 @@ on:
     paths:
       - tools/audit_common_dictionary_coverage.py
       - data/vocab_common_fixups.js
+      - data/jlpt_teacher_audit.tsv
+      - data/vocab_teacher_runtime_overlay.js
       - .github/workflows/audit-common-vocab-coverage.yml
 
 permissions:
