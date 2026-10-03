@@ -1,6 +1,6 @@
 {
   "version": "20261003-common-dictionary-entryid-v1",
-  "generated": "2026-10-03T08:20:25.187893+00:00",
+  "generated": "2026-10-03T08:21:30.534933+00:00",
   "status": "review_required",
   "scope": "Tomoshi/JMdict entries marked common, compared to complete runtime teacher audit at JMdict entry-ID level",
   "policy": {
@@ -10,7 +10,7 @@
     "meaning": "Traditional Chinese meaning must resolve through Tomoshi zh-TW for the same JMdict entry ID."
   },
   "counts": {
-    "runtimeRows": 32635,
+    "runtimeRows": 32636,
     "dictionaryEntries": 217538,
     "commonDictionaryEntries": 30164,
     "coveredCommonEntryIds": 29994,
@@ -23,8 +23,8 @@
     "P3": 167
   },
   "runtimeResolution": {
-    "runtimeRows": 32635,
-    "exactResolvedRows": 31661,
+    "runtimeRows": 32636,
+    "exactResolvedRows": 31662,
     "ambiguousRowsConservativelyCovered": 773,
     "unresolvedRuntimeRows": 201
   },
