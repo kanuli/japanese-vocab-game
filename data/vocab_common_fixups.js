@@ -12,7 +12,13 @@ const FIXUPS=[
   {id:'common-fix-mode',level:'N3',reading:'モード',kanji:'',displayWord:'モード',meaning:'模式；設定；方式；狀態；時尚、流行',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'},
   {id:'common-fix-load-road',level:'N3',reading:'ロード',kanji:'',displayWord:'ロード',meaning:'道路；負荷；載入、讀入（程式或資料）',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'},
   {id:'common-fix-amenity',level:'N2',reading:'アメニティ',kanji:'',displayWord:'アメニティ',meaning:'舒適性；便利設施；（酒店等的）客用品、備品',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'},
-  {id:'common-fix-aluminum-foil',level:'N3',reading:'アルミホイル',kanji:'',displayWord:'アルミホイル',meaning:'鋁箔；鋁箔紙',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'}
+  {id:'common-fix-aluminum-foil',level:'N3',reading:'アルミホイル',kanji:'',displayWord:'アルミホイル',meaning:'鋁箔；鋁箔紙',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'},
+  {id:'common-fix-leading-reading',level:'N3',reading:'リーディング',kanji:'',displayWord:'リーディング',meaning:'閱讀；領先的、主導的（多見於複合語）',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（多義外來語已合併；JLPT 分級由 teacher audit 接管）'},
+  {id:'common-fix-riiman',level:'N2',reading:'リーマン',kanji:'',displayWord:'リーマン',meaning:'上班族、公司職員（「サラリーマン」的俗稱略語）',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'},
+  {id:'common-fix-appetizer',level:'N3',reading:'アペタイザー',kanji:'',displayWord:'アペタイザー',meaning:'開胃菜；前菜；食前酒等促進食慾的食物或飲品',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'},
+  {id:'common-fix-abort',level:'N2',reading:'アボート',kanji:'',displayWord:'アボート',meaning:'中止；異常終止；強制終止（程式或資料通訊）',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'},
+  {id:'common-fix-aluminum-sash',level:'N3',reading:'アルミサッシ',kanji:'',displayWord:'アルミサッシ',meaning:'鋁製窗框；鋁合金窗框',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'},
+  {id:'common-fix-array',level:'N2',reading:'アレイ',kanji:'',displayWord:'アレイ',meaning:'排列；陣列；配列（尤指資訊科技、儲存裝置等）',pos:'noun',estimated:true,source:'一般辭典 common coverage 補充（JLPT 分級由 teacher audit 接管）'}
 ];
 const key=x=>`${String(x?.reading||'').trim()}|${String(x?.kanji||x?.displayWord||'').trim()}`;
 function apply(words){
