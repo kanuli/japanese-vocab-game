@@ -6,7 +6,8 @@ useful for level evidence, but they are not a complete general Japanese dictiona
 The audit therefore works at JMdict entry-ID level, so an already-covered spelling
 variant counts as coverage for the same lemma and is not reported as a new word.
 
-The report is review-only.  It never auto-publishes vocabulary.
+The report is review-only.  It never auto-publishes vocabulary. CI may run this
+standalone or immediately after the teacher-audited vocabulary rebuild.
 """
 from __future__ import annotations
 
