@@ -4,7 +4,7 @@
 const A=window.ADVANCED_WORDS=window.ADVANCED_WORDS||[];
 const FIXUPS=[
   {id:'common-fix-niwa',level:'N5',reading:'にわ',kanji:'庭',displayWord:'庭',meaning:'庭院、院子',pos:'noun',estimated:false,source:'常用 JLPT 補充（教師來源確認）'},
-  {id:'common-fix-musubitsukeru',level:'N1',reading:'むすびつける',kanji:'結び付ける',displayWord:'結び付ける',meaning:'連結；聯繫；使產生關聯；綁在一起',pos:'verb',estimated:true,source:'一般辭典常用詞補充（JLPT 分級待 teacher audit）'}
+  {id:'common-fix-musubitsukeru',level:'N1',reading:'むすびつける',kanji:'結び付ける',displayWord:'結び付ける',meaning:'連結；聯繫；使產生關聯；綁在一起',pos:'verb',estimated:true,source:'一般辭典常用詞補充（JLPT 分級由 teacher audit 接管）'}
 ];
 const key=x=>`${String(x?.reading||'').trim()}|${String(x?.kanji||x?.displayWord||'').trim()}`;
 function apply(words){
