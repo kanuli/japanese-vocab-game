@@ -50,6 +50,10 @@ jobs:
           PY
       - name: Commit coverage report
         run: |
+          # git diff ignores an untracked first-generation report. Mark the path as an
+          # intent-to-add entry first so both a brand-new report and later changes are
+          # detected by the same diff gate.
+          git add -N data/vocab_common_coverage_audit.json
           if git diff --quiet -- data/vocab_common_coverage_audit.json; then
             echo "Common dictionary coverage report already current."
             exit 0
