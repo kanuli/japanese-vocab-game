@@ -1,12 +1,44 @@
 {
   "status": "complete",
-  "sourceRows": 32498,
-  "reviewRows": 0,
-  "countsByLevel": {},
-  "countsByBasis": {},
+  "sourceRows": 32621,
+  "reviewRows": 40,
+  "countsByLevel": {
+    "N2": 19,
+    "N3": 12,
+    "N4": 4,
+    "N5": 5
+  },
+  "countsByBasis": {
+    "common-core-vs-waller-lineage-easier": 32,
+    "common-core-vs-internal-lineage-conflict-easier": 3,
+    "core-vs-waller-lineage-adjacent": 2,
+    "core-vs-waller-lineage-large": 1,
+    "internal-waller-lineage-conflict-common-easier": 1,
+    "runtime-internal-legacy-lineage-conflict": 1
+  },
   "highRiskKeys": {
     "N1": [],
-    "N2": []
+    "N2": [
+      "ありのまま|ありのまま",
+      "いやいや|いやいや",
+      "おごる|おごる",
+      "かつて|かつて",
+      "かり|仮",
+      "かんよ|関与",
+      "しかしながら|しかしながら",
+      "しきたり|しきたり",
+      "そこら|そこら",
+      "たんぼ|田んぼ",
+      "てすう|手数",
+      "とりわけ|とりわけ",
+      "どうぞよろしく|どうぞよろしく",
+      "はまる|はまる",
+      "ひたすら|ひたすら",
+      "ほんの|ほんの",
+      "みき|幹",
+      "もたらす|もたらす",
+      "わざわざ|わざわざ"
+    ]
   },
   "rule": "all grade-C teacher audit rows; no sampling; N1/N2 keys exposed for targeted teacher cross-check"
 }

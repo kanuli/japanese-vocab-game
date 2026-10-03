@@ -1,5 +1,5 @@
 {
-  "generated": "2026-08-26T17:39:54.027853+00:00",
+  "generated": "2026-10-03T07:49:55.863616+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
@@ -10,45 +10,45 @@
     "runtimeJlptLevel": "Every additive runtime exact key is reconciled by v5. OpenJLPT, Waller/Tanos and unprovenanced Tomoshi JLPT labels are one legacy lineage, not independent votes. Unsupported estimated N1 is forbidden."
   },
   "counts": {
-    "core": 10511,
+    "core": 10518,
     "advanced": 22000,
-    "runtimeUnique": 32498,
+    "runtimeUnique": 32518,
     "tomoshiZhRowsTotal": 217261,
     "tomoshiZhUsable": 217241,
     "tomoshiJlptRows": 7747,
-    "sameMeaningVariantGroups": 1210,
+    "sameMeaningVariantGroups": 1213,
     "sameMeaningVariantLevelConflicts": 192,
     "advancedMultiEntryExactKeys": 18,
     "coreMeaningFallbackAfterRefinement": 0,
     "coreSecondaryCrosschecksApplied": 55,
     "coreSemanticResolvedPairs": 123,
-    "coreNormalizedFormReadingRecoveredPairs": 182,
-    "orthographicVariantLevelDifferencesForReview": 66,
+    "coreNormalizedFormReadingRecoveredPairs": 180,
+    "orthographicVariantLevelDifferencesForReview": 68,
     "stage1AdvancedAddedVs12500": 9500,
-    "stage1SafeCandidatePool": 22266,
+    "stage1SafeCandidatePool": 22262,
     "stage1ConflictingExactKeysSkipped": 8,
     "stage2StratifiedReviewQueue": 36,
     "jlptCountsCoreAdvanced": {
-      "N5": 2651,
-      "N4": 2501,
-      "N3": 10961,
-      "N2": 11229,
-      "N1": 5156
+      "N1": 5164,
+      "N2": 11227,
+      "N3": 10821,
+      "N4": 2564,
+      "N5": 2742
     }
   },
   "coreAudit": {
-    "total": 10511,
-    "exactEntryResolved": 10501,
+    "total": 10518,
+    "exactEntryResolved": 10508,
     "ambiguousPairs": 320,
     "unresolvedPairs": 10,
-    "tomoshiMeaningsApplied": 10495,
+    "tomoshiMeaningsApplied": 10502,
     "originalMeaningFallback": 0,
-    "meaningChanged": 10204,
-    "levelChanged": 2841,
+    "meaningChanged": 10211,
+    "levelChanged": 2845,
     "semanticResolvedPairs": 123,
     "manualSecondaryCrosscheckApplied": 55,
     "semanticCandidatesReviewed": 130,
-    "normalizedFormReadingRecoveredPairs": 182
+    "normalizedFormReadingRecoveredPairs": 180
   },
   "coreAmbiguousSamples": [
     {
@@ -564,9 +564,9 @@
     "tomoshi-entry-id-full-corpus": 9500
   },
   "advancedLevelSources": {
-    "jlpt-waller": 2437,
+    "jlpt-waller": 2433,
     "curated-exact": 8,
-    "exact-frequency-estimate": 10055,
+    "exact-frequency-estimate": 10059,
     "tomoshi-waller": 296,
     "tomoshi-priority-frequency-estimate": 9204
   },
@@ -1098,7 +1098,7 @@
       "meaning": "肥皂",
       "forms": [
         {
-          "display": "石鹸",
+          "display": "石鹸[けん]",
           "level": "N2"
         },
         {
@@ -2168,7 +2168,7 @@
       "meaning": "肥皂",
       "forms": [
         {
-          "display": "石鹸",
+          "display": "石鹸[けん]",
           "level": "N2"
         },
         {
@@ -2532,7 +2532,7 @@
       "meaning": "螞蟻",
       "forms": [
         {
-          "display": "蟻",
+          "display": "蟻[あり]",
           "level": "N2"
         },
         {
@@ -2924,7 +2924,7 @@
       "meaning": "彗星",
       "forms": [
         {
-          "display": "彗星",
+          "display": "彗[すい]星",
           "level": "N1"
         },
         {
@@ -2990,6 +2990,20 @@
       ]
     },
     {
+      "reading": "ふくろう",
+      "meaning": "貓頭鷹；烏林鴞",
+      "forms": [
+        {
+          "display": "フクロウ",
+          "level": "N2"
+        },
+        {
+          "display": "梟",
+          "level": "N1"
+        }
+      ]
+    },
+    {
       "reading": "しんずい",
       "meaning": "精髓；精要；靈魂；核心",
       "forms": [
@@ -2999,6 +3013,20 @@
         },
         {
           "display": "真髄",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "reading": "いるか",
+      "meaning": "海豚（及鼠海豚、白鯨等小型齒鯨的統稱）",
+      "forms": [
+        {
+          "display": "イルカ",
+          "level": "N2"
+        },
+        {
+          "display": "いるか",
           "level": "N1"
         }
       ]
@@ -8531,7 +8559,7 @@
       ]
     },
     {
-      "key": "ぼうぜん|茫然",
+      "key": "ぼうぜん|茫[ぼう]然",
       "lookupDisplay": "茫然",
       "originalMeaning": "茫然；發呆",
       "anchorMeaning": "茫然；發呆",
@@ -9616,8 +9644,8 @@
     "targetAdvanced": 22000,
     "selectedAdvanced": 22000,
     "addedVsBaseline": 9500,
-    "runtimeUnique": 32511,
-    "safeSupplementCandidatePool": 9766,
+    "runtimeUnique": 32518,
+    "safeSupplementCandidatePool": 9762,
     "qualityTierSelected": {
       "BASELINE-audited": 12500,
       "A-JLPT+common": 296,
@@ -9640,17 +9668,17 @@
         "rows": 30164
       },
       "excludedOpenDictionaryOnly": 182693,
-      "rawEvidenceCandidates": 9782,
-      "excludedExistingKey": 21415,
+      "rawEvidenceCandidates": 9778,
+      "excludedExistingKey": 21419,
       "excludedAllLowValueSenses": 3351,
       "excludedNoZh": 297,
       "excludedConflictingExactKeys": 8,
-      "safeSupplementCandidates": 9766
+      "safeSupplementCandidates": 9762
     },
     "selectionRule": "preserve prior audited 12.5k; append canonical Tomoshi/JMdict rows with zh-TW and JLPT/common/frequency evidence; skip conflicting exact keys",
     "boundary": {
-      "key": "アフェア|アフェア",
-      "rank": 29986,
+      "key": "アベレージ|アベレージ",
+      "rank": 29990,
       "qualityTier": "B-common+frequency",
       "level": "N1"
     }
@@ -10026,66 +10054,6 @@
       },
       {
         "addedIndex": 9488,
-        "key": "アチーブ|アチーブ",
-        "reading": "アチーブ",
-        "display": "アチーブ",
-        "meaning": "成就測試",
-        "level": "N1",
-        "pos": "noun",
-        "entryId": "1016520",
-        "rank": 29975,
-        "qualityTier": 1,
-        "qualityTierLabel": "B-common+frequency",
-        "meaningSource": "tomoshi-entry-id-full-corpus",
-        "levelSource": "tomoshi-priority-frequency-estimate"
-      },
-      {
-        "addedIndex": 9489,
-        "key": "アップル|アップル",
-        "reading": "アップル",
-        "display": "アップル",
-        "meaning": "蘋果",
-        "level": "N1",
-        "pos": "noun",
-        "entryId": "1016700",
-        "rank": 29976,
-        "qualityTier": 1,
-        "qualityTierLabel": "B-common+frequency",
-        "meaningSource": "tomoshi-entry-id-full-corpus",
-        "levelSource": "tomoshi-priority-frequency-estimate"
-      },
-      {
-        "addedIndex": 9490,
-        "key": "アテスト|アテスト",
-        "reading": "アテスト",
-        "display": "アテスト",
-        "meaning": "證明（記分卡）；簽署",
-        "level": "N1",
-        "pos": "verb",
-        "entryId": "1016730",
-        "rank": 29977,
-        "qualityTier": 1,
-        "qualityTierLabel": "B-common+frequency",
-        "meaningSource": "tomoshi-entry-id-full-corpus",
-        "levelSource": "tomoshi-priority-frequency-estimate"
-      },
-      {
-        "addedIndex": 9491,
-        "key": "アディオス|アディオス",
-        "reading": "アディオス",
-        "display": "アディオス",
-        "meaning": "再見；拜拜",
-        "level": "N1",
-        "pos": "other",
-        "entryId": "1016760",
-        "rank": 29978,
-        "qualityTier": 1,
-        "qualityTierLabel": "B-common+frequency",
-        "meaningSource": "tomoshi-entry-id-full-corpus",
-        "levelSource": "tomoshi-priority-frequency-estimate"
-      },
-      {
-        "addedIndex": 9492,
         "key": "アト|アト",
         "reading": "アト",
         "display": "アト",
@@ -10100,7 +10068,7 @@
         "levelSource": "tomoshi-priority-frequency-estimate"
       },
       {
-        "addedIndex": 9493,
+        "addedIndex": 9489,
         "key": "アドバルーン|アドバルーン",
         "reading": "アドバルーン",
         "display": "アドバルーン",
@@ -10115,7 +10083,7 @@
         "levelSource": "tomoshi-priority-frequency-estimate"
       },
       {
-        "addedIndex": 9494,
+        "addedIndex": 9490,
         "key": "アナーキー|アナーキー",
         "reading": "アナーキー",
         "display": "アナーキー",
@@ -10130,7 +10098,7 @@
         "levelSource": "tomoshi-priority-frequency-estimate"
       },
       {
-        "addedIndex": 9495,
+        "addedIndex": 9491,
         "key": "アニーリング|アニーリング",
         "reading": "アニーリング",
         "display": "アニーリング",
@@ -10145,7 +10113,7 @@
         "levelSource": "tomoshi-priority-frequency-estimate"
       },
       {
-        "addedIndex": 9496,
+        "addedIndex": 9492,
         "key": "アパッチ|アパッチ",
         "reading": "アパッチ",
         "display": "アパッチ",
@@ -10160,7 +10128,7 @@
         "levelSource": "tomoshi-priority-frequency-estimate"
       },
       {
-        "addedIndex": 9497,
+        "addedIndex": 9493,
         "key": "アパルトヘイト|アパルトヘイト",
         "reading": "アパルトヘイト",
         "display": "アパルトヘイト",
@@ -10175,7 +10143,7 @@
         "levelSource": "tomoshi-priority-frequency-estimate"
       },
       {
-        "addedIndex": 9498,
+        "addedIndex": 9494,
         "key": "アビタシオン|アビタシオン",
         "reading": "アビタシオン",
         "display": "アビタシオン",
@@ -10190,7 +10158,7 @@
         "levelSource": "tomoshi-priority-frequency-estimate"
       },
       {
-        "addedIndex": 9499,
+        "addedIndex": 9495,
         "key": "アフェア|アフェア",
         "reading": "アフェア",
         "display": "アフェア",
@@ -10199,6 +10167,66 @@
         "pos": "noun",
         "entryId": "1017890",
         "rank": 29986,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9496,
+        "key": "アフリカーンス|アフリカーンス",
+        "reading": "アフリカーンス",
+        "display": "アフリカーンス",
+        "meaning": "南非荷蘭語",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1018040",
+        "rank": 29987,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9497,
+        "key": "アブサン|アブサン",
+        "reading": "アブサン",
+        "display": "アブサン",
+        "meaning": "苦艾酒",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1018110",
+        "rank": 29988,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9498,
+        "key": "アベイラビリティ|アベイラビリティ",
+        "reading": "アベイラビリティ",
+        "display": "アベイラビリティ",
+        "meaning": "可用性；可獲得性",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1018300",
+        "rank": 29989,
+        "qualityTier": 1,
+        "qualityTierLabel": "B-common+frequency",
+        "meaningSource": "tomoshi-entry-id-full-corpus",
+        "levelSource": "tomoshi-priority-frequency-estimate"
+      },
+      {
+        "addedIndex": 9499,
+        "key": "アベレージ|アベレージ",
+        "reading": "アベレージ",
+        "display": "アベレージ",
+        "meaning": "平均",
+        "level": "N1",
+        "pos": "noun",
+        "entryId": "1018330",
+        "rank": 29990,
         "qualityTier": 1,
         "qualityTierLabel": "B-common+frequency",
         "meaningSource": "tomoshi-entry-id-full-corpus",
@@ -10641,7 +10669,7 @@
       "meaning": "海苔；紫菜；食用海藻（通常為壇紫菜或甘紫菜，多曬乾壓制成片狀）",
       "forms": [
         {
-          "display": "海苔",
+          "display": "海苔[のり]",
           "level": "N3"
         },
         {
@@ -10735,7 +10763,7 @@
       "meaning": "鮭魚；秋鮭；狗鮭",
       "forms": [
         {
-          "display": "鮭",
+          "display": "鮭[さけ]",
           "level": "N2"
         },
         {
@@ -11144,7 +11172,7 @@
       "meaning": "剝落；脫落；被剝去",
       "forms": [
         {
-          "display": "剝ける",
+          "display": "剝[む]ける",
           "level": "N2"
         },
         {
@@ -11339,7 +11367,7 @@
       "meaning": "牡蠣；蠔殼",
       "forms": [
         {
-          "display": "牡蠣",
+          "display": "牡蠣[かき]",
           "level": "N3"
         },
         {
@@ -11444,7 +11472,7 @@
       "meaning": "臺詞；對白；評論；言論；措辭；話語；套話；老套的話；陳詞濫調",
       "forms": [
         {
-          "display": "台詞",
+          "display": "台詞[せりふ]",
           "level": "N2"
         },
         {
@@ -11474,7 +11502,7 @@
       "meaning": "螞蟻",
       "forms": [
         {
-          "display": "蟻",
+          "display": "蟻[あり]",
           "level": "N2"
         },
         {
@@ -11823,7 +11851,7 @@
       "meaning": "仰面朝上；面朝上",
       "forms": [
         {
-          "display": "仰向け",
+          "display": "仰[あお]向け",
           "level": "N2"
         },
         {
@@ -11868,7 +11896,7 @@
       "meaning": "相對而立；面對面矗立（如山峰、建築物等）；對峙；對陣；相持；與……抗衡",
       "forms": [
         {
-          "display": "対峙",
+          "display": "対峙[じ]",
           "level": "N1"
         },
         {
@@ -11913,7 +11941,7 @@
       "meaning": "流暢；流利",
       "forms": [
         {
-          "display": "流暢",
+          "display": "流暢[ちょう]",
           "level": "N1"
         },
         {
@@ -11943,7 +11971,7 @@
       "meaning": "魅力；吸引力；可愛；討人喜歡；殷勤；獻媚；奉承；娛樂；消遣；趣味",
       "forms": [
         {
-          "display": "愛嬌",
+          "display": "愛嬌[きょう]",
           "level": "N1"
         },
         {
@@ -11988,7 +12016,7 @@
       "meaning": "法律；法規；規則；規範；條約；協議；契約；立法",
       "forms": [
         {
-          "display": "掟",
+          "display": "掟[おきて]",
           "level": "N2"
         },
         {
@@ -12138,7 +12166,7 @@
       "meaning": "匆忙；倉促；急速；突然；急遽",
       "forms": [
         {
-          "display": "急遽",
+          "display": "急遽[きょ]",
           "level": "N1"
         },
         {
@@ -12153,7 +12181,7 @@
       "meaning": "包裝；裝箱；打包",
       "forms": [
         {
-          "display": "梱包",
+          "display": "梱[こん]包",
           "level": "N2"
         },
         {
@@ -12168,7 +12196,7 @@
       "meaning": "家常小菜；配菜",
       "forms": [
         {
-          "display": "惣菜",
+          "display": "惣[そう]菜",
           "level": "N2"
         },
         {
@@ -12198,7 +12226,7 @@
       "meaning": "郵寄；投遞",
       "forms": [
         {
-          "display": "投函",
+          "display": "投函[かん]",
           "level": "N2"
         },
         {
@@ -12318,7 +12346,7 @@
       "meaning": "彗星",
       "forms": [
         {
-          "display": "彗星",
+          "display": "彗[すい]星",
           "level": "N1"
         },
         {
@@ -12528,7 +12556,7 @@
       "meaning": "咀嚼；咬嚼；消化；吸收；領會；品味",
       "forms": [
         {
-          "display": "咀嚼",
+          "display": "咀嚼[そしゃく]",
           "level": "N2"
         },
         {
@@ -12603,7 +12631,7 @@
       "meaning": "貓頭鷹；烏林鴞",
       "forms": [
         {
-          "display": "梟",
+          "display": "フクロウ",
           "level": "N2"
         },
         {
@@ -12663,7 +12691,7 @@
       "meaning": "海豚（及鼠海豚、白鯨等小型齒鯨的統稱）",
       "forms": [
         {
-          "display": "海豚",
+          "display": "イルカ",
           "level": "N2"
         },
         {
@@ -12682,7 +12710,7 @@
       "meaning": "乖離；異化；偏離；疏遠；分離；脫離",
       "forms": [
         {
-          "display": "乖離",
+          "display": "乖[かい]離",
           "level": "N2"
         },
         {
@@ -13462,7 +13490,7 @@
     "status": "complete",
     "version": "20260826-teacher-v5-source-lineage",
     "scope": "every core+advanced runtime word exact key",
-    "rowCount": 32498,
+    "rowCount": 32518,
     "policy": "Teacher audit per exact reading+display key. Independent teacher/manual anchors first; core deck and Waller/Tanos lineage are compared without double-counting OpenJLPT; unresolved disagreements remain grade C; only residual words are estimated; estimated N1 requires positive rarity evidence.",
     "sources": [
       "original 5mdld N1-N5 core deck",
@@ -13471,45 +13499,48 @@
       "Tomoshi/JMdict commonness and frequency for residual estimation only"
     ],
     "combinedCountsByLevel": {
-      "N5": 2651,
-      "N4": 2501,
-      "N3": 10961,
-      "N2": 11229,
-      "N1": 5156
+      "N5": 2742,
+      "N4": 2564,
+      "N3": 10821,
+      "N2": 11227,
+      "N1": 5164
     },
     "directCountsByLevel": {
+      "N3": 2507,
       "N5": 1024,
-      "N4": 973,
-      "N3": 2488,
-      "N2": 3588,
-      "N1": 5156
+      "N4": 977,
+      "N2": 3594,
+      "N1": 5164
     },
     "estimatedCountsByLevel": {
-      "N5": 1627,
-      "N4": 1528,
-      "N3": 8473,
-      "N2": 7641
+      "N3": 8314,
+      "N4": 1587,
+      "N2": 7633,
+      "N5": 1718
     },
     "teacherGradeCounts": {
-      "A": 5671,
-      "B": 7558,
-      "D": 19269
+      "B": 7530,
+      "A": 5697,
+      "C": 39,
+      "D": 19252
     },
     "teacherBasisCounts": {
-      "core+waller-lineage-corroborated": 2652,
-      "core-exact": 5026,
-      "existing-direct-exact-row": 384,
-      "independent-teacher-anchor": 112,
-      "manual-secondary-exact": 2907,
-      "model+frequency+world-distribution": 19191,
-      "runtime-estimate:legacy-weak-prior-no-direct-evidence": 77,
-      "runtime-estimate:rank-calibrated+legacy-weak-prior": 1,
-      "runtime-legacy-lineage-exact": 22,
-      "waller-lineage-exact": 2126
+      "core-exact": 5019,
+      "manual-secondary-exact": 2905,
+      "core+waller-lineage-corroborated": 2679,
+      "independent-teacher-anchor": 113,
+      "common-core-vs-internal-lineage-conflict-easier": 3,
+      "common-core-vs-waller-lineage-easier": 32,
+      "core-vs-waller-lineage-large": 1,
+      "core-vs-waller-lineage-adjacent": 2,
+      "waller-lineage-exact": 2166,
+      "internal-waller-lineage-conflict-common-easier": 1,
+      "existing-direct-exact-row": 345,
+      "estimated": 19252
     },
-    "directRows": 13229,
-    "estimatedRows": 19269,
-    "directConflictRows": 160,
+    "directRows": 13266,
+    "estimatedRows": 19252,
+    "directConflictRows": 199,
     "directConflictSamples": [
       {
         "key": "あたし|あたし",
@@ -13523,7 +13554,7 @@
         }
       },
       {
-        "key": "あめ|飴",
+        "key": "あめ|飴[あめ]",
         "selected": "N4",
         "grade": "B",
         "basis": "core-exact",
@@ -13548,18 +13579,19 @@
         }
       },
       {
-        "key": "すぐ|すぐ",
+        "key": "そして|そして",
         "selected": "N5",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-internal-lineage-conflict-easier",
         "evidence": {
           "core-deck-exact": "N5",
-          "existing-direct": "N1",
-          "waller-entry-context": "N1"
+          "openjlpt-exact": "N3",
+          "waller-exact": "N5",
+          "existing-direct": "N5"
         }
       },
       {
-        "key": "そば|蕎麦",
+        "key": "そば|蕎麦[そば]",
         "selected": "N4",
         "grade": "B",
         "basis": "core-exact",
@@ -13638,7 +13670,7 @@
         }
       },
       {
-        "key": "ちゃわん|茶碗",
+        "key": "ちゃわん|茶碗[わん]",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -13646,7 +13678,6 @@
           "core-deck-exact": "N3",
           "existing-direct": "N5",
           "core-deck-normalized": "N3",
-          "openjlpt-normalized": "N2",
           "waller-normalized": "N2"
         }
       },
@@ -13684,7 +13715,7 @@
         }
       },
       {
-        "key": "かむ|嚙む",
+        "key": "かむ|嚙[か]む",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -13707,6 +13738,19 @@
         }
       },
       {
+        "key": "コンピューター|コンピューター",
+        "selected": "N4",
+        "grade": "C",
+        "basis": "common-core-vs-internal-lineage-conflict-easier",
+        "evidence": {
+          "core-deck-exact": "N4",
+          "openjlpt-exact": "N3",
+          "waller-exact": "N4",
+          "existing-direct": "N4",
+          "waller-entry-context": "N4"
+        }
+      },
+      {
         "key": "ごらんになる|ご覧になる",
         "selected": "N3",
         "grade": "B",
@@ -13720,10 +13764,11 @@
       {
         "key": "しまう|しまう",
         "selected": "N4",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N4",
+          "openjlpt-exact": "N3",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
         }
@@ -13761,7 +13806,7 @@
         }
       },
       {
-        "key": "けんか|喧嘩",
+        "key": "けんか|喧嘩[けんか]",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -13807,7 +13852,7 @@
         }
       },
       {
-        "key": "ひげ|髭",
+        "key": "ひげ|髭[ひげ]",
         "selected": "N1",
         "grade": "B",
         "basis": "core-exact",
@@ -13815,7 +13860,6 @@
           "core-deck-exact": "N1",
           "existing-direct": "N4",
           "core-deck-normalized": "N1",
-          "openjlpt-normalized": "N2",
           "waller-normalized": "N4",
           "waller-entry-context": "N4"
         }
@@ -13842,7 +13886,7 @@
         }
       },
       {
-        "key": "おい|甥",
+        "key": "おい|甥[おい]",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -13853,6 +13897,17 @@
           "openjlpt-normalized": "N1",
           "waller-normalized": "N1",
           "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "おごる|おごる",
+        "selected": "N2",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
+          "existing-direct": "N2"
         }
       },
       {
@@ -13869,16 +13924,17 @@
       {
         "key": "せい|せい",
         "selected": "N5",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N5",
+          "openjlpt-exact": "N3",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
         }
       },
       {
-        "key": "ぜいたく|贅沢",
+        "key": "ぜいたく|贅[ぜい]沢",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -13915,11 +13971,12 @@
       },
       {
         "key": "たまたま|たまたま",
-        "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "selected": "N3",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N3",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
         }
@@ -13936,7 +13993,7 @@
         }
       },
       {
-        "key": "つぐ|注ぐ",
+        "key": "つぐ|注[つ]ぐ",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -13960,7 +14017,7 @@
         }
       },
       {
-        "key": "なでる|撫でる",
+        "key": "なでる|撫[な]でる",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -13974,7 +14031,7 @@
         }
       },
       {
-        "key": "はやり|流行り",
+        "key": "はやり|流行[はや]り",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -14010,10 +14067,11 @@
       {
         "key": "まとめる|まとめる",
         "selected": "N3",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N3",
+          "openjlpt-exact": "N2",
           "existing-direct": "N2",
           "waller-entry-context": "N2"
         }
@@ -14129,7 +14187,7 @@
         }
       },
       {
-        "key": "つく|点く",
+        "key": "つく|点[つ]く",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -14143,7 +14201,7 @@
         }
       },
       {
-        "key": "むく|剝く",
+        "key": "むく|剝[む]く",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -14178,10 +14236,11 @@
       {
         "key": "ほんの|ほんの",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -14209,7 +14268,7 @@
         }
       },
       {
-        "key": "ほこり|埃",
+        "key": "ほこり|埃[ほこり]",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -14236,10 +14295,11 @@
       {
         "key": "おいて|おいて",
         "selected": "N3",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "core-vs-waller-lineage-large",
         "evidence": {
           "core-deck-exact": "N3",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -14247,16 +14307,17 @@
       {
         "key": "おむつ|おむつ",
         "selected": "N3",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N3",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
       },
       {
-        "key": "かく|搔く",
+        "key": "かく|搔[か]く",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -14292,10 +14353,11 @@
       {
         "key": "ずるい|ずるい",
         "selected": "N3",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N3",
+          "openjlpt-exact": "N2",
           "existing-direct": "N2",
           "waller-entry-context": "N2"
         }
@@ -14336,12 +14398,24 @@
       {
         "key": "よる|よる",
         "selected": "N5",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N5",
+          "openjlpt-exact": "N2",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
+        }
+      },
+      {
+        "key": "くだす|下す",
+        "selected": "N3",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "openjlpt-exact": "N3",
+          "existing-direct": "N2"
         }
       },
       {
@@ -14358,20 +14432,22 @@
       {
         "key": "しまい|しまい",
         "selected": "N4",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N4",
+          "openjlpt-exact": "N3",
           "existing-direct": "N3"
         }
       },
       {
         "key": "ひとさしゆび|人差し指",
         "selected": "N3",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N3",
+          "openjlpt-exact": "N2",
           "existing-direct": "N2",
           "waller-entry-context": "N2"
         }
@@ -14432,7 +14508,7 @@
         }
       },
       {
-        "key": "ほほえむ|微笑む",
+        "key": "ほほえむ|微[ほほ]笑む",
         "selected": "N1",
         "grade": "B",
         "basis": "core-exact",
@@ -14479,7 +14555,7 @@
         }
       },
       {
-        "key": "なす|為す",
+        "key": "なす|為[な]す",
         "selected": "N1",
         "grade": "B",
         "basis": "core-exact",
@@ -14504,7 +14580,7 @@
         }
       },
       {
-        "key": "わびる|詫びる",
+        "key": "わびる|詫[わ]びる",
         "selected": "N1",
         "grade": "B",
         "basis": "core-exact",
@@ -14551,7 +14627,7 @@
         }
       },
       {
-        "key": "しま|縞",
+        "key": "しま|縞[しま]",
         "selected": "N1",
         "grade": "B",
         "basis": "core-exact",
@@ -14588,11 +14664,12 @@
       },
       {
         "key": "たんぼ|田んぼ",
-        "selected": "N1",
-        "grade": "B",
-        "basis": "core-exact",
+        "selected": "N2",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N1",
+          "openjlpt-exact": "N2",
           "existing-direct": "N2",
           "waller-entry-context": "N2"
         }
@@ -14620,7 +14697,7 @@
         }
       },
       {
-        "key": "めい|姪",
+        "key": "めい|姪[めい]",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -14656,7 +14733,7 @@
         }
       },
       {
-        "key": "ごく|極",
+        "key": "ごく|極[ごく]",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -14703,7 +14780,7 @@
         }
       },
       {
-        "key": "つける|点ける",
+        "key": "つける|点[つ]ける",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -14711,7 +14788,6 @@
           "core-deck-exact": "N3",
           "existing-direct": "N2",
           "core-deck-normalized": "N3",
-          "openjlpt-normalized": "N2",
           "waller-normalized": "N2",
           "waller-entry-context": "N2"
         }
@@ -14727,7 +14803,7 @@
         }
       },
       {
-        "key": "ばくだい|莫大",
+        "key": "ばくだい|莫[ばく]大",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -14741,7 +14817,7 @@
         }
       },
       {
-        "key": "あきれる|呆れる",
+        "key": "あきれる|呆[あき]れる",
         "selected": "N1",
         "grade": "B",
         "basis": "core-exact",
@@ -14749,8 +14825,20 @@
           "core-deck-exact": "N1",
           "existing-direct": "N2",
           "core-deck-normalized": "N1",
-          "openjlpt-normalized": "N1",
           "waller-normalized": "N1"
+        }
+      },
+      {
+        "key": "みょう|妙",
+        "selected": "N3",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "openjlpt-exact": "N3",
+          "waller-exact": "N3",
+          "existing-direct": "N3",
+          "waller-entry-context": "N3"
         }
       },
       {
@@ -14765,7 +14853,7 @@
         }
       },
       {
-        "key": "いためる|炒める",
+        "key": "いためる|炒[いた]める",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -14792,16 +14880,17 @@
       {
         "key": "かつて|かつて",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
       },
       {
-        "key": "かなう|叶う",
+        "key": "かなう|叶[かな]う",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -14815,7 +14904,7 @@
         }
       },
       {
-        "key": "かなえる|叶える",
+        "key": "かなえる|叶[かな]える",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -14862,7 +14951,7 @@
         }
       },
       {
-        "key": "すくう|掬う",
+        "key": "すくう|掬[すく]う",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -14889,10 +14978,11 @@
       {
         "key": "なめる|なめる",
         "selected": "N3",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N3",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -14944,10 +15034,11 @@
       {
         "key": "まして|まして",
         "selected": "N3",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N3",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -14966,10 +15057,11 @@
       {
         "key": "もたらす|もたらす",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -14977,12 +15069,24 @@
       {
         "key": "わざわざ|わざわざ",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "かり|仮",
+        "selected": "N2",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
+          "existing-direct": "N2"
         }
       },
       {
@@ -15152,10 +15256,11 @@
       {
         "key": "ありのまま|ありのまま",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15172,6 +15277,17 @@
         }
       },
       {
+        "key": "いやいや|いやいや",
+        "selected": "N2",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
+          "existing-direct": "N2"
+        }
+      },
+      {
         "key": "おだてる|おだてる",
         "selected": "N2",
         "grade": "B",
@@ -15183,7 +15299,7 @@
         }
       },
       {
-        "key": "おのずから|自ずから",
+        "key": "おのずから|自[おの]ずから",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -15210,10 +15326,11 @@
       {
         "key": "しきたり|しきたり",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "core-vs-waller-lineage-adjacent",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15287,10 +15404,11 @@
       {
         "key": "とりわけ|とりわけ",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15298,10 +15416,11 @@
       {
         "key": "はまる|はまる",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15331,10 +15450,11 @@
       {
         "key": "ひたすら|ひたすら",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15373,7 +15493,7 @@
         }
       },
       {
-        "key": "わび|詫び",
+        "key": "わび|詫[わ]び",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -15400,10 +15520,24 @@
       {
         "key": "みき|幹",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
+        "key": "かんよ|関与",
+        "selected": "N2",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
+          "waller-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15433,10 +15567,11 @@
       {
         "key": "てすう|手数",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15486,6 +15621,17 @@
         }
       },
       {
+        "key": "はげる|剝げる",
+        "selected": "N2",
+        "grade": "B",
+        "basis": "core-exact",
+        "evidence": {
+          "core-deck-exact": "N2",
+          "existing-direct": "N1",
+          "waller-entry-context": "N1"
+        }
+      },
+      {
         "key": "よほど|よほど",
         "selected": "N2",
         "grade": "B",
@@ -15510,10 +15656,11 @@
       {
         "key": "しかしながら|しかしながら",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15521,10 +15668,11 @@
       {
         "key": "そこら|そこら",
         "selected": "N2",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "core-vs-waller-lineage-adjacent",
         "evidence": {
           "core-deck-exact": "N2",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15532,10 +15680,11 @@
       {
         "key": "もしかして|もしかして",
         "selected": "N3",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N3",
+          "openjlpt-exact": "N1",
           "existing-direct": "N1",
           "waller-entry-context": "N1"
         }
@@ -15543,16 +15692,17 @@
       {
         "key": "よろしく|よろしく",
         "selected": "N5",
-        "grade": "B",
-        "basis": "core-exact",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
         "evidence": {
           "core-deck-exact": "N5",
+          "openjlpt-exact": "N3",
           "existing-direct": "N3",
           "waller-entry-context": "N3"
         }
       },
       {
-        "key": "ちょう|蝶",
+        "key": "ちょう|蝶[ちょう]",
         "selected": "N2",
         "grade": "B",
         "basis": "core-exact",
@@ -15620,6 +15770,17 @@
         }
       },
       {
+        "key": "つの|角",
+        "selected": "N3",
+        "grade": "C",
+        "basis": "common-core-vs-waller-lineage-easier",
+        "evidence": {
+          "core-deck-exact": "N1",
+          "openjlpt-exact": "N3",
+          "existing-direct": "N1"
+        }
+      },
+      {
         "key": "あったかい|あったかい",
         "selected": "N1",
         "grade": "B",
@@ -15631,7 +15792,7 @@
         }
       },
       {
-        "key": "たずねる|訊ねる",
+        "key": "たずねる|訊[たず]ねる",
         "selected": "N3",
         "grade": "B",
         "basis": "core-exact",
@@ -15652,39 +15813,63 @@
           "existing-direct": "N4",
           "waller-entry-context": "N4"
         }
+      },
+      {
+        "key": "やっぱり|やっぱり",
+        "selected": "N4",
+        "grade": "C",
+        "basis": "common-core-vs-internal-lineage-conflict-easier",
+        "evidence": {
+          "core-deck-exact": "N4",
+          "openjlpt-exact": "N2",
+          "waller-exact": "N4",
+          "existing-direct": "N4"
+        }
+      },
+      {
+        "key": "じゃあ|じゃあ",
+        "selected": "N5",
+        "grade": "C",
+        "basis": "internal-waller-lineage-conflict-common-easier",
+        "evidence": {
+          "openjlpt-exact": "N3",
+          "waller-exact": "N5",
+          "existing-direct": "N5",
+          "waller-entry-context": "N5"
+        }
       }
     ],
-    "coreDeckExactEvidence": 10511,
+    "coreDeckExactEvidence": 10518,
     "manualSecondaryExactConfigured": 2917,
     "trainingCountsByLevel": {
-      "N3": 2502,
+      "N3": 2507,
       "N5": 1024,
       "N4": 977,
-      "N2": 3590,
+      "N2": 3594,
       "N1": 5164
     },
     "worldTargetCounts": {
-      "N5": 2649,
-      "N4": 2496,
-      "N3": 6864,
-      "N2": 7045,
-      "N1": 13457
+      "N5": 2742,
+      "N4": 2564,
+      "N3": 6843,
+      "N2": 7249,
+      "N1": 13120
     },
     "residualQuotas": {
-      "N5": 1625,
-      "N4": 1519,
-      "N3": 8508,
-      "N2": 7602,
+      "N5": 1718,
+      "N4": 1587,
+      "N3": 8314,
+      "N2": 7633,
       "N1": 0
     },
     "modelRankLogMedians": {
       "N5": 4.056313927505084,
       "N4": 3.8885725968575997,
-      "N3": 3.8238652311358536,
+      "N3": 3.8257505813480277,
       "N2": 4.023931133548636,
-      "N1": 4.03596976823655
+      "N1": 4.035889802394751
     },
-    "estimatedN1MinimumFrequencyRank": 10714,
+    "estimatedN1MinimumFrequencyRank": 10713,
     "estimatedN1WithoutRarityEvidence": 0,
     "duplicateExactKeys": 0,
     "teacherSentinels": {
@@ -16259,9 +16444,7 @@
     "policyRevision": "v5-source-lineage",
     "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated.",
     "independentTeacherAnchors": 113,
-    "runtimeExtendedAuditRows": 32613,
-    "canonicalExactKeyCount": 32498,
-    "metadataSyncedFrom": "data/jlpt_teacher_audit.tsv"
+    "runtimeExtendedAuditRows": 32621
   },
   "reviewIssues": [
     {
@@ -16300,7 +16483,7 @@
       "meaning": "肥皂",
       "forms": [
         {
-          "display": "石鹸",
+          "display": "石鹸[けん]",
           "level": "N2"
         },
         {
@@ -16690,7 +16873,7 @@
       "meaning": "螞蟻",
       "forms": [
         {
-          "display": "蟻",
+          "display": "蟻[あり]",
           "level": "N2"
         },
         {
@@ -17110,7 +17293,7 @@
       "meaning": "彗星",
       "forms": [
         {
-          "display": "彗星",
+          "display": "彗[すい]星",
           "level": "N1"
         },
         {
@@ -17181,6 +17364,21 @@
     },
     {
       "type": "orthographic_variant_level_difference",
+      "reading": "ふくろう",
+      "meaning": "貓頭鷹；烏林鴞",
+      "forms": [
+        {
+          "display": "フクロウ",
+          "level": "N2"
+        },
+        {
+          "display": "梟",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
       "reading": "しんずい",
       "meaning": "精髓；精要；靈魂；核心",
       "forms": [
@@ -17190,6 +17388,21 @@
         },
         {
           "display": "真髄",
+          "level": "N1"
+        }
+      ]
+    },
+    {
+      "type": "orthographic_variant_level_difference",
+      "reading": "いるか",
+      "meaning": "海豚（及鼠海豚、白鯨等小型齒鯨的統稱）",
+      "forms": [
+        {
+          "display": "イルカ",
+          "level": "N2"
+        },
+        {
+          "display": "いるか",
           "level": "N1"
         }
       ]
@@ -17255,43 +17468,44 @@
       ]
     }
   ],
-  "reviewIssueCount": 66,
+  "reviewIssueCount": 68,
   "runtimeTeacherAudit": {
     "status": "complete",
     "version": "20260826-teacher-runtime-v2-lineage",
     "scope": "all generated core+advanced keys plus every additive runtime vocabulary supplement loaded by advanced_words.js",
-    "baseTeacherRows": 32511,
-    "supplementConfiguredUniqueKeys": 393,
+    "baseTeacherRows": 32518,
+    "supplementConfiguredUniqueKeys": 394,
     "supplementUniqueKeysAlreadyAudited": 291,
-    "supplementUniqueKeysAddedToAudit": 102,
-    "rowCount": 32613,
+    "supplementUniqueKeysAddedToAudit": 103,
+    "rowCount": 32621,
     "countsByLevel": {
-      "N5": 2652,
-      "N4": 2507,
-      "N3": 11026,
-      "N2": 11256,
-      "N1": 5172
+      "N5": 2745,
+      "N4": 2575,
+      "N3": 10837,
+      "N2": 11291,
+      "N1": 5173
     },
     "gradeCounts": {
-      "A": 5672,
-      "D": 19332,
-      "B": 7609
+      "A": 5699,
+      "D": 19330,
+      "B": 7552,
+      "C": 40
     },
-    "directSupplementRowsAdded": 24,
-    "conflictingDirectSupplementRowsAdded": 0,
+    "directSupplementRowsAdded": 25,
+    "conflictingDirectSupplementRowsAdded": 1,
     "estimatedSupplementRowsAdded": 78,
     "estimatedN1": 0,
     "duplicateExactKeys": 0,
     "rankLogMediansUsed": {
       "N5": 4.056313927505084,
       "N4": 3.8885725968575997,
-      "N3": 3.8238652311358536,
+      "N3": 3.8257505813480277,
       "N2": 4.023931133548636
     },
     "overlay": {
       "version": "20260826-teacher-runtime-v2-lineage",
-      "generated": "2026-08-26T17:40:36.752317+00:00",
-      "configuredKeys": 393,
+      "generated": "2026-10-03T07:50:23.832240+00:00",
+      "configuredKeys": 394,
       "rule": "apply v5 source-lineage-aware teacher level after all additive runtime supplements",
       "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated."
     },
