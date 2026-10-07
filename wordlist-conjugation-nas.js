@@ -144,25 +144,31 @@ async function playVocabularyNas(W,text,w,engine,selected){
   publishNasStatus(out);
   return out;
 }
-async function playConjugationNas(W,text,w){
+async function playConjugationNas(W,text,w,engine,selected){
+  var voice=await chooseVoice(engine,selected);
+  if(!voice)throw new Error('NAS conjugation voice unavailable');
   var term=termOf(w);
   if(!term)throw new Error('NAS conjugation term unavailable');
-  var lookupUrl=NAS_BASE+'/api/v1/conjugation/'+encodeURIComponent(term)+'?engine=supertonic3&voice=F3';
+  var lookupUrl=NAS_BASE+'/api/v1/conjugation/'+encodeURIComponent(term)+'?engine='+encodeURIComponent(engine)+'&voice='+encodeURIComponent(voice);
   var d=await fetchJson(lookupUrl,5000);
   var row=chooseResult(d,w,text);
-  if(!row||!row.audio_url)throw new Error('NAS conjugation asset miss');
-  var audioUrl=/^https?:\/\//i.test(row.audio_url)?row.audio_url:NAS_BASE+row.audio_url;
+  var asset=chooseAsset(row,engine,voice);
+  if(!asset&&row&&row.audio_url&&engine==='supertonic3'&&voice==='F3'){
+    asset={audio_key:row.audio_key||'',engine:engine,voice:voice,audio_url:row.audio_url};
+  }
+  if(!asset||!asset.audio_url)throw new Error('NAS conjugation asset miss for '+engine+' / '+voice);
+  var audioUrl=/^https?:\/\//i.test(asset.audio_url)?asset.audio_url:NAS_BASE+asset.audio_url;
   var st=el('voiceStatus');
-  if(st)st.textContent='正在從 NAS Japanese API 讀取動詞活用 F3：'+readingOf(w,text)+'…';
+  if(st)st.textContent='正在從 NAS Japanese API 讀取活用 '+engine+' / '+voice+'：'+readingOf(w,text)+'…';
   var got=await fetchBytes(audioUrl,7000);
   var speed=Number(el('speed')&&el('speed').value||1);
   if(!Number.isFinite(speed)||speed<=0)speed=1;
   await playBytes(got.bytes,speed);
   setLastSpeak(W,{
     requestedReading:String(text||''),
-    selectedVoice:'F3',
-    provider:'supertonic3',
-    resolvedAsset:String(row.audio_key||''),
+    selectedVoice:voice,
+    provider:engine,
+    resolvedAsset:String(asset.audio_key||''),
     resolvedUrl:audioUrl,
     hostedHit:true,
     hostedMiss:false,
@@ -171,12 +177,12 @@ async function playConjugationNas(W,text,w){
     playbackFailure:false,
     pending:false,
     catalog:'nas-conjugation-api',
-    key:'F3',
+    key:voice,
     httpStatus:got.status,
     nas:true,
     conjugation:true
   });
-  var out={engine:'supertonic3',nas:true,conjugation:true,key:'F3',url:audioUrl};
+  var out={engine:engine,nas:true,conjugation:true,key:voice,url:audioUrl};
   publishNasStatus(out);
   return out;
 }
@@ -193,11 +199,31 @@ function install(){
     var isConj=inConjugationModal();
 
     if(isConj){
-      if(engine!=='supertonic3'||selected!=='F3')return baseSpeak.apply(W,arguments);
-      try{return await playConjugationNas(W,text,overrideWord);}
+      if(engine==='device')return baseSpeak.apply(W,arguments);
+      try{return await playConjugationNas(W,text,overrideWord,engine,selected);}
       catch(err){
-        console.warn('NAS conjugation F3 failed; using existing GitHub/HF fallback',err);
-        return baseSpeak.apply(W,arguments);
+        console.warn('NAS conjugation exact voice failed; refusing mismatched voice fallback',err);
+        setLastSpeak(W,{
+          requestedReading:String(text||''),
+          selectedVoice:selected,
+          provider:engine,
+          resolvedAsset:'',
+          resolvedUrl:'',
+          hostedHit:false,
+          hostedMiss:true,
+          fallbackUsed:false,
+          playbackSuccess:false,
+          playbackFailure:true,
+          pending:false,
+          catalog:'nas-conjugation-api',
+          key:selected,
+          nas:true,
+          conjugation:true,
+          error:String(err&&err.message||err)
+        });
+        var st=el('audioStatus');
+        if(st)st.textContent='⚠️ 所選活用聲線暫時沒有對應音訊：'+engine+'｜'+selected;
+        return null;
       }
     }
 
