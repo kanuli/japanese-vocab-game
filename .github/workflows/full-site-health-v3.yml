@@ -18,6 +18,8 @@ on:
       - 'huggingface-backup-status.json'
       - 'maintenance-status.json'
       - 'scripts/robot_regression_guard.py'
+      - 'scripts/verify_published_health_status.py'
+      - 'tests/test_health_commit_verifier.py'
       - 'scripts/audit_tts_pronunciation.py'
       - '.github/workflows/audit-word-voicevox-pronunciation.yml'
       - '.github/workflows/audit-word-aivis-pronunciation.yml'
@@ -249,6 +251,7 @@ jobs:
           PY
 
       - name: Publish status to non-Pages health-status branch
+        id: publish_health
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
@@ -264,14 +267,16 @@ jobs:
           body={'message':'Update full-site health status','content':base64.b64encode(raw).decode(),'branch':branch}
           if sha:body['sha']=sha
           req=urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/{path}',data=json.dumps(body).encode(),headers=h,method='PUT')
-          with urllib.request.urlopen(req,timeout=30) as r:print('health-status update',json.loads(r.read().decode())['commit']['sha'])
+          with urllib.request.urlopen(req,timeout=30) as r:published_sha=json.loads(r.read().decode())['commit']['sha']
+          with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as output:output.write('commit_sha='+published_sha+'\n')
+          print('health-status update',published_sha)
           PY
 
       - name: Verify published health status endpoint
         if: always()
+        env:
+          PUBLISHED_COMMIT: ${{ steps.publish_health.outputs.commit_sha }}
         run: |
-          curl -fsSL --retry 3 --retry-all-errors --retry-delay 1 "https://raw.githubusercontent.com/kanuli/japanese-vocab-game/health-status/maintenance-status.json?run=${{ github.run_id }}" -o /tmp/published-status.json
-          python - <<'PY'
-          import json,os
-          d=json.load(open('/tmp/published-status.json'));assert d['runId']==int(os.environ['GITHUB_RUN_ID']);print('Published health status',d['status'],d.get('auditedSha'),d.get('liveSha'))
-          PY
+          python scripts/verify_published_health_status.py \
+            --commit "$PUBLISHED_COMMIT" --expected /tmp/maintenance-status.json \
+            --run-id "${{ github.run_id }}"
