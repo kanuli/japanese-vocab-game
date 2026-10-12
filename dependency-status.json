@@ -1,13 +1,13 @@
 {
   "version": 1,
   "status": "ok",
-  "checkedAt": "2026-10-05T10:50:37Z",
+  "checkedAt": "2026-10-12T11:22:31Z",
   "playwright": {
     "previous": "1.63.0",
-    "latest": "1.63.0",
-    "current": "1.63.0",
+    "latest": "1.64.0",
+    "current": "1.64.0",
     "candidateTest": "pass",
-    "autoUpdated": false
+    "autoUpdated": true
   },
   "githubActions": {
     "checkout": "v7.0.1",
