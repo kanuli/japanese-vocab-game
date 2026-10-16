@@ -40,6 +40,8 @@ jobs:
           node --check data/vocab_pos_verified.js
           node --check wordlist-pos.js
           node tests/wordlist-pos.test.js
+          node tests/wordlist-pos-source.test.js
+          node tests/wordlist-ime.test.js
           python - <<'PY'
           import json
           from pathlib import Path
