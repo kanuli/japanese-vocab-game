@@ -2,10 +2,10 @@
   "version": 3,
   "status": "error",
   "statusSource": "health-status branch (not GitHub Pages source)",
-  "checkedAt": "2026-10-16T18:18:39Z",
-  "runId": 38946174262,
-  "auditedSha": "1afbe9f0ba47eb0938cef1f8033a22a7e76587ab",
-  "liveSha": null,
+  "checkedAt": "2026-10-16T18:20:12Z",
+  "runId": 38946347987,
+  "auditedSha": "a32a2a381acde2632241c6481ea6a280c8442f49",
+  "liveSha": "a32a2a381acde2632241c6481ea6a280c8442f49",
   "deploymentAligned": false,
   "pages": 11,
   "conversation": {
@@ -34,7 +34,7 @@
     "browser": true,
     "live": false,
     "browserLocal": true,
-    "liveStatic": false,
+    "liveStatic": true,
     "liveBrowser": false,
     "revisionStillCurrent": false
   },
