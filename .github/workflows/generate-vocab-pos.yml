@@ -1,0 +1,66 @@
+name: Generate JMdict exact multi-POS
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tools/build_vocab_pos_overlay.py
+      - .github/workflows/generate-vocab-pos.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vocab-pos-generator
+  cancel-in-progress: false
+
+jobs:
+  pos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Download pinned Tomoshi dictionary
+        run: |
+          curl -L --fail --retry 3 -o /tmp/tomoshi.db.zst https://github.com/tomoshi-app/tomoshi-dict-data/releases/download/v2026-08-12/tomoshi-dict-open.db.zst
+          zstd -d -f /tmp/tomoshi.db.zst -o /tmp/tomoshi.db
+      - name: Generate exact POS overlay
+        env:
+          TOMOSHI_DB: /tmp/tomoshi.db
+        run: python tools/build_vocab_pos_overlay.py
+      - name: Validate generated mappings and JS regression
+        run: |
+          node --check data/vocab_pos_verified.js
+          node --check wordlist-pos.js
+          node tests/wordlist-pos.test.js
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('data/vocab_pos_audit.json').read_text(encoding='utf-8'))
+          assert r['verifiedRows']>=18000, r
+          assert r['verifiedLabels'].get('副詞',0)>300, r
+          assert r['verifiedLabels'].get('動詞（第1類）',0)>400, r
+          assert r['verifiedLabels'].get('動詞（第2類）',0)>300, r
+          assert r['verifiedLabels'].get('動詞（第3類）',0)>500, r
+          assert r['verifiedLabels'].get('い形容詞',0)>200, r
+          assert r['verifiedLabels'].get('な形容詞',0)>200, r
+          print('VOCAB POS SOURCE QUALITY PASS')
+          PY
+      - name: Publish generated word classes
+        run: |
+          if git diff --quiet -- data/vocab_pos_verified.js data/vocab_pos_audit.json && git ls-files --error-unmatch data/vocab_pos_verified.js >/dev/null 2>&1; then
+            echo "Already current"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/vocab_pos_verified.js data/vocab_pos_audit.json
+          git commit -m "Publish exact JMdict-based multi-POS metadata"
+          git pull --rebase origin main
+          git push
