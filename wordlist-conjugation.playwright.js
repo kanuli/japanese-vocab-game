@@ -57,7 +57,7 @@ async function assertNoConj(page, written){
   const row=page.locator('#vocabBody tr').filter({hasText:written}).first();
   await row.waitFor({timeout:30000});
   const n=await row.locator('.conj-btn').count();
-  if(n!==0)throw new Error(written+' unexpectedly has 活用');
+  if(n!==0){const detail=await row.evaluate(el=>({display:el.querySelector('.word-cell')?.textContent,reading:el.querySelector('.reading-cell')?.textContent,meaning:el.querySelector('.meaning-cell')?.textContent,raw:window.WA?.listView?.find(w=>String(w.kanji||w.displayWord||w.reading)===el.querySelector('.word-cell')?.textContent)}));throw new Error(written+' unexpectedly has 活用: '+JSON.stringify(detail));}
 }
 
 async function runDesktop(browser){
