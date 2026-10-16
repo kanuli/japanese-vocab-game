@@ -59,7 +59,7 @@ function labels(w){
   if(override)return override.slice();
   var p=rawPos(w),out=[];
   function add(v){if(v&&out.indexOf(v)<0)out.push(v);}
-  var tokens=p.split(/[・／/,;、+＆&\s]+/).filter(Boolean);
+  var tokens=p.replace(/\//g,'／').split(/[・／,;、+＆&\s]+/).filter(Boolean);
   tokens.forEach(function(t){
     if(/^(?:名|名詞|noun|n)$/i.test(t))add('名詞');
     else if(/^(?:副|副詞|adv|adverb)$/i.test(t))add('副詞');
@@ -72,15 +72,12 @@ function labels(w){
   });
   // Mixed tags (e.g. 名・副・動3) have to survive, never first-match only.
   if(/(?:^|[・／,;、+＆&\s])動[123](?:$|[・／,;、+＆&\s])/.test(p)&&out.indexOf('動詞')<0)add('動詞');
+  if(!out.length)return ['未分類'];
   return out.map(function(t){
-    if(t==='形容詞')return adjectiveLabel(w,p)||'形容詞（類型待核實）';
-    if(t==='動詞'){var group=conjugationGroup(w,p);return group?'動詞（第'+group+'類）':'動詞（組別待核實）';}
-    return t;
-  }).filter(function(t,i,a){return a.indexOf(t)===i;}).length?out.map(function(t){
     if(t==='形容詞')return adjectiveLabel(w,p)||'形容詞（類型待核實）';
     if(t==='動詞'){var g=conjugationGroup(w,p);return g?'動詞（第'+g+'類）':'動詞（組別待核實）';}
     return t;
-  }).filter(function(t,i,a){return a.indexOf(t)===i;}):['未分類'];
+  }).filter(function(t,i,a){return a.indexOf(t)===i;});
 }
 var api={labels:labels,rawPos:rawPos};
 root.WordlistPOS=api;
