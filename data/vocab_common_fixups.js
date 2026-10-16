@@ -3,6 +3,7 @@
 (()=>{'use strict';
 const A=window.ADVANCED_WORDS=window.ADVANCED_WORDS||[];
 const FIXUPS=[
+  {id:'common-fix-tenjinsama',level:'N3',reading:'てんじんさま',kanji:'天神様',displayWord:'天神様',meaning:'對天滿宮或其祭神菅原道真的敬稱；也指梅核內的仁',pos:'noun',estimated:true,source:'デジタル大辞泉・精選版日本国語大辞典（天神様）；N3 純屬學習用推定'},
   {id:'common-fix-niwa',level:'N5',reading:'にわ',kanji:'庭',displayWord:'庭',meaning:'庭院、院子',pos:'noun',estimated:false,source:'常用 JLPT 補充（教師來源確認）'},
   {id:'common-fix-musubitsukeru',level:'N2',reading:'むすびつける',kanji:'結び付ける',displayWord:'結び付ける',meaning:'連結；聯繫；使產生關聯；綁在一起',pos:'verb',estimated:false,source:'N2 詞族表記補充（teacher audit 已確認 結びつける=N2；辭典確認 結び付ける 為同詞表記）'},
   {id:'common-fix-musubitsuku-kanji',level:'N2',reading:'むすびつく',kanji:'結び付く',displayWord:'結び付く',meaning:'連結；相連；有關聯；導致、帶來',pos:'verb',estimated:false,source:'N2 詞族表記補充（teacher audit 已確認 結びつく=N2；辭典確認 結び付く 為同詞表記）'},
