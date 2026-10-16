@@ -11880,6 +11880,7 @@ reading	display	level	grade	status	basis	common	frequency_rank	entry_id	evidence
 てんじゅ	天寿	N3	D	estimated	model+frequency+world-distribution	1	21264	1439340	{}
 てんじょう	天井	N3	A	direct	manual-secondary-exact	1	3258	1438340	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N1"",""waller-exact"":""N1"",""existing-direct"":""N1"",""waller-entry-context"":""N1""}"
 てんじん	天神	N3	D	estimated	model+frequency+world-distribution	1	8685	1582050	{}
+てんじんさま	天神様	N3	D	estimated	runtime-estimate:legacy-weak-prior-no-direct-evidence	0			"{""runtimeSources"":[""vocab_common_fixups""],""legacyLevel"":""N3"",""exactEvidence"":{},""tomoshiEntryIds"":[],""tomoshiAmbiguous"":false,""tomoshiLevelConflict"":[],""tomoshiLevelSources"":[]}"
 てんすう	点数	N3	A	direct	manual-secondary-exact	1	4721	1441660	"{""manual-secondary-exact"":""N3"",""core-deck-exact"":""N3"",""openjlpt-exact"":""N2"",""waller-exact"":""N2"",""existing-direct"":""N2"",""waller-entry-context"":""N2""}"
 てんずる	転ずる	N3	D	estimated	model+frequency+world-distribution	1	12922	1441050	{}
 てんせい	転生	N3	D	estimated	model+frequency+world-distribution	1	17609	1441240	{}

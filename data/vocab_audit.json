@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-03T08:20:21.945971+00:00",
+  "generated": "2026-10-16T18:13:16.199177+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
@@ -12,7 +12,7 @@
   "counts": {
     "core": 10518,
     "advanced": 22000,
-    "runtimeUnique": 32636,
+    "runtimeUnique": 32518,
     "tomoshiZhRowsTotal": 217261,
     "tomoshiZhUsable": 217241,
     "tomoshiJlptRows": 7747,
@@ -29,11 +29,11 @@
     "stage1ConflictingExactKeysSkipped": 8,
     "stage2StratifiedReviewQueue": 36,
     "jlptCountsCoreAdvanced": {
-      "N5": 2753,
-      "N4": 2581,
-      "N3": 10837,
-      "N2": 11291,
-      "N1": 5174
+      "N1": 5164,
+      "N2": 11227,
+      "N3": 10821,
+      "N4": 2564,
+      "N5": 2742
     }
   },
   "coreAudit": {
@@ -13490,7 +13490,7 @@
     "status": "complete",
     "version": "20260826-teacher-v5-source-lineage",
     "scope": "every core+advanced runtime word exact key",
-    "rowCount": 32636,
+    "rowCount": 32518,
     "policy": "Teacher audit per exact reading+display key. Independent teacher/manual anchors first; core deck and Waller/Tanos lineage are compared without double-counting OpenJLPT; unresolved disagreements remain grade C; only residual words are estimated; estimated N1 requires positive rarity evidence.",
     "sources": [
       "original 5mdld N1-N5 core deck",
@@ -13499,52 +13499,48 @@
       "Tomoshi/JMdict commonness and frequency for residual estimation only"
     ],
     "combinedCountsByLevel": {
-      "N5": 2753,
-      "N4": 2581,
-      "N3": 10837,
-      "N2": 11291,
-      "N1": 5174
+      "N5": 2742,
+      "N4": 2564,
+      "N3": 10821,
+      "N2": 11227,
+      "N1": 5164
     },
     "directCountsByLevel": {
-      "N5": 1025,
-      "N4": 977,
       "N3": 2507,
-      "N2": 3609,
-      "N1": 5174
+      "N5": 1024,
+      "N4": 977,
+      "N2": 3594,
+      "N1": 5164
     },
     "estimatedCountsByLevel": {
-      "N5": 1728,
-      "N4": 1604,
-      "N3": 8330,
-      "N2": 7682
+      "N3": 8314,
+      "N4": 1587,
+      "N2": 7633,
+      "N5": 1718
     },
     "teacherGradeCounts": {
-      "A": 5699,
-      "B": 7553,
-      "C": 40,
-      "D": 19344
+      "B": 7530,
+      "A": 5697,
+      "C": 39,
+      "D": 19252
     },
     "teacherBasisCounts": {
+      "core-exact": 5019,
+      "manual-secondary-exact": 2905,
+      "core+waller-lineage-corroborated": 2679,
+      "independent-teacher-anchor": 113,
       "common-core-vs-internal-lineage-conflict-easier": 3,
       "common-core-vs-waller-lineage-easier": 32,
-      "core+waller-lineage-corroborated": 2679,
-      "core-exact": 5019,
-      "core-vs-waller-lineage-adjacent": 2,
       "core-vs-waller-lineage-large": 1,
-      "existing-direct-exact-row": 345,
-      "independent-teacher-anchor": 113,
+      "core-vs-waller-lineage-adjacent": 2,
+      "waller-lineage-exact": 2166,
       "internal-waller-lineage-conflict-common-easier": 1,
-      "manual-secondary-exact": 2907,
-      "model+frequency+world-distribution": 19252,
-      "runtime-estimate:legacy-weak-prior-no-direct-evidence": 77,
-      "runtime-estimate:rank-calibrated+legacy-weak-prior": 15,
-      "runtime-internal-legacy-lineage-conflict": 1,
-      "runtime-legacy-lineage-exact": 23,
-      "waller-lineage-exact": 2166
+      "existing-direct-exact-row": 345,
+      "estimated": 19252
     },
-    "directRows": 13292,
-    "estimatedRows": 19344,
-    "directConflictRows": 200,
+    "directRows": 13266,
+    "estimatedRows": 19252,
+    "directConflictRows": 199,
     "directConflictSamples": [
       {
         "key": "あたし|あたし",
@@ -16448,9 +16444,7 @@
     "policyRevision": "v5-source-lineage",
     "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated.",
     "independentTeacherAnchors": 113,
-    "runtimeExtendedAuditRows": 32636,
-    "canonicalExactKeyCount": 32636,
-    "metadataSyncedFrom": "data/jlpt_teacher_audit.tsv"
+    "runtimeExtendedAuditRows": 32637
   },
   "reviewIssues": [
     {
@@ -17480,26 +17474,26 @@
     "version": "20260826-teacher-runtime-v2-lineage",
     "scope": "all generated core+advanced keys plus every additive runtime vocabulary supplement loaded by advanced_words.js",
     "baseTeacherRows": 32518,
-    "supplementConfiguredUniqueKeys": 410,
+    "supplementConfiguredUniqueKeys": 411,
     "supplementUniqueKeysAlreadyAudited": 292,
-    "supplementUniqueKeysAddedToAudit": 118,
-    "rowCount": 32636,
+    "supplementUniqueKeysAddedToAudit": 119,
+    "rowCount": 32637,
     "countsByLevel": {
       "N5": 2753,
       "N4": 2581,
-      "N3": 10837,
+      "N3": 10838,
       "N2": 11291,
       "N1": 5174
     },
     "gradeCounts": {
       "A": 5699,
-      "D": 19344,
+      "D": 19345,
       "B": 7553,
       "C": 40
     },
     "directSupplementRowsAdded": 26,
     "conflictingDirectSupplementRowsAdded": 1,
-    "estimatedSupplementRowsAdded": 92,
+    "estimatedSupplementRowsAdded": 93,
     "estimatedN1": 0,
     "duplicateExactKeys": 0,
     "rankLogMediansUsed": {
@@ -17510,8 +17504,8 @@
     },
     "overlay": {
       "version": "20260826-teacher-runtime-v2-lineage",
-      "generated": "2026-10-03T08:20:56.693212+00:00",
-      "configuredKeys": 410,
+      "generated": "2026-10-16T18:14:01.362251+00:00",
+      "configuredKeys": 411,
       "rule": "apply v5 source-lineage-aware teacher level after all additive runtime supplements",
       "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated."
     },
