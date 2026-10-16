@@ -23,19 +23,67 @@ REPORT = ROOT / "data/vocab_pos_audit.json"
 ORDER = ("名詞", "代名詞", "動詞（第1類）", "動詞（第2類）",
          "動詞（第3類）", "い形容詞", "な形容詞",
          "副詞", "連體詞", "接續詞", "助詞", "助動詞",
-         "感動詞", "助數詞", "接頭詞", "接尾詞", "慣用表現")
+         "感動詞", "助數詞", "接頭詞", "接尾詞", "慣用表現", "數詞")
 CODES = {"名詞": "n", "代名詞": "pn", "動詞（第1類）": "v1",
          "動詞（第2類）": "v2", "動詞（第3類）": "v3",
          "い形容詞": "i", "な形容詞": "na", "副詞": "adv",
          "連體詞": "adnom", "接續詞": "conj", "助詞": "prt",
          "助動詞": "aux", "感動詞": "int", "助數詞": "ctr",
-         "接頭詞": "pref", "接尾詞": "suf", "慣用表現": "exp"}
+         "接頭詞": "pref", "接尾詞": "suf", "慣用表現": "exp", "數詞":"num"}
 
 def pos_to_labels(tags: list[str]) -> list[str]:
     out: set[str] = set()
     for raw in tags:
         t = str(raw or "").strip().lower()
-        if t in {"n", "n-adv", "n-pref", "n-suf", "n-t", "n-pr", "n-common"}:
+        # Tomoshi's pinned entry JSON uses human-readable English JMdict tags;
+        # the upstream simplified corpus can also supply abbreviated POS codes.
+        if t.startswith("noun (") or t.startswith("noun,") or t.startswith("nouns which"):
+            out.add("名詞")
+            if "suffix" in t:
+                out.add("接尾詞")
+            if "prefix" in t:
+                out.add("接頭詞")
+        elif t.startswith("noun or participle which takes"):
+            out.update(("名詞", "動詞（第3類）"))
+        elif t.startswith("noun or verb acting prenominally"):
+            out.update(("名詞", "連體詞"))
+        elif t.startswith("godan verb") or t.startswith("irregular ru verb"):
+            out.add("動詞（第1類）")
+        elif t.startswith("ichidan verb - zuru"):
+            out.add("動詞（第3類）")
+        elif t.startswith("ichidan verb"):
+            out.add("動詞（第2類）")
+        elif t.startswith("suru verb") or t.startswith("kuru verb"):
+            out.add("動詞（第3類）")
+        elif t.startswith("adjective (keiyoushi)"):
+            out.add("い形容詞")
+        elif t.startswith("adjectival nouns or quasi-adjectives"):
+            out.add("な形容詞")
+        elif t.startswith("adverb"):
+            out.add("副詞")
+        elif t.startswith("pre-noun adjectival") or t.startswith("'taru' adjective"):
+            out.add("連體詞")
+        elif t.startswith("conjunction"):
+            out.add("接續詞")
+        elif t.startswith("particle"):
+            out.add("助詞")
+        elif t.startswith("auxiliary") or t == "copula":
+            out.add("助動詞")
+        elif t.startswith("interjection"):
+            out.add("感動詞")
+        elif t == "counter":
+            out.add("助數詞")
+        elif t == "pronoun":
+            out.add("代名詞")
+        elif t == "prefix":
+            out.add("接頭詞")
+        elif t == "suffix":
+            out.add("接尾詞")
+        elif t.startswith("expressions"):
+            out.add("慣用表現")
+        elif t == "numeric":
+            out.add("數詞")
+        elif t in {"n", "n-adv", "n-pref", "n-suf", "n-t", "n-pr", "n-common"}:
             out.add("名詞")
         elif t in {"pn"}:
             out.add("代名詞")
