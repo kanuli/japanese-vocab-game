@@ -53,7 +53,7 @@ var OVERRIDES={
   'おだやか|穏やか':['な形容詞'],
   'てんじんさま|天神様':['名詞']
 };
-var VERIFIED_CODES={n:'名詞',pn:'代名詞',v1:'動詞（第1類）',v2:'動詞（第2類）',v3:'動詞（第3類）',i:'い形容詞',na:'な形容詞',adv:'副詞',adnom:'連體詞',conj:'接續詞',prt:'助詞',aux:'助動詞',int:'感動詞',ctr:'助數詞',pref:'接頭詞',suf:'接尾詞',exp:'慣用表現'};
+var VERIFIED_CODES={n:'名詞',pn:'代名詞',v1:'動詞（第1類）',v2:'動詞（第2類）',v3:'動詞（第3類）',i:'い形容詞',na:'な形容詞',adv:'副詞',adnom:'連體詞',conj:'接續詞',prt:'助詞',aux:'助動詞',int:'感動詞',ctr:'助數詞',pref:'接頭詞',suf:'接尾詞',exp:'慣用表現',num:'數詞'};
 function authoritative(w){
   var data=root.VOCAB_POS_VERIFIED, key=reading(w)+'|'+written(w);
   if(!data||typeof data.get!=='function'||!data.has(key))return null;
