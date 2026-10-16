@@ -52,9 +52,10 @@
   .vocab-table{display:block;width:100%;min-width:0!important;border-collapse:separate;table-layout:auto}
   .vocab-table thead{display:none}
   .vocab-table tbody{display:flex;flex-direction:column;gap:10px;width:100%}
-  .vocab-table tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"word level" "reading level" "meaning meaning" "actions actions";column-gap:12px;row-gap:4px;width:100%;padding:14px;background:#fff;border:1px solid #e2e7ef;border-radius:14px;box-shadow:0 2px 10px rgba(27,39,65,.045)}
+  .vocab-table tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"word level" "reading level" "pos pos" "meaning meaning" "actions actions";column-gap:12px;row-gap:4px;width:100%;padding:14px;background:#fff;border:1px solid #e2e7ef;border-radius:14px;box-shadow:0 2px 10px rgba(27,39,65,.045)}
   .vocab-table tbody td{display:block;width:auto!important;min-width:0!important;padding:0;border:0;white-space:normal!important;overflow-wrap:anywhere}
   .vocab-table .word-cell{grid-area:word;font-size:22px;line-height:1.35;word-break:keep-all;overflow-wrap:normal}
+  .vocab-table .pos-cell{grid-area:pos;display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
   .vocab-table .reading-cell{grid-area:reading;font-size:14px;line-height:1.45;color:#667085;font-weight:750;word-break:keep-all;overflow-wrap:normal}
   .vocab-table .meaning-cell{grid-area:meaning;margin-top:8px;padding-top:10px;border-top:1px solid #edf0f5;font-size:14px;line-height:1.55;color:#172033}
   .vocab-table .level-cell{grid-area:level;align-self:start;justify-self:end;width:auto!important;min-width:0!important;padding:5px 8px;border:1px solid #dbe3f0;border-radius:999px;background:#f7f9fc;color:#667085;font-size:11px;line-height:1.2;font-weight:850;white-space:nowrap!important}
@@ -69,3 +70,7 @@
   .vocab-table .play-cell{flex-direction:column}
   .vocab-table .play-cell .play-btn,.vocab-table .play-cell .conj-btn{width:100%}
 }
+/* Word class metadata stays readable on desktop and in mobile cards. */
+.vocab-table .pos-cell{min-width:130px;max-width:240px;white-space:normal}
+.pos-tag{display:inline-block;margin:2px 4px 2px 0;padding:3px 7px;background:#f2f5ff;color:#294267;border:1px solid #dbe4fa;border-radius:6px;font-size:12px;font-weight:700;line-height:1.4;white-space:normal}
+@media(max-width:820px){.vocab-table .pos-cell{max-width:none;min-width:0;margin-top:5px}.vocab-table .pos-cell .pos-tag{margin:0 4px 3px 0}}
