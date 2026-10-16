@@ -20,9 +20,9 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax-check conjugation sources
-        run: node --check wordlist-pos.js && node --check tests/wordlist-pos.test.js && node --check wordlist-conjugation.js && node --check wordlist-conjugation-ui.js && node --check wordlist.js && node --check wordaudio-multivoice.js && node --check wordaudio-delta-voices.js && node --check wordlist-conjugation-catalog.test.js && node --check wordlist-conjugation-hosted.playwright.js && node --check scripts/audit_conjugation_hosted_catalogs.js && node --check scripts/conjugation_chunk_pipeline.js && node --check scripts/build_conjugation_reading_inventory.js && node --check wordlist-conjugation-pipeline.test.js
+        run: node --check wordlist-japanese-input.js && node --check tests/wordlist-ime.test.js && node --check wordlist-pos.js && node --check tests/wordlist-pos.test.js && node --check wordlist-conjugation.js && node --check wordlist-conjugation-ui.js && node --check wordlist.js && node --check wordaudio-multivoice.js && node --check wordaudio-delta-voices.js && node --check wordlist-conjugation-catalog.test.js && node --check wordlist-conjugation-hosted.playwright.js && node --check scripts/audit_conjugation_hosted_catalogs.js && node --check scripts/conjugation_chunk_pipeline.js && node --check scripts/build_conjugation_reading_inventory.js && node --check wordlist-conjugation-pipeline.test.js
       - name: Unit tests
-        run: node wordlist-conjugation.test.js && node tests/wordlist-pos.test.js
+        run: node wordlist-conjugation.test.js && node tests/wordlist-pos.test.js && node tests/wordlist-ime.test.js
       - name: Catalog integrity
         run: node wordlist-conjugation-catalog.test.js
       - name: Pipeline isolation tests
