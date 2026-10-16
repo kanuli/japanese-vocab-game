@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - tools/build_vocab_pos_overlay.py
+      - data/jlpt_teacher_audit.tsv
       - .github/workflows/generate-vocab-pos.yml
 
 permissions:
