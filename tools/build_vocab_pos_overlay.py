@@ -111,6 +111,7 @@ def generate(db: Path, audit: Path) -> tuple[list, dict]:
     counts = Counter()
     missing = 0
     debug = []
+    raw_tags = Counter()
     with sqlite3.connect(str(db)) as conn:
         # Read by primary-key from the same release used by vocabulary meanings.
         for eid, linked in ids.items():
@@ -124,6 +125,11 @@ def generate(db: Path, audit: Path) -> tuple[list, dict]:
                 missing += len(linked)
                 continue
             for row in linked:
+                senses = entry.get("sense") or entry.get("senses") or []
+                senses = senses.values() if isinstance(senses, dict) else senses
+                for sense in senses:
+                    if isinstance(sense, dict):
+                        raw_tags.update(sense.get("partOfSpeech") or sense.get("pos") or [])
                 labels = entry_labels(entry, row["reading"], row["display"])
                 if not labels and len(debug) < 3:
                     senses = entry.get("sense") or entry.get("senses") or []
@@ -148,6 +154,7 @@ def generate(db: Path, audit: Path) -> tuple[list, dict]:
         "missingOrUnrecognizedPOS": missing, "unresolvedSamples": debug,
         "verifiedLabels": dict(counts),
         "unresolvedPolicy": "Never fill missing POS with spelling-only conjectures",
+        "rawPOSDistribution": raw_tags.most_common(60),
     }
     return matched, report
 
