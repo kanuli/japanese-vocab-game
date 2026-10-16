@@ -110,6 +110,7 @@ def generate(db: Path, audit: Path) -> tuple[list, dict]:
     matched: list = []
     counts = Counter()
     missing = 0
+    debug = []
     with sqlite3.connect(str(db)) as conn:
         # Read by primary-key from the same release used by vocabulary meanings.
         for eid, linked in ids.items():
@@ -124,6 +125,12 @@ def generate(db: Path, audit: Path) -> tuple[list, dict]:
                 continue
             for row in linked:
                 labels = entry_labels(entry, row["reading"], row["display"])
+                if not labels and len(debug) < 3:
+                    senses = entry.get("sense") or entry.get("senses") or []
+                    sample = (next(iter(senses.values()), {}) if isinstance(senses, dict)
+                              else (senses[0] if isinstance(senses, list) and senses else {}))
+                    debug.append({"id":eid, "entryKeys":list(entry.keys())[:15],
+                                  "sense":str(sample)[:1100]})
                 if labels:
                     codes = "".join(CODES[x] + "," for x in labels).rstrip(",")
                     matched.append([row["reading"], row["display"], codes])
@@ -138,7 +145,7 @@ def generate(db: Path, audit: Path) -> tuple[list, dict]:
         "source": "JMdict/Tomoshi CC BY-SA 4.0 (pinned structured database)",
         "auditRows": len(words), "entryIdRows": sum(len(v) for v in ids.values()),
         "verifiedRows": len(matched), "unresolvedRows": len(words) - len(matched),
-        "missingOrUnrecognizedPOS": missing,
+        "missingOrUnrecognizedPOS": missing, "unresolvedSamples": debug,
         "verifiedLabels": dict(counts),
         "unresolvedPolicy": "Never fill missing POS with spelling-only conjectures",
     }
