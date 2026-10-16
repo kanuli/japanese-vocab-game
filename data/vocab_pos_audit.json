@@ -1,0 +1,255 @@
+{
+  "source": "JMdict/Tomoshi CC BY-SA 4.0 (pinned structured database)",
+  "auditRows": 32637,
+  "entryIdRows": 32597,
+  "verifiedRows": 32596,
+  "unresolvedRows": 41,
+  "missingOrUnrecognizedPOS": 1,
+  "unresolvedSamples": [
+    {
+      "id": "2851756",
+      "entryKeys": [
+        "id",
+        "kanji",
+        "kana",
+        "senses",
+        "jpn_defs",
+        "jlpt_level",
+        "is_common"
+      ],
+      "sense": "{'pos': [\"'ku' adjective (archaic)\"], 'glosses': [{'text': 'numerous', 'lang': 'eng', 'gloss_type': None}, {'text': 'frequent', 'lang': 'eng', 'gloss_type': None}, {'text': '众多；频繁', 'lang': 'zho', 'gloss_type': None}], 'notes': None, 'field': [], 'misc': []}"
+    }
+  ],
+  "verifiedLabels": {
+    "感動詞": 199,
+    "動詞（第1類）": 1907,
+    "名詞": 27180,
+    "接頭詞": 203,
+    "multi": 9158,
+    "い形容詞": 521,
+    "な形容詞": 2005,
+    "接尾詞": 620,
+    "慣用表現": 640,
+    "副詞": 1638,
+    "動詞（第2類）": 956,
+    "助動詞": 98,
+    "代名詞": 130,
+    "連體詞": 303,
+    "動詞（第3類）": 5804,
+    "數詞": 66,
+    "助詞": 86,
+    "助數詞": 139,
+    "接續詞": 151
+  },
+  "unresolvedPolicy": "Never fill missing POS with spelling-only conjectures",
+  "rawPOSDistribution": [
+    [
+      "noun (common) (futsuumeishi)",
+      37556
+    ],
+    [
+      "transitive verb",
+      8059
+    ],
+    [
+      "noun or participle which takes the aux. verb suru",
+      7298
+    ],
+    [
+      "intransitive verb",
+      6564
+    ],
+    [
+      "nouns which may take the genitive case particle 'no'",
+      3147
+    ],
+    [
+      "adjectival nouns or quasi-adjectives (keiyodoshi)",
+      2491
+    ],
+    [
+      "adverb (fukushi)",
+      2365
+    ],
+    [
+      "Ichidan verb",
+      2343
+    ],
+    [
+      "Godan verb with 'ru' ending",
+      1714
+    ],
+    [
+      "Godan verb with 'su' ending",
+      1101
+    ],
+    [
+      "adjective (keiyoushi)",
+      1040
+    ],
+    [
+      "expressions (phrases, clauses, etc.)",
+      873
+    ],
+    [
+      "noun, used as a suffix",
+      646
+    ],
+    [
+      "adverb taking the 'to' particle",
+      596
+    ],
+    [
+      "Godan verb with 'ku' ending",
+      577
+    ],
+    [
+      "Godan verb with 'mu' ending",
+      563
+    ],
+    [
+      "Godan verb with 'u' ending",
+      468
+    ],
+    [
+      "suffix",
+      317
+    ],
+    [
+      "particle",
+      276
+    ],
+    [
+      "interjection (kandoushi)",
+      260
+    ],
+    [
+      "pronoun",
+      237
+    ],
+    [
+      "noun or verb acting prenominally",
+      210
+    ],
+    [
+      "counter",
+      193
+    ],
+    [
+      "conjunction",
+      191
+    ],
+    [
+      "prefix",
+      169
+    ],
+    [
+      "Godan verb with 'tsu' ending",
+      118
+    ],
+    [
+      "suru verb - special class",
+      114
+    ],
+    [
+      "Godan verb with 'gu' ending",
+      112
+    ],
+    [
+      "auxiliary verb",
+      106
+    ],
+    [
+      "Godan verb with 'bu' ending",
+      94
+    ],
+    [
+      "noun, used as a prefix",
+      78
+    ],
+    [
+      "'taru' adjective",
+      71
+    ],
+    [
+      "numeric",
+      67
+    ],
+    [
+      "pre-noun adjectival (rentaishi)",
+      63
+    ],
+    [
+      "suru verb - included",
+      59
+    ],
+    [
+      "Ichidan verb - zuru verb (alternative form of -jiru verbs)",
+      40
+    ],
+    [
+      "Godan verb with 'ru' ending (irregular verb)",
+      23
+    ],
+    [
+      "adjective (keiyoushi) - yoi/ii class",
+      19
+    ],
+    [
+      "Godan verb - Iku/Yuku special class",
+      18
+    ],
+    [
+      "auxiliary",
+      15
+    ],
+    [
+      "Godan verb - -aru special class",
+      14
+    ],
+    [
+      "Kuru verb - special class",
+      13
+    ],
+    [
+      "Ichidan verb - kureru special class",
+      8
+    ],
+    [
+      "auxiliary adjective",
+      6
+    ],
+    [
+      "copula",
+      6
+    ],
+    [
+      "Godan verb with 'u' ending (special class)",
+      6
+    ],
+    [
+      "su verb - precursor to the modern suru",
+      4
+    ],
+    [
+      "Godan verb with 'nu' ending",
+      3
+    ],
+    [
+      "unclassified",
+      3
+    ],
+    [
+      "irregular ru verb, plain form ends with -ri",
+      2
+    ],
+    [
+      "'ku' adjective (archaic)",
+      2
+    ],
+    [
+      "Nidan verb with 'u' ending (archaic)",
+      2
+    ]
+  ]
+}
