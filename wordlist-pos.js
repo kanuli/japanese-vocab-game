@@ -53,7 +53,14 @@ var OVERRIDES={
   'おだやか|穏やか':['な形容詞'],
   'てんじんさま|天神様':['名詞']
 };
-var NA_EXCEPTIONS=new Set(['きれい','綺麗','嫌い','きらい','幸い','さいわい','丁寧','ていねい','有名','ゆうめい','綺麗','きれい','意外','いがい','大嫌い','だいきらい','得意','とくい']);
+var VERIFIED_CODES={n:'名詞',pn:'代名詞',v1:'動詞（第1類）',v2:'動詞（第2類）',v3:'動詞（第3類）',i:'い形容詞',na:'な形容詞',adv:'副詞',adnom:'連體詞',conj:'接續詞',prt:'助詞',aux:'助動詞',int:'感動詞',ctr:'助數詞',pref:'接頭詞',suf:'接尾詞',exp:'慣用表現'};
+function authoritative(w){
+  var data=root.VOCAB_POS_VERIFIED, key=reading(w)+'|'+written(w);
+  if(!data||typeof data.get!=='function'||!data.has(key))return null;
+  var codes=data.get(key);
+  var result=(Array.isArray(codes)?codes:[]).map(function(c){return VERIFIED_CODES[c];}).filter(Boolean);
+  return result.length?result:null;
+}
 function rawPos(w){return String(w&&(w.pos||w.PoS||w.vocabPoS)||'').trim();}
 function written(w){return String(w&&(w.kanji||w.displayWord||w.reading)||'').trim();}
 function reading(w){return String(w&&w.reading||'').trim();}
@@ -72,15 +79,13 @@ function conjugationGroup(w,p){
 function adjectiveLabel(w,p){
   if(/(?:adj-i|i-adj|イ形|い形容詞)/i.test(p))return 'い形容詞';
   if(/(?:adj-na|na-adj|ナ形|な形容詞|形容動詞|形動)/i.test(p))return 'な形容詞';
-  if(/(?:adj|形容詞|^形$)/i.test(p)){
-    var s=written(w),r=reading(w);
-    if(s.endsWith('い')&&r.endsWith('い')&&!NA_EXCEPTIONS.has(s)&&!NA_EXCEPTIONS.has(r))return 'い形容詞（推定）';
-    return '形容詞（類型待核實）';
-  }
+  if(/(?:adj|形容詞|^形$)/i.test(p))return '形容詞（類型待核實）';
   return null;
 }
 function labels(w){
   if(!w)return ['未分類'];
+  var fromJMdict=authoritative(w);
+  if(fromJMdict)return fromJMdict;
   var r=reading(w),s=written(w),override=OVERRIDES[r+'|'+s];
   if(override)return override.slice();
   var p=rawPos(w),out=[];
@@ -105,7 +110,7 @@ function labels(w){
     return t;
   }).filter(function(t,i,a){return a.indexOf(t)===i;});
 }
-var api={labels:labels,rawPos:rawPos};
+var api={labels:labels,rawPos:rawPos,source:function(w){return authoritative(w)?'JMdict/Tomoshi':(OVERRIDES[reading(w)+'|'+written(w)]?'manual':'unverified');}};
 root.WordlistPOS=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:typeof global!=='undefined'?global:this);
