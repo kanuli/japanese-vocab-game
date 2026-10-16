@@ -29,11 +29,10 @@ clear.textContent='×';
 wrap.appendChild(clear);
 function updateClear(){clear.classList.toggle('visible',!!input.value);}
 
-/* Lightweight Hepburn/keyboard-style Romaji -> Hiragana conversion.
-   It only converts lowercase ASCII segments, so uppercase acronyms such as AI
-   and non-Latin searches remain untouched. A trailing single "n" is kept
-   pending so incremental typing works like a Japanese IME: n -> n, na -> な,
-   ni -> に, while nn / n' / n before a consonant still yields ん. */
+/* Query-only Romaji transliteration. Never rewrite the editable input: native
+   Japanese IME owns composition, candidate selection and Kanji conversion.
+   Mutating input.value during insertCompositionText / immediately after a
+   ん-conversion cancels active IME candidates on several browser/OS pairs. */
 function romajiSegmentToHiragana(s){
   if(s==='konnichiwa')return 'こんにちは';
   if(s==='konbanwa')return 'こんばんは';
@@ -81,15 +80,17 @@ function romajiSegmentToHiragana(s){
 function convertRomajiInput(value){
   return String(value||'').replace(/[a-z']+/g,function(seg){return romajiSegmentToHiragana(seg);});
 }
+window.WordlistJapaneseSearch={toHiragana:convertRomajiInput};
 
 /* The legacy word-list attaches an immediate oninput render. Intercept trusted
    typing in capture phase, then release one synthetic input event after a short
    idle period. Deletion gets a slightly longer trailing delay so holding or
    repeatedly tapping Backspace does not repeatedly rebuild the large list. */
-var searchTimer=0,SEARCH_DELAY=180,DELETE_DELAY=360;
+var searchTimer=0,imeActive=false,SEARCH_DELAY=180,DELETE_DELAY=360;
 function fireSearch(){
   clearTimeout(searchTimer);
   searchTimer=0;
+  if(imeActive)return;
   var ev=new Event('input',{bubbles:true});
   ev.__wordlistDebounced=true;
   input.dispatchEvent(ev);
@@ -108,25 +109,25 @@ function searchAfterPaint(){
   if(typeof requestAnimationFrame==='function')requestAnimationFrame(run);
   else setTimeout(run,0);
 }
+input.addEventListener('compositionstart',function(){
+  imeActive=true;
+  clearTimeout(searchTimer);
+  searchTimer=0;
+},true);
 input.addEventListener('input',function(e){
   if(e&&e.__wordlistDebounced){updateClear();return;}
+  // Only postpone the application's expensive search. Never change
+  // input.value, selection, or preventDefault() on native IME events.
   if(e)e.stopImmediatePropagation();
-  if(!(e&&e.isComposing)){
-    var converted=convertRomajiInput(input.value);
-    if(converted!==input.value){
-      input.value=converted;
-      try{input.setSelectionRange(converted.length,converted.length);}catch(err){}
-    }
-  }
   updateClear();
-  if(!(e&&e.isComposing)){
-    var deleting=!!(e&&e.inputType&&String(e.inputType).indexOf('delete')===0);
-    scheduleSearch(deleting?DELETE_DELAY:SEARCH_DELAY);
-  }
+  if(imeActive||(e&&e.isComposing)||(e&&e.inputType==='insertCompositionText'))return;
+  var deleting=!!(e&&e.inputType&&String(e.inputType).indexOf('delete')===0);
+  scheduleSearch(deleting?DELETE_DELAY:SEARCH_DELAY);
 },true);
 input.addEventListener('compositionend',function(){
+  imeActive=false;
   updateClear();
-  scheduleSearch(80);
+  scheduleSearch(SEARCH_DELAY);
 },true);
 
 clear.addEventListener('click',function(){
