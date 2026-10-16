@@ -78,7 +78,7 @@ function romajiSegmentToHiragana(s){
   return out;
 }
 function convertRomajiInput(value){
-  return String(value||'').replace(/[a-z']+/g,function(seg){return romajiSegmentToHiragana(seg);});
+  return String(value||'').replace(/[a-z']+/g,function(seg){return romajiSegmentToHiragana(seg).replace(/n$/, 'ん');});
 }
 window.WordlistJapaneseSearch={toHiragana:convertRomajiInput};
 
