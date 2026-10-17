@@ -83,6 +83,11 @@ async function testWordlistPublicPlayback(page){
   // directly invoking MobileSupertonicGuard) on desktop/mobile page.
   await page.waitForFunction(()=>Array.isArray(window.WA?.words)&&WA.words.length>32000
     &&window.WORD_AUDIO_MULTI_VOICE?.version>=5,null,{timeout:45000});
+  const voiceToggle=page.locator('.voice-toggle');
+  if(await voiceToggle.count()&&await voiceToggle.getAttribute('aria-expanded')==='false'){
+    await voiceToggle.tap();
+    await page.waitForFunction(()=>document.querySelector('.voice-toggle')?.getAttribute('aria-expanded')==='true');
+  }
   const cases=[['supertonic3','F3'],['voicevox','s01'],['aivis','a01']];
   for(const [engine,voice] of cases){
     const diag=await page.evaluate(()=>{
