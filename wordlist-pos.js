@@ -64,6 +64,14 @@ function authoritative(w){
 function rawPos(w){return String(w&&(w.pos||w.PoS||w.vocabPoS)||'').trim();}
 function written(w){return String(w&&(w.kanji||w.displayWord||w.reading)||'').trim();}
 function reading(w){return String(w&&w.reading||'').trim();}
+function reviewed(w){
+  // Explicitly reviewed supplementary rows preserve multiple grammatical classes.
+  // Only trust this field on the versioned in-repository reviewed vocabulary.
+  if(!w||!/^reviewed-common-20261017-[0-9]+$/.test(String(w.id||''))||!Array.isArray(w.reviewedPOS))return null;
+  var allowed=new Set(['名詞','副詞','い形容詞','な形容詞','動詞（第1類）','動詞（第2類）','動詞（第3類）']);
+  var labels=w.reviewedPOS.filter(function(x){return allowed.has(x);});
+  return labels.length&&labels.length===w.reviewedPOS.length?Array.from(new Set(labels)):null;
+}
 function conjugationGroup(w,p){
   var m=p.match(/動([123])/);
   if(m)return m[1];
@@ -84,6 +92,8 @@ function adjectiveLabel(w,p){
 }
 function labels(w){
   if(!w)return ['未分類'];
+  var fromReviewed=reviewed(w);
+  if(fromReviewed)return fromReviewed;
   var fromJMdict=authoritative(w);
   if(fromJMdict)return fromJMdict;
   var r=reading(w),s=written(w),override=OVERRIDES[r+'|'+s];
@@ -110,7 +120,7 @@ function labels(w){
     return t;
   }).filter(function(t,i,a){return a.indexOf(t)===i;});
 }
-var api={labels:labels,rawPos:rawPos,source:function(w){return authoritative(w)?'JMdict/Tomoshi':(OVERRIDES[reading(w)+'|'+written(w)]?'manual':'unverified');}};
+var api={labels:labels,rawPos:rawPos,source:function(w){return reviewed(w)?'manual':(authoritative(w)?'JMdict/Tomoshi':(OVERRIDES[reading(w)+'|'+written(w)]?'manual':'unverified'));}};
 root.WordlistPOS=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:typeof global!=='undefined'?global:this);
