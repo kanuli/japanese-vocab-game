@@ -36,6 +36,7 @@ jobs:
       - name: Verify v5 teacher audit artifacts
         run: |
           node --check advanced_words.js
+          node tests/reviewed-common-vocab.test.js
           node --check core_vocab_fetch_patch.js
           node --check data/vocab_core_verified.js
           node --check data/vocab_external_crosscheck.js
@@ -137,11 +138,14 @@ jobs:
                 corePatch:window.VOCAB_CORE_RUNTIME_PATCH_META||null,
                 external:window.VOCAB_EXTERNAL_CROSSCHECK_META||null,
                 estimatedN1:words.filter(w=>w.level==='N1'&&w.estimated===true).map(w=>`${w.reading}|${display(w)}`).slice(0,20),
-                sentinels:sentinels.map(([reading,kanji,expected])=>({reading,kanji,expected,actual:find(reading,kanji)?.level||null,meaning:find(reading,kanji)?.meaning||null}))
+                sentinels:sentinels.map(([reading,kanji,expected])=>({reading,kanji,expected,actual:find(reading,kanji)?.level||null,meaning:find(reading,kanji)?.meaning||null})),
+                reviewed:words.filter(w=>/^reviewed-common-20261017-[0-9]+$/.test(w.id||'')).map(w=>({id:w.id,reading:w.reading,written:display(w),labels:window.WordlistPOS?.labels(w),source:window.WordlistPOS?.source(w),estimated:w.estimated,entryId:w.entryId}))
               };
             });
             if(errors.length)throw Error('page errors '+errors.join(' | '));
             if(check.total<32000)throw Error('runtime vocabulary too small '+JSON.stringify(check));
+            if(check.reviewed.length!==50||new Set(check.reviewed.map(w=>w.entryId)).size!==50||check.reviewed.some(w=>w.source!=='manual'||w.estimated!==true||!w.labels?.length))throw Error('50 reviewed vocabulary runtime missing or misclassified '+JSON.stringify(check.reviewed));
+            console.log('REVIEWED 50 RUNTIME PASS',check.reviewed.length);
             if(check.unique<32000)throw Error('runtime unique vocabulary too small '+JSON.stringify({total:check.total,unique:check.unique}));
             if(!check.overlay||check.overlay.version!=='20260826-teacher-runtime-v2-lineage'||check.overlay.configuredKeys<393||check.overlay.appliedRows<350)throw Error('v5 runtime overlay not fully applied '+JSON.stringify(check.overlay));
             if(!check.corePatch||check.corePatch.verifiedRows<10000)throw Error('core patch not verified '+JSON.stringify(check.corePatch));
