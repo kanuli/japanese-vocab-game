@@ -119,13 +119,25 @@ async function testWordlistPublicPlayback(page){
       .some(r=>r.querySelector('.word-cell')?.textContent===w.written
         &&r.querySelector('.reading-cell')?.textContent===w.reading),
       w,{timeout:25000});
-    const row=page.locator('#vocabBody tr').filter({has:page.locator('.word-cell',{hasText:w.written})}).first();
+    const rowIndex=await page.evaluate(w=>Array.from(document.querySelectorAll('#vocabBody tr'))
+      .findIndex(r=>r.querySelector('.word-cell')?.textContent===w.written
+        &&r.querySelector('.reading-cell')?.textContent===w.reading),w);
+    if(rowIndex<0)throw new Error('Exact wordlist row not found '+JSON.stringify({engine,voice,w}));
+    const row=page.locator('#vocabBody tr').nth(rowIndex);
     const before=await page.evaluate(()=>Number(window.WA?.__speakSeq||0));
     await row.locator('.play-btn').tap({timeout:20000});
-    await page.waitForFunction(({before})=>{
-      const r=window.WA?.lastSpeak;
-      return !!r&&r.seq>before&&!r.pending&&(r.playbackSuccess||r.playbackFailure||r.hostedMiss);
-    },{before},{timeout:45000});
+    try{
+      await page.waitForFunction(({before})=>{
+        const r=window.WA?.lastSpeak;
+        return !!r&&r.seq>before&&!r.pending&&(r.playbackSuccess||r.playbackFailure||r.hostedMiss);
+      },{before},{timeout:30000});
+    }catch(err){
+      const state=await page.evaluate(()=>({
+        speak:window.WA?.lastSpeak,status:document.querySelector('#audioStatus')?.textContent,
+        voice:document.querySelector('#voice')?.value,engine:document.querySelector('#audioEngine')?.value
+      }));
+      throw new Error('PUBLIC WORDLIST PLAYBACK TIMEOUT '+JSON.stringify({engine,voice,w,state,error:String(err)}));
+    }
     const rec=await page.evaluate(()=>({
       status:document.querySelector('#audioStatus')?.textContent||'',
       speak:window.WA?.lastSpeak,
