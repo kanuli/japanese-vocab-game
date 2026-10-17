@@ -117,6 +117,7 @@ jobs:
           print('Static PASS',len(pages),'pages',len(js),'JS resources')
           PY
           while IFS= read -r f; do [ -z "$f" ] || node --check "$f"; done < /tmp/referenced-js.txt
+          node tests/reviewed-common-vocab.test.js
 
       - name: Validate learning databases and hosted audio indexes
         id: data
