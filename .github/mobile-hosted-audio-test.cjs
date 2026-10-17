@@ -77,6 +77,59 @@ async function probeHosted(page,catalogName,groupName,label){
   },{catalogName,groupName,label});
 }
 
+
+async function testWordlistPublicPlayback(page){
+  // Use the actual vocabulary UI click (not just a raw HTTP Range or
+  // directly invoking MobileSupertonicGuard) on desktop/mobile page.
+  await page.waitForFunction(()=>Array.isArray(window.WA?.words)&&WA.words.length>32000
+    &&window.WORD_AUDIO_MULTI_VOICE?.version>=5,null,{timeout:45000});
+  const cases=[['supertonic3','F3'],['voicevox','s01'],['aivis','a01']];
+  for(const [engine,voice] of cases){
+    await page.selectOption('#audioEngine',engine);
+    await page.waitForFunction(({voice})=>Array.from(document.querySelectorAll('#voice option'))
+      .some(o=>o.value===voice),{voice},{timeout:25000});
+    await page.selectOption('#voice',voice);
+    const w=await page.evaluate(async eng=>{
+      const c=await window.WORD_AUDIO_MULTI_VOICE.loadCatalog(eng);
+      if(!c||c.status!=='ready')throw new Error('Unready '+eng+' catalog');
+      // Select a real dictionary word guaranteed present in this engine.
+      const w=window.WA.words.find(w=>!!c.words[
+        String(w.reading||'')+'|'+String(w.kanji||w.displayWord||w.reading||'')]);
+      if(!w)throw new Error('No vocabulary item found in '+eng+' catalog');
+      return{reading:w.reading,written:w.kanji||w.displayWord||w.reading};
+    },engine);
+    await page.locator('#search').fill(w.reading);
+    await page.waitForFunction(w=>Array.from(document.querySelectorAll('#vocabBody tr'))
+      .some(r=>r.querySelector('.word-cell')?.textContent===w.written
+        &&r.querySelector('.reading-cell')?.textContent===w.reading),
+      w,{timeout:25000});
+    const row=page.locator('#vocabBody tr').filter({has:page.locator('.word-cell',{hasText:w.written})}).first();
+    const before=await page.evaluate(()=>Number(window.WA?.__speakSeq||0));
+    await row.locator('.play-btn').tap({timeout:20000});
+    await page.waitForFunction(({before})=>{
+      const r=window.WA?.lastSpeak;
+      return !!r&&r.seq>before&&!r.pending&&(r.playbackSuccess||r.playbackFailure||r.hostedMiss);
+    },{before},{timeout:45000});
+    const rec=await page.evaluate(()=>({
+      status:document.querySelector('#audioStatus')?.textContent||'',
+      speak:window.WA?.lastSpeak,
+      guard:window.MobileSupertonicGuard?.audioState?.()
+    }));
+    if(!rec.speak?.hostedHit||!rec.speak?.playbackSuccess||rec.speak?.playbackFailure
+        ||rec.speak?.fallbackUsed||rec.speak?.provider!==engine||rec.speak?.key!==voice
+        ||!rec.speak?.resolvedUrl||!/^✅/.test(rec.status)){
+      throw new Error('PUBLIC WORDLIST PLAYBACK FAIL '+JSON.stringify({engine,voice,w,rec}));
+    }
+    console.log('PUBLIC WORDLIST AUDIO PASS',JSON.stringify({
+      engine,voice,word:w,status:rec.status,provider:rec.speak.provider,
+      selectedVoice:rec.speak.selectedVoice,hostedHit:rec.speak.hostedHit,
+      playbackSuccess:rec.speak.playbackSuccess,
+      httpStatus:rec.speak.httpStatus,resolvedUrl:rec.speak.resolvedUrl,
+      mobileAudioContext:rec.guard?.audioContextState
+    }));
+  }
+}
+
 async function checkGenericVoiceTest(context,path,playRealAudio=false){
   const page=await context.newPage(),errors=[];
   page.on('pageerror',e=>errors.push(String(e)));
@@ -167,6 +220,7 @@ async function checkGenericVoiceTest(context,path,playRealAudio=false){
         throw new Error(p+' '+JSON.stringify({s,errs}));
       }
       console.log('MOBILE PAGE PASS',p,JSON.stringify(s));
+      if(p==='wordlist.html')await testWordlistPublicPlayback(q);
       await q.close();
     }
 
