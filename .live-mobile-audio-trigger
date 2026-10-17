@@ -1,2 +1,4 @@
 2026-08-25T13:40+08:00
 Post-fix audit: verify deployed GitHub Pages with iPhone-WebKit real VOICEVOX and Hosted Supertonic playback and publish live-mobile-audio-status.json.
+
+2026-10-17 live public verification: click actual wordlist play buttons for Supertonic F3, VOICEVOX s01, AIVIS a01 on iPhone/WebKit; check hosted success and no fallback; verify Pages deployment.
