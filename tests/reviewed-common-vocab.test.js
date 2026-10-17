@@ -31,7 +31,7 @@ for(const w of reviewed){
 assert.ok(!reviewed.some(w=>w.meaning.includes('丘位元')||w.displayWord==='刳い'||w.displayWord==='塩っぱい'||w.displayWord==='滅茶'));
 const POS=require('../wordlist-pos.js');
 for(const w of reviewed){
-  assert.deepEqual(POS.labels(w),w.reviewedPOS,w.displayWord+' POS mismatch');
+  assert.deepEqual(POS.labels(w),Array.from(w.reviewedPOS),w.displayWord+' POS mismatch');
   assert.equal(POS.source(w),'manual',w.displayWord+' review origin lost');
 }
 function find(k){return reviewed.find(w=>w.displayWord===k);}
