@@ -85,7 +85,18 @@ async function testWordlistPublicPlayback(page){
     &&window.WORD_AUDIO_MULTI_VOICE?.version>=5,null,{timeout:45000});
   const cases=[['supertonic3','F3'],['voicevox','s01'],['aivis','a01']];
   for(const [engine,voice] of cases){
-    await page.selectOption('#audioEngine',engine);
+    const diag=await page.evaluate(()=>{
+      const e=document.querySelector('#audioEngine'),v=document.querySelector('#voice');
+      const style=e&&getComputedStyle(e),rect=e&&e.getBoundingClientRect();
+      return{enginePresent:!!e,engineDisabled:e?.disabled,
+        engineValue:e?.value,engineHTML:e?.outerHTML?.slice(0,650),
+        display:style?.display,visibility:style?.visibility,
+        rect:rect?{width:rect.width,height:rect.height}:null,
+        voicePresent:!!v,voiceDisabled:v?.disabled,
+        voiceOptions:v?.options?.length,words:window.WA?.words?.length};
+    });
+    console.log('WORDLIST ENGINE DIAGNOSTIC',JSON.stringify({engine,voice,diag}));
+    await page.selectOption('#audioEngine',engine,{timeout:5000});
     await page.waitForFunction(({voice})=>Array.from(document.querySelectorAll('#voice option'))
       .some(o=>o.value===voice),{voice},{timeout:25000});
     await page.selectOption('#voice',voice);
