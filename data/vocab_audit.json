@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-16T18:13:16.199177+00:00",
+  "generated": "2026-10-17T03:54:47.426818+00:00",
   "policy": {
     "meaning": "Tomoshi Traditional-Chinese definitions joined by JMdict entry_id; core resolved by exact written form + reading; no homophone fallback",
     "level": "JLPT Waller/Tomoshi JLPT > embedded entry level > core deck/exact frequency fallback",
@@ -17504,7 +17504,7 @@
     },
     "overlay": {
       "version": "20260826-teacher-runtime-v2-lineage",
-      "generated": "2026-10-16T18:14:01.362251+00:00",
+      "generated": "2026-10-17T03:55:20.409509+00:00",
       "configuredKeys": 411,
       "rule": "apply v5 source-lineage-aware teacher level after all additive runtime supplements",
       "sourceIndependence": "OpenJLPT and Japanese Language Data Waller/Tanos share one Waller/Tanos lineage; they are never counted as independent votes. Existing Tomoshi JLPT labels are also treated as legacy-lineage context unless independently validated."
