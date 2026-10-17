@@ -20,7 +20,7 @@ document.write('<script src="./data/coverage_postreview_manual.js?v=20260821v1">
 // Validate that the generated v5 teacher bundle, not an obsolete browser-built cache, is active.
 document.write('<script src="./large_vocab_loader.js?v=20260826v5teacher"><\/script>');
 // Direct-reviewed common words that must remain present even if an upstream deck changes.
-document.write('<script src="./data/vocab_common_fixups.js?v=20260826v3"><\/script>');
+document.write('<script src="./data/vocab_common_fixups.js?v=20261017reviewed50"><\/script>');
 // JMdict/Tomoshi exact-entry-ID lexical classes: multi-POS, adjective types,
 // and verb groups. This supplements (does not rewrite) the vocabulary content.
 document.write('<script src="./data/vocab_pos_verified.js?v=20261017jmdict1"><\/script>');
