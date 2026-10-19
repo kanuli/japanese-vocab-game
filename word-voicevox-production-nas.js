@@ -1,6 +1,7 @@
 /* VOICEVOX production audio (43 voices, isolated NAS index). Legacy engines remain unchanged. */
 (function(root){
 'use strict';
+function install(){
 var W=root.WA;
 if(!W||typeof W.speak!=='function'||W.__voicevoxProductionNasInstalled)return;
 var BASE='https://kanu-rustdesk.synology.me:8443';
@@ -127,4 +128,7 @@ W.speak=async function(reading,overrideWord){
 W.pause=function(){++requestNumber;stop();return typeof oldPause==='function'?oldPause.apply(W,arguments):undefined;};
 W.__voicevoxProductionNasInstalled=true;
 root.VOICEVOX_PRODUCTION_NAS={version:1,baseUrl:BASE,apiPath:PATH};
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});
+else install();
 })(typeof window!=='undefined'?window:this);
