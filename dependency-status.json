@@ -1,11 +1,11 @@
 {
   "version": 1,
   "status": "ok",
-  "checkedAt": "2026-10-12T11:22:31Z",
+  "checkedAt": "2026-10-19T09:18:56Z",
   "playwright": {
-    "previous": "1.63.0",
-    "latest": "1.64.0",
-    "current": "1.64.0",
+    "previous": "1.64.0",
+    "latest": "1.64.1",
+    "current": "1.64.1",
     "candidateTest": "pass",
     "autoUpdated": true
   },
