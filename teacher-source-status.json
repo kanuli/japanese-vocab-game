@@ -1,13 +1,15 @@
 {
   "version": 1,
   "signatureVersion": 2,
-  "status": "ok",
-  "checkedAt": "2026-10-12T09:45:56Z",
+  "status": "review_required",
+  "checkedAt": "2026-10-19T08:05:28Z",
   "sourceCount": 10,
   "reachableCount": 10,
-  "changedSources": [],
+  "changedSources": [
+    "marugoto"
+  ],
   "errors": [],
-  "teacherReviewRequired": false,
+  "teacherReviewRequired": true,
   "policy": "TEACHER_ROBOT_MAINTENANCE.md",
   "sources": [
     {
@@ -103,11 +105,11 @@
       ],
       "purpose": "Everyday language, vocabulary and communicative scenarios",
       "reachable": true,
-      "bytes": 25759,
-      "semanticChars": 2853,
+      "bytes": 40329,
+      "semanticChars": 2933,
       "signatureVersion": 2,
-      "sha256": "8ae1349eac2a4b789fdc50a1b386808e1461c5e05e435135f86e583d5c6c0b1b",
-      "changed": false,
+      "sha256": "302f2ceed0c354d1a5f77fe66a186da8a7c572ebc2af5bff770c44a20bddb5cc",
+      "changed": true,
       "error": null
     },
     {
