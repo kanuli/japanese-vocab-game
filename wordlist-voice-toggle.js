@@ -33,7 +33,7 @@ var isMobile=window.matchMedia&&window.matchMedia('(max-width: 820px)').matches;
 function setOpen(open){
   card.classList.toggle('voice-collapsed',!open);
   toggle.setAttribute('aria-expanded',open?'true':'false');
-  toggle.textContent=open?'🔊 單字語音｜VOICEVOX / Supertonic 3 / AivisSpeech':'🔊 單字語音｜按此展開';
+  toggle.textContent=open?'🔊 單字語音｜VOICEVOX / Supertonic 3':'🔊 單字語音｜按此展開';
 }
 setOpen(!isMobile);
 toggle.addEventListener('click',function(){
