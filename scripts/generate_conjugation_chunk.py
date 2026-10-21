@@ -93,21 +93,6 @@ def main() -> int:
         subprocess.check_call([sys.executable, str(ROOT / "scripts" / "generate_word_voicevox_shard.py")], env=env)
         src = out_dir / f"{voice}-shard0.tar"
         srcj = out_dir / f"{voice}-shard0.json"
-    elif provider == "aivis":
-        model_path = Path(os.environ["MODEL"])
-        model = load_json(model_path)
-        styles = [s for s in model.get("styles") or [] if s.get("key") == voice]
-        if not styles:
-            raise SystemExit(f"Aivis style {voice} not in model")
-        one = dict(model)
-        one["styles"] = styles
-        filtered = out_dir / "aivis-model-one.json"
-        filtered.write_text(json.dumps(one, ensure_ascii=False), encoding="utf-8")
-        env["MODEL"] = str(filtered)
-        env["OUT_DIR"] = str(out_dir)
-        subprocess.check_call([sys.executable, str(ROOT / "scripts" / "generate_word_aivis_shard.py")], env=env)
-        src = out_dir / f"{voice}-shard0.tar"
-        srcj = out_dir / f"{voice}-shard0.json"
     else:
         raise SystemExit("unknown provider " + provider)
 
