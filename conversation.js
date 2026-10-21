@@ -137,7 +137,7 @@ async function speak(text,role,token){
   vst('Supertonic 3 此句暫無本站預錄音，改用瀏覽器即時生成。','loading');
   return speakSuper(text,role,token);
  }
- if(eng==='voicevox'||eng==='aivis'){
+ if(eng==='voicevox'){
   let used=false;
   try{used=await window.ConversationHostedAudio?.speak?.(text,role,Number($('#speed').value))||false}catch(e){console.warn(e)}
   if(token!==S.stopToken)return;
@@ -148,7 +148,7 @@ async function speak(text,role,token){
    vst('📱 手機不啟動本機 Supertonic；改用裝置 Japanese voice。','loading');
    return speakDevice(text,role,token);
   }
-  vst(`${eng==='voicevox'?'VOICEVOX':'AivisSpeech / Style-Bert-VITS'} 此句沒有本站預錄音，已自動使用 Supertonic 3 備援。`,'loading');
+  vst('VOICEVOX 此句沒有本站預錄音，已自動使用 Supertonic 3 備援。','loading');
   return speakSuper(text,role,token,role==='B'?'M3':'F3');
  }
  return speakDevice(text,role,token);
