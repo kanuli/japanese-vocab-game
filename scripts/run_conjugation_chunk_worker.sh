@@ -59,13 +59,6 @@ Path('/tmp/vv.env').write_text('export SPEAKER_NAME=%s\nexport STYLE_ID=%s\nexpo
 print(key, name, sid, style)
 PY
   . /tmp/vv.env
-elif [ "$PROVIDER" = aivis ]; then
-  mkdir -p "$HOME/.local/share/AivisSpeech-Engine"
-  sudo chown -R 1000:1000 "$HOME/.local/share/AivisSpeech-Engine"
-  retry docker pull ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
-  docker run --rm -d --name aivis-engine -p 127.0.0.1:10101:10101 -v "$HOME/.local/share/AivisSpeech-Engine:/home/user/.local/share/AivisSpeech-Engine-Dev" ghcr.io/aivis-project/aivisspeech-engine:cpu-latest
-  n=0; until curl -fsS http://127.0.0.1:10101/speakers >/dev/null; do n=$((n+1)); if [ "$n" -ge 150 ]; then docker logs aivis-engine || true; exit 1; fi; sleep 2; done
-  MAX_STYLES=4 OUT=aivis-model.json python scripts/discover_aivis_model.py
 fi
 mkdir -p conj-chunk-out staging
 OVERALL=0
@@ -112,7 +105,6 @@ while IFS= read -r CHUNK <&3; do
   else
     unset LEGACY_CATALOG || true
   fi
-  if [ "$PROVIDER" = aivis ]; then export MODEL=aivis-model.json; fi
   rm -f conj-chunk-out/skip.json
   GEN_OK=0
   GEN_ERR="generation failed"
@@ -267,5 +259,5 @@ if git diff --cached --quiet; then echo status unchanged; else
     n=$((n+1)); if [ "$n" -ge 5 ]; then echo 'status push failed'; break; fi; sleep $((n*3))
   done
 fi
-docker stop voicevox-engine aivis-engine 2>/dev/null || true
+docker stop voicevox-engine 2>/dev/null || true
 exit "$OVERALL"
