@@ -3,7 +3,6 @@
 var fs = require('fs');
 var A = require('./conjugation_chunk_a.js');
 var SUPERTonic_VOICES = A.SUPERTonic_VOICES;
-var AIVIS_VOICES = A.AIVIS_VOICES;
 var PROVIDERS = A.PROVIDERS;
 var sha256 = A.sha256;
 var padChunk = A.padChunk;
@@ -77,7 +76,6 @@ function missingChunks(status, provider, voice, invVersion, chunkCount, releaseA
 
 function expectedVoices(provider, speakerKeys) {
   if (provider === 'supertonic3') return SUPERTonic_VOICES.slice();
-  if (provider === 'aivis') return AIVIS_VOICES.slice();
   if (provider === 'voicevox') return speakerKeys && speakerKeys.length ? speakerKeys.slice() : [];
   return [];
 }
@@ -262,7 +260,6 @@ function main(argv) {
 
 module.exports = {
   SUPERTonic_VOICES: SUPERTonic_VOICES,
-  AIVIS_VOICES: AIVIS_VOICES,
   PROVIDERS: PROVIDERS,
   sha256: sha256,
   padChunk: padChunk,
