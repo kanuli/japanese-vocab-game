@@ -12,8 +12,7 @@ var zlib = require('zlib');
 var { spawnSync } = require('child_process');
 
 var SUPERTonic_VOICES = ['F1','F2','F3','F4','F5','M1','M2','M3','M4','M5'];
-var AIVIS_VOICES = ['a01','a02','a03','a04'];
-var PROVIDERS = ['supertonic3','voicevox','aivis'];
+var PROVIDERS = ['supertonic3','voicevox'];
 
 function sha256(buf) {
   return crypto.createHash('sha256').update(buf).digest('hex');
@@ -97,8 +96,7 @@ function emptyStatus(inv) {
     note: 'Checkpoint. One failure must never require restarting previously successful units. Generation chunks are not public runtime shards.',
     providers: {
       supertonic3: {},
-      voicevox: {},
-      aivis: {}
+      voicevox: {}
     }
   };
 }
@@ -304,7 +302,7 @@ function validateTar(tarPath, expectedIds, opts) {
 }
 
 module.exports = {
-  SUPERTonic_VOICES, AIVIS_VOICES, PROVIDERS, sha256, padChunk, loadJson, writeJson,
+  SUPERTonic_VOICES, PROVIDERS, sha256, padChunk, loadJson, writeJson,
   loadInventory, chunkReadings, freezeHashOf, assertFrozen, assetName, releaseTagFor,
   emptyStatus, ensureVoice, getChunkRecord, isChunkComplete, legacyReadingMap,
   planChunk, generatorCatalog, skipCheck, validateTar
