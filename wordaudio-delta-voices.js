@@ -6,8 +6,7 @@ if(typeof baseSpeak!=='function')return;
 if(W.__hostedDeltaVoiceInstalled)return;W.__hostedDeltaVoiceInstalled=true;
 var CFG={
  voicevox:['./word-voicevox-delta-catalog.json?v=1','./word-voicevox-conj-catalog.json?v=1'],
- supertonic3:['./word-supertonic3-runtime-delta-catalog.json?v=2','./word-supertonic3-delta-catalog.json?v=1','./word-supertonic3-conj-catalog.json?v=2','./word-supertonic3-conj-v2-catalog.json?v=1'],
- aivis:['./word-aivis-delta-catalog.json?v=1','./word-aivis-conj-catalog.json?v=1']
+ supertonic3:['./word-supertonic3-runtime-delta-catalog.json?v=2','./word-supertonic3-delta-catalog.json?v=1','./word-supertonic3-conj-catalog.json?v=2','./word-supertonic3-conj-v2-catalog.json?v=1']
 };
 var NAS_BASE='https://kanu-rustdesk.synology.me:8443';
 var catalogs={},catalogPromises={},indexes=new Map(),audio=null,blobUrl='',nasVoices=null,nasVoicesPromise=null;
