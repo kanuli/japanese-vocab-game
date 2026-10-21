@@ -12,10 +12,10 @@ on:
         description: TTS provider
         required: true
         type: choice
-        options: [supertonic3, voicevox, aivis]
+        options: [supertonic3, voicevox]
         default: supertonic3
       voice:
-        description: Voice / speaker / style key (F3, s01, a01)
+        description: Voice / speaker / style key (F3, s01)
         required: true
         default: F3
         type: string
