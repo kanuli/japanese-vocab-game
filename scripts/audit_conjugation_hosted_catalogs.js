@@ -30,9 +30,6 @@ var conj2=load('word-supertonic3-conj-v2-catalog.json')||{};
 var lemmaVV=load('word-voicevox-catalog.json')||{};
 var deltaVV=load('word-voicevox-delta-catalog.json')||{};
 var conjVV=load('word-voicevox-conj-catalog.json')||{};
-var lemmaAI=load('word-aivis-catalog.json')||{};
-var deltaAI=load('word-aivis-delta-catalog.json')||{};
-var conjAI=load('word-aivis-conj-catalog.json')||{};
 var plan=load('word-supertonic3-conj-plan.json')||{};
 var auditIn=load('word-conj-hosted-audit.json')||load('word-supertonic3-conj-plan.json')||{};
 
@@ -48,7 +45,6 @@ function union(){
 var stLemma=union(lemmaST,delta,runtime);
 var stAll=union(lemmaST,delta,runtime,conj1,conj2.status==='ready'?conj2:{});
 var vvAll=union(lemmaVV,deltaVV,conjVV.status==='ready'?conjVV:{});
-var aiAll=union(lemmaAI,deltaAI,conjAI.status==='ready'?conjAI:{});
 
 var uniqueCount=Number(auditIn.uniqueReadings||plan.uniqueReadingCount||0);
 var remaining=Number(auditIn.remainingMissing!=null?auditIn.remainingMissing:(plan.newReadingCount||0));
@@ -61,8 +57,6 @@ function voiceCoverage(engine, catalogReady, required, lemmaReadings, conjCatalo
       hasLemma=!!(group(lemmaST)[v]||group(delta)[v]||group(runtime)[v]);
     }else if(engine==='voicevox'){
       hasLemma=!!group(lemmaVV)[v];
-    }else if(engine==='aivis'){
-      hasLemma=!!group(lemmaAI)[v];
     }
     var conjHas=conjCatalogs.some(function(c){return c&&c.status==='ready'&&!!group(c)[v];});
     var available=hasLemma?Object.keys(lemmaReadings).length:0;
@@ -86,14 +80,10 @@ var errors=[];
 requiredST.forEach(function(v){
   if(!group(lemmaST)[v]) errors.push('lemma SuperTonic missing voice '+v);
 });
-['a01','a02','a03','a04'].forEach(function(v){
-  if(!group(lemmaAI)[v]) errors.push('lemma Aivis missing voice '+v);
-});
 if(!group(lemmaVV).s01) errors.push('lemma VOICEVOX missing s01');
 if(!conj1) errors.push('missing word-supertonic3-conj-catalog.json');
 if(!conj2) errors.push('missing word-supertonic3-conj-v2-catalog.json');
 if(!conjVV) errors.push('missing word-voicevox-conj-catalog.json');
-if(!conjAI) errors.push('missing word-aivis-conj-catalog.json');
 
 if(conj1&&conj1.status==='ready'){
   Object.keys(conj1.words||{}).forEach(function(k){
@@ -130,12 +120,6 @@ var report={
       conjStatus:conjVV&&conjVV.status||'missing',
       conjSpeakers:Object.keys(group(conjVV)),
       coverage:voiceCoverage('voicevox', true, Object.keys(group(lemmaVV)), readings(lemmaVV), [conjVV])
-    },
-    aivis:{
-      lemmaVoices:Object.keys(group(lemmaAI)),
-      conjStatus:conjAI&&conjAI.status||'missing',
-      conjVoices:Object.keys(group(conjAI)),
-      coverage:voiceCoverage('aivis', true, ['a01','a02','a03','a04'], readings(lemmaAI), [conjAI])
     }
   },
   errors:errors,
@@ -157,7 +141,7 @@ if(existing&&existing.uniqueReadings){
   report.alreadyHostedReadingCount=existing.alreadyHostedReadingCount;
 }
 fs.writeFileSync(outPath, JSON.stringify(report,null,2)+'\n');
-console.log(JSON.stringify({remainingMissing:report.remainingMissing,uniqueReadings:report.uniqueReadings,errors:errors,conjV2:conj2&&conj2.status,voicevox:conjVV&&conjVV.status,aivis:conjAI&&conjAI.status},null,2));
+console.log(JSON.stringify({remainingMissing:report.remainingMissing,uniqueReadings:report.uniqueReadings,errors:errors,conjV2:conj2&&conj2.status,voicevox:conjVV&&conjVV.status},null,2));
 if(errors.length){
   console.error('AUDIT FAIL', errors.join('; '));
   process.exit(1);
