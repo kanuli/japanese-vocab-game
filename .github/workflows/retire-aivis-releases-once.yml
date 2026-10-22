@@ -1,0 +1,54 @@
+name: Retire Aivis-only audio releases (one-time)
+on:
+  push:
+    paths:
+      - '.github/workflows/retire-aivis-releases-once.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  retire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Validate and delete five Aivis-only releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tags=(
+            'word-aivis-conj-v1'
+            'word-aivis-delta-20260821-v1'
+            'word-aivis-v1'
+            'listening-aivis-v1'
+            'conversation-aivis-v1'
+          )
+          for tag in "${tags[@]}"; do
+            echo "::group::Validate $tag"
+            if ! gh release view "$tag" --repo "$GH_REPO" --json tagName,name >/tmp/aivis_release.json 2>/dev/null; then
+              echo "ALREADY_ABSENT: $tag"
+              echo "::endgroup::"
+              continue
+            fi
+            actual="$(jq -r '.tagName' /tmp/aivis_release.json)"
+            if [ "$actual" != "$tag" ]; then
+              echo "REF_MISMATCH: $tag vs $actual" >&2
+              exit 1
+            fi
+            echo "::endgroup::"
+          done
+          for tag in "${tags[@]}"; do
+            if gh release view "$tag" --repo "$GH_REPO" >/dev/null 2>&1; then
+              gh release delete "$tag" --repo "$GH_REPO" --yes --cleanup-tag
+              echo "RELEASE_REMOVED: $tag"
+            fi
+          done
+          for tag in "${tags[@]}"; do
+            if gh release view "$tag" --repo "$GH_REPO" >/dev/null 2>&1; then
+              echo "RELEASE_STILL_EXISTS: $tag" >&2
+              exit 1
+            fi
+          done
+          echo "AIVIS_RELEASES_REMOVED_PASS"
