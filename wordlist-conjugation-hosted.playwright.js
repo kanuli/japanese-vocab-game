@@ -55,8 +55,7 @@ function fixtureCatalog(kind){
     const speakers={s01:{speaker:'四国めたん',style:'ノーマル',indexUrl:'./word-voicevox-conj-s01-index.json?v=fixture',indexGithubUrl:'https://github.com/kanuli/japanese-vocab-game/releases/download/word-voicevox-conj-v1/s01-index.json'}};
     return {version:1,status:'ready',engine:'voicevox-conj-delta',wordCount:Object.keys(words).length,speakers,words};
   }
-  const voices={a01:{displayName:'コハク｜ノーマル',indexUrl:'./word-aivis-conj-a01-index.json?v=fixture',indexGithubUrl:'https://github.com/kanuli/japanese-vocab-game/releases/download/word-aivis-conj-v1/a01-index.json'}};
-  return {version:1,status:'ready',engine:'aivisspeech-conj-delta',wordCount:Object.keys(words).length,voices,words};
+  throw new Error('Retired voice fixture is unsupported');
 }
 function fixtureIndex(voice, kind){
   const members={};
@@ -64,7 +63,7 @@ function fixtureIndex(voice, kind){
   let githubUrl;
   if(kind==='st') githubUrl='https://github.com/kanuli/japanese-vocab-game/releases/download/word-supertonic3-conj-v2/'+voice+'-shard0.tar';
   else if(kind==='vv') githubUrl='https://github.com/kanuli/japanese-vocab-game/releases/download/word-voicevox-conj-v1/'+voice+'-shard0.tar';
-  else githubUrl='https://github.com/kanuli/japanese-vocab-game/releases/download/word-aivis-conj-v1/'+voice+'-shard0.tar';
+  else throw new Error('Unsupported fixture engine');
   return {version:1,voice,wordCount:FORMS.length,shardCount:1,bundles:{'0':{githubUrl,hfUrl:githubUrl,url:githubUrl,members}}};
 }
 async function installMocks(page){
@@ -77,14 +76,11 @@ async function installMocks(page){
     if(/word-voicevox-conj-catalog\.json/.test(url)){
       return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureCatalog('vv'))});
     }
-    if(/word-aivis-conj-catalog\.json/.test(url)){
-      return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureCatalog('ai'))});
-    }
+
     const stIdx=url.match(/(?:word-supertonic3-conj-v2-)?([FM]\d)-index\.json/);
     if(stIdx) return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureIndex(stIdx[1],'st'))});
     if(/(?:word-voicevox-conj-)?s01-index\.json/.test(url)) return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureIndex('s01','vv'))});
-    if(/(?:word-aivis-conj-)?a01-index\.json/.test(url)) return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureIndex('a01','ai'))});
-    if(/releases\/download\/word-(supertonic3-conj-v2|voicevox-conj-v1|aivis-conj-v1)\//.test(url) && /\.tar/.test(url)){
+    if(/releases\/download\/word-(supertonic3-conj-v2|voicevox-conj-v1)\//.test(url) && /\.tar/.test(url)){
       return route.fulfill({status:206,contentType:'audio/mpeg',headers:{'content-length':String(MP3.length),'content-range':'bytes 0-'+(MP3.length-1)+'/'+MP3.length},body:MP3});
     }
     return route.continue();
@@ -160,13 +156,13 @@ async function runMocked(browser, viewport, label){
   await installMocks(page);
   await page.goto('http://127.0.0.1:'+PORT+'/wordlist.html',{waitUntil:'domcontentloaded'});
   await waitVocab(page);
+  if (await page.locator('#audioEngine option[value="aivis"]').count()) throw new Error('Retired Aivis option still exists');
   const report=[];
   const voiceCases=[
     {engine:'supertonic3', voice:'F3'},
     {engine:'supertonic3', voice:'F1'},
     {engine:'supertonic3', voice:'M1'},
-    {engine:'voicevox', voice:'s01'},
-    {engine:'aivis', voice:'a01'}
+    {engine:'voicevox', voice:'s01'}
   ];
   for(const vc of voiceCases){
     await setEngineVoice(page, vc.engine, vc.voice);
