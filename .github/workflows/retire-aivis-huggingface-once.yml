@@ -1,0 +1,66 @@
+name: Retire hosted Aivis-only Hugging Face audio (one-time)
+on:
+  push:
+    paths:
+      - '.github/workflows/retire-aivis-huggingface-once.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  id-token: write
+jobs:
+  retire-aivis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      HF_OIDC_RESOURCE: datasets/kanuli1983/japanese-listening-voicevox-backup
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - name: Install Hugging Face client
+        run: python -m pip install --quiet --disable-pip-version-check 'huggingface_hub>=1.19,<2'
+      - name: Delete only files and folders with explicit Aivis path names
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from huggingface_hub import HfApi, CommitOperationDelete
+          repo='kanuli1983/japanese-listening-voicevox-backup'
+          api=HfApi()
+          files=api.list_repo_files(repo_id=repo,repo_type='dataset',token=False)
+          def is_aivis(path):
+              p=[s.lower() for s in path.split('/')]
+              return any(s in ('aivis','aivisspeech','style-bert-vits','style-bert-vits2') for s in p) or any(s.startswith(('aivis-','aivisspeech-','word-aivis','listening-aivis','conversation-aivis')) for s in p)
+          targets=sorted(x for x in files if is_aivis(x))
+          def is_protected(path):
+              return not is_aivis(path) and any(x in path.lower().split('/') or x in path.lower() for x in ('voicevox','supertonic'))
+          retained=sorted(x for x in files if is_protected(x))
+          print('DATASET:',repo,'ALL_FILES:',len(files),'AIVIS_TARGET_FILES:',len(targets),'PROTECTED_FILES:',len(retained),flush=True)
+          for x in targets[:120]: print('AIVIS_TARGET:',x,flush=True)
+          if len(targets)>10000: raise RuntimeError('Unexpectedly many Aivis paths; abort')
+          if not targets:
+              print('HF_AIVIS_ALREADY_ABSENT_PASS',flush=True)
+              raise SystemExit(0)
+          folders=set()
+          for item in targets:
+              parts=item.split('/')
+              for idx,part in enumerate(parts[:-1]):
+                  if part.lower() in ('aivis','aivisspeech'):
+                      folders.add('/'.join(parts[:idx+1])+'/')
+                      break
+          # Only delete an entire folder when EVERY file in that folder matched the Aivis predicate.
+          for folder in folders:
+              children=[f for f in files if f.startswith(folder)]
+              if not children or not all(is_aivis(f) for f in children):
+                  raise RuntimeError('Unsafe mixed folder: '+folder)
+          others=[f for f in targets if not any(f.startswith(d) for d in folders)]
+          ops=[CommitOperationDelete(path_in_repo=d,is_folder=True) for d in sorted(folders)]
+          ops += [CommitOperationDelete(path_in_repo=f,is_folder=False) for f in others]
+          print('AIVIS_DELETE_FOLDERS:',sorted(folders),'ADDITIONAL_FILES:',len(others),flush=True)
+          api.create_commit(repo_id=repo,repo_type='dataset',operations=ops,commit_message='Retire AivisSpeech-only Japanese audio assets')
+          after=api.list_repo_files(repo_id=repo,repo_type='dataset',token=False)
+          remaining=[x for x in after if is_aivis(x)]
+          retained_after=sorted(x for x in after if is_protected(x))
+          print('AIVIS_REMAINING:',len(remaining),'PROTECTED_BEFORE:',len(retained),'PROTECTED_AFTER:',len(retained_after),flush=True)
+          if remaining: raise RuntimeError('Aivis files remain: '+str(remaining[:12]))
+          if retained!=retained_after: raise RuntimeError('Protected VOICEVOX/Supertonic assets changed')
+          print('HF_AIVIS_ASSETS_REMOVED_PASS',flush=True)
+          PY
