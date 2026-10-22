@@ -69,10 +69,10 @@ function checkReadyCatalog(name,c,requiredVoices){
 
 var lemmaST=mustLoad('word-supertonic3-catalog.json');
 var lemmaVV=mustLoad('word-voicevox-catalog.json');
-var lemmaAI=mustLoad('word-aivis-catalog.json');
+ok(!fs.existsSync(path.join(process.cwd(),'word-aivis-catalog.json')), 'retired Aivis lemma catalog is absent');
 checkReadyCatalog('word-supertonic3-catalog.json', lemmaST, ['F1','F2','F3','F4','F5','M1','M2','M3','M4','M5']);
 checkReadyCatalog('word-voicevox-catalog.json', lemmaVV, ['s01']);
-checkReadyCatalog('word-aivis-catalog.json', lemmaAI, ['a01','a02','a03','a04']);
+
 
 var conjST=mustLoad('word-supertonic3-conj-catalog.json');
 ok(!!conjST, 'conj F3 catalog target exists');
@@ -96,9 +96,7 @@ var conjVV=load('word-voicevox-conj-catalog.json');
 ok(!!conjVV, 'voicevox conj catalog target exists');
 if(conjVV) checkReadyCatalog('word-voicevox-conj-catalog.json', conjVV, conjVV.status==='ready'?Object.keys(group(conjVV)):[]);
 
-var conjAI=load('word-aivis-conj-catalog.json');
-ok(!!conjAI, 'aivis conj catalog target exists');
-if(conjAI) checkReadyCatalog('word-aivis-conj-catalog.json', conjAI, conjAI.status==='ready'?['a01','a02','a03','a04']:[]);
+ok(!fs.existsSync(path.join(process.cwd(),'word-aivis-conj-catalog.json')), 'retired Aivis conjugation catalog is absent');
 
 ['word-supertonic3-delta-catalog.json','word-supertonic3-runtime-delta-catalog.json'].forEach(function(name){
   var d=mustLoad(name);
