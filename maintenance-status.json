@@ -2,8 +2,8 @@
   "version": 3,
   "status": "error",
   "statusSource": "health-status branch (not GitHub Pages source)",
-  "checkedAt": "2026-10-25T05:14:37Z",
-  "runId": 40164719374,
+  "checkedAt": "2026-10-25T05:16:26Z",
+  "runId": 40164759347,
   "auditedSha": "8262ecc40c18fd6ed97ebbf80f657c3e6ce4e869",
   "liveSha": "8262ecc40c18fd6ed97ebbf80f657c3e6ce4e869",
   "deploymentAligned": false,
@@ -35,7 +35,7 @@
     "live": false,
     "browserLocal": true,
     "liveStatic": true,
-    "liveBrowser": false,
+    "liveBrowser": true,
     "revisionStillCurrent": false
   },
   "scope": {
