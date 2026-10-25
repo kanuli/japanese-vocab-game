@@ -28,7 +28,7 @@ function chooseAsset(row,engine,voice){
     if(audios[i]&&String(audios[i].engine||'')===engine&&String(audios[i].voice||'')===voice)return audios[i];
   }
   if(engine==='supertonic3'&&row&&row.audio_url&&String(row.engine||'supertonic3')==='supertonic3'&&String(row.voice||'')===voice){
-    return {audio_key:row.audio_key||'',engine:'supertonic3',voice:'F3',audio_url:row.audio_url};
+    return {audio_key:row.audio_key||'',engine:'supertonic3',voice:voice,audio_url:row.audio_url};
   }
   return null;
 }
@@ -144,53 +144,60 @@ async function playVocabularyNas(W,text,w,engine,selected){
   publishNasStatus(out);
   return out;
 }
+/* Resolve a conjugation form by its spoken reading, without substituting
+   a different voice. Base forms often exist in vocabulary audio instead. */
+function chooseFormRow(d,w,text){
+  var rows=Array.isArray(d&&d.results)?d.results:[];
+  var term=termOf(w),reading=readingOf(w,text),i,row;
+  for(i=0;i<rows.length;i++){
+    row=rows[i];
+    if(String(row.word||'')===term&&String(row.reading||'')===reading)return row;
+  }
+  for(i=0;i<rows.length;i++){
+    row=rows[i];
+    if(String(row.reading||'')===reading)return row;
+  }
+  return null;
+}
+async function resolveFormAudio(w,text,engine,voice){
+  var written=termOf(w),reading=readingOf(w,text),terms=[],i,k,kind,d,row,asset;
+  if(written)terms.push(written);
+  if(reading&&reading!==written)terms.push(reading);
+  if(!terms.length)throw new Error('NAS form unavailable');
+  for(k=0;k<2;k++){
+    kind=k===0?'conjugation':'vocabulary';
+    for(i=0;i<terms.length;i++){
+      d=await fetchJson(NAS_BASE+'/api/v1/'+kind+'/'+encodeURIComponent(terms[i])+'?engine='+encodeURIComponent(engine)+'&voice='+encodeURIComponent(voice),12000);
+      row=chooseFormRow(d,w,text);
+      asset=chooseAsset(row,engine,voice);
+      if(asset&&asset.audio_url)return {asset:asset,kind:kind};
+    }
+  }
+  return null;
+}
 async function playConjugationNas(W,text,w,engine,selected){
   var voice=await chooseVoice(engine,selected);
   if(!voice)throw new Error('NAS conjugation voice unavailable');
-  var term=termOf(w);
-  if(!term)throw new Error('NAS conjugation term unavailable');
-  var lookupUrl=NAS_BASE+'/api/v1/conjugation/'+encodeURIComponent(term)+'?engine='+encodeURIComponent(engine)+'&voice='+encodeURIComponent(voice);
-  var d=await fetchJson(lookupUrl,5000);
-  var kanaTerm=readingOf(w,text);
-  if((!d||!Array.isArray(d.results)||d.results.length===0)&&kanaTerm&&kanaTerm!==term){
-    var kanaLookupUrl=NAS_BASE+'/api/v1/conjugation/'+encodeURIComponent(kanaTerm)+'?engine='+encodeURIComponent(engine)+'&voice='+encodeURIComponent(voice);
-    d=await fetchJson(kanaLookupUrl,5000);
-  }
-  var row=chooseResult(d,w,text);
-  var asset=chooseAsset(row,engine,voice);
-  if(!asset&&row&&row.audio_url&&engine==='supertonic3'&&String(row.voice||'')===voice){
-    asset={audio_key:row.audio_key||'',engine:engine,voice:voice,audio_url:row.audio_url};
-  }
-  if(!asset||!asset.audio_url)throw new Error('NAS conjugation asset miss for '+engine+' / '+voice);
-  var audioUrl=/^https?:\/\//i.test(asset.audio_url)?asset.audio_url:NAS_BASE+asset.audio_url;
+  var resolved=await resolveFormAudio(w,text,engine,voice);
+  if(!resolved)throw new Error('NAS has no matching prerecorded '+readingOf(w,text)+' / '+voice);
+  var asset=resolved.asset;
+  var audioUrl=String(asset.audio_url).indexOf('http')===0?asset.audio_url:NAS_BASE+asset.audio_url;
   var st=el('voiceStatus');
-  if(st)st.textContent='正在從 NAS Japanese API 讀取活用 '+engine+' / '+voice+'：'+readingOf(w,text)+'…';
-  var got=await fetchBytes(audioUrl,7000);
+  if(st)st.textContent='正在從 NAS Japanese API 讀取'+(resolved.kind==='vocabulary'?'單字':'活用')+' '+engine+' / '+voice+'：'+readingOf(w,text)+'…';
+  var got=await fetchBytes(audioUrl,12000);
   var speed=Number(el('speed')&&el('speed').value||1);
   if(!Number.isFinite(speed)||speed<=0)speed=1;
   await playBytes(got.bytes,speed);
-  setLastSpeak(W,{
-    requestedReading:String(text||''),
-    selectedVoice:voice,
-    provider:engine,
-    resolvedAsset:String(asset.audio_key||''),
-    resolvedUrl:audioUrl,
-    hostedHit:true,
-    hostedMiss:false,
-    fallbackUsed:false,
-    playbackSuccess:true,
-    playbackFailure:false,
-    pending:false,
-    catalog:'nas-conjugation-api',
-    key:voice,
-    httpStatus:got.status,
-    nas:true,
-    conjugation:true
-  });
+  setLastSpeak(W,{requestedReading:String(text||''),selectedVoice:voice,provider:engine,
+    resolvedAsset:String(asset.audio_key||''),resolvedUrl:audioUrl,hostedHit:true,hostedMiss:false,
+    fallbackUsed:resolved.kind==='vocabulary',playbackSuccess:true,playbackFailure:false,pending:false,
+    catalog:resolved.kind==='vocabulary'?'nas-vocabulary-api':'nas-conjugation-api',
+    key:voice,httpStatus:got.status,nas:true,conjugation:true});
   var out={engine:engine,nas:true,conjugation:true,key:voice,url:audioUrl};
   publishNasStatus(out);
   return out;
 }
+
 function install(){
   var W=root.WA=root.WA||{};
   if(typeof W.speak!=='function'||W.__conjugationNasInstalled)return;
