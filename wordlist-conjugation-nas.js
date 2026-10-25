@@ -101,6 +101,7 @@ function publishNasStatus(out){
   setTimeout(write,0);
 }
 function setLastSpeak(W,rec){
+  if(rec&&rec.seq==null)rec.seq=Number(W.__speakSeq||0);
   W.lastSpeak=rec;
   if(root.W)root.W.lastSpeak=rec;
   if(root.WordlistConjugation)root.WordlistConjugation.lastSpeak=rec;
@@ -214,6 +215,12 @@ function install(){
     var engine=String(el('audioEngine')&&el('audioEngine').value||'supertonic3');
     var selected=String(el('voice')&&el('voice').value||'');
     var isConj=inConjugationModal();
+    if(engine!=='device'){
+      W.__speakSeq=(Number(W.__speakSeq)||0)+1;
+      setLastSpeak(W,{requestedReading:String(text||''),selectedVoice:selected,provider:engine,
+        hostedHit:false,hostedMiss:false,fallbackUsed:false,playbackSuccess:false,
+        playbackFailure:false,pending:true,seq:W.__speakSeq});
+    }
 
     if(isConj){
       if(engine==='device')return baseSpeak.apply(W,arguments);
