@@ -167,7 +167,12 @@ async function resolveFormAudio(w,text,engine,voice){
   for(k=0;k<2;k++){
     kind=k===0?'conjugation':'vocabulary';
     for(i=0;i<terms.length;i++){
+      try{
       d=await fetchJson(NAS_BASE+'/api/v1/'+kind+'/'+encodeURIComponent(terms[i])+'?engine='+encodeURIComponent(engine)+'&voice='+encodeURIComponent(voice),12000);
+      }catch(err){
+        if(String(err&&err.message||err)==='NAS HTTP 404')continue;
+        throw err;
+      }
       row=chooseFormRow(d,w,text);
       asset=chooseAsset(row,engine,voice);
       if(asset&&asset.audio_url)return {asset:asset,kind:kind};
