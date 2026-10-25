@@ -70,6 +70,40 @@ async function installMocks(page){
   await page.route('**/*',async route=>{
     const req=route.request();
     const url=req.url();
+    // The production wordlist routes prerecorded playback through the NAS API.
+    // Mock it here so hosted tests exercise today's playback path rather than
+    // relying solely on retired GitHub TAR catalog requests.
+    const u=new URL(url);
+    if(u.hostname==='kanu-rustdesk.synology.me'&&u.port==='8443'&&u.pathname.startsWith('/api/v1/')){
+      const parts=u.pathname.split('/');
+      const resource=parts[3]||'';
+      const term=decodeURIComponent(parts.slice(4).join('/'));
+      const engine=u.searchParams.get('engine')||'supertonic3';
+      const voice=u.searchParams.get('voice')||(engine==='voicevox'?'s01':'F3');
+      const cors={'access-control-allow-origin':'*'};
+      if(resource==='conjugation'){
+        const results=FORMS.filter(f=>f.written===term||f.reading===term).map(f=>({
+          word:f.written,reading:f.reading,audios:[{
+            engine,voice,audio_key:'fixture:'+voice+':'+f.reading,
+            audio_url:'/api/v1/conjugation-audio/'+encodeURIComponent('fixture:'+voice+':'+f.reading)
+          }]
+        }));
+        return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({results})});
+      }
+      if(resource==='vocabulary'){
+        const base=(term==='食べる'||term==='たべる')?[{word:'食べる',reading:'たべる',audios:[{
+          engine,voice,audio_key:'fixture:'+voice+':たべる',
+          audio_url:'/api/v1/audio/'+encodeURIComponent('fixture:'+voice+':たべる')
+        }]}]:[];
+        return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({results:base})});
+      }
+      if(resource==='audio'||resource==='conjugation-audio'){
+        return route.fulfill({status:200,contentType:'audio/mpeg',headers:cors,body:MP3});
+      }
+      if(resource==='voices'){
+        return route.fulfill({status:200,contentType:'application/json',headers:cors,body:JSON.stringify({voices:[]})});
+      }
+    }
     if(/word-supertonic3-conj-v2-catalog\.json/.test(url)){
       return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(fixtureCatalog('st'))});
     }
@@ -146,7 +180,7 @@ async function clickForm(page, written){
 }
 function classify(rec, expectedVoice, expectedEngine){
   const lookupPass=!!(rec.hostedHit && rec.resolvedUrl && rec.fallbackUsed===false && rec.provider===expectedEngine && (rec.selectedVoice===expectedVoice||rec.key===expectedVoice));
-  const urlPass=!!(rec.resolvedUrl && rec.resolvedUrl.indexOf(expectedVoice)!==-1 && /releases\/download|huggingface|fixture|shard/.test(rec.resolvedUrl+rec.catalog));
+  const urlPass=!!(rec.resolvedUrl && rec.resolvedUrl.indexOf(expectedVoice)!==-1 && /releases\/download|huggingface|fixture|shard|\/api\/v1\/(?:conjugation-)?audio/.test(rec.resolvedUrl+rec.catalog));
   const audiblePass=!!(lookupPass && rec.playbackSuccess && !rec.playbackFailure);
   return {lookupPass:lookupPass&&urlPass, audiblePass, rec};
 }
@@ -174,6 +208,18 @@ async function runMocked(browser, viewport, label){
     await page.locator('.conj-close').click();
     await page.locator('#conjOverlay').waitFor({state:'hidden'});
   }
+  // Real base forms have no conjugation row and must resolve same-voice
+  // vocabulary audio without falling through to a mismatched voice.
+  await setEngineVoice(page,'supertonic3','F1');
+  await openVerb(page,'食べる');
+  const baseRec=await clickForm(page,'食べる');
+  const baseOk=baseRec.provider==='supertonic3'&&baseRec.selectedVoice==='F1'&&
+    baseRec.hostedHit&&baseRec.fallbackUsed&&baseRec.playbackSuccess&&
+    !baseRec.playbackFailure&&baseRec.resolvedUrl.includes('F1');
+  report.push({case:label+' F1 食べる base vocabulary fallback',lookup:baseOk,audible:baseOk,rec:baseRec});
+  if(!baseOk)throw new Error(label+' NAS vocabulary base-form fallback FAIL '+JSON.stringify(baseRec));
+  await page.locator('.conj-close').click();
+  await page.locator('#conjOverlay').waitFor({state:'hidden'});
   const formLemmas=['食べる','書く','行く','来る','する','勉強する'];
   await setEngineVoice(page,'supertonic3','F3');
   for(const form of FORMS){
