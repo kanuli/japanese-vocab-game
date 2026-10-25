@@ -27,7 +27,7 @@ function chooseAsset(row,engine,voice){
   for(i=0;i<audios.length;i++){
     if(audios[i]&&String(audios[i].engine||'')===engine&&String(audios[i].voice||'')===voice)return audios[i];
   }
-  if(engine==='supertonic3'&&voice==='F3'&&row&&row.audio_url){
+  if(engine==='supertonic3'&&row&&row.audio_url&&String(row.engine||'supertonic3')==='supertonic3'&&String(row.voice||'')===voice){
     return {audio_key:row.audio_key||'',engine:'supertonic3',voice:'F3',audio_url:row.audio_url};
   }
   return null;
@@ -151,9 +151,14 @@ async function playConjugationNas(W,text,w,engine,selected){
   if(!term)throw new Error('NAS conjugation term unavailable');
   var lookupUrl=NAS_BASE+'/api/v1/conjugation/'+encodeURIComponent(term)+'?engine='+encodeURIComponent(engine)+'&voice='+encodeURIComponent(voice);
   var d=await fetchJson(lookupUrl,5000);
+  var kanaTerm=readingOf(w,text);
+  if((!d||!Array.isArray(d.results)||d.results.length===0)&&kanaTerm&&kanaTerm!==term){
+    var kanaLookupUrl=NAS_BASE+'/api/v1/conjugation/'+encodeURIComponent(kanaTerm)+'?engine='+encodeURIComponent(engine)+'&voice='+encodeURIComponent(voice);
+    d=await fetchJson(kanaLookupUrl,5000);
+  }
   var row=chooseResult(d,w,text);
   var asset=chooseAsset(row,engine,voice);
-  if(!asset&&row&&row.audio_url&&engine==='supertonic3'&&voice==='F3'){
+  if(!asset&&row&&row.audio_url&&engine==='supertonic3'&&String(row.voice||'')===voice){
     asset={audio_key:row.audio_key||'',engine:engine,voice:voice,audio_url:row.audio_url};
   }
   if(!asset||!asset.audio_url)throw new Error('NAS conjugation asset miss for '+engine+' / '+voice);
