@@ -138,7 +138,7 @@ async function openVerb(page, written){
   await page.locator('#conjOverlay.is-open').waitFor();
 }
 async function setEngineVoice(page, engine, voice){
-  await page.waitForSelector('#audioEngine',{timeout:30000});
+  await page.waitForSelector('#audioEngine',{state:'attached',timeout:30000});
   await page.selectOption('#audioEngine', engine);
   await page.waitForTimeout(400);
   await page.waitForFunction((v)=>{
