@@ -139,14 +139,14 @@ async function openVerb(page, written){
 }
 async function setEngineVoice(page, engine, voice){
   await page.waitForSelector('#audioEngine',{state:'attached',timeout:30000});
-  await page.selectOption('#audioEngine', engine);
+  await page.evaluate((value)=>{const el=document.getElementById('audioEngine'); if(!el)throw Error('Missing audio engine');el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}));},engine);
   await page.waitForTimeout(400);
   await page.waitForFunction((v)=>{
     const sel=document.getElementById('voice');
     if(!sel)return false;
     return Array.from(sel.options).some(o=>o.value===v);
   }, voice, {timeout:30000});
-  await page.selectOption('#voice', voice);
+  await page.evaluate((value)=>{const el=document.getElementById('voice');if(!el)throw Error('Missing voice selector');el.value=value;el.dispatchEvent(new Event('change',{bubbles:true}));},voice);
 }
 async function clickForm(page, written){
   const btn=page.locator('.conj-row').filter({has:page.locator('.conj-written',{hasText:written})}).locator('.conj-audio-btn').first();
