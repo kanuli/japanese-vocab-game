@@ -1,2 +1,2 @@
-2026-08-27
-Rerun after mobile cache-key gate fix 2c19aba97d1a048e3bafeb0870ff05e3403cabca: validate iPhone-WebKit hosted VOICEVOX/Supertonic playback and publish mobile-hosted-audio-status.json.
+2026-10-28
+Re-run hosted mobile audio maintenance after fixing stale multivoice cache-key assertion and removing AIVIS from the WebKit test. Preserve Supertonic3 F1-F5/M1-M5 and VOICEVOX s01-s43 only.
