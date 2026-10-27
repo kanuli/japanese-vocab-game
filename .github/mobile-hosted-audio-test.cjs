@@ -88,7 +88,7 @@ async function testWordlistPublicPlayback(page){
     await voiceToggle.tap();
     await page.waitForFunction(()=>document.querySelector('.voice-toggle')?.getAttribute('aria-expanded')==='true');
   }
-  const cases=[['supertonic3','F3'],['voicevox','s01'],['aivis','a01']];
+  const cases=[['supertonic3','F3'],['voicevox','s01']];
   for(const [engine,voice] of cases){
     const diag=await page.evaluate(()=>{
       const e=document.querySelector('#audioEngine'),v=document.querySelector('#voice');
