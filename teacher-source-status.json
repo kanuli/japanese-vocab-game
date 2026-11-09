@@ -1,13 +1,15 @@
 {
   "version": 1,
   "signatureVersion": 2,
-  "status": "ok",
-  "checkedAt": "2026-11-02T09:57:55Z",
+  "status": "review_required",
+  "checkedAt": "2026-11-09T10:21:20Z",
   "sourceCount": 10,
   "reachableCount": 10,
-  "changedSources": [],
+  "changedSources": [
+    "jmdict-distribution"
+  ],
   "errors": [],
-  "teacherReviewRequired": false,
+  "teacherReviewRequired": true,
   "policy": "TEACHER_ROBOT_MAINTENANCE.md",
   "sources": [
     {
@@ -144,11 +146,11 @@
       ],
       "purpose": "Daily dictionary updates, spellings, readings, senses and JMdict NG availability",
       "reachable": true,
-      "bytes": 112424,
-      "semanticChars": 78123,
+      "bytes": 112866,
+      "semanticChars": 78356,
       "signatureVersion": 2,
-      "sha256": "cbb9606b152693858421f49a6a42d630dc9673dac3ecbba53a4bd2d52c3cfa16",
-      "changed": false,
+      "sha256": "b7c7974908715c8855fcb315865778fd1e4a212b8a94eca0e2cb3724184fc431",
+      "changed": true,
       "error": null
     },
     {
@@ -203,7 +205,7 @@
       ],
       "purpose": "Pitch accent and pronunciation reference",
       "reachable": true,
-      "bytes": 117003,
+      "bytes": 116959,
       "semanticChars": 16361,
       "signatureVersion": 2,
       "sha256": "8c3b747aad18bd979be0ce223b691490702bb7216965d7626af5436bae92a824",
