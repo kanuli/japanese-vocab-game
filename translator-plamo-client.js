@@ -16,12 +16,14 @@
     if (!url) throw new Error('PLaMo endpoint is not configured');
     if (targetLang !== 'zh-hant' && targetLang !== 'en') throw new Error('Unsupported target language');
     if (typeof text !== 'string' || !text.trim() || text.length > 1800) throw new Error('Invalid text');
+    const accessToken=await window.JapanesePlamoAuth?.getAccessToken?.();
+    if(typeof accessToken!=='string'||!accessToken)throw new Error('Sign in to Supabase before using PLaMo');
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 90000);
     try {
       const response = await fetch(url, {
         method: 'POST', mode: 'cors', credentials: 'omit', cache: 'no-store',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer '+accessToken },
         body: JSON.stringify({ source_lang: 'ja', target_lang: targetLang, text: text.trim() }),
         signal: controller.signal
       });
