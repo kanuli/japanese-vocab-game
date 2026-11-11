@@ -248,7 +248,7 @@ if('speechSynthesis'in window){loadvoices();speechSynthesis.onvoiceschanged=load
 const plamoReady=Boolean(window.JapanesePlamoTranslator?.available?.());
 $('#translationProvider').querySelector('option[value="plamo"]').disabled=!plamoReady;
 $('#translationProviderHint').textContent=plamoReady
-  ? 'PLaMo 3 測試已配置；請與 MyMemory 比較結果，正式翻譯仍預設 MyMemory。'
+  ? 'PLaMo 測試 API 已配置；使用前需在「跨裝置同步」登入 Supabase，正式翻譯仍預設 MyMemory。'
   : 'PLaMo 服務尚未配置，現在仍使用 MyMemory；毋須在手機安裝模型。';
 if(!localSuperAllowed())$('#engine').value='voicevox';
 renderHistory();
