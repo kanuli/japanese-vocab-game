@@ -137,7 +137,7 @@ class Handler(BaseHTTPRequestHandler):
     def do_OPTIONS(self):
         if self.path != PATH or self.headers.get("Origin") != ORIGIN:
             return self.reply(403, {"error": "Origin denied"}, cors=False)
-        return self.reply(204, {}, preflight=True)
+        return self.reply(200, {"status": "ok"}, preflight=True)
 
     def do_POST(self):
         if self.path != PATH:
