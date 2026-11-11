@@ -37,7 +37,7 @@ NO_PROXY = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 def verify_config():
     host = urlsplit(SUPABASE_URL)
     if (host.scheme != "https" or not host.hostname or
-        not re.fullmatch(r"[a-z0-9-]+\\.supabase\\.co", host.hostname) or
+        not re.fullmatch(r"[a-z0-9-]+\.supabase\.co", host.hostname) or
         host.path or host.query or host.fragment or host.username or host.password):
         raise ValueError("PLAMO_SUPABASE_URL must be an exact https://PROJECT.supabase.co URL")
     if not SUPABASE_KEY or len(SUPABASE_KEY) > 512 or any(c.isspace() for c in SUPABASE_KEY):
