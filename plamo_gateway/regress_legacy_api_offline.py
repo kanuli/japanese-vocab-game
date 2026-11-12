@@ -15,6 +15,7 @@ import shutil
 import sqlite3
 import subprocess
 import tempfile
+import threading
 import time
 import urllib.parse
 
@@ -33,6 +34,38 @@ PROBE = STAGING / "probe_legacy_api.py"
 
 def checked(args, **options):
     return subprocess.run(args, check=True, **options)
+
+
+# Keep only this SSH session's sudo ticket warm while backing up/checking
+# a large SQLite database. Never cache, echo, or pass a NAS password.
+_SUDO_STOP = threading.Event()
+_SUDO_FAILURE = threading.Event()
+
+
+def _sudo_noprompt_refresh():
+    return subprocess.run(
+        ["sudo", "-n", "-v"], stdin=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL, stderr=subprocess.PIPE,
+        text=True, timeout=8, check=False
+    ).returncode == 0
+
+
+def _sudo_heartbeat():
+    while not _SUDO_STOP.wait(15):
+        try:
+            if not _sudo_noprompt_refresh():
+                _SUDO_FAILURE.set()
+                return
+        except (OSError, subprocess.TimeoutExpired):
+            _SUDO_FAILURE.set()
+            return
+
+
+def check_sudo_no_prompt():
+    if _SUDO_FAILURE.is_set():
+        raise RuntimeError("SUDO_KEEPALIVE_FAILED_STOP_BEFORE_DOCKER")
+    if not _sudo_noprompt_refresh():
+        raise RuntimeError("SUDO_TICKET_EXPIRED_STOP_BEFORE_DOCKER")
 
 
 def sha256_of(path):
@@ -90,7 +123,7 @@ def run_probe(image_id, data_path):
 
 
 def main():
-    print("=== STEP 9AJ-F: FULL SNAPSHOT API REGRESSION WITH DIAGNOSTICS ===", flush=True)
+    print("=== STEP 9AJ-H: FULL SNAPSHOT REGRESSION WITH SUDO KEEPALIVE ===", flush=True)
     for p in (DB, AUDIO, VOICES, PROBE,
               DEST, BACKUP_DIR / "api-source.tar.gz",
               BACKUP_DIR / "image-id.txt"):
@@ -119,8 +152,14 @@ def main():
     print("SQLITE_SNAPSHOT_SPACE_GATE=PASS", flush=True)
     print("SQLITE_LIVE_SIZE_MIB=%.1f" % (size / (1024 * 1024)), flush=True)
 
-    # Authorization is for Docker access only; never change docker.sock mode.
+    # One interactive sudo validation in the user's SSH -tt session.
+    # The local heartbeat safely refreshes the existing ticket every 15s,
+    # including during the >100s SQLite backup and integrity check.
+    # Refuse to begin the big backup if noninteractive refresh won't work.
     checked(["sudo", "-v"])
+    check_sudo_no_prompt()
+    threading.Thread(target=_sudo_heartbeat, daemon=True).start()
+    print("SUDO_KEEPALIVE_STARTED=PASS", flush=True)
     original_image = checked([
         "sudo", "-n", DOCKER, "inspect", "--format",
         "{{.Image}}", "japanese-api"
@@ -194,9 +233,9 @@ def main():
             os.chmod(str(copy), 0o600)
             print("PROBING_%s=START" % label.upper(), flush=True)
             print("SNAPSHOT_COPY_%s_MIB=%.1f" % (label.upper(), copy.stat().st_size / (1024 * 1024)), flush=True)
-            # A large online SQLite backup can outlast Synology's sudo ticket.
-            # Refresh interactively over SSH -tt BEFORE calling sudo -n Docker.
-            checked(["sudo", "-v"])
+            # No second password prompt. The background heartbeat refreshed
+            # the ticket during backup and quick_check; fail closed otherwise.
+            check_sudo_no_prompt()
             print("DOCKER_SUDO_REVALIDATED_%s=PASS" % label.upper(), flush=True)
             reports[label] = run_probe(image, data_path)
             print("PROBING_%s=PASS" % label.upper(), flush=True)
@@ -255,7 +294,7 @@ def main():
     print("TEMP_SQLITE_SNAPSHOTS_REMOVED=PASS", flush=True)
     if hashlib.sha256(backed).hexdigest() != sha256_of(original_main):
         raise RuntimeError("PRODUCTION_SOURCE_CHANGED_DURING_REGRESSION")
-    checked(["sudo", "-v"])
+    check_sudo_no_prompt()
     latest_image = checked([
         "sudo", "-n", DOCKER, "inspect", "--format",
         "{{.Image}}", "japanese-api"
@@ -266,9 +305,12 @@ def main():
     print("PRODUCTION_IMAGE_UNCHANGED_AFTER=PASS", flush=True)
     print("PRODUCTION_CONTAINER_RESTARTED=NO", flush=True)
     print("ORIGINAL_GATEWAY_RESTARTED=NO", flush=True)
-    print("STEP_9AJ_F=PASS", flush=True)
+    print("STEP_9AJ_H=PASS", flush=True)
     print("NOTE=DYNAMIC_VOCABULARY_AUDIO_CONJUGATION_GET_SAMPLES_NOT_YET_VERIFIED", flush=True)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    finally:
+        _SUDO_STOP.set()
