@@ -5,7 +5,12 @@ Mocks the downstream Gateway. No NAS, Supabase or GPU requests are issued.
 """
 import asyncio
 import json
+import os
+import socketserver
+import tempfile
+import threading
 import unittest
+from http.server import BaseHTTPRequestHandler
 from unittest.mock import patch
 
 from fastapi import FastAPI
@@ -138,6 +143,42 @@ class RouterTests(unittest.TestCase):
     def test_concurrency_cap(self):
         with patch.object(router_module.ACTIVE_CAP, "acquire", return_value=False):
             self.assertEqual(self.request(token="x" * 30)[0], 503)
+
+    def test_unix_gateway_round_trip(self):
+        """Real AF_UNIX framing without network, Supabase, or GPU."""
+        class MockGatewayHandler(BaseHTTPRequestHandler):
+            def do_POST(self):
+                length = int(self.headers.get("Content-Length", "0"))
+                content = json.loads(self.rfile.read(length))
+                assert self.path == router_module.TRANSLATE_PATH
+                assert content["text"] == BODY["text"]
+                assert self.headers.get("Authorization") == "Bearer " + "x" * 30
+                result = json.dumps({
+                    "translation": "大學教授進行研究。",
+                    "target_lang": "zh-hant",
+                }).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(result)))
+                self.end_headers()
+                self.wfile.write(result)
+
+            def log_message(self, *args):
+                pass
+
+        with tempfile.TemporaryDirectory() as directory:
+            sockname = os.path.join(directory, "gateway.sock")
+            with socketserver.UnixStreamServer(sockname, MockGatewayHandler) as server:
+                thread = threading.Thread(target=server.serve_forever, daemon=True)
+                thread.start()
+                try:
+                    with patch.object(router_module, "GATEWAY_SOCKET", sockname):
+                        code, body = router_module._forward("x" * 30, BODY)
+                    self.assertEqual(code, 200)
+                    self.assertEqual(body["translation"], "大學教授進行研究。")
+                finally:
+                    server.shutdown()
+                    thread.join(timeout=2)
 
     def test_peer_quota(self):
         class Peer:
