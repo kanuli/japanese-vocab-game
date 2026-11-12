@@ -210,13 +210,14 @@ PY
 chmod 644 "$DEST/smoke.py"
 echo "CANDIDATE_SMOKE_FILE_MODE=0644"
 
+echo "SMOKE_DB=ISOLATED_TMPFS_NO_PRODUCTION_DB_MOUNT"
 sudo "$DOCKER" run --rm --network none --read-only \
     --security-opt no-new-privileges --cap-drop ALL \
     --tmpfs /tmp:rw,nosuid,nodev,size=32m \
     -e PYTHONDONTWRITEBYTECODE=1 \
     -e PYTHONPATH=/srv \
     -v "$HOME/plamo-gateway-run:/run/plamo-gateway:ro" \
-    -v "$ROOT/data:/srv/data:ro" \
+    --tmpfs /srv/data:rw,nosuid,nodev,size=128m,mode=1777 \
     -v "$ROOT/audio:/srv/audio:ro" \
     -v "/volume2/docker/japanese-voice-production/voicevox:/srv/voicevox-production:ro" \
     -v "$DEST/smoke.py:/smoke.py:ro" \
