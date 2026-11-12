@@ -100,12 +100,13 @@ async function myMemoryTranslateBilingual(text){
   return{zh,en,provider:'mymemory'};
 }
 
-async function translateBilingual(text,zhChrome,enChrome){
-  // IMPORTANT: translator-cloud-config.js loads this router asynchronously
-  // and overrides translator.html's click handler. Honor the actual PLaMo
-  // selection here, but NEVER send traffic to PLaMo unless opted in.
+async function translateBilingual(text){
+  // Default priority: PLaMo 3 Translate -> MyMemory -> Gemini Free ->
+  // Chrome Translator. An explicit MyMemory selection skips only PLaMo.
+  // Each candidate must produce BOTH languages; never mix engines.
+  const preferPlamo=$('#translationProvider')?.value!=='mymemory';
   let plamoError=null;
-  if($('#translationProvider')?.value==='plamo'){
+  if(preferPlamo){
     try{
       if(!window.JapanesePlamoTranslator?.available?.())throw Error('PLaMo endpoint unavailable');
       const [zh,en]=await Promise.all([
@@ -116,23 +117,34 @@ async function translateBilingual(text,zhChrome,enChrome){
       return{zh:zh.trim(),en:en.trim(),provider:'plamo'};
     }catch(err){
       plamoError=err;
-      console.warn('Selected PLaMo unavailable; preserving existing translation fallback.',err?.message||err);
+      console.warn('PLaMo unavailable; falling back to MyMemory.',err?.message||err);
     }
+  }
+  let myMemoryError=null;
+  try{
+    const result=await myMemoryTranslateBilingual(text);
+    if(plamoError)result.plamoFallback=true;
+    return result;
+  }catch(err){
+    myMemoryError=err;
+    console.warn('MyMemory bilingual translation unavailable; trying Gemini Free.',err?.message||err);
   }
   let geminiError=null;
   try{
     const result=await edgeTranslateBilingual(text);
+    result.myMemoryFallback=true;
     if(plamoError)result.plamoFallback=true;
     return result;
-  }catch(err){geminiError=err;console.warn('Gemini Free bilingual translation unavailable; trying Chrome Translator for both languages.',err?.message||err)}
-  try{
-    const result=await chromeTranslateBilingual(text,zhChrome,enChrome);
-    result.fallbackReason=compactReason(geminiError);
-    if(plamoError)result.plamoFallback=true;
-    return result;
-  }catch(err){console.warn('Chrome Translator bilingual pair unavailable; trying MyMemory for both languages.',err?.message||err)}
-  const result=await myMemoryTranslateBilingual(text);
-  result.fallbackReason=compactReason(geminiError);
+  }catch(err){
+    geminiError=err;
+    console.warn('Gemini Free bilingual translation unavailable; trying Chrome Translator.',err?.message||err);
+  }
+  // Chrome is the FINAL fallback. Do not pre-load Chrome Translator models
+  // at the start of every request when PLaMo/MyMemory are working.
+  const result=await chromeTranslateBilingual(text,
+    startChromeTranslator('zh-TW'),startChromeTranslator('en'));
+  result.myMemoryFallback=true;
+  result.geminiFallbackReason=compactReason(geminiError);
   if(plamoError)result.plamoFallback=true;
   return result;
 }
@@ -141,9 +153,6 @@ async function translate(){
   const jp=$('#jp'),zh=$('#zh'),en=$('#en'),button=$('#translate');
   const text=jp?.value.trim()||'';
   if(!text){setStatus('請先輸入日文句子。','bad');return}
-
-  const zhChrome=startChromeTranslator('zh-TW');
-  const enChrome=startChromeTranslator('en');
 
   if(button)button.disabled=true;
   window.dispatchEvent(new CustomEvent('jpTranslatorTranslationStarted'));
@@ -155,7 +164,7 @@ async function translate(){
   setStatus('正在以同一翻譯引擎產生繁體中文及 English…','loading');
 
   try{
-    const result=await translateBilingual(text,zhChrome,enChrome);
+    const result=await translateBilingual(text);
     setOutput(zh,result.zh);setOutput(en,result.en);
     // Record the provider that actually returned both translations, not
     // the option selected before fallback. Emit before history autosave.
@@ -170,12 +179,13 @@ async function translate(){
 
     const autoSave=$('#historyAutoSave');
     if(autoSave?.checked)$('#saveHistory')?.click();
-    const fallback=result.fallbackReason?`；Gemini fallback 原因：${result.fallbackReason}`:'';
-    const plamoFallback=result.plamoFallback?'；PLaMo 未能連線，已自動改用原有翻譯服務':'';
-    setStatus(`✅ 翻譯完成（${providerLabel(result.provider)}，繁中 + English 同一引擎${plamoFallback}${fallback}）。${autoSave?.checked?'已自動保存紀錄。':''}`,'ok');
+    const fallback=result.geminiFallbackReason?`；Gemini 備援原因：${result.geminiFallbackReason}`:'';
+    const plamoFallback=result.plamoFallback?'；PLaMo 不可用，已自動備援':'';
+    const myMemoryFallback=result.myMemoryFallback?'；MyMemory 不可用，已自動備援':'';
+    setStatus(`✅ 翻譯完成（${providerLabel(result.provider)}，繁中 + English 同一引擎${plamoFallback}${myMemoryFallback}${fallback}）。${autoSave?.checked?'已自動保存紀錄。':''}`,'ok');
   }catch(err){
     console.error('All bilingual translation providers failed',err);
-    setStatus('翻譯暫時失敗：Gemini Free、Chrome Translator 及 MyMemory 均無法完整產生兩種語言。','bad');
+    setStatus('翻譯暫時失敗：PLaMo、MyMemory、Gemini Free 及 Chrome Translator 均未能完成雙語翻譯。','bad');
   }finally{if(button)button.disabled=false}
 }
 
@@ -183,10 +193,9 @@ function install(){
   const button=$('#translate'),jp=$('#jp');
   if(!button||!jp)return;
   button.onclick=translate;
-  button.addEventListener('pointerdown',()=>{startChromeTranslator('zh-TW');startChromeTranslator('en')},{passive:true});
   jp.onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();translate()}};
   const notice=$('.notice');
-  if(notice)notice.textContent='翻譯預設使用現有免費多引擎路由：Gemini Free → Chrome Translator → MyMemory。選擇 PLaMo 3 Translate 時才使用 NAS 上的 PLaMo，並須先以跨裝置同步功能登入 Supabase；PLaMo 無法使用時自動回到現有翻譯路由。繁中與英文使用同一個提供者。';
+  if(notice)notice.textContent='翻譯預設優先順序：PLaMo 3 Translate → MyMemory → Gemini Free → Chrome Translator。PLaMo 需先於「跨裝置同步」登入 Supabase；未登入或服務不可用時會按此順序自動備援。繁中與英文使用同一個實際翻譯來源，並記錄於翻譯紀錄。';
 }
 
 window.JPTranslationRouter=Object.freeze({translate,startChromeTranslator});
