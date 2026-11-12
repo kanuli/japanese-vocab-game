@@ -165,15 +165,82 @@ function decode(s){const x=document.createElement('textarea');x.innerHTML=s;retu
 async function one(t,target){const u='https://api.mymemory.translated.net/get?q='+encodeURIComponent(t)+'&langpair='+encodeURIComponent('ja|'+target)+'&mt=1',r=await fetch(u,{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json(),x=d?.responseData?.translatedText;if(!x||Number(d?.responseStatus||200)>=400)throw Error(d?.responseDetails||'translation failed');return decode(x).trim()}
 async function all(t,target,label){let a=chunks(t),o=[];for(let i=0;i<a.length;i++){st(`正在翻譯 ${label}：${i+1}/${a.length}…`,'loading');o.push(await one(a[i],target))}return o.join('\n')}
 
+// Keep the provider returned by the actual translation, never infer it
+// from the current selector. Older records without provenance stay unknown.
+let lastTranslationMeta=null;
+function normalizedTranslationProvider(value){
+  const provider=String(value||'').trim().toLowerCase();
+  return /^[a-z0-9][a-z0-9._-]{0,63}$/.test(provider)?provider:'';
+}
+function translationProviderLabel(value){
+  const provider=normalizedTranslationProvider(value);
+  const names={
+    plamo:'PLaMo 3 Translate 2B',
+    mymemory:'MyMemory',
+    'chrome-translator':'Chrome Translator',
+    'gemini-3.5-flash':'Gemini 3.5 Flash',
+    'gemini-3.5-flash-lite':'Gemini 3.5 Flash-Lite',
+    'gemini-3.1-flash-lite':'Gemini 3.1 Flash-Lite',
+    cloud:'雲端翻譯（引擎未提供）'
+  };
+  return names[provider]||(provider.startsWith('gemini-')?'Gemini（'+provider+'）':provider||'未記錄');
+}
+function historySourceLabel(item){
+  const provider=normalizedTranslationProvider(item?.translationProvider);
+  const fallback=provider&&provider!=='plamo'&&item?.translationFallbackFrom==='plamo'?'（PLaMo 備援）':'';
+  return '翻譯來源：'+translationProviderLabel(provider)+fallback;
+}
+function recordTranslationMeta(detail){
+  if(!detail){lastTranslationMeta=null;return}
+  const provider=normalizedTranslationProvider(detail.provider);
+  if(!provider){lastTranslationMeta=null;return}
+  lastTranslationMeta={
+    sourceText:String(detail.sourceText||'').trim(),
+    zhText:String(detail.zhText||'').trim(),
+    enText:String(detail.enText||'').trim(),
+    provider,
+    fallbackFrom:detail.plamoFallback&&provider!=='plamo'?'plamo':''
+  };
+}
+window.addEventListener('jpTranslatorTranslationStarted',()=>recordTranslationMeta(null));
+window.addEventListener('jpTranslatorTranslationCompleted',event=>recordTranslationMeta(event.detail));
+
 function readHistory(){try{const value=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');return Array.isArray(value)?value:[]}catch(e){console.warn('translation history read failed',e);return []}}
 function writeHistory(items){try{const saved=items.slice(0,HISTORY_LIMIT);localStorage.setItem(HISTORY_KEY,JSON.stringify(saved));window.dispatchEvent(new CustomEvent('jpTranslatorHistoryChanged',{detail:{history:saved}}));return true}catch(e){console.warn('translation history write failed',e);st('翻譯完成，但瀏覽器無法保存紀錄；本機儲存空間可能已滿。','bad');return false}}
 function autoSaveEnabled(){return localStorage.getItem(AUTO_SAVE_KEY)!=='false'}
 function currentTranslation(){const sourceText=jp.value.trim(),zhText=zh.classList.contains('placeholder')?'':zh.textContent.trim(),enText=en.classList.contains('placeholder')?'':en.textContent.trim();if(!sourceText||!zhText||!enText)return null;return{sourceText,zhText,enText}}
-function saveTranslation(showStatus=false){const cur=currentTranslation();if(!cur){if(showStatus)st('目前沒有完整翻譯可以保存。','bad');return false}let items=readHistory(),existing=items.find(x=>x&&x.sourceText===cur.sourceText);const record={id:existing?.id||(`${Date.now()}-${Math.random().toString(36).slice(2,8)}`),sourceText:cur.sourceText,zhText:cur.zhText,enText:cur.enText,sourceLanguage:'ja',targetLanguages:['zh-TW','en'],inputType:'text',createdAt:new Date().toISOString(),favorite:Boolean(existing?.favorite)};items=[record,...items.filter(x=>x&&x.id!==record.id&&x.sourceText!==record.sourceText)];if(!writeHistory(items))return false;renderHistory();if(showStatus)st('✅ 已保存目前翻譯。','ok');return true}
+function saveTranslation(showStatus=false){
+  const cur=currentTranslation();
+  if(!cur){if(showStatus)st('目前沒有完整翻譯可以保存。','bad');return false}
+  const items=readHistory();
+  const existing=items.find(x=>x&&x.sourceText===cur.sourceText);
+  const sameResult=Boolean(lastTranslationMeta&&lastTranslationMeta.sourceText===cur.sourceText&&
+    lastTranslationMeta.zhText===cur.zhText&&lastTranslationMeta.enText===cur.enText);
+  const sameExisting=Boolean(existing&&existing.zhText===cur.zhText&&existing.enText===cur.enText);
+  // A loaded/unchanged record retains its provider. A different translation
+  // without verified provenance is not labeled with a guessed source.
+  const translationProvider=sameResult?lastTranslationMeta.provider:
+    sameExisting?normalizedTranslationProvider(existing.translationProvider):'';
+  const translationFallbackFrom=sameResult?lastTranslationMeta.fallbackFrom:
+    sameExisting&&existing.translationFallbackFrom==='plamo'?'plamo':'';
+  const record={
+    id:existing?.id||(`${Date.now()}-${Math.random().toString(36).slice(2,8)}`),
+    sourceText:cur.sourceText,zhText:cur.zhText,enText:cur.enText,
+    sourceLanguage:'ja',targetLanguages:['zh-TW','en'],
+    translationProvider,translationFallbackFrom,
+    inputType:existing?.inputType==='voice'?'voice':'text',
+    createdAt:new Date().toISOString(),favorite:Boolean(existing?.favorite)
+  };
+  const updated=[record,...items.filter(x=>x&&x.id!==record.id&&x.sourceText!==record.sourceText)];
+  if(!writeHistory(updated))return false;
+  renderHistory();
+  if(showStatus)st('✅ 已保存目前翻譯。','ok');
+  return true;
+}
 function fmtTime(value){const d=new Date(value);if(Number.isNaN(d.getTime()))return '';return d.toLocaleString('zh-HK',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
 function make(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el}
-function renderHistory(){const list=$('#historyList'),q=$('#historySearch').value.trim().toLocaleLowerCase(),allItems=readHistory(),items=allItems.filter(x=>{if(!q)return true;return [x.sourceText,x.zhText,x.enText].some(v=>String(v||'').toLocaleLowerCase().includes(q))});$('#historyCount').textContent=q?`${items.length} / ${allItems.length} 筆紀錄`:`${allItems.length} 筆紀錄`;list.replaceChildren();if(!items.length){list.appendChild(make('div','history-empty',q?'找不到相符翻譯紀錄。':'完成翻譯後，紀錄會顯示在這裡。'));return}for(const item of items){const row=make('article','history-item'+(item.favorite?' favorite':''));const meta=make('div','history-meta'),badges=make('div','history-badges');badges.append(make('span','history-badge','日本語 → 繁中 + English'),make('span','history-badge',item.inputType==='voice'?'語音輸入':'文字輸入'));meta.append(make('div','history-time',fmtTime(item.createdAt)),badges);row.appendChild(meta);row.appendChild(make('div','history-jp',item.sourceText));const translations=make('div','history-translation');const zhBox=make('div'),enBox=make('div');zhBox.append(make('div','history-lang','🇭🇰 繁體中文'),make('div','history-text',item.zhText));enBox.append(make('div','history-lang','🇬🇧 English'),make('div','history-text',item.enText));translations.append(zhBox,enBox);row.appendChild(translations);const actions=make('div','history-actions');const loadBtn=make('button','btn small','載入'),starBtn=make('button','btn small',item.favorite?'★ 已收藏':'☆ 收藏'),deleteBtn=make('button','btn small danger','刪除');loadBtn.type=starBtn.type=deleteBtn.type='button';loadBtn.onclick=()=>loadHistory(item.id);starBtn.onclick=()=>toggleFavorite(item.id);deleteBtn.onclick=()=>deleteHistory(item.id);actions.append(loadBtn,starBtn,deleteBtn);row.appendChild(actions);list.appendChild(row)}}
-function loadHistory(id){const item=readHistory().find(x=>x&&x.id===id);if(!item)return;jp.value=item.sourceText||'';setout(zh,item.zhText||'');setout(en,item.enText||'');$('#counter').textContent=jp.value.length+' 字';const ready=Boolean(item.zhText&&item.enText);$('#copyzh').disabled=$('#speakzh').disabled=!item.zhText;$('#copyen').disabled=$('#speaken').disabled=!item.enText;st(ready?'✅ 已載入翻譯紀錄。':'已載入翻譯紀錄。','ok');jp.focus();window.scrollTo({top:0,behavior:'smooth'})}
+function renderHistory(){const list=$('#historyList'),q=$('#historySearch').value.trim().toLocaleLowerCase(),allItems=readHistory(),items=allItems.filter(x=>{if(!q)return true;return [x.sourceText,x.zhText,x.enText,historySourceLabel(x)].some(v=>String(v||'').toLocaleLowerCase().includes(q))});$('#historyCount').textContent=q?`${items.length} / ${allItems.length} 筆紀錄`:`${allItems.length} 筆紀錄`;list.replaceChildren();if(!items.length){list.appendChild(make('div','history-empty',q?'找不到相符翻譯紀錄。':'完成翻譯後，紀錄會顯示在這裡。'));return}for(const item of items){const row=make('article','history-item'+(item.favorite?' favorite':''));const meta=make('div','history-meta'),badges=make('div','history-badges');badges.append(make('span','history-badge','日本語 → 繁中 + English'),make('span','history-badge',item.inputType==='voice'?'語音輸入':'文字輸入'),make('span','history-badge',historySourceLabel(item)));meta.append(make('div','history-time',fmtTime(item.createdAt)),badges);row.appendChild(meta);row.appendChild(make('div','history-jp',item.sourceText));const translations=make('div','history-translation');const zhBox=make('div'),enBox=make('div');zhBox.append(make('div','history-lang','🇭🇰 繁體中文'),make('div','history-text',item.zhText));enBox.append(make('div','history-lang','🇬🇧 English'),make('div','history-text',item.enText));translations.append(zhBox,enBox);row.appendChild(translations);const actions=make('div','history-actions');const loadBtn=make('button','btn small','載入'),starBtn=make('button','btn small',item.favorite?'★ 已收藏':'☆ 收藏'),deleteBtn=make('button','btn small danger','刪除');loadBtn.type=starBtn.type=deleteBtn.type='button';loadBtn.onclick=()=>loadHistory(item.id);starBtn.onclick=()=>toggleFavorite(item.id);deleteBtn.onclick=()=>deleteHistory(item.id);actions.append(loadBtn,starBtn,deleteBtn);row.appendChild(actions);list.appendChild(row)}}
+function loadHistory(id){const item=readHistory().find(x=>x&&x.id===id);if(!item)return;jp.value=item.sourceText||'';setout(zh,item.zhText||'');setout(en,item.enText||'');recordTranslationMeta({sourceText:item.sourceText,zhText:item.zhText,enText:item.enText,provider:item.translationProvider,plamoFallback:item.translationFallbackFrom==='plamo'});$('#counter').textContent=jp.value.length+' 字';const ready=Boolean(item.zhText&&item.enText);$('#copyzh').disabled=$('#speakzh').disabled=!item.zhText;$('#copyen').disabled=$('#speaken').disabled=!item.enText;st(ready?'✅ 已載入翻譯紀錄。':'已載入翻譯紀錄。','ok');jp.focus();window.scrollTo({top:0,behavior:'smooth'})}
 function toggleFavorite(id){const items=readHistory(),item=items.find(x=>x&&x.id===id);if(!item)return;item.favorite=!item.favorite;if(writeHistory(items))renderHistory()}
 function deleteHistory(id){if(writeHistory(readHistory().filter(x=>x&&x.id!==id)))renderHistory()}
 function clearHistory(){const items=readHistory();if(!items.length)return;if(!confirm('確定要清除全部翻譯紀錄嗎？此操作不能復原。'))return;if(writeHistory([])){renderHistory();st('已清除全部翻譯紀錄。')}}
@@ -182,6 +249,7 @@ async function translate(){
   const t=jp.value.trim();
   if(!t){st('請先輸入日文句子。','bad');return}
   $('#translate').disabled=true;
+  recordTranslationMeta(null);
   setout(zh,'');setout(en,'');
   $('#copyzh').disabled=$('#speakzh').disabled=$('#copyen').disabled=$('#speaken').disabled=true;
   try{
@@ -201,10 +269,13 @@ async function translate(){
       }
     }
     if(!z||!e){
+      if(selected==='plamo')fallback=true;
       z=await all(t,'zh-TW','繁體中文');
       e=await all(t,'en','English');
     }
     setout(zh,z);setout(en,e);
+    recordTranslationMeta({sourceText:t,zhText:z,enText:e,
+      provider:selected==='plamo'&&!fallback?'plamo':'mymemory',plamoFallback:fallback});
     $('#copyzh').disabled=$('#speakzh').disabled=$('#copyen').disabled=$('#speaken').disabled=false;
     const saved=autoSaveEnabled()?saveTranslation(false):true;
     const engine=fallback?'PLaMo 未回應，已改用 MyMemory':selected==='plamo'?'PLaMo 3':'MyMemory';
