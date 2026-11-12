@@ -72,7 +72,7 @@ def before():
     run(["sudo", "-n", DOCKER, "image", "inspect", TAG])
     emit("PRODUCTION_IMAGE_MATCH=PASS")
     emit("CANDIDATE_IMAGE_PRESENT=PASS")
-    return current
+    return current, expected
 
 def one(image, data_dir, label):
     # Reproduce 9AJ's EXACT readonly-root / rw bind mount conditions with
@@ -109,7 +109,7 @@ def one(image, data_dir, label):
     return result
 
 def main():
-    original = before()
+    original, source_hash = before()
     with tempfile.TemporaryDirectory(dir=str(DEST),
                                      prefix="9aje-small-") as temp:
         workspace = Path(temp)
@@ -152,14 +152,14 @@ def main():
         emit("ORIGINAL_AND_CANDIDATE_HEALTH=PASS")
         # Incomplete empty-db legacy status/voices is expected and NOT a
         # production test. Compare only route structure and healthy startup.
-        emit("STEP_9AJ_E=PASS")
         emit("WARNING=REAL_DATA_STATUS_VOICES_AUDIO_CONJUGATION_NOT_VALIDATED")
     emit("TEMP_SMALL_SQLITE_REMOVED=PASS")
-    if hashlib.sha256((ROOT / "app" / "main.py").read_bytes()).hexdigest() != expected:
+    if hashlib.sha256((ROOT / "app" / "main.py").read_bytes()).hexdigest() != source_hash:
         raise RuntimeError("PRODUCTION_SOURCE_MODIFIED_STOP")
     emit("PRODUCTION_SOURCE_UNCHANGED=PASS")
     emit("PRODUCTION_CONTAINER_RESTARTED=NO")
     emit("ORIGINAL_GATEWAY_RESTARTED=NO")
+    emit("STEP_9AJ_E=PASS")
 
 if __name__ == "__main__":
     try:
