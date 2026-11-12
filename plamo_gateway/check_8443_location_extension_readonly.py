@@ -9,6 +9,7 @@ restart Docker or modify Japanese API or any website page.
 from pathlib import Path
 import hashlib
 import re
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -106,10 +107,10 @@ def main():
     out("PHASE","9AT_TRANSLATOR_ONLY_8443_LOCATION_HOOK_READONLY")
     verified()
     # Try active Nginx first; Synology DSM often needs nginx.conf.run.
-    bins=("/usr/syno/bin/nginx","/usr/syno/sbin/nginx","/usr/sbin/nginx")
+    bins=(shutil.which("nginx"),"/usr/syno/bin/nginx","/usr/syno/sbin/nginx","/usr/sbin/nginx")
     content=None
     for binary in bins:
-        if not Path(binary).exists(): continue
+        if not binary or not Path(binary).exists(): continue
         for cfg in (None,"/etc/nginx/nginx.conf.run"):
             a=["sudo","-n",binary,"-T"]
             if cfg:a.extend(["-c",cfg])
