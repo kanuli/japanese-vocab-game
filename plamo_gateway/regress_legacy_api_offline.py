@@ -125,7 +125,34 @@ def main():
         try:
             dst = sqlite3.connect(str(snap), timeout=15)
             try:
-                src.backup(dst, pages=256, sleep=0.05)
+                # Print live progress to SSH; the previous script was silent
+                # for the full backup and could look hung on a busy WAL.
+                total_size = DB.stat().st_size
+                print("SQLITE_LIVE_DB_SIZE_MIB=%.1f" %
+                      (total_size / (1024 * 1024)), flush=True)
+                print("SQLITE_BACKUP=START", flush=True)
+                backup_started = time.monotonic()
+                last_report = 0.0
+
+                def report_backup(status, remaining, total):
+                    nonlocal last_report
+                    elapsed = time.monotonic() - backup_started
+                    if elapsed > 900:
+                        raise TimeoutError(
+                            "SQLITE_BACKUP_EXCEEDED_900_SECONDS_STOP")
+                    if (elapsed - last_report >= 10 or
+                            remaining == 0 or status == sqlite3.SQLITE_BUSY):
+                        percent = 100.0 * (total - remaining) / max(1, total)
+                        print("SQLITE_BACKUP_PROGRESS=%.1f%% PAGES_LEFT=%s "
+                              "ELAPSED_SEC=%d STATUS=%s" %
+                              (percent, remaining, int(elapsed), status),
+                              flush=True)
+                        last_report = elapsed
+
+                src.backup(dst, pages=256, sleep=0.05,
+                           progress=report_backup)
+                print("SQLITE_BACKUP_COPY=PASS", flush=True)
+                print("SQLITE_SNAPSHOT_INTEGRITY_CHECK=START", flush=True)
                 status = dst.execute("PRAGMA quick_check").fetchone()[0]
                 if status != "ok":
                     raise RuntimeError("SNAPSHOT_INTEGRITY_FAILED")
