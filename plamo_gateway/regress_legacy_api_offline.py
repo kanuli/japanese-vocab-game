@@ -60,8 +60,18 @@ def run_probe(image_id, data_path):
         "-v", str(PROBE) + ":/legacy-probe.py:ro",
         "--entrypoint", "python", image_id, "/legacy-probe.py",
     ]
-    result = checked(cmd, text=True, stdout=subprocess.PIPE,
-                     stderr=subprocess.PIPE, timeout=150)
+    try:
+        result = checked(cmd, text=True, stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE, timeout=150)
+    except subprocess.CalledProcessError as exc:
+        # The old runner swallowed child stderr, reporting only exit code 1.
+        # This container has NO production DB or bearer credentials mounted.
+        print("DOCKER_PROBE_EXIT_CODE=%s" % exc.returncode, flush=True)
+        print("DOCKER_PROBE_STDERR_LAST_25_LINES_BEGIN", flush=True)
+        for line in (exc.stderr or "").splitlines()[-25:]:
+            print(line[:350], flush=True)
+        print("DOCKER_PROBE_STDERR_LAST_25_LINES_END", flush=True)
+        raise RuntimeError("ORIGINAL_OR_CANDIDATE_PROBE_FAILED") from None
     lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
     if not lines:
         raise RuntimeError("EMPTY_PROBE_OUTPUT")
