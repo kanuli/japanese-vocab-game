@@ -359,6 +359,18 @@ async function logout(){
   user=null;emailMode=false;setRemoteMarker('');updateAuthUI();
 }
 
+// In-memory access-token accessor for the optional protected PLaMo gateway.
+// The public translation page never embeds a service-role key.
+window.JapanesePlamoAuth=Object.freeze({
+  async getAccessToken(){
+    if(!client)return null;
+    try{
+      const {data,error}=await client.auth.getSession();
+      if(error)return null;
+      return data?.session?.access_token||null;
+    }catch(e){return null}
+  }
+});
 buildPasskeyUI();
 ui.saveConfig.addEventListener('click',saveConfig);
 ui.sync.addEventListener('click',()=>syncNow({silent:false}));

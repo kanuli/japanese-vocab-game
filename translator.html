@@ -98,6 +98,9 @@ textarea:focus,select:focus,input:focus{outline:2px solid #bdd0ff;outline-offset
 <div class="input"><textarea id="jp" maxlength="1800" placeholder="例：今日は仕事が終わったら、友達と一緒に晩ご飯を食べに行きます。"></textarea><div id="counter" class="count">0 字</div></div>
 <div class="row"><button id="translate" class="btn primary">🌐 翻譯</button><button id="ai" class="btn good">▶ 日語發音</button><button id="device" class="btn">🔊 裝置日語</button><button id="stop" class="btn">⏹ 停止</button><button id="clear" class="btn">清除</button></div>
 <div class="settings">
+<div class="field"><label for="translationProvider">翻譯來源</label>
+<select id="translationProvider"><option value="mymemory" selected>MyMemory｜現有正式翻譯</option><option value="plamo" disabled>PLaMo 3 Translate 2B｜測試</option></select>
+<div id="translationProviderHint" class="muted" style="font-size:12px;margin-top:5px">PLaMo 尚未連線；目前保持使用 MyMemory。</div></div>
 <div class="field"><label>日語語音來源</label><select id="engine"><option value="supertonic3" selected>✨ Supertonic 3｜即時生成</option><option value="voicevox">🎭 VOICEVOX｜本站預錄</option></select></div>
 <div class="field"><label id="voiceLabel">Supertonic 3 聲線</label><select id="voice">
 <option value="F1">F1｜Calm・Steady｜沉穩冷靜女聲</option>
@@ -138,9 +141,11 @@ textarea:focus,select:focus,input:focus{outline:2px solid #bdd0ff;outline-offset
 </div>
 </details>
 </section>
-<div class="notice">不需要私人 API key。日語可選 VOICEVOX、Supertonic 3；已收錄句子優先使用本站伺服器預錄，任意新句由 Supertonic 3 即時生成，裝置 Speech Synthesis 作最後備援。翻譯使用 MyMemory 公開服務。翻譯紀錄會先保存在本機；完成雲端設定並登入後，會同步至你自己的 Supabase 帳戶資料並可跨裝置使用。</div>
+<div class="notice">不需要私人 API key。日語發音可選 VOICEVOX、Supertonic 3；翻譯預設使用 MyMemory 公開服務。PLaMo 3 Translate 2B 僅在管理員完成安全 API 設定後開放測試，連線失敗時會明確提示並改用 MyMemory。翻譯紀錄先保存在本機；完成雲端設定並登入後，可同步到你自己的 Supabase 帳戶。</div>
 <div class="footer">Japanese Learning｜語音・翻譯練習工具</div>
 </div>
+<script src="./translator-plamo-config.js?v=20261110v1"></script>
+<script src="./translator-plamo-client.js?v=20261110v1"></script>
 <script src="./translator-hosted-voice.js?v=20261021v1"></script>
 <script>
 (()=>{'use strict';
@@ -173,7 +178,44 @@ function toggleFavorite(id){const items=readHistory(),item=items.find(x=>x&&x.id
 function deleteHistory(id){if(writeHistory(readHistory().filter(x=>x&&x.id!==id)))renderHistory()}
 function clearHistory(){const items=readHistory();if(!items.length)return;if(!confirm('確定要清除全部翻譯紀錄嗎？此操作不能復原。'))return;if(writeHistory([])){renderHistory();st('已清除全部翻譯紀錄。')}}
 
-async function translate(){let t=jp.value.trim();if(!t){st('請先輸入日文句子。','bad');return}$('#translate').disabled=true;setout(zh,'');setout(en,'');try{const z=await all(t,'zh-TW','繁體中文');setout(zh,z);$('#copyzh').disabled=$('#speakzh').disabled=false;const e=await all(t,'en','English');setout(en,e);$('#copyen').disabled=$('#speaken').disabled=false;if(autoSaveEnabled()){const saved=saveTranslation(false);st(saved?'✅ 翻譯完成，已自動保存紀錄。':'✅ 翻譯完成。','ok')}else st('✅ 翻譯完成。','ok')}catch(e){console.error(e);st('翻譯暫時失敗。可能是免費服務用量限制、網絡或服務暫時無法使用。','bad')}finally{$('#translate').disabled=false}}
+async function translate(){
+  const t=jp.value.trim();
+  if(!t){st('請先輸入日文句子。','bad');return}
+  $('#translate').disabled=true;
+  setout(zh,'');setout(en,'');
+  $('#copyzh').disabled=$('#speakzh').disabled=$('#copyen').disabled=$('#speaken').disabled=true;
+  try{
+    let z='',e='',fallback=false;
+    const selected=$('#translationProvider').value;
+    if(selected==='plamo'){
+      try{
+        st('PLaMo 3：正在翻譯繁體中文及英文…','loading');
+        [z,e]=await Promise.all([
+          window.JapanesePlamoTranslator.translate(t,'zh-hant'),
+          window.JapanesePlamoTranslator.translate(t,'en')
+        ]);
+      }catch(err){
+        console.warn('PLaMo unavailable; falling back to MyMemory',err);
+        fallback=true;
+        st('PLaMo 暫時不可用，正在改用 MyMemory…','loading');
+      }
+    }
+    if(!z||!e){
+      z=await all(t,'zh-TW','繁體中文');
+      e=await all(t,'en','English');
+    }
+    setout(zh,z);setout(en,e);
+    $('#copyzh').disabled=$('#speakzh').disabled=$('#copyen').disabled=$('#speaken').disabled=false;
+    const saved=autoSaveEnabled()?saveTranslation(false):true;
+    const engine=fallback?'PLaMo 未回應，已改用 MyMemory':selected==='plamo'?'PLaMo 3':'MyMemory';
+    st((fallback?'⚠️ ':'✅ ')+engine+' 翻譯完成'+(autoSaveEnabled()&&saved?'，已保存紀錄':'')+'。',fallback?'':'ok');
+  }catch(err){
+    console.error(err);
+    st('翻譯暫時失敗。請檢查網絡或服務用量。','bad');
+  }finally{
+    $('#translate').disabled=false;
+  }
+}
 function loadvoices(){if(!speechSynthesis)return;voices=speechSynthesis.getVoices();const ja=voices.filter(v=>/^ja[-_]/i.test(v.lang));$('#devvoice').innerHTML='<option value="">自動選擇</option>'+ja.map(v=>`<option>${v.name}</option>`).join('')}
 function speakDevice(text,lang='ja-JP',rate=null){if(!text.trim())return;if(!('speechSynthesis'in window)){st('此瀏覽器不支援裝置語音。','bad');return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=rate??Number($('#rate').value);let name=lang==='ja-JP'?$('#devvoice').value:'';u.voice=voices.find(v=>v.name===name)||voices.find(v=>v.lang.toLowerCase().startsWith(lang.slice(0,2).toLowerCase()))||null;speechSynthesis.speak(u)}
 async function ensureAI(){if(!localSuperAllowed()){st('📱 手機安全模式：不載入本機 Supertonic；任意新句會改用裝置 Japanese voice。','loading');return false}try{for(let n=0;n<120&&!window.SupertonicAI;n++)await new Promise(r=>setTimeout(r,50));if(!window.SupertonicAI)throw Error('module not ready');if(window.SupertonicAI.isReady&&window.SupertonicAI.isReady())return true;if('serviceWorker'in navigator){try{await navigator.serviceWorker.register('./supertonic-sw.js',{scope:'./'});await navigator.serviceWorker.ready}catch(e){}}await window.SupertonicAI.preflight();await window.SupertonicAI.init(m=>st(m,'loading'));return true}catch(e){console.warn(e);st('Supertonic 3 暫時無法載入，可使用裝置日語語音。','bad');return false}}
@@ -203,6 +245,11 @@ $('#historyAutoSave').checked=autoSaveEnabled();
 $('#historyAutoSave').onchange=e=>{try{localStorage.setItem(AUTO_SAVE_KEY,e.target.checked?'true':'false');window.dispatchEvent(new CustomEvent('jpTranslatorSettingsChanged',{detail:{autoSave:e.target.checked}}))}catch(err){console.warn(err)}st(e.target.checked?'已開啟翻譯紀錄自動保存。':'已關閉自動保存；仍可手動保存目前翻譯。')};
 window.addEventListener('jpTranslatorCloudApplied',()=>{$('#historyAutoSave').checked=autoSaveEnabled();renderHistory()});
 if('speechSynthesis'in window){loadvoices();speechSynthesis.onvoiceschanged=loadvoices}
+const plamoReady=Boolean(window.JapanesePlamoTranslator?.available?.());
+$('#translationProvider').querySelector('option[value="plamo"]').disabled=!plamoReady;
+$('#translationProviderHint').textContent=plamoReady
+  ? 'PLaMo 測試 API 已配置；使用前需在「跨裝置同步」登入 Supabase，正式翻譯仍預設 MyMemory。'
+  : 'PLaMo 服務尚未配置，現在仍使用 MyMemory；毋須在手機安裝模型。';
 if(!localSuperAllowed())$('#engine').value='voicevox';
 renderHistory();
 syncEngine();
