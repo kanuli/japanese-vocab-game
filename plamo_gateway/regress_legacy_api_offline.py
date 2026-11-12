@@ -153,7 +153,9 @@ def main():
                 backup_started = time.monotonic()
                 last_report = 0.0
 
-                # SQLite C result code 5 = SQLITE_BUSY. Synology's Python 3.8\n                # sqlite3 module does not expose sqlite3.SQLITE_BUSY.\n                def report_backup(status, remaining, total):
+                # SQLite C result code 5 = SQLITE_BUSY. Synology's Python 3.8
+                # sqlite3 module does not expose sqlite3.SQLITE_BUSY.
+                def report_backup(status, remaining, total):
                     nonlocal last_report
                     elapsed = time.monotonic() - backup_started
                     if elapsed > 900:
