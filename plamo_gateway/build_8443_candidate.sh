@@ -204,6 +204,12 @@ print("CANDIDATE_DOCKER_TO_REAL_SHADOW_GATEWAY=PASS")
 print("CANDIDATE_SMOKE_TEST=PASS")
 PY
 
+# Build context uses umask 077 (private). The bind-mounted smoke.py is
+# NOT sensitive; explicitly allow the image's container user to read it.
+# Keep the candidate directory private and do not relax any secret/socket modes.
+chmod 644 "$DEST/smoke.py"
+echo "CANDIDATE_SMOKE_FILE_MODE=0644"
+
 sudo "$DOCKER" run --rm --network none --read-only \
     --security-opt no-new-privileges --cap-drop ALL \
     --tmpfs /tmp:rw,nosuid,nodev,size=32m \
