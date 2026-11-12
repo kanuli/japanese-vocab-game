@@ -84,11 +84,11 @@ def server_details(body):
         if depth==1 and re.match(r'^include\s+',stripped):
             raw=re.search(r'^include\s+([^;]+);',stripped)
             if raw:
-                path=raw.group(1).strip('"\'')
+                path=raw.group(1).strip().strip('"').strip("'")
                 if path.startswith('/'):
                     positions.append(path)
         depth+=stripped.count('{')-stripped.count('}')
-    locations=re.findall(r'(?m)^[ \t]*location[ \t]+([^\\n{]+)\{',body)
+    locations=re.findall(r'(?m)^[ \t]*location[ \t]+([^\n{]+)\{',body)
     out("SERVER_8443_LOCATION_COUNT",len(locations))
     out("TRANSLATION_EXACT_LOCATION_ALREADY_PRESENT",
         "YES" if any("/api/v1/translate/plamo" in x for x in locations) else "NO")
