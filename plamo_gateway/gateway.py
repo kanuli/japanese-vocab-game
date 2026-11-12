@@ -10,6 +10,7 @@ import ipaddress
 import json
 import os
 import re
+import socketserver
 import threading
 import time
 import urllib.error
@@ -21,6 +22,7 @@ ORIGIN = "https://kanuli.github.io"
 PATH = "/api/v1/translate/plamo"
 UPSTREAM = "http://192.168.1.13:18789" + PATH
 PORT = int(os.environ.get("PLAMO_GATEWAY_PORT", "18790"))
+UNIX_SOCKET = os.environ.get("PLAMO_UNIX_SOCKET", "").strip()
 SUPABASE_URL = os.environ.get("PLAMO_SUPABASE_URL", "").rstrip("/")
 SUPABASE_KEY = os.environ.get("PLAMO_SUPABASE_PUBLISHABLE_KEY", "")
 ALLOWED_USERS = set(filter(None, (s.strip() for s in os.environ.get("PLAMO_ALLOWED_USER_IDS", "").split(","))))
@@ -46,6 +48,17 @@ def verify_config():
         raise ValueError("PLAMO_ALLOWED_USER_IDS must contain allowed Supabase UUID(s)")
     if PORT < 1024 or PORT > 65535:
         raise ValueError("Invalid gateway port")
+    if UNIX_SOCKET:
+        if (not os.path.isabs(UNIX_SOCKET) or
+            UNIX_SOCKET != "/volume2/docker/japanese-api/plamo-gateway-run/gateway.sock"):
+            raise ValueError("PLAMO_UNIX_SOCKET must be the approved fixed NAS socket path")
+        parent = os.path.dirname(UNIX_SOCKET)
+        if not os.path.isdir(parent) or os.path.islink(parent):
+            raise ValueError("Create the private socket directory first")
+        # Never unlink an existing socket automatically; it might belong
+        # to a still-running Gateway. Clean up only after verifying shutdown.
+        if os.path.lexists(UNIX_SOCKET):
+            raise ValueError("Existing Unix socket; inspect before restarting")
 
 
 def supabase_user(token):
@@ -189,8 +202,27 @@ class Handler(BaseHTTPRequestHandler):
             SLOTS.release()
 
 
+class ThreadingUnixHTTPServer(socketserver.ThreadingMixIn, socketserver.UnixStreamServer):
+    daemon_threads = True
+
+
 if __name__ == "__main__":
     verify_config()
+    unix_server = None
+    if UNIX_SOCKET:
+        unix_server = ThreadingUnixHTTPServer(UNIX_SOCKET, Handler)
+        os.chmod(UNIX_SOCKET, 0o600)
+        threading.Thread(target=unix_server.serve_forever, daemon=True).start()
+        print("PLaMo Gateway UDS: enabled for local Docker app")
     server = ThreadingHTTPServer(("127.0.0.1", PORT), Handler)
     print("PLaMo gateway (loopback only): 127.0.0.1:%s" % PORT)
-    server.serve_forever()
+    try:
+        server.serve_forever()
+    finally:
+        server.server_close()
+        if unix_server is not None:
+            unix_server.shutdown()
+            unix_server.server_close()
+            # Deliberately preserve socket pathname for operator inspection
+            # rather than unlink a different process' socket.
+
