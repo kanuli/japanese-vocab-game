@@ -12,7 +12,7 @@ import threading
 import unittest
 from unittest.mock import patch
 
-import gateway
+import gateway_uds_candidate as gateway
 
 
 class UnixConnection(http.client.HTTPConnection):
