@@ -37,7 +37,11 @@ test "$image" = "$(cat "$DEST/production-image-id.txt")"
 sudo "$DOCKER" image inspect "$TAG" >/dev/null
 echo "EXISTING_CANDIDATE_IMAGE=PASS"
 echo "PRODUCTION_IMAGE_UNCHANGED=PASS"
+echo "SMOKE_DB=ISOLATED_TMPFS_NO_PRODUCTION_DB_MOUNT"
 
+# Candidate API init_db() writes ONLY into an empty, disposable tmpfs.
+# No production DB is mounted in the container. This validates startup and
+# route mechanics; data-backed regressions will use a separate safe snapshot.
 # Run candidate ASGI smoke and real shadow UDS GET, no outbound networking.
 sudo "$DOCKER" run --rm \
     --network none --read-only \
@@ -46,14 +50,17 @@ sudo "$DOCKER" run --rm \
     -e PYTHONDONTWRITEBYTECODE=1 \
     -e PYTHONPATH=/srv \
     -v "$SOCKET_DIR:/run/plamo-gateway:ro" \
-    -v "$ROOT/data:/srv/data:ro" \
+    --tmpfs /srv/data:rw,nosuid,nodev,size=128m,mode=1777 \
     -v "$ROOT/audio:/srv/audio:ro" \
     -v "/volume2/docker/japanese-voice-production/voicevox:/srv/voicevox-production:ro" \
     -v "$SMOKE:/smoke.py:ro" \
     --entrypoint python "$TAG" /smoke.py
 
+test "$(sha256sum "$ROOT/app/main.py" | awk '{print $1}')" = "$expected"
+test "$(sudo "$DOCKER" inspect --format '{{.Image}}' japanese-api)" = "$image"
 echo "PRODUCTION_SOURCE_UNCHANGED=PASS"
+echo "PRODUCTION_IMAGE_UNCHANGED_AFTER=PASS"
 echo "PRODUCTION_CONTAINER_RESTARTED=NO"
 echo "ORIGINAL_GATEWAY_RESTARTED=NO"
 echo "CANDIDATE_IMAGE_TAG=$TAG"
-echo "STEP_9AH_C=PASS"
+echo "STEP_9AH_E=PASS"
