@@ -68,17 +68,21 @@ fi
 
 # Source the already-existing private configuration without printing values.
 # No secrets go through PowerShell arguments, GitHub, or chat.
-(
+# Detach from SSH PTY. The old bare background subshell could receive
+# SIGHUP after successful tests, leaving a stale gateway.sock on disk.
+nohup sh -c '
+    set -eu
     set -a
-    . "$CONFIG"
+    . "$1"
     set +a
     : "${PLAMO_SUPABASE_URL:?}"
     : "${PLAMO_SUPABASE_PUBLISHABLE_KEY:?}"
     : "${PLAMO_ALLOWED_USER_IDS:?}"
     export PLAMO_UNIX_ONLY=1
-    export PLAMO_UNIX_SOCKET="$SOCK"
-    exec python3 "$STAGE/gateway_uds_candidate.py"
-) > "$LOG" 2>&1 < /dev/null &
+    export PLAMO_UNIX_SOCKET="$2"
+    exec python3 "$3"
+' sh "$CONFIG" "$SOCK" "$STAGE/gateway_uds_candidate.py" \
+    > "$LOG" 2>&1 < /dev/null &
 pid=$!
 started=1
 printf '%s\n' "$pid" > "$PIDFILE"
