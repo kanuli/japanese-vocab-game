@@ -139,13 +139,13 @@ def inspect_nginx():
         if p.returncode or not p.stdout:
             continue
         blocks=[b for b in nginx_blocks(p.stdout)
-                if re.search(r"\\blisten\\s+[^;]*\\b8443\\b",b)]
+                if re.search(r"\blisten\s+[^;]*\b8443\b",b)]
         if not blocks:
             continue
         say("NGINX_8443_INSPECTION_SOURCE","DSM_REVERSE_PROXY_CONF")
         say("NGINX_8443_LISTEN_BLOCKS",len(blocks))
         for i,block in enumerate(blocks[:3]):
-            matches=re.findall(r"\\bproxy_pass\\s+([^;\\s]+)",block)
+            matches=re.findall(r"\bproxy_pass\s+([^;\s]+)",block)
             say("NGINX_8443_BLOCK_%d_PROXY_COUNT"%i,len(matches))
             for j,target in enumerate(matches[:8]):
                 group,port=classify_endpoint(target)
