@@ -211,8 +211,29 @@ chmod 644 "$DEST/smoke.py"
 echo "CANDIDATE_SMOKE_FILE_MODE=0644"
 
 echo "SMOKE_DB=ISOLATED_TMPFS_NO_PRODUCTION_DB_MOUNT"
+# UDS is deliberately 0600 in a 0700 directory. A container started as
+# root with --cap-drop ALL cannot bypass ownership. Run as the NAS owner
+# instead; do NOT chmod the socket or make its parent world-readable.
+python3 - "$HOME/plamo-gateway-run" <<'PY'
+import os
+import stat
+import sys
+directory = sys.argv[1]
+sock = os.path.join(directory, "gateway.sock")
+d = os.stat(directory, follow_symlinks=False)
+s = os.stat(sock, follow_symlinks=False)
+if not stat.S_ISDIR(d.st_mode) or not stat.S_ISSOCK(s.st_mode):
+    raise SystemExit("SOCKET_TYPE_INVALID=STOP")
+if d.st_uid != os.getuid() or s.st_uid != os.getuid():
+    raise SystemExit("SOCKET_OWNER_MISMATCH=STOP")
+if (d.st_mode & 0o777) != 0o700 or (s.st_mode & 0o777) != 0o600:
+    raise SystemExit("SOCKET_PERMISSIONS_UNEXPECTED=STOP")
+print("SOCKET_MODE_0700_0600=PASS")
+print("SMOKE_USER_MATCHES_SOCKET_OWNER=PASS")
+PY
 sudo "$DOCKER" run --rm --network none --read-only \
     --security-opt no-new-privileges --cap-drop ALL \
+    --user "$(id -u):$(id -g)" \
     --tmpfs /tmp:rw,nosuid,nodev,size=32m \
     -e PYTHONDONTWRITEBYTECODE=1 \
     -e PYTHONPATH=/srv \
