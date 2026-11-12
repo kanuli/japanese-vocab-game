@@ -87,7 +87,7 @@ textarea:focus,select:focus,input:focus{outline:2px solid #bdd0ff;outline-offset
 <script src="./mobile-supertonic-guard.js?v=20260817v4"></script>
 <script defer src="./site-health.js?v=20260817v1"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./translator-cloud-config.js?v=20261113history1"></script>
+<script src="./translator-cloud-config.js?v=20261113order1"></script>
 </head>
 <body>
 <div class="wrap">
@@ -99,8 +99,8 @@ textarea:focus,select:focus,input:focus{outline:2px solid #bdd0ff;outline-offset
 <div class="row"><button id="translate" class="btn primary">🌐 翻譯</button><button id="ai" class="btn good">▶ 日語發音</button><button id="device" class="btn">🔊 裝置日語</button><button id="stop" class="btn">⏹ 停止</button><button id="clear" class="btn">清除</button></div>
 <div class="settings">
 <div class="field"><label for="translationProvider">翻譯來源</label>
-<select id="translationProvider"><option value="mymemory" selected>MyMemory｜現有正式翻譯</option><option value="plamo" disabled>PLaMo 3 Translate 2B｜登入後使用</option></select>
-<div id="translationProviderHint" class="muted" style="font-size:12px;margin-top:5px">PLaMo 翻譯已接入本站；請先於「跨裝置同步」登入，再選擇 PLaMo。</div></div>
+<select id="translationProvider"><option value="plamo" selected disabled>PLaMo 3 Translate 2B｜預設優先</option><option value="mymemory">MyMemory｜手動優先</option></select>
+<div id="translationProviderHint" class="muted" style="font-size:12px;margin-top:5px">預設 PLaMo → MyMemory → Gemini Free → Chrome Translator；PLaMo 需先登入。</div></div>
 <div class="field"><label>日語語音來源</label><select id="engine"><option value="supertonic3" selected>✨ Supertonic 3｜即時生成</option><option value="voicevox">🎭 VOICEVOX｜本站預錄</option></select></div>
 <div class="field"><label id="voiceLabel">Supertonic 3 聲線</label><select id="voice">
 <option value="F1">F1｜Calm・Steady｜沉穩冷靜女聲</option>
@@ -141,7 +141,7 @@ textarea:focus,select:focus,input:focus{outline:2px solid #bdd0ff;outline-offset
 </div>
 </details>
 </section>
-<div class="notice">不需要私人 API key。日語發音可選 VOICEVOX、Supertonic 3；翻譯預設使用 MyMemory 公開服務。PLaMo 3 Translate 2B 已接入本站；登入後可在「翻譯來源」選用，失敗時自動使用原有免費翻譯備援。翻譯紀錄先保存在本機；完成雲端設定並登入後，可同步到你自己的 Supabase 帳戶。</div>
+<div class="notice">不需要私人 API key。日語發音可選 VOICEVOX、Supertonic 3；翻譯預設順序：PLaMo 3 Translate → MyMemory → Gemini Free → Chrome Translator。PLaMo 需先登入；未登入或服務暫時不可用時自動使用下一個來源。翻譯紀錄先保存在本機；完成雲端設定並登入後，可同步到你自己的 Supabase 帳戶。</div>
 <div class="footer">Japanese Learning｜語音・翻譯練習工具</div>
 </div>
 <script src="./translator-plamo-config.js?v=20261113v1"></script>
@@ -318,9 +318,10 @@ window.addEventListener('jpTranslatorCloudApplied',()=>{$('#historyAutoSave').ch
 if('speechSynthesis'in window){loadvoices();speechSynthesis.onvoiceschanged=loadvoices}
 const plamoReady=Boolean(window.JapanesePlamoTranslator?.available?.());
 $('#translationProvider').querySelector('option[value="plamo"]').disabled=!plamoReady;
+$('#translationProvider').value=plamoReady?'plamo':'mymemory';
 $('#translationProviderHint').textContent=plamoReady
-  ? 'PLaMo 翻譯 API 已啟用；先在「跨裝置同步」登入，再於「翻譯來源」選擇 PLaMo。'
-  : 'PLaMo 服務尚未配置，現在仍使用 MyMemory；毋須在手機安裝模型。';
+  ? '預設優先 PLaMo 3 Translate；需先於「跨裝置同步」登入，失敗則自動使用 MyMemory → Gemini Free → Chrome Translator。'
+  : 'PLaMo 服務不可用；將按 MyMemory → Gemini Free → Chrome Translator 的順序翻譯。';
 if(!localSuperAllowed())$('#engine').value='voicevox';
 renderHistory();
 syncEngine();
