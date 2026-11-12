@@ -44,6 +44,7 @@ sudo "$DOCKER" run --rm \
     --security-opt no-new-privileges --cap-drop ALL \
     --tmpfs /tmp:rw,nosuid,nodev,size=32m \
     -e PYTHONDONTWRITEBYTECODE=1 \
+    -e PYTHONPATH=/srv \
     -v "$SOCKET_DIR:/run/plamo-gateway:ro" \
     -v "$ROOT/data:/srv/data:ro" \
     -v "$ROOT/audio:/srv/audio:ro" \
