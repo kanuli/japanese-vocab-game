@@ -146,6 +146,7 @@ async function translate(){
   const enChrome=startChromeTranslator('en');
 
   if(button)button.disabled=true;
+  window.dispatchEvent(new CustomEvent('jpTranslatorTranslationStarted'));
   setOutput(zh,'');setOutput(en,'');
   if($('#copyzh'))$('#copyzh').disabled=true;
   if($('#speakzh'))$('#speakzh').disabled=true;
@@ -156,6 +157,12 @@ async function translate(){
   try{
     const result=await translateBilingual(text,zhChrome,enChrome);
     setOutput(zh,result.zh);setOutput(en,result.en);
+    // Record the provider that actually returned both translations, not
+    // the option selected before fallback. Emit before history autosave.
+    window.dispatchEvent(new CustomEvent('jpTranslatorTranslationCompleted',{detail:{
+      sourceText:text,zhText:result.zh,enText:result.en,
+      provider:String(result.provider||''),plamoFallback:Boolean(result.plamoFallback)
+    }}));
     if($('#copyzh'))$('#copyzh').disabled=false;
     if($('#speakzh'))$('#speakzh').disabled=false;
     if($('#copyen'))$('#copyen').disabled=false;
