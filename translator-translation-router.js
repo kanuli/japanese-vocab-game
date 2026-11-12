@@ -11,7 +11,7 @@ function decodeHtml(text){const x=document.createElement('textarea');x.innerHTML
 function byteLength(text){return new TextEncoder().encode(text).length}
 function myMemoryChunks(text,max=430){const parts=text.trim().split(/(?<=[。！？!?])/u).filter(Boolean),out=[];let cur='';for(const part of parts){if(byteLength(cur+part)<=max){cur+=part;continue}if(cur.trim())out.push(cur.trim());cur='';for(const ch of part){if(byteLength(cur+ch)>max){if(cur.trim())out.push(cur.trim());cur=ch}else cur+=ch}}if(cur.trim())out.push(cur.trim());return out}
 function chromeTarget(target){return target==='zh-TW'?'zh-Hant':target}
-function providerLabel(provider){return ({'gemini-3.5-flash':'Gemini 3.5 Flash Free','gemini-3.5-flash-lite':'Gemini 3.5 Flash-Lite Free','gemini-3.1-flash-lite':'Gemini 3.1 Flash-Lite Free','chrome-translator':'Chrome Translator','mymemory':'MyMemory'})[provider]||provider||'Translator'}
+function providerLabel(provider){return ({'plamo':'PLaMo 3 Translate 2B','gemini-3.5-flash':'Gemini 3.5 Flash Free','gemini-3.5-flash-lite':'Gemini 3.5 Flash-Lite Free','gemini-3.1-flash-lite':'Gemini 3.1 Flash-Lite Free','chrome-translator':'Chrome Translator','mymemory':'MyMemory'})[provider]||provider||'Translator'}
 function compactReason(err){
   const code=String(err?.code||'').trim();
   const msg=String(err?.message||err||'').trim();
@@ -101,15 +101,39 @@ async function myMemoryTranslateBilingual(text){
 }
 
 async function translateBilingual(text,zhChrome,enChrome){
+  // IMPORTANT: translator-cloud-config.js loads this router asynchronously
+  // and overrides translator.html's click handler. Honor the actual PLaMo
+  // selection here, but NEVER send traffic to PLaMo unless opted in.
+  let plamoError=null;
+  if($('#translationProvider')?.value==='plamo'){
+    try{
+      if(!window.JapanesePlamoTranslator?.available?.())throw Error('PLaMo endpoint unavailable');
+      const [zh,en]=await Promise.all([
+        window.JapanesePlamoTranslator.translate(text,'zh-hant'),
+        window.JapanesePlamoTranslator.translate(text,'en')
+      ]);
+      if(!String(zh||'').trim()||!String(en||'').trim())throw Error('Incomplete PLaMo bilingual response');
+      return{zh:zh.trim(),en:en.trim(),provider:'plamo'};
+    }catch(err){
+      plamoError=err;
+      console.warn('Selected PLaMo unavailable; preserving existing translation fallback.',err?.message||err);
+    }
+  }
   let geminiError=null;
-  try{return await edgeTranslateBilingual(text)}catch(err){geminiError=err;console.warn('Gemini Free bilingual translation unavailable; trying Chrome Translator for both languages.',err,err?.attempts||'')}
+  try{
+    const result=await edgeTranslateBilingual(text);
+    if(plamoError)result.plamoFallback=true;
+    return result;
+  }catch(err){geminiError=err;console.warn('Gemini Free bilingual translation unavailable; trying Chrome Translator for both languages.',err?.message||err)}
   try{
     const result=await chromeTranslateBilingual(text,zhChrome,enChrome);
     result.fallbackReason=compactReason(geminiError);
+    if(plamoError)result.plamoFallback=true;
     return result;
-  }catch(err){console.warn('Chrome Translator bilingual pair unavailable; trying MyMemory for both languages.',err)}
+  }catch(err){console.warn('Chrome Translator bilingual pair unavailable; trying MyMemory for both languages.',err?.message||err)}
   const result=await myMemoryTranslateBilingual(text);
   result.fallbackReason=compactReason(geminiError);
+  if(plamoError)result.plamoFallback=true;
   return result;
 }
 
@@ -140,7 +164,8 @@ async function translate(){
     const autoSave=$('#historyAutoSave');
     if(autoSave?.checked)$('#saveHistory')?.click();
     const fallback=result.fallbackReason?`；Gemini fallback 原因：${result.fallbackReason}`:'';
-    setStatus(`✅ 翻譯完成（${providerLabel(result.provider)}，繁中 + English 同一引擎${fallback}）。${autoSave?.checked?'已自動保存紀錄。':''}`,'ok');
+    const plamoFallback=result.plamoFallback?'；PLaMo 未能連線，已自動改用原有翻譯服務':'';
+    setStatus(`✅ 翻譯完成（${providerLabel(result.provider)}，繁中 + English 同一引擎${plamoFallback}${fallback}）。${autoSave?.checked?'已自動保存紀錄。':''}`,'ok');
   }catch(err){
     console.error('All bilingual translation providers failed',err);
     setStatus('翻譯暫時失敗：Gemini Free、Chrome Translator 及 MyMemory 均無法完整產生兩種語言。','bad');
@@ -154,7 +179,7 @@ function install(){
   button.addEventListener('pointerdown',()=>{startChromeTranslator('zh-TW');startChromeTranslator('en')},{passive:true});
   jp.onkeydown=e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();translate()}};
   const notice=$('.notice');
-  if(notice)notice.textContent='翻譯採用零信用卡免費多引擎路由：Gemini API Free Tier → Chrome 內建 Translator → MyMemory 最後備援。繁體中文與 English 會鎖定使用同一個翻譯引擎；如 Gemini fallback，狀態列會顯示原因。Gemini API key 只存於 Supabase Edge Function Secrets。';
+  if(notice)notice.textContent='翻譯預設使用現有免費多引擎路由：Gemini Free → Chrome Translator → MyMemory。選擇 PLaMo 3 Translate 時才使用 NAS 上的 PLaMo，並須先以跨裝置同步功能登入 Supabase；PLaMo 無法使用時自動回到現有翻譯路由。繁中與英文使用同一個提供者。';
 }
 
 window.JPTranslationRouter=Object.freeze({translate,startChromeTranslator});
