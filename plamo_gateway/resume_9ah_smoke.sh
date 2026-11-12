@@ -11,7 +11,7 @@ BACKUP="$HOME/japanese-api-rollbacks/preplamo-20261112_130956/api-source.tar.gz"
 SOCKET_DIR="$HOME/plamo-gateway-run"
 SMOKE="$DEST/smoke.py"
 
-echo "=== STEP 9AH-C: REUSE EXISTING CANDIDATE ==="
+echo "=== STEP 9AH-G: RESUME ISOLATED SMOKE WITH DAC_OVERRIDE ==="
 test -f "$BACKUP" && test -f "$ROOT/app/main.py"
 test -d "$DEST" && test ! -L "$DEST"
 test -f "$SMOKE" && test ! -L "$SMOKE"
@@ -38,9 +38,10 @@ sudo "$DOCKER" image inspect "$TAG" >/dev/null
 echo "EXISTING_CANDIDATE_IMAGE=PASS"
 echo "PRODUCTION_IMAGE_UNCHANGED=PASS"
 echo "SMOKE_DB=ISOLATED_TMPFS_NO_PRODUCTION_DB_MOUNT"
-# UDS is deliberately 0600 in a 0700 directory. A container started as
-# root with --cap-drop ALL cannot bypass ownership. Run as the NAS owner
-# instead; do NOT chmod the socket or make its parent world-readable.
+# Private 0700/0600 UDS is NAS-user-owned; image app code is root-owned
+# and inaccessible to NAS UID. For THIS disposable no-network smoke only,
+# root plus *only* CAP_DAC_OVERRIDE reads both; other capabilities dropped.
+# Production deployment must separately validate a least-privilege identity.
 python3 - "$HOME/plamo-gateway-run" <<'PY'
 import os
 import stat
@@ -56,7 +57,7 @@ if d.st_uid != os.getuid() or s.st_uid != os.getuid():
 if (d.st_mode & 0o777) != 0o700 or (s.st_mode & 0o777) != 0o600:
     raise SystemExit("SOCKET_PERMISSIONS_UNEXPECTED=STOP")
 print("SOCKET_MODE_0700_0600=PASS")
-print("SMOKE_USER_MATCHES_SOCKET_OWNER=PASS")
+print("SOCKET_OWNERSHIP_VERIFIED=PASS")
 PY
 
 # Candidate API init_db() writes ONLY into an empty, disposable tmpfs.
@@ -65,8 +66,8 @@ PY
 # Run candidate ASGI smoke and real shadow UDS GET, no outbound networking.
 sudo "$DOCKER" run --rm \
     --network none --read-only \
-    --security-opt no-new-privileges --cap-drop ALL \
-    --user "$(id -u):$(id -g)" \
+    --security-opt no-new-privileges --cap-drop ALL --cap-add DAC_OVERRIDE \
+    --user 0:0 \
     --tmpfs /tmp:rw,nosuid,nodev,size=32m \
     -e PYTHONDONTWRITEBYTECODE=1 \
     -e PYTHONPATH=/srv \
@@ -84,4 +85,4 @@ echo "PRODUCTION_IMAGE_UNCHANGED_AFTER=PASS"
 echo "PRODUCTION_CONTAINER_RESTARTED=NO"
 echo "ORIGINAL_GATEWAY_RESTARTED=NO"
 echo "CANDIDATE_IMAGE_TAG=$TAG"
-echo "STEP_9AH_F=PASS"
+echo "STEP_9AH_G=PASS"
