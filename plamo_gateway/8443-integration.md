@@ -16,7 +16,7 @@ Supabase login token is read in-memory from the existing translator Cloud Sync c
 
 ## Files staged in PR #14
 
-- `plamo_gateway/gateway.py`: optional Unix-domain socket listener on the NAS host, configured only by `PLAMO_UNIX_SOCKET=/volume2/docker/japanese-api/plamo-gateway-run/gateway.sock`. The socket parent directory is private; the file is `0600`. Existing localhost `18790` behavior is retained.
+- `plamo_gateway/gateway.py`: optional Unix-domain socket listener on the NAS host, configured with `PLAMO_UNIX_ONLY=1` and `PLAMO_UNIX_SOCKET=$HOME/plamo-gateway-run/gateway.sock`. The socket parent directory is private; the file is `0600`. Existing localhost `18790` behavior is retained.
 - `plamo_gateway/japanese_api_router.py`: isolated FastAPI `APIRouter` with one POST translation path and OPTIONS route. It enforces a strict JSON schema/size and a conservative pre-auth, in-memory rate/concurrency cap before proxying to the local Gateway.
 - `plamo_gateway/test_japanese_api_router.py`: mocked route-level tests. Must run **inside the Japanese API runtime environment**, not only NAS system Python 3.8.
 - `translator-plamo-config.js`: points to `https://kanu-rustdesk.synology.me:8443/api/v1/translate/plamo` on **staging branch only**. Published GitHub Pages `main` is unchanged.
@@ -26,9 +26,9 @@ Supabase login token is read in-memory from the existing translator Cloud Sync c
 
 1. Inspect actual NAS `/volume2/docker/japanese-api/app/main.py` and `compose.yaml`. The source does **not** currently live in this GitHub repository, so the router has **NOT** yet been mounted in FastAPI. Confirm the code is built into container vs mounted, the app import path, Python version and dependency versions.
 2. Run syntax, 11 HTTP mock tests including actual AF_UNIX transfer, in a temporary container using the actual Japanese API image, `--network none`, no restart/change of production. The original 10 tests passed on 2026-11-12. The new UDS test is pending.
-3. Before attempting to enable Unix sockets on the NAS Gateway, back up the exact running `gateway.py` and record its process launch/environment without exposing secrets. The existing Gateway must be gracefully stopped/restarted under a controlled maintenance step to add the Unix listener; avoid two concurrent processes on port 18790.
-4. Create the private NAS directory `/volume2/docker/japanese-api/plamo-gateway-run/` mode 0700. Bind mount it into **Japanese API container** as `/run/plamo-gateway:ro` in Compose. Since Docker is using `build: .`, add the router file to the app tree before building the new image. Do not open new NAS LAN ports.
-5. Ensure the NAS Gateway restarts with the opt-in `PLAMO_UNIX_SOCKET` environment setting and confirm that the real mounted UDS works from the test image before activating the route.
+3. Before attempting to enable Unix sockets on the NAS Gateway, back up the exact running `gateway.py` and record its process launch/environment without exposing secrets. Instead, run the new UDS-only Gateway as a separate shadow process (using the same existing credentials and allowlist) without touching the original TCP Gateway on port 18790. Confirm the original TCP health is still 200.
+4. Create the private NAS directory `/volume2/docker/japanese-api/plamo-gateway-run/` mode 0700. Bind mount the absolute path of this private directory into **Japanese API container** as `/run/plamo-gateway:ro` in Compose. Since Docker is using `build: .`, add the router file to the app tree before building the new image. Do not open new NAS LAN ports.
+5. Ensure the **new independent UDS-only** NAS Gateway starts with both `PLAMO_UNIX_ONLY=1` and `PLAMO_UNIX_SOCKET`, while existing loopback `127.0.0.1:18790` remains healthy; confirm mounted UDS works from the current Docker image before activating any 8443 route.
 6. Inspect CORS middleware order/configuration: preflight OPTIONS must allow Origin `https://kanuli.github.io`, methods POST, and headers Authorization, Content-Type. Ensure no secrets/tokens are logged.
 7. Before touching production: take a timestamped backup of original `main.py`, Compose configuration, existing image ID, and router file (if any), and prepare a rollback that only restores changed files.
 8. Stage the addition using FastAPI `app.include_router(router)` after app initialization, without changing existing vocabulary/audio/conjugation routes. Ensure the new `/api/v1/translate/plamo` does not collide with an existing route.
@@ -49,3 +49,7 @@ Supabase login token is read in-memory from the existing translator Cloud Sync c
 ## Current status
 
 The above files are **staged only** in draft PR #14. We have prior independent evidence that the NAS standalone Gateway authenticates the signed-in Supabase user and translates both languages. We do *not* yet have an 8443 live route or iPhone PLaMo translation test.
+
+## Step 9AG safety
+
+The script `plamo_gateway/start_uds_shadow_gateway.sh` is a user-triggered NAS action, not an automatic GitHub deployment. It launches a **separate** UDS-only Gateway in the user's home directory with a private 0700 directory and 0600 socket; it uses the existing `~/.config/plamo-gateway/config.env` without exposing keys. It snapshots current Japanese API image ID only, tests UDS health from host and a separate read-only network-disabled container, and ensures the original 127.0.0.1:18790 Gateway is still healthy. It never edits production source/Compose/Nginx or restarts an existing process. On a failed step it attempts to stop only the new process; do not automatically delete a socket for a live process. If the shell finds an existing socket or shadow pid file, stop for operator review rather than killing an unknown process. The shadow gateway is not yet configured for auto-start across NAS reboots.
