@@ -12,11 +12,11 @@ and the allowlisted user UUID. This outer layer rejects malformed traffic
 and adds a conservative pre-auth cap; it does NOT replace Nginx rate limiting.
 """
 import asyncio
+import http.client
 import json
+import socket
 import threading
 import time
-import urllib.error
-import urllib.request
 from collections import deque
 
 from fastapi import APIRouter, Request
@@ -24,7 +24,7 @@ from fastapi.responses import JSONResponse, Response
 
 router = APIRouter()
 TRANSLATE_PATH = "/api/v1/translate/plamo"
-GATEWAY_URL = "http://127.0.0.1:18790" + TRANSLATE_PATH
+GATEWAY_SOCKET = "/run/plamo-gateway/gateway.sock"
 ALLOWED_ORIGIN = "https://kanuli.github.io"
 MAX_BODY_BYTES = 8192
 MAX_TEXT_LENGTH = 1800
@@ -36,7 +36,6 @@ ACTIVE_CAP = threading.BoundedSemaphore(2)
 RATE_LOCK = threading.Lock()
 GLOBAL_HITS = deque()
 CLIENT_HITS = {}
-OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
 
 def _cors(request):
@@ -76,41 +75,64 @@ def _allow_request(request):
     return True
 
 
+class UnixHTTPConnection(http.client.HTTPConnection):
+    """Connect only to the private NAS gateway Unix socket (not a TCP port)."""
+
+    def __init__(self, pathname):
+        super().__init__("localhost", timeout=90)
+        self.pathname = pathname
+
+    def connect(self):
+        sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        try:
+            sock.settimeout(self.timeout)
+            sock.connect(self.pathname)
+        except Exception:
+            sock.close()
+            raise
+        self.sock = sock
+
+
 def _forward(token, payload):
-    request = urllib.request.Request(
-        GATEWAY_URL,
-        data=json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8"),
-        method="POST",
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + token,
-            "Origin": ALLOWED_ORIGIN,
-        },
-    )
+    """Send the validated request to NAS-host Gateway through a mounted UDS.
+
+    Docker's 127.0.0.1 is not NAS-host localhost. This AF_UNIX link is the
+    explicit bridge between containers; no gateway LAN TCP exposure needed.
+    """
+    data = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    connection = UnixHTTPConnection(GATEWAY_SOCKET)
     try:
-        with OPENER.open(request, timeout=90) as response:
-            raw = response.read(8193)
-            status = response.status
-    except urllib.error.HTTPError as exc:
-        # Gateway error payloads are fixed strings, but deliberately do not relay
-        # arbitrary upstream bodies or headers to the public internet.
-        return exc.code if exc.code in (400, 401, 403, 413, 429, 503) else 502, None
-    if status != 200 or len(raw) > 8192:
+        connection.request(
+            "POST", TRANSLATE_PATH, body=data,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token,
+                "Origin": ALLOWED_ORIGIN,
+            },
+        )
+        response = connection.getresponse()
+        status = response.status
+        raw = response.read(8193) if status == 200 else b""
+    finally:
+        connection.close()
+    # Gateway errors are mapped to fixed messages by the ASGI handler.
+    if status != 200:
+        return status if status in (400, 401, 403, 413, 429, 503) else 502, None
+    if len(raw) > 8192:
         return 502, None
     try:
-        data = json.loads(raw.decode("utf-8"))
+        result = json.loads(raw.decode("utf-8"))
     except (UnicodeError, json.JSONDecodeError):
         return 502, None
-    if (not isinstance(data, dict) or
-            not isinstance(data.get("translation"), str) or
-            not data["translation"].strip()):
+    if (not isinstance(result, dict) or
+            not isinstance(result.get("translation"), str) or
+            not result["translation"].strip()):
         return 502, None
     return 200, {
-        "translation": data["translation"],
-        "target_lang": data.get("target_lang"),
+        "translation": result["translation"],
+        "target_lang": result.get("target_lang"),
         "model": "plamo-3-translate",
     }
-
 
 @router.options(TRANSLATE_PATH)
 async def plamo_options(request: Request):
