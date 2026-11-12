@@ -78,6 +78,10 @@ def run(args, timeout=140):
             # No bearer token, credentials, env or live DB is supplied.
             log(line[:280])
         log("CHILD_STDERR_LAST_25_LINES_END")
+        # Child emits status markers only, not database rows or secrets.
+        for line in p.stdout.splitlines()[-12:]:
+            if line.startswith(("STEP_9AM=", "STOP_REASON=", "CANDIDATE_", "UVICORN_", "NO_PRODUCTION_", "CONTAINER_")):
+                log("CHILD_STDOUT=" + line[:240])
         raise RuntimeError("ISOLATED_CANDIDATE_TEST_FAILED")
     return p.stdout
 
@@ -252,7 +256,13 @@ def host():
              "-v", str(SOCKDIR)+":/run/plamo-gateway:ro",
              "-v", str(THIS)+":/plamo-9am.py:ro",
              "--entrypoint", "python", CANDIDATE, "/plamo-9am.py", "--child"]
-        out=run(cmd,timeout=130)
+        try:
+            out=run(cmd,timeout=130)
+        except subprocess.TimeoutExpired:
+            # A timed-out docker client can leave behind a disposable
+            # container; only remove our uniquely named test, never live API.
+            log("DISPOSABLE_CANDIDATE_TIMEOUT=STOP")
+            raise
         for line in out.splitlines():
             if line.startswith(("CANDIDATE_", "UVICORN_", "NO_PRODUCTION_", "CONTAINER_", "STEP_9AM_")):
                 log(line[:220])
