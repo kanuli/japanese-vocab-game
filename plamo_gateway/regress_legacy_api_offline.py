@@ -116,7 +116,8 @@ def main():
     # One consistent backup + two writable copies + conservative reserve.
     if free < 3 * size + 512 * 1024 * 1024:
         raise RuntimeError("INSUFFICIENT_FREE_SPACE_FOR_SNAPSHOT")
-    print("SQLITE_SNAPSHOT_SPACE_GATE=PASS", flush=True)\n    print("SQLITE_LIVE_SIZE_MIB=%.1f" % (size / (1024 * 1024)), flush=True)
+    print("SQLITE_SNAPSHOT_SPACE_GATE=PASS", flush=True)
+    print("SQLITE_LIVE_SIZE_MIB=%.1f" % (size / (1024 * 1024)), flush=True)
 
     # Authorization is for Docker access only; never change docker.sock mode.
     checked(["sudo", "-v"])
