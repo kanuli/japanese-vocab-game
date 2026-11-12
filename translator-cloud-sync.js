@@ -122,6 +122,11 @@ function sanitizeHistory(items){
       sourceLanguage:String(raw.sourceLanguage||'ja'),
       targetLanguages:Array.isArray(raw.targetLanguages)?raw.targetLanguages:['zh-TW','en'],
       inputType:raw.inputType==='voice'?'voice':'text',
+      // Additional fields live inside the existing JSON history column;
+      // no database schema change. Old records remain valid.
+      translationProvider:/^[a-z0-9][a-z0-9._-]{0,63}$/i.test(String(raw.translationProvider||''))
+        ?String(raw.translationProvider):'',
+      translationFallbackFrom:raw.translationFallbackFrom==='plamo'?'plamo':'',
       createdAt:String(raw.createdAt||nowISO()),
       favorite:Boolean(raw.favorite)
     });
@@ -135,7 +140,12 @@ function mergeFirstSync(localItems,remoteItems){
     const prev=map.get(key);
     if(!prev){map.set(key,item);continue}
     const newer=timeValue(item.createdAt)>=timeValue(prev.createdAt)?item:prev;
-    map.set(key,{...newer,favorite:Boolean(item.favorite||prev.favorite)});
+    const older=newer===item?prev:item;
+    const sameTranslation=newer.zhText===older.zhText&&newer.enText===older.enText;
+    map.set(key,{...newer,favorite:Boolean(item.favorite||prev.favorite),
+      translationProvider:newer.translationProvider||(sameTranslation?older.translationProvider:''),
+      translationFallbackFrom:newer.translationProvider?newer.translationFallbackFrom
+        :(sameTranslation?older.translationFallbackFrom:'')});
   }
   return [...map.values()].sort((a,b)=>timeValue(b.createdAt)-timeValue(a.createdAt)).slice(0,HISTORY_LIMIT);
 }
