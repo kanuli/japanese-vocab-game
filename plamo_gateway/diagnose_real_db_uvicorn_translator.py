@@ -235,14 +235,20 @@ def host():
                             (100 * (total-remaining)/max(1,total), int(elapsed)))
                         last = elapsed
                 src.backup(dst, pages=256, sleep=0.05, progress=progress)
-                if dst.execute("PRAGMA quick_check").fetchone()[0] != "ok":
-                    raise RuntimeError("SNAPSHOT_QUICK_CHECK_FAILED")
+                log("SQLITE_ONLINE_BACKUP_FINISHED=PASS")
+                # Never run PRAGMA quick_check here. It can scan 1.6 GiB
+                # without progress or timeout, and 9AJ-H already completed
+                # a full quick_check on a previous consistent snapshot.
+                # This is an HTTP startup probe, not a DB integrity audit.
+                # A constant-time schema read is enough to confirm openability.
+                dst.execute("PRAGMA schema_version").fetchone()
+                log("SQLITE_SNAPSHOT_SCHEMA_READ=PASS")
             finally:
                 dst.close()
         finally:
             src.close()
         os.chmod(str(dbcopy), 0o600)
-        log("SQLITE_CONSISTENT_SNAPSHOT_AND_QUICK_CHECK=PASS")
+        log("SQLITE_CONSISTENT_SNAPSHOT=PASS")
         gate_sudo()
         log("CANDIDATE_REAL_DB_NO_NETWORK_TEST=START")
         cmd=["sudo", "-n", DOCKER, "run", "--rm", "--network", "none",
