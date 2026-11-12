@@ -153,14 +153,14 @@ def main():
                 backup_started = time.monotonic()
                 last_report = 0.0
 
-                def report_backup(status, remaining, total):
+                # SQLite C result code 5 = SQLITE_BUSY. Synology's Python 3.8\n                # sqlite3 module does not expose sqlite3.SQLITE_BUSY.\n                def report_backup(status, remaining, total):
                     nonlocal last_report
                     elapsed = time.monotonic() - backup_started
                     if elapsed > 900:
                         raise TimeoutError(
                             "SQLITE_BACKUP_EXCEEDED_900_SECONDS_STOP")
                     if (elapsed - last_report >= 10 or
-                            remaining == 0 or status == sqlite3.SQLITE_BUSY):
+                            remaining == 0 or status == 5):  # SQLITE_BUSY
                         percent = 100.0 * (total - remaining) / max(1, total)
                         print("SQLITE_BACKUP_PROGRESS=%.1f%% PAGES_LEFT=%s "
                               "ELAPSED_SEC=%d STATUS=%s" %
