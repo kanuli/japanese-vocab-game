@@ -124,6 +124,34 @@ def inspect_nginx():
                     say("NGINX_8443_BLOCK_%d_PROXY" % i,
                         "NONE_OR_INCLUDE_INDIRECTION")
             return
+    # Synology may not expose a -T-capable nginx binary on PATH.
+    # Fall back to known DSM generated reverse-proxy configuration files.
+    # sudo cat output is parsed only in memory and NEVER echoed verbatim.
+    fallback=[
+        "/usr/local/etc/nginx/sites-enabled/server.ReverseProxy.conf",
+        "/etc/nginx/app.d/server.ReverseProxy.conf",
+        "/etc/nginx/sites-enabled/server.ReverseProxy.conf",
+        "/usr/syno/etc/nginx/sites-enabled/server.ReverseProxy.conf",
+        "/etc/nginx/conf.d/server.ReverseProxy.conf",
+    ]
+    for filename in fallback:
+        p=cmd(["sudo","-n","cat",filename],timeout=8,check=False)
+        if p.returncode or not p.stdout:
+            continue
+        blocks=[b for b in nginx_blocks(p.stdout)
+                if re.search(r"\\blisten\\s+[^;]*\\b8443\\b",b)]
+        if not blocks:
+            continue
+        say("NGINX_8443_INSPECTION_SOURCE","DSM_REVERSE_PROXY_CONF")
+        say("NGINX_8443_LISTEN_BLOCKS",len(blocks))
+        for i,block in enumerate(blocks[:3]):
+            matches=re.findall(r"\\bproxy_pass\\s+([^;\\s]+)",block)
+            say("NGINX_8443_BLOCK_%d_PROXY_COUNT"%i,len(matches))
+            for j,target in enumerate(matches[:8]):
+                group,port=classify_endpoint(target)
+                say("NGINX_8443_PROXY_%d_%d"%(i,j),
+                    "%s:PORT_%s"%(group,port))
+        return
     say("NGINX_8443_PROXY_INSPECTION","UNAVAILABLE_NO_CONFIG_DUMP")
     # No hard error; output makes limitation explicit.
 
