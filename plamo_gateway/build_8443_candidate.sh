@@ -14,7 +14,7 @@ STAMP=$(date +%Y%m%d_%H%M%S)
 DEST="$HOME/japanese-api-candidates/plamo-8443-$STAMP"
 TAG="japanese-api:plamo-8443-$STAMP"
 
-echo "=== STEP 9AH: BUILD ISOLATED 8443 CANDIDATE ==="
+echo "=== STEP 9AH-B: OFFLINE OVERLAY BUILD OF 8443 CANDIDATE ==="
 test -f "$BACKUP"
 test -f "$ROOT/app/main.py"
 test -f "$ROOT/Dockerfile"
@@ -108,8 +108,21 @@ image=$(sudo "$DOCKER" inspect --format '{{.Image}}' japanese-api)
 case "$image" in sha256:*) ;; *) echo "LIVE_IMAGE_UNKNOWN=STOP"; exit 4;; esac
 printf '%s\n' "$image" > "$DEST/production-image-id.txt"
 
-# Build a NEW candidate with no container restart. Cache existing dependencies.
-# --network=none intentionally fails closed if it needs uncached downloads.
+# Build from the exact currently running API image, which ALREADY includes
+# pinned FastAPI/Uvicorn dependencies. This avoids pip install entirely.
+# IMPORTANT: The normal production Dockerfile has RUN pip install --no-cache-dir,
+# which cannot execute with --network=none, even if an image previously built.
+BASE_TAG="japanese-api:plamo-9ah-base-$STAMP"
+sudo "$DOCKER" tag "$image" "$BASE_TAG"
+mv "$DEST/Dockerfile" "$DEST/Dockerfile.production-reference"
+printf 'FROM %s\nCOPY app /srv/app\n' "$BASE_TAG" > "$DEST/Dockerfile"
+echo "CANDIDATE_DOCKERFILE=OFFLINE_OVERLAY"
+echo "CANDIDATE_BASE_IMAGE=EXACT_PRODUCTION_IMAGE"
+# The overlay Dockerfile has NO RUN, curl or pip instructions.
+if grep -Eiq '^([[:space:]]*)(RUN|ADD)[[:space:]]' "$DEST/Dockerfile"; then
+    echo "CANDIDATE_DOCKERFILE_UNEXPECTED_ACTION=STOP"
+    exit 5
+fi
 sudo "$DOCKER" build --pull=false --network=none -t "$TAG" "$DEST"
 echo "CANDIDATE_DOCKER_BUILD=PASS"
 
@@ -211,6 +224,6 @@ echo "PRODUCTION_SOURCE_UNCHANGED=PASS"
 echo "PRODUCTION_IMAGE_UNCHANGED=PASS"
 echo "PRODUCTION_CONTAINER_RESTARTED=NO"
 echo "ORIGINAL_GATEWAY_RESTARTED=NO"
-echo "CANDIDATE_IMAGE_TAG=$TAG"
+echo "CANDIDATE_IMAGE_TAG=$TAG"\necho "LOCAL_BASE_TAG=$BASE_TAG"
 echo "CANDIDATE_DIRECTORY=$DEST"
-echo "STEP_9AH=PASS"
+echo "STEP_9AH_B=PASS"
