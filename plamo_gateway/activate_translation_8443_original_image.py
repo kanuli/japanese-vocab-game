@@ -137,6 +137,26 @@ def main():
     if sha(ROOT/"app/main.py")!=original_source_digest():
         raise RuntimeError("ORIGINAL_MAIN_HAS_CHANGED_STOP")
     src=STAGED.read_text(encoding="utf8")
+    # Pin the exact reviewed GitHub router to prevent activating arbitrary
+    # local staging code. SHA-1 here identifies the Git blob, not security auth.
+    git_blob=b"blob "+str(len(src.encode("utf8"))).encode("ascii")+b"\0"+src.encode("utf8")
+    if hashlib.sha1(git_blob).hexdigest()!="17fcfd71acc9d5d6e7678a539b4ba8f92e2cad1d":
+        raise RuntimeError("PINNED_TRANSLATION_ROUTER_MISMATCH_STOP")
+    out("PINNED_TRANSLATION_ROUTER","PASS")
+    # Confirm the private NAS gateway itself still answers before changing
+    # anything. This is the same UDS used by the previously tested router.
+    import socket
+    sock=socket.socket(socket.AF_UNIX,socket.SOCK_STREAM)
+    sock.settimeout(5)
+    try:
+        sock.connect(str(SOCK))
+        sock.sendall(b"GET /healthz HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n")
+        response=sock.recv(512)
+    finally:
+        sock.close()
+    if b"HTTP/1.0 200" not in response and b"HTTP/1.1 200" not in response:
+        raise RuntimeError("PRIVATE_GATEWAY_HEALTH_FAILED_STOP")
+    out("PRIVATE_GATEWAY_HEALTH","PASS")
     if "TRANSLATE_PATH = \"/api/v1/translate/plamo\"" not in src:
         raise RuntimeError("STAGED_ROUTE_NOT_EXPECTED_STOP")
     if "GATEWAY_SOCKET = \"/run/plamo-gateway/gateway.sock\"" not in src:
