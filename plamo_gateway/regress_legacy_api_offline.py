@@ -64,14 +64,22 @@ def run_probe(image_id, data_path):
         result = checked(cmd, text=True, stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE, timeout=150)
     except subprocess.CalledProcessError as exc:
-        # The old runner swallowed child stderr, reporting only exit code 1.
-        # This container has NO production DB or bearer credentials mounted.
+        # Probe mounts only a writable snapshot and public audio files,
+        # never live DB, credentials or the protected shadow UDS.
         print("DOCKER_PROBE_EXIT_CODE=%s" % exc.returncode, flush=True)
-        print("DOCKER_PROBE_STDERR_LAST_25_LINES_BEGIN", flush=True)
-        for line in (exc.stderr or "").splitlines()[-25:]:
+        print("DOCKER_PROBE_STDERR_LAST_30_LINES_BEGIN", flush=True)
+        for line in (exc.stderr or "").splitlines()[-30:]:
             print(line[:350], flush=True)
-        print("DOCKER_PROBE_STDERR_LAST_25_LINES_END", flush=True)
-        raise RuntimeError("ORIGINAL_OR_CANDIDATE_PROBE_FAILED") from None
+        print("DOCKER_PROBE_STDERR_LAST_30_LINES_END", flush=True)
+        # If stderr was empty, stdout may contain a sanitized Docker-level
+        # diagnostic. NEVER print the full JSON API payload report.
+        if not (exc.stderr or "").strip():
+            print("DOCKER_PROBE_STDOUT_LAST_8_LINES_BEGIN", flush=True)
+            for line in (exc.stdout or "").splitlines()[-8:]:
+                if len(line) < 300 and not line.lstrip().startswith("{"):
+                    print(line, flush=True)
+            print("DOCKER_PROBE_STDOUT_LAST_8_LINES_END", flush=True)
+        raise RuntimeError("OFFLINE_SNAPSHOT_DOCKER_PROBE_FAILED") from None
     lines = [line.strip() for line in result.stdout.splitlines() if line.strip()]
     if not lines:
         raise RuntimeError("EMPTY_PROBE_OUTPUT")
@@ -82,7 +90,7 @@ def run_probe(image_id, data_path):
 
 
 def main():
-    print("=== STEP 9AJ: OFFLINE ORIGINAL VS PLAMO CANDIDATE ===", flush=True)
+    print("=== STEP 9AJ-F: FULL SNAPSHOT API REGRESSION WITH DIAGNOSTICS ===", flush=True)
     for p in (DB, AUDIO, VOICES, PROBE,
               DEST, BACKUP_DIR / "api-source.tar.gz",
               BACKUP_DIR / "image-id.txt"):
@@ -101,14 +109,14 @@ def main():
         raise RuntimeError("SOURCE_DIFFERS_FROM_BACKUP_STOP")
     print("BACKUP_SOURCE_MATCH=PASS", flush=True)
 
-    if not DB.is_file():
-        raise RuntimeError("LIVE_DB_NOT_FOUND")
+    if not DB.is_file() or DB.is_symlink():
+        raise RuntimeError("LIVE_DB_NOT_FOUND_OR_SYMLINK")
     size = DB.stat().st_size
     free = shutil.disk_usage(str(DEST)).free
     # One consistent backup + two writable copies + conservative reserve.
     if free < 3 * size + 512 * 1024 * 1024:
         raise RuntimeError("INSUFFICIENT_FREE_SPACE_FOR_SNAPSHOT")
-    print("SQLITE_SNAPSHOT_SPACE_GATE=PASS", flush=True)
+    print("SQLITE_SNAPSHOT_SPACE_GATE=PASS", flush=True)\n    print("SQLITE_LIVE_SIZE_MIB=%.1f" % (size / (1024 * 1024)), flush=True)
 
     # Authorization is for Docker access only; never change docker.sock mode.
     checked(["sudo", "-v"])
@@ -182,6 +190,7 @@ def main():
             shutil.copyfile(str(snap), str(copy))
             os.chmod(str(copy), 0o600)
             print("PROBING_%s=START" % label.upper(), flush=True)
+            print("SNAPSHOT_COPY_%s_MIB=%.1f" % (label.upper(), copy.stat().st_size / (1024 * 1024)), flush=True)
             reports[label] = run_probe(image, data_path)
             print("PROBING_%s=PASS" % label.upper(), flush=True)
 
@@ -240,7 +249,7 @@ def main():
     print("PRODUCTION_SOURCE_UNCHANGED=PASS", flush=True)
     print("PRODUCTION_CONTAINER_RESTARTED=NO", flush=True)
     print("ORIGINAL_GATEWAY_RESTARTED=NO", flush=True)
-    print("STEP_9AJ=PASS", flush=True)
+    print("STEP_9AJ_F=PASS", flush=True)
     print("NOTE=DYNAMIC_VOCABULARY_AUDIO_CONJUGATION_GET_SAMPLES_NOT_YET_VERIFIED", flush=True)
 
 
