@@ -192,6 +192,10 @@ def main():
             os.chmod(str(copy), 0o600)
             print("PROBING_%s=START" % label.upper(), flush=True)
             print("SNAPSHOT_COPY_%s_MIB=%.1f" % (label.upper(), copy.stat().st_size / (1024 * 1024)), flush=True)
+            # A large online SQLite backup can outlast Synology's sudo ticket.
+            # Refresh interactively over SSH -tt BEFORE calling sudo -n Docker.
+            checked(["sudo", "-v"])
+            print("DOCKER_SUDO_REVALIDATED_%s=PASS" % label.upper(), flush=True)
             reports[label] = run_probe(image, data_path)
             print("PROBING_%s=PASS" % label.upper(), flush=True)
 
@@ -247,7 +251,17 @@ def main():
         print("REGRESSION_REPORT_SAVED=PASS", flush=True)
 
     print("TEMP_SQLITE_SNAPSHOTS_REMOVED=PASS", flush=True)
+    if hashlib.sha256(backed).hexdigest() != sha256_of(original_main):
+        raise RuntimeError("PRODUCTION_SOURCE_CHANGED_DURING_REGRESSION")
+    checked(["sudo", "-v"])
+    latest_image = checked([
+        "sudo", "-n", DOCKER, "inspect", "--format",
+        "{{.Image}}", "japanese-api"
+    ], text=True, stdout=subprocess.PIPE).stdout.strip()
+    if latest_image != original_image:
+        raise RuntimeError("PRODUCTION_IMAGE_CHANGED_DURING_REGRESSION")
     print("PRODUCTION_SOURCE_UNCHANGED=PASS", flush=True)
+    print("PRODUCTION_IMAGE_UNCHANGED_AFTER=PASS", flush=True)
     print("PRODUCTION_CONTAINER_RESTARTED=NO", flush=True)
     print("ORIGINAL_GATEWAY_RESTARTED=NO", flush=True)
     print("STEP_9AJ_F=PASS", flush=True)
