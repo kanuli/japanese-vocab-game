@@ -1,21 +1,19 @@
-/* Hiragana readings for Japanese translation history only.
- * Uses this site's existing Japanese kuromoji tokenizer and local IPA dictionary.
- * Nothing is sent to an external phonetic service; user text is rendered via
- * textContent, never innerHTML, and no history/sync schema is changed.
+/* Japanese hiragana ruby for translation history.
+ * Uses the existing offline kuromoji.js + ./dict, and safe DOM textContent.
+ * No translations sent to an external service; no history data migration.
  */
 (() => {
   'use strict';
 
-  const cache = new Map();
   let tokenizer = null;
   let initPromise = null;
+  const cache = new Map();
+  const kanji = /[\u3400-\u9fff\uF900-\uFAFF々〆ヶ]/u;
+  const kanaSuffix = /[ぁ-ゖァ-ヺー]/u;
 
   function toHiragana(value) {
     return String(value || '').replace(/[\u30a1-\u30f6]/g, ch =>
       String.fromCharCode(ch.charCodeAt(0) - 0x60));
-  }
-  function kanjiPresent(s) {
-    return /[\u3400-\u9fff\uF900-\uFAFF々〆ヶ]/u.test(s);
   }
   function init() {
     if (tokenizer) return Promise.resolve(tokenizer);
@@ -27,68 +25,80 @@
         else { tokenizer = result; resolve(result); }
       });
     }).catch(err => {
-      console.warn('Translation history hiragana dictionary unavailable:', err?.message || err);
+      console.warn('Translation history ruby dictionary unavailable:', err?.message || err);
       initPromise = null;
       return null;
     });
     return initPromise;
   }
-
-  function composeReading(value, t) {
-    const output = t.tokenize(value).map(token => {
-      const surface = String(token.surface_form || '');
-      const reading = token.reading && token.reading !== '*' ?
-        String(token.reading) : surface;
-      // Keep punctuation/latin text intact and convert Japanese readings.
-      return toHiragana(reading);
-    }).join('');
-    return output || '';
-  }
-
-  async function fill(node, source) {
-    if (!node) return;
-    const text = String(source || '');
-    const id = (Number(node.dataset.readingSerial || 0) + 1);
-    node.dataset.readingSerial = String(id);
-    if (!text.trim()) { node.textContent = ''; return; }
-    if (!kanjiPresent(text)) {
-      node.textContent = 'ひらがな：' + toHiragana(text);
+  function appendToken(fragment, token) {
+    const surface = String(token.surface_form || '');
+    const reading = token.reading && token.reading !== '*' ?
+      toHiragana(token.reading) : '';
+    if (!reading || !kanji.test(surface)) {
+      fragment.appendChild(document.createTextNode(surface));
       return;
     }
-    let reading = cache.get(text);
-    if (!reading) {
-      node.textContent = 'ひらがな：讀音載入中…';
+
+    // Give the reading only above the kanji, leaving trailing okurigana below.
+    // E.g. 食べる -> <ruby>食<rt>た</rt></ruby>べる
+    let stemEnd = surface.length;
+    while (stemEnd > 0 && kanaSuffix.test(surface[stemEnd - 1])) stemEnd--;
+    const stem = surface.slice(0, stemEnd);
+    const suffix = surface.slice(stemEnd);
+    const hiraSuffix = toHiragana(suffix);
+    let rubyBase = surface, rubyReading = reading, literalSuffix = '';
+    if (stem && suffix && reading.endsWith(hiraSuffix)) {
+      const candidate = reading.slice(0, -hiraSuffix.length);
+      if (candidate) {
+        rubyBase = stem;
+        rubyReading = candidate;
+        literalSuffix = suffix;
+      }
+    }
+
+    const ruby = document.createElement('ruby');
+    ruby.appendChild(document.createTextNode(rubyBase));
+    const rt = document.createElement('rt');
+    rt.textContent = rubyReading;
+    ruby.appendChild(rt);
+    fragment.appendChild(ruby);
+    if (literalSuffix) fragment.appendChild(document.createTextNode(literalSuffix));
+  }
+
+  async function fill(element, source) {
+    if (!element) return;
+    const text = String(source || '');
+    const serial = String((Number(element.dataset.rubySerial) || 0) + 1);
+    element.dataset.rubySerial = serial;
+    element.textContent = text; // useful even when tokenization unavailable
+    if (!text || !kanji.test(text)) return;
+
+    let tokens = cache.get(text);
+    if (!tokens) {
       const t = await init();
-      if (node.dataset.readingSerial !== String(id)) return;
-      if (!t) {
-        node.textContent = 'ひらがな：讀音暫時無法生成';
-        return;
+      if (element.dataset.rubySerial !== serial) return;
+      if (!t) return;
+      try { tokens = t.tokenize(text); }
+      catch (err) {
+        console.warn('Translation history ruby failed:', err?.message || err);
+        return; // keep unmodified Japanese
       }
-      try {
-        reading = composeReading(text, t);
-        if (!reading) throw new Error('No reading');
-        if (cache.size >= 200) cache.clear();
-        cache.set(text, reading);
-      } catch (err) {
-        console.warn('Translation history hiragana conversion failed:', err?.message || err);
-        node.textContent = 'ひらがな：讀音暫時無法生成';
-        return;
-      }
+      if (cache.size >= 200) cache.clear();
+      cache.set(text, tokens);
     }
-    if (node.dataset.readingSerial === String(id)) {
-      node.textContent = 'ひらがな：' + reading;
-    }
+    if (element.dataset.rubySerial !== serial) return;
+    const fragment = document.createDocumentFragment();
+    for (const token of tokens) appendToken(fragment, token);
+    element.replaceChildren(fragment);
   }
 
   function fillExisting() {
-    document.querySelectorAll('#historyList .history-item').forEach(item => {
-      const jp = item.querySelector('.history-jp');
-      const kana = item.querySelector('.history-hiragana');
-      if (jp && kana) fill(kana, jp.textContent);
-    });
+    document.querySelectorAll('#historyList .history-item .history-jp').forEach(
+      element => fill(element, element.textContent));
   }
 
-  window.TranslatorHistoryHiragana = Object.freeze({ fill, fillExisting });
+  window.TranslatorHistoryHiragana = Object.freeze({fill, fillExisting});
   if (document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', fillExisting, {once: true});
   else fillExisting();
