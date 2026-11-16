@@ -1,15 +1,13 @@
 {
   "version": 1,
   "signatureVersion": 2,
-  "status": "review_required",
-  "checkedAt": "2026-11-09T10:21:20Z",
+  "status": "ok",
+  "checkedAt": "2026-11-16T10:11:04Z",
   "sourceCount": 10,
   "reachableCount": 10,
-  "changedSources": [
-    "jmdict-distribution"
-  ],
+  "changedSources": [],
   "errors": [],
-  "teacherReviewRequired": true,
+  "teacherReviewRequired": false,
   "policy": "TEACHER_ROBOT_MAINTENANCE.md",
   "sources": [
     {
@@ -150,7 +148,7 @@
       "semanticChars": 78356,
       "signatureVersion": 2,
       "sha256": "b7c7974908715c8855fcb315865778fd1e4a212b8a94eca0e2cb3724184fc431",
-      "changed": true,
+      "changed": false,
       "error": null
     },
     {
