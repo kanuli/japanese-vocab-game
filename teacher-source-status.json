@@ -1,12 +1,15 @@
 {
   "version": 1,
   "signatureVersion": 2,
-  "status": "ok",
-  "checkedAt": "2026-11-16T10:11:04Z",
+  "status": "error",
+  "checkedAt": "2026-11-23T11:17:14Z",
   "sourceCount": 10,
-  "reachableCount": 10,
+  "reachableCount": 8,
   "changedSources": [],
-  "errors": [],
+  "errors": [
+    "jmdict-distribution",
+    "jmdict-ng"
+  ],
   "teacherReviewRequired": false,
   "policy": "TEACHER_ROBOT_MAINTENANCE.md",
   "sources": [
@@ -143,13 +146,13 @@
         "pronunciation"
       ],
       "purpose": "Daily dictionary updates, spellings, readings, senses and JMdict NG availability",
-      "reachable": true,
-      "bytes": 112866,
-      "semanticChars": 78356,
+      "reachable": false,
+      "bytes": 0,
+      "semanticChars": 0,
       "signatureVersion": 2,
-      "sha256": "b7c7974908715c8855fcb315865778fd1e4a212b8a94eca0e2cb3724184fc431",
+      "sha256": null,
       "changed": false,
-      "error": null
+      "error": "curl: (28) Connection timed out after 30001 milliseconds"
     },
     {
       "id": "jmdict-ng",
@@ -163,13 +166,13 @@
         "pronunciation"
       ],
       "purpose": "Track schema changes relevant to lexical import and future pitch-accent fields",
-      "reachable": true,
-      "bytes": 14343,
-      "semanticChars": 8799,
+      "reachable": false,
+      "bytes": 0,
+      "semanticChars": 0,
       "signatureVersion": 2,
-      "sha256": "1b73eb2a7201f9274b086426ddb2011e0baa1f3c82c4ed8a9fcbc459f6711bc6",
+      "sha256": null,
       "changed": false,
-      "error": null
+      "error": "curl: (28) Connection timed out after 30001 milliseconds"
     },
     {
       "id": "bccwj2",
@@ -203,7 +206,7 @@
       ],
       "purpose": "Pitch accent and pronunciation reference",
       "reachable": true,
-      "bytes": 116959,
+      "bytes": 117003,
       "semanticChars": 16361,
       "signatureVersion": 2,
       "sha256": "8c3b747aad18bd979be0ce223b691490702bb7216965d7626af5436bae92a824",
