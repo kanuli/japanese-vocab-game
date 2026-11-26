@@ -3,6 +3,10 @@
 (()=>{'use strict';
 const A=window.ADVANCED_WORDS=window.ADVANCED_WORDS||[];
 const FIXUPS=[
+  // 2026-11-27: 得る has two modern dictionary-form readings; other forms use え.
+  // Sources: https://kotobank.jp/word/得る-442148 ; https://www.kyozai.jpf.go.jp/kyozai/material/BMA00071/ja/render.do
+  {id:'reviewed-eru-20261127',level:'N2',reading:'える',kanji:'得る',displayWord:'得る',meaning:'獲得；取得；得到；（動詞連用形＋得る）能夠、有可能',pos:'動2',estimated:true,levelSource:'supplement-estimate-not-official',source:'デジタル大辞泉・国際交流基金（讀音及活用校訂；JLPT 推定）'},
+  {id:'reviewed-uru-20261127',level:'N2',reading:'うる',kanji:'得る',displayWord:'得る',meaning:'獲得（書面語）；（動詞連用形＋得る）能夠、有可能；辭書形異讀，其他現代活用讀え（得ない＝えない）',pos:'動2',estimated:true,levelSource:'supplement-estimate-not-official',source:'デジタル大辞泉・国際交流基金（讀音及活用校訂；JLPT 推定）'},
 // 2026-10-17: reviewed 50 missing common/modern terms (all JLPT levels estimated).
 // Record exact JMdict entry IDs and reviewed POS; never auto-import the remaining P3 candidates.
   {"id":"reviewed-common-20261017-1020700","entryId":"1020700","level":"N3","reading":"アンペア","kanji":"","displayWord":"アンペア","meaning":"安培（電流單位）","pos":"名詞","reviewedPOS":["名詞"],"category":"一般","estimated":true,"levelSource":"supplement-estimate-not-official","source":"JMdict/Tomoshi 候選 Entry ID 1020700；繁體中文詞義人工校訂；JLPT 級別僅供學習用推定"},
@@ -82,7 +86,10 @@ function apply(words){
   const seen=new Set();
   for(let i=0;i<out.length;i++){
     const k=key(out[i]),fix=fixes.get(k);
-    if(fix)out[i]={...out[i],...fix};
+    if(fix&&/^reviewed-(?:eru|uru)-20261127$/.test(fix.id)){
+      // Keep existing identity, level evidence and audio metadata; only correct lexical fields.
+      out[i]={...out[i],meaning:fix.meaning,pos:fix.pos};
+    }else if(fix)out[i]={...out[i],...fix};
     seen.add(k);
   }
   for(const fix of FIXUPS){const k=key(fix);if(!seen.has(k)){out.push({...fix});seen.add(k);}}

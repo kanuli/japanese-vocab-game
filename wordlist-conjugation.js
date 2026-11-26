@@ -275,6 +275,8 @@ function classify(word){
   if(!reading||!isKana(reading))return null;
 
   var wKey=written,rKey=reading,group=verbGroup(pos);
+  // 得る: the modern 下一段 paradigm uses え even when the dictionary form is うる.
+  if(wKey==='得る'&&(rKey==='える'||rKey==='うる'))return {type:'ichidan',written:written,reading:reading,eruVariant:true};
 
   /* Standalone ない is an adjective/auxiliary, not a verb. Keep 動詞のない形. */
   if((wKey==='ない'||rKey==='ない')&&wKey!=='亡い'){
@@ -415,7 +417,10 @@ function conjugate(word){
   var cls=classify(word);
   if(!cls)return null;
   var forms=null;
-  if(cls.type==='ichidan')forms=ichidanForms(cls.written,cls.reading);
+  if(cls.eruVariant){
+    forms=ichidanForms(cls.written,'える');
+    forms.dict=form(cls.written,cls.reading);
+  }else if(cls.type==='ichidan')forms=ichidanForms(cls.written,cls.reading);
   else if(cls.type==='godan')forms=godanForms(cls.written,cls.reading,cls.ending);
   else if(cls.type==='iku')forms=godanForms(cls.written,cls.reading,'く',{te:'って',ta:'った'});
   else if(cls.type==='suru'){

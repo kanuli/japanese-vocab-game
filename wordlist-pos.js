@@ -92,6 +92,8 @@ function adjectiveLabel(w,p){
 }
 function labels(w){
   if(!w)return ['未分類'];
+  // Modern 下一段 with alternate dictionary reading うる; do not accept a coarse upstream 五段 tag.
+  if(written(w)==='得る'&&/^(える|うる)$/.test(reading(w)))return ['動詞（第2類）'];
   var fromReviewed=reviewed(w);
   if(fromReviewed)return fromReviewed;
   var fromJMdict=authoritative(w);
@@ -120,7 +122,7 @@ function labels(w){
     return t;
   }).filter(function(t,i,a){return a.indexOf(t)===i;});
 }
-var api={labels:labels,rawPos:rawPos,source:function(w){return reviewed(w)?'manual':(authoritative(w)?'JMdict/Tomoshi':(OVERRIDES[reading(w)+'|'+written(w)]?'manual':'unverified'));}};
+var api={labels:labels,rawPos:rawPos,source:function(w){return (written(w)==='得る'&&/^(える|うる)$/.test(reading(w)))?'manual':reviewed(w)?'manual':(authoritative(w)?'JMdict/Tomoshi':(OVERRIDES[reading(w)+'|'+written(w)]?'manual':'unverified'));}};
 root.WordlistPOS=api;
 if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:typeof global!=='undefined'?global:this);

@@ -45,3 +45,17 @@ assert.equal(merged.filter(w=>w.reading==='てんじんさま'&&w.kanji==='天�
 assert.equal(merged.find(w=>w.reading==='てんじんさま').level,'N3');
 assert.equal(new Set(merged.map(w=>w.reading+'|'+(w.kanji||w.displayWord||w.reading))).size,merged.length);
 console.log('REVIEWED COMMON VOCAB PASS: 50 exact source IDs, reviewed POS, estimated JLPT, merge dedup');
+
+// 得る dual-reading correction: retain identity/evidence, exact readings and modern conjugation.
+const eruRows=ctx.window.applyVocabCommonFixups([{id:'existing-uru',reading:'うる',kanji:'得る',level:'N1',estimated:false,pos:'動1',meaning:'OLD',audio:'preserve'}]).filter(w=>w.kanji==='得る');
+assert.equal(eruRows.length,2);
+assert.deepEqual(new Set(eruRows.map(w=>w.reading)),new Set(['える','うる']));
+const oldUru=eruRows.find(w=>w.reading==='うる');
+assert.equal(oldUru.id,'existing-uru');assert.equal(oldUru.level,'N1');assert.equal(oldUru.audio,'preserve');assert.equal(oldUru.estimated,false);
+const Conj=require('../wordlist-conjugation.js');
+for(const w of eruRows){
+  assert.deepEqual(POS.labels(w),['動詞（第2類）']);assert.equal(POS.source(w),'manual');
+  const forms=Object.fromEntries(Conj.conjugate({...w,pos:'動1'}).forms.map(f=>[f.id,f.reading]));
+  assert.equal(forms.dict,w.reading);assert.equal(forms.masu,'えます');assert.equal(forms.nai,'えない');assert.equal(forms.ta,'えた');assert.equal(forms.te,'えて');assert.equal(forms.ba,'えれば');assert.equal(forms.prohibitive,'えるな');
+}
+console.log('得る dual-reading regression PASS');
