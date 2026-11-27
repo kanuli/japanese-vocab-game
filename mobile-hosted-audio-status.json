@@ -1,9 +1,9 @@
 {
   "version": 2,
   "status": "success",
-  "checkedAt": "2026-11-26T17:37:27Z",
-  "runId": "45869132093",
-  "headSha": "573aef5af3d35fc705e61ed76f94874dd53eed9a",
+  "checkedAt": "2026-11-27T13:09:39Z",
+  "runId": "46004524128",
+  "headSha": "3702167419949ce9b3438a08269c218ea316eea3",
   "target": "mobile hosted audio stack",
   "checks": [
     "static-hosted-audio",
